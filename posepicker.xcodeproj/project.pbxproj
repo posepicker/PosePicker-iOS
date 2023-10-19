@@ -28,6 +28,7 @@
 		C9C890A92AE10A370010240A /* APIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890A82AE10A370010240A /* APIRouter.swift */; };
 		C9C890BF2AE1107B0010240A /* ImageLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890BE2AE1107B0010240A /* ImageLiteral.swift */; };
 		C9C890C22AE113590010240A /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = C9C890C12AE113590010240A /* Lottie */; };
+		C9C890C52AE11BAB0010240A /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890C42AE11BAB0010240A /* UIFont+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -78,6 +79,7 @@
 		C9C890BC2AE110660010240A /* Pretendard-ExtraBold.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraBold.otf"; sourceTree = "<group>"; };
 		C9C890BD2AE110660010240A /* Pretendard-Thin.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Thin.otf"; sourceTree = "<group>"; };
 		C9C890BE2AE1107B0010240A /* ImageLiteral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLiteral.swift; sourceTree = "<group>"; };
+		C9C890C42AE11BAB0010240A /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -201,6 +203,7 @@
 		C9C8909A2AE107A40010240A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C9C890C32AE11B7B0010240A /* UIFont */,
 				C9C8909B2AE107B20010240A /* UIColor */,
 			);
 			path = Extensions;
@@ -272,6 +275,14 @@
 				C9C890BD2AE110660010240A /* Pretendard-Thin.otf */,
 			);
 			path = Font;
+			sourceTree = "<group>";
+		};
+		C9C890C32AE11B7B0010240A /* UIFont */ = {
+			isa = PBXGroup;
+			children = (
+				C9C890C42AE11BAB0010240A /* UIFont+.swift */,
+			);
+			path = UIFont;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -419,6 +430,7 @@
 				C9C890A92AE10A370010240A /* APIRouter.swift in Sources */,
 				C9C8908A2AE107180010240A /* ViewModelType.swift in Sources */,
 				C9C890BF2AE1107B0010240A /* ImageLiteral.swift in Sources */,
+				C9C890C52AE11BAB0010240A /* UIFont+.swift in Sources */,
 				C9C890562AE103A10010240A /* ViewController.swift in Sources */,
 				C9C890A52AE109FE0010240A /* TabBarController.swift in Sources */,
 				C9C890522AE103A10010240A /* AppDelegate.swift in Sources */,
