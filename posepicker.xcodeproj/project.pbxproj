@@ -179,7 +179,8 @@
 			children = (
 				C9C890832AE105F80010240A /* posepicker.xcconfig */,
 			);
-			path = Configs;
+			name = Configs;
+			path = Config;
 			sourceTree = "<group>";
 		};
 		C9C890842AE106EF0010240A /* Common */ = {
