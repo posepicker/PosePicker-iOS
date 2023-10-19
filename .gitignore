@@ -88,9 +88,6 @@ iOSInjectionProject/
 ### SwiftPackageManager ###
 Packages
 xcuserdata
-*.xcodeproj
-!posepicker/posepicker.xcodeproj/project.xcworkspace/xcshareddata/swiftpm/Package.resolved
-
 ### Xcode ###
 
 ## Xcode 8 and earlier
