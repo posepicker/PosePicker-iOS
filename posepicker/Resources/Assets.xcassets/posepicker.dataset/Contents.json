@@ -1,0 +1,12 @@
+{
+  "data" : [
+    {
+      "filename" : "posepicker.json",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
