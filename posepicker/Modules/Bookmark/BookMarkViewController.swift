@@ -8,5 +8,8 @@
 import UIKit
 
 class BookMarkViewController: BaseViewController {
-
+    // MARK: - Functions
+    override func configUI() {
+        view.backgroundColor = .yellow
+    }
 }
