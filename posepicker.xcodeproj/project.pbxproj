@@ -7,8 +7,23 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2742AE38E26003777EB /* RootViewController.swift */; };
+		C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2762AE38E82003777EB /* AppCoordinator.swift */; };
+		C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2782AE38EBD003777EB /* RootCoordinator.swift */; };
+		C94FD27F2AE395E3003777EB /* PosePickViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD27E2AE395E3003777EB /* PosePickViewController.swift */; };
+		C94FD2812AE39603003777EB /* PoseTokViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2802AE39603003777EB /* PoseTokViewController.swift */; };
+		C94FD2832AE3960B003777EB /* PoseFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2822AE3960B003777EB /* PoseFeedViewController.swift */; };
+		C94FD2852AE39612003777EB /* BookMarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2842AE39612003777EB /* BookMarkViewController.swift */; };
+		C94FD2872AE3961D003777EB /* PosePickViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2862AE3961D003777EB /* PosePickViewModel.swift */; };
+		C94FD2892AE39635003777EB /* PoseTokViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2882AE39635003777EB /* PoseTokViewModel.swift */; };
+		C94FD28B2AE3963E003777EB /* PoseFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD28A2AE3963E003777EB /* PoseFeedViewModel.swift */; };
+		C94FD28D2AE39646003777EB /* BookmarkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD28C2AE39646003777EB /* BookmarkViewModel.swift */; };
+		C94FD2902AE398CF003777EB /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD28F2AE398CF003777EB /* MyPageViewController.swift */; };
+		C94FD2922AE398D6003777EB /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2912AE398D6003777EB /* MyPageViewModel.swift */; };
+		C94FD2952AE39E5C003777EB /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C94FD2942AE39E5C003777EB /* SnapKit */; };
+		C94FD2982AE39E6B003777EB /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = C94FD2972AE39E6B003777EB /* Then */; };
+		C94FD29B2AE3AC3E003777EB /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD29A2AE3AC3E003777EB /* UIView+.swift */; };
 		C9C890522AE103A10010240A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890512AE103A10010240A /* AppDelegate.swift */; };
-		C9C890562AE103A10010240A /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890552AE103A10010240A /* ViewController.swift */; };
 		C9C8905B2AE103A30010240A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9C8905A2AE103A30010240A /* Assets.xcassets */; };
 		C9C8905E2AE103A30010240A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9C8905C2AE103A30010240A /* LaunchScreen.storyboard */; };
 		C9C890692AE103A30010240A /* posepickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890682AE103A30010240A /* posepickerTests.swift */; };
@@ -24,7 +39,6 @@
 		C9C8909D2AE107BC0010240A /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C8909C2AE107BC0010240A /* UIColor+.swift */; };
 		C9C890A02AE109610010240A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C8909F2AE109610010240A /* User.swift */; };
 		C9C890A22AE1098B0010240A /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890A12AE1098B0010240A /* Token.swift */; };
-		C9C890A52AE109FE0010240A /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890A42AE109FE0010240A /* TabBarController.swift */; };
 		C9C890A92AE10A370010240A /* APIRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890A82AE10A370010240A /* APIRouter.swift */; };
 		C9C890BF2AE1107B0010240A /* ImageLiteral.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890BE2AE1107B0010240A /* ImageLiteral.swift */; };
 		C9C890C22AE113590010240A /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = C9C890C12AE113590010240A /* Lottie */; };
@@ -49,9 +63,22 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		C94FD2742AE38E26003777EB /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
+		C94FD2762AE38E82003777EB /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		C94FD2782AE38EBD003777EB /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
+		C94FD27E2AE395E3003777EB /* PosePickViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickViewController.swift; sourceTree = "<group>"; };
+		C94FD2802AE39603003777EB /* PoseTokViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseTokViewController.swift; sourceTree = "<group>"; };
+		C94FD2822AE3960B003777EB /* PoseFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedViewController.swift; sourceTree = "<group>"; };
+		C94FD2842AE39612003777EB /* BookMarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkViewController.swift; sourceTree = "<group>"; };
+		C94FD2862AE3961D003777EB /* PosePickViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickViewModel.swift; sourceTree = "<group>"; };
+		C94FD2882AE39635003777EB /* PoseTokViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseTokViewModel.swift; sourceTree = "<group>"; };
+		C94FD28A2AE3963E003777EB /* PoseFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedViewModel.swift; sourceTree = "<group>"; };
+		C94FD28C2AE39646003777EB /* BookmarkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkViewModel.swift; sourceTree = "<group>"; };
+		C94FD28F2AE398CF003777EB /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
+		C94FD2912AE398D6003777EB /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
+		C94FD29A2AE3AC3E003777EB /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		C9C8904E2AE103A10010240A /* posepicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = posepicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9C890512AE103A10010240A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		C9C890552AE103A10010240A /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		C9C8905A2AE103A30010240A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C9C8905D2AE103A30010240A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C9C8905F2AE103A30010240A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -67,7 +94,6 @@
 		C9C8909C2AE107BC0010240A /* UIColor+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+.swift"; sourceTree = "<group>"; };
 		C9C8909F2AE109610010240A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		C9C890A12AE1098B0010240A /* Token.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Token.swift; sourceTree = "<group>"; };
-		C9C890A42AE109FE0010240A /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		C9C890A82AE10A370010240A /* APIRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIRouter.swift; sourceTree = "<group>"; };
 		C9C890B52AE110660010240A /* Pretendard-ExtraLight.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-ExtraLight.otf"; sourceTree = "<group>"; };
 		C9C890B62AE110660010240A /* Pretendard-Black.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Pretendard-Black.otf"; sourceTree = "<group>"; };
@@ -90,6 +116,8 @@
 				C9C890C22AE113590010240A /* Lottie in Frameworks */,
 				C9C890952AE107730010240A /* RxRelay in Frameworks */,
 				C9C890932AE107730010240A /* RxCocoa in Frameworks */,
+				C94FD2982AE39E6B003777EB /* Then in Frameworks */,
+				C94FD2952AE39E5C003777EB /* SnapKit in Frameworks */,
 				C9C890972AE107730010240A /* RxSwift in Frameworks */,
 				C9C890912AE107730010240A /* RxBlocking in Frameworks */,
 			);
@@ -112,6 +140,59 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		C94FD27A2AE39505003777EB /* PosePick */ = {
+			isa = PBXGroup;
+			children = (
+				C94FD2862AE3961D003777EB /* PosePickViewModel.swift */,
+				C94FD27E2AE395E3003777EB /* PosePickViewController.swift */,
+			);
+			path = PosePick;
+			sourceTree = "<group>";
+		};
+		C94FD27B2AE3950C003777EB /* PoseTok */ = {
+			isa = PBXGroup;
+			children = (
+				C94FD2882AE39635003777EB /* PoseTokViewModel.swift */,
+				C94FD2802AE39603003777EB /* PoseTokViewController.swift */,
+			);
+			path = PoseTok;
+			sourceTree = "<group>";
+		};
+		C94FD27C2AE39512003777EB /* PoseFeed */ = {
+			isa = PBXGroup;
+			children = (
+				C94FD28A2AE3963E003777EB /* PoseFeedViewModel.swift */,
+				C94FD2822AE3960B003777EB /* PoseFeedViewController.swift */,
+			);
+			path = PoseFeed;
+			sourceTree = "<group>";
+		};
+		C94FD27D2AE39517003777EB /* Bookmark */ = {
+			isa = PBXGroup;
+			children = (
+				C94FD28C2AE39646003777EB /* BookmarkViewModel.swift */,
+				C94FD2842AE39612003777EB /* BookMarkViewController.swift */,
+			);
+			path = Bookmark;
+			sourceTree = "<group>";
+		};
+		C94FD28E2AE398BD003777EB /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				C94FD2912AE398D6003777EB /* MyPageViewModel.swift */,
+				C94FD28F2AE398CF003777EB /* MyPageViewController.swift */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
+		C94FD2992AE3AC2F003777EB /* UIView */ = {
+			isa = PBXGroup;
+			children = (
+				C94FD29A2AE3AC3E003777EB /* UIView+.swift */,
+			);
+			path = UIView;
+			sourceTree = "<group>";
+		};
 		C9C890452AE103A10010240A = {
 			isa = PBXGroup;
 			children = (
@@ -143,7 +224,6 @@
 				C9C890A32AE109D80010240A /* Modules */,
 				C9C890A72AE10A280010240A /* Networking */,
 				C9C890AA2AE10A3D0010240A /* Resources */,
-				C9C890552AE103A10010240A /* ViewController.swift */,
 				C9C8905C2AE103A30010240A /* LaunchScreen.storyboard */,
 			);
 			path = posepicker;
@@ -170,6 +250,7 @@
 			isa = PBXGroup;
 			children = (
 				C9C890512AE103A10010240A /* AppDelegate.swift */,
+				C94FD2762AE38E82003777EB /* AppCoordinator.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -179,8 +260,7 @@
 			children = (
 				C9C890832AE105F80010240A /* posepicker.xcconfig */,
 			);
-			name = Configs;
-			path = Config;
+			path = Configs;
 			sourceTree = "<group>";
 		};
 		C9C890842AE106EF0010240A /* Common */ = {
@@ -204,6 +284,7 @@
 		C9C8909A2AE107A40010240A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C94FD2992AE3AC2F003777EB /* UIView */,
 				C9C890C32AE11B7B0010240A /* UIFont */,
 				C9C8909B2AE107B20010240A /* UIColor */,
 			);
@@ -231,6 +312,11 @@
 			isa = PBXGroup;
 			children = (
 				C9C890A62AE10A010010240A /* Root */,
+				C94FD27A2AE39505003777EB /* PosePick */,
+				C94FD27B2AE3950C003777EB /* PoseTok */,
+				C94FD27C2AE39512003777EB /* PoseFeed */,
+				C94FD27D2AE39517003777EB /* Bookmark */,
+				C94FD28E2AE398BD003777EB /* MyPage */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
@@ -238,7 +324,8 @@
 		C9C890A62AE10A010010240A /* Root */ = {
 			isa = PBXGroup;
 			children = (
-				C9C890A42AE109FE0010240A /* TabBarController.swift */,
+				C94FD2742AE38E26003777EB /* RootViewController.swift */,
+				C94FD2782AE38EBD003777EB /* RootCoordinator.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
@@ -308,6 +395,8 @@
 				C9C890942AE107730010240A /* RxRelay */,
 				C9C890962AE107730010240A /* RxSwift */,
 				C9C890C12AE113590010240A /* Lottie */,
+				C94FD2942AE39E5C003777EB /* SnapKit */,
+				C94FD2972AE39E6B003777EB /* Then */,
 			);
 			productName = posepicker;
 			productReference = C9C8904E2AE103A10010240A /* posepicker.app */;
@@ -384,6 +473,8 @@
 			packageReferences = (
 				C9C8908F2AE107730010240A /* XCRemoteSwiftPackageReference "RxSwift" */,
 				C9C890C02AE113590010240A /* XCRemoteSwiftPackageReference "lottie-ios" */,
+				C94FD2932AE39E5C003777EB /* XCRemoteSwiftPackageReference "SnapKit" */,
+				C94FD2962AE39E6B003777EB /* XCRemoteSwiftPackageReference "Then" */,
 			);
 			productRefGroup = C9C8904F2AE103A10010240A /* Products */;
 			projectDirPath = "";
@@ -429,16 +520,28 @@
 			files = (
 				C9C8908E2AE1073F0010240A /* BaseCollectionViewCell.swift in Sources */,
 				C9C890A92AE10A370010240A /* APIRouter.swift in Sources */,
+				C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */,
+				C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */,
+				C94FD27F2AE395E3003777EB /* PosePickViewController.swift in Sources */,
+				C94FD2832AE3960B003777EB /* PoseFeedViewController.swift in Sources */,
 				C9C8908A2AE107180010240A /* ViewModelType.swift in Sources */,
 				C9C890BF2AE1107B0010240A /* ImageLiteral.swift in Sources */,
+				C94FD2922AE398D6003777EB /* MyPageViewModel.swift in Sources */,
+				C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */,
 				C9C890C52AE11BAB0010240A /* UIFont+.swift in Sources */,
-				C9C890562AE103A10010240A /* ViewController.swift in Sources */,
-				C9C890A52AE109FE0010240A /* TabBarController.swift in Sources */,
+				C94FD2852AE39612003777EB /* BookMarkViewController.swift in Sources */,
+				C94FD29B2AE3AC3E003777EB /* UIView+.swift in Sources */,
+				C94FD2812AE39603003777EB /* PoseTokViewController.swift in Sources */,
 				C9C890522AE103A10010240A /* AppDelegate.swift in Sources */,
+				C94FD2892AE39635003777EB /* PoseTokViewModel.swift in Sources */,
 				C9C890882AE107090010240A /* BaseViewController.swift in Sources */,
 				C9C8909D2AE107BC0010240A /* UIColor+.swift in Sources */,
+				C94FD2872AE3961D003777EB /* PosePickViewModel.swift in Sources */,
+				C94FD2902AE398CF003777EB /* MyPageViewController.swift in Sources */,
+				C94FD28D2AE39646003777EB /* BookmarkViewModel.swift in Sources */,
 				C9C890A02AE109610010240A /* User.swift in Sources */,
 				C9C890A22AE1098B0010240A /* Token.swift in Sources */,
+				C94FD28B2AE3963E003777EB /* PoseFeedViewModel.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -780,6 +883,22 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		C94FD2932AE39E5C003777EB /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+		C94FD2962AE39E6B003777EB /* XCRemoteSwiftPackageReference "Then" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/devxoul/Then.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 3.0.0;
+			};
+		};
 		C9C8908F2AE107730010240A /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
@@ -799,6 +918,16 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		C94FD2942AE39E5C003777EB /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C94FD2932AE39E5C003777EB /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		C94FD2972AE39E6B003777EB /* Then */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C94FD2962AE39E6B003777EB /* XCRemoteSwiftPackageReference "Then" */;
+			productName = Then;
+		};
 		C9C890902AE107730010240A /* RxBlocking */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C9C8908F2AE107730010240A /* XCRemoteSwiftPackageReference "RxSwift" */;
