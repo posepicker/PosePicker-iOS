@@ -8,4 +8,8 @@
 import UIKit
 
 class MyPageViewController: BaseViewController {
+    // MARK: - Functions
+    override func configUI() {
+        view.backgroundColor = .green
+    }
 }
