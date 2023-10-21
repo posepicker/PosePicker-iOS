@@ -59,6 +59,9 @@ extension UIColor {
     static var textCTO: UIColor {
         return .init(hex: "#141218")
     }
+    static var textBrand: UIColor {
+        return .init(hex: "#8662F3")
+    }
     static var mainVioletLight: UIColor {
         return .init(hex: "#B29BF8")
     }
