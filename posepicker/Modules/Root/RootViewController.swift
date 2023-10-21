@@ -17,7 +17,7 @@ class RootViewController: BaseViewController {
         .then {
 //            $0.addTarget(self, action: #selector(changeCurrentPage(control:)), for: .valueChanged)
             $0.selectedSegmentTintColor = .mainViolet
-            $0.selectedSegmentIndex = 1
+            $0.selectedSegmentIndex = 0
         }
     
     lazy var pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
@@ -59,7 +59,7 @@ class RootViewController: BaseViewController {
         
         segmentedControl.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.trailing.equalTo(view).offset(12)
+            make.leading.equalTo(view).offset(20)
             make.trailing.equalTo(view).offset(-100)
             make.height.equalTo(48)
         }
@@ -86,6 +86,7 @@ class RootViewController: BaseViewController {
         
         segmentedControl.rx.selectedSegmentIndex.asDriver()
             .drive(onNext: { [unowned self] _ in
+                self.segmentedControl.updateUnderlineViewWidth()
                 self.segmentedControl.moveUnderlineView()
             })
             .disposed(by: disposeBag)
