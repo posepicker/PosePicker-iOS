@@ -62,7 +62,7 @@ class UnderlineSegmentControl: UISegmentedControl {
     func render() {
         underlineView.snp.makeConstraints { make in
             make.bottom.equalTo(self.snp.bottom)
-            make.width.equalTo(42)
+            make.width.equalTo((self.bounds.width / CGFloat(self.numberOfSegments)))
             make.height.equalTo(1)
         }
     }
@@ -70,7 +70,12 @@ class UnderlineSegmentControl: UISegmentedControl {
     /// underlineView가 이동해야 할 위치를 계산하고 animate를 통해 이동
     /// UISegment가 클릭될 때마다 호출됨
     func moveUnderlineView() {
-        let underlineFinalXPosition = ((self.bounds.width / CGFloat(self.numberOfSegments)) * CGFloat(self.selectedSegmentIndex)) + 8
+        let fontAttributes = titleTextAttributes(for: .normal)
+        guard let title = titleForSegment(at: self.selectedSegmentIndex) else { return }
+        let size = title.size(withAttributes: fontAttributes)
+        
+        let perSegmentWidth = self.bounds.width / CGFloat(self.numberOfSegments) // 세그먼트 별 길이
+        let underlineFinalXPosition = (perSegmentWidth * CGFloat(self.selectedSegmentIndex)) + (perSegmentWidth - size.width) / 2
         
         self.underlineView.frame.origin.x = previousXPosition
         
@@ -84,7 +89,18 @@ class UnderlineSegmentControl: UISegmentedControl {
     }
     
     func updateUnderlineViewWidth() {
-        
+        let fontAttributes = titleTextAttributes(for: .normal)
+        guard let title = titleForSegment(at: self.selectedSegmentIndex) else { return }
+        let size = title.size(withAttributes: fontAttributes)
+
+        UIView.animate(withDuration: 0.1) { [weak self] in
+            self?.underlineView.snp.updateConstraints { make in
+                make.width.equalTo(size.width)
+            }
+            
+            self?.layoutIfNeeded()
+        }
+
     }
 
 }
