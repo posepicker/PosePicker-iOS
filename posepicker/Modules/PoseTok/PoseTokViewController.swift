@@ -8,5 +8,9 @@
 import UIKit
 
 class PoseTokViewController: BaseViewController {
+    // MARK: - Functions
     
+    override func configUI() {
+        view.backgroundColor = .blue
+    }
 }

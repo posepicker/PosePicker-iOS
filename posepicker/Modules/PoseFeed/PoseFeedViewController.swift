@@ -9,4 +9,8 @@ import UIKit
 
 class PoseFeedViewController: BaseViewController {
 
+    // MARK: - Functions
+    override func configUI() {
+        view.backgroundColor = .bgDivider
+    }
 }
