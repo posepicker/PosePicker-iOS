@@ -23,6 +23,16 @@
 		C94FD2952AE39E5C003777EB /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = C94FD2942AE39E5C003777EB /* SnapKit */; };
 		C94FD2982AE39E6B003777EB /* Then in Frameworks */ = {isa = PBXBuildFile; productRef = C94FD2972AE39E6B003777EB /* Then */; };
 		C94FD29B2AE3AC3E003777EB /* UIView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD29A2AE3AC3E003777EB /* UIView+.swift */; };
+		C94FD29F2AE3AF4F003777EB /* UnderlineSegmentControl.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD29E2AE3AF4F003777EB /* UnderlineSegmentControl.swift */; };
+		C94FD2A02AE3B282003777EB /* Pretendard-Black.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890B62AE110660010240A /* Pretendard-Black.otf */; };
+		C94FD2A12AE3B282003777EB /* Pretendard-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890BB2AE110660010240A /* Pretendard-Bold.otf */; };
+		C94FD2A22AE3B282003777EB /* Pretendard-ExtraBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890BC2AE110660010240A /* Pretendard-ExtraBold.otf */; };
+		C94FD2A32AE3B282003777EB /* Pretendard-ExtraLight.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890B52AE110660010240A /* Pretendard-ExtraLight.otf */; };
+		C94FD2A42AE3B282003777EB /* Pretendard-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890B72AE110660010240A /* Pretendard-Light.otf */; };
+		C94FD2A52AE3B282003777EB /* Pretendard-Medium.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890B92AE110660010240A /* Pretendard-Medium.otf */; };
+		C94FD2A62AE3B282003777EB /* Pretendard-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890B82AE110660010240A /* Pretendard-Regular.otf */; };
+		C94FD2A72AE3B282003777EB /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890BA2AE110660010240A /* Pretendard-SemiBold.otf */; };
+		C94FD2A82AE3B282003777EB /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890BD2AE110660010240A /* Pretendard-Thin.otf */; };
 		C9C890522AE103A10010240A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890512AE103A10010240A /* AppDelegate.swift */; };
 		C9C8905B2AE103A30010240A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9C8905A2AE103A30010240A /* Assets.xcassets */; };
 		C9C8905E2AE103A30010240A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9C8905C2AE103A30010240A /* LaunchScreen.storyboard */; };
@@ -77,6 +87,7 @@
 		C94FD28F2AE398CF003777EB /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
 		C94FD2912AE398D6003777EB /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		C94FD29A2AE3AC3E003777EB /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
+		C94FD29E2AE3AF4F003777EB /* UnderlineSegmentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentControl.swift; sourceTree = "<group>"; };
 		C9C8904E2AE103A10010240A /* posepicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = posepicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9C890512AE103A10010240A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9C8905A2AE103A30010240A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -193,6 +204,22 @@
 			path = UIView;
 			sourceTree = "<group>";
 		};
+		C94FD29C2AE3AF1E003777EB /* Component */ = {
+			isa = PBXGroup;
+			children = (
+				C94FD29D2AE3AF2D003777EB /* UnderlineSegmentControl */,
+			);
+			path = Component;
+			sourceTree = "<group>";
+		};
+		C94FD29D2AE3AF2D003777EB /* UnderlineSegmentControl */ = {
+			isa = PBXGroup;
+			children = (
+				C94FD29E2AE3AF4F003777EB /* UnderlineSegmentControl.swift */,
+			);
+			path = UnderlineSegmentControl;
+			sourceTree = "<group>";
+		};
 		C9C890452AE103A10010240A = {
 			isa = PBXGroup;
 			children = (
@@ -266,6 +293,7 @@
 		C9C890842AE106EF0010240A /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				C94FD29C2AE3AF1E003777EB /* Component */,
 				C9C890862AE106FA0010240A /* Base */,
 			);
 			path = Common;
@@ -492,6 +520,15 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C94FD2A02AE3B282003777EB /* Pretendard-Black.otf in Resources */,
+				C94FD2A12AE3B282003777EB /* Pretendard-Bold.otf in Resources */,
+				C94FD2A22AE3B282003777EB /* Pretendard-ExtraBold.otf in Resources */,
+				C94FD2A32AE3B282003777EB /* Pretendard-ExtraLight.otf in Resources */,
+				C94FD2A42AE3B282003777EB /* Pretendard-Light.otf in Resources */,
+				C94FD2A52AE3B282003777EB /* Pretendard-Medium.otf in Resources */,
+				C94FD2A62AE3B282003777EB /* Pretendard-Regular.otf in Resources */,
+				C94FD2A72AE3B282003777EB /* Pretendard-SemiBold.otf in Resources */,
+				C94FD2A82AE3B282003777EB /* Pretendard-Thin.otf in Resources */,
 				C9C8905E2AE103A30010240A /* LaunchScreen.storyboard in Resources */,
 				C9C8905B2AE103A30010240A /* Assets.xcassets in Resources */,
 			);
@@ -520,6 +557,7 @@
 			files = (
 				C9C8908E2AE1073F0010240A /* BaseCollectionViewCell.swift in Sources */,
 				C9C890A92AE10A370010240A /* APIRouter.swift in Sources */,
+				C94FD29F2AE3AF4F003777EB /* UnderlineSegmentControl.swift in Sources */,
 				C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */,
 				C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */,
 				C94FD27F2AE395E3003777EB /* PosePickViewController.swift in Sources */,
