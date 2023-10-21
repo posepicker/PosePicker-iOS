@@ -16,14 +16,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window = UIWindow(frame: UIScreen.main.bounds)
         guard let window = window else { return false }
-        let vc = UIViewController()
-        vc.view.backgroundColor = .red
-        let navigationController = UINavigationController(rootViewController: vc)
+        
+        let navigationController = UINavigationController()
         navigationController.isNavigationBarHidden = true
         
         window.rootViewController = navigationController
         
+        let appCoordinator = AppCoordinator(navigationController: navigationController)
+        let rootCoordinator = RootCoordinator(navigationController: navigationController)
+        appCoordinator.childCoordinators.append(rootCoordinator)
+        appCoordinator.childCoordinators.first!.start()
+        
         window.makeKeyAndVisible()
+        
         return true
     }
 }
