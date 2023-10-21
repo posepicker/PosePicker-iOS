@@ -7,9 +7,18 @@
 
 import UIKit
 
+import RxCocoa
+import RxSwift
+
 class RootViewController: BaseViewController {
     
     // MARK: - Subviews
+    lazy var segmentedControl = UnderlineSegmentControl(items: ["포즈픽", "포즈톡", "포즈피드", "북마크"])
+        .then {
+//            $0.addTarget(self, action: #selector(changeCurrentPage(control:)), for: .valueChanged)
+            $0.selectedSegmentTintColor = .mainViolet
+            $0.selectedSegmentIndex = 1
+        }
     
     lazy var pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
         .then {
@@ -35,16 +44,52 @@ class RootViewController: BaseViewController {
         }
     }
     
+//    lazy var segmentedControl = UnderlineSegmentedControl(items: ["보관함", "채움함", "완료함"])
+//        .then {
+//            $0.addTarget(self, action: #selector(changeCurrentPage(control:)), for: .valueChanged)
+//            $0.selectedSegmentIndex = 1
+//        }
+    
     // MARK: - Initialization
     
     // MARK: - Functions
     override func render() {
-        view.addSubViews([pageViewController.view])
+        view.backgroundColor = .bgWhite
+        view.addSubViews([segmentedControl, pageViewController.view])
         
+        segmentedControl.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.leading.trailing.equalTo(view).offset(12)
+            make.trailing.equalTo(view).offset(-100)
+            make.height.equalTo(48)
+        }
         pageViewController.view.snp.makeConstraints { make in
             make.leading.trailing.bottom.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.top.equalTo(segmentedControl.snp.bottom)
         }
+    }
+    
+    override func configUI() {
+        self.segmentedControl.setTitleTextAttributes(
+            [
+                .foregroundColor: UIColor.textBrand,
+                .font: UIFont.pretendard(.medium, ofSize: 16)
+            ], for: .selected
+        )
+        self.segmentedControl.setTitleTextAttributes(
+            [
+                .foregroundColor: UIColor.textTertiary,
+                .font: UIFont.pretendard(.medium, ofSize: 16)
+            ],
+            for: .normal
+        )
+        
+        segmentedControl.rx.selectedSegmentIndex.asDriver()
+            .drive(onNext: { [unowned self] _ in
+                self.segmentedControl.moveUnderlineView()
+            })
+            .disposed(by: disposeBag)
+        
     }
     
     private func getNavigationController(_ page: RootPage) -> UINavigationController {
