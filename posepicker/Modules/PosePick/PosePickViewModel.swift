@@ -6,10 +6,12 @@
 //
 
 import Foundation
+import RxCocoa
+import RxSwift
 
 class PosePickViewModel: ViewModelType {
     struct Input {
-        
+        let posePickButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
@@ -17,6 +19,7 @@ class PosePickViewModel: ViewModelType {
     }
     
     func transform(input: Input) -> Output {
+        
         return Output()
     }
 }
