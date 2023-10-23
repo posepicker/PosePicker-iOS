@@ -74,7 +74,7 @@ class RootViewController: BaseViewController {
         divider.snp.makeConstraints { make in
             make.top.equalTo(segmentControl.snp.bottom)
             make.leading.trailing.equalToSuperview()
-            make.height.equalTo(1)
+            make.height.equalTo(2)
         }
         
         pageViewController.view.snp.makeConstraints { make in
@@ -115,7 +115,7 @@ class RootViewController: BaseViewController {
         
         switch page {
         case .posepick:
-            let posePickerVC = PosePickViewController()
+            let posePickerVC = PosePickViewController(viewModel: PosePickViewModel())
             navController.pushViewController(posePickerVC, animated: true)
         case .posetok:
             let poseTokVC = PoseTokViewController()
