@@ -13,9 +13,14 @@ class PosePickViewController: BaseViewController {
     // MARK: - Subviews
     let selection = BasicSelection()
     
+    let backgroundView = UIView()
+        .then {
+            $0.backgroundColor = .black
+        }
+    
     lazy var animationView: LottieAnimationView = .init(name: "posepicker")
         .then {
-            $0.contentMode = .scaleToFill
+            $0.contentMode = .scaleAspectFit
             $0.play(toProgress: 1.2) { completed in
                 self.thumbnailImage.isHidden = false
             }
@@ -23,8 +28,9 @@ class PosePickViewController: BaseViewController {
     
     let thumbnailImage = UIImageView(image: ImageLiteral.imgPosePicker)
         .then {
+            $0.clipsToBounds = true
             $0.isHidden = true
-            $0.contentMode = .scaleToFill
+            $0.contentMode = .scaleAspectFit
         }
     
     let posePickerButton = UIButton(type: .system)
@@ -52,12 +58,18 @@ class PosePickViewController: BaseViewController {
     
     // MARK: - Functions
     override func render() {
-        view.addSubViews([selection, animationView, thumbnailImage, posePickerButton])
+        view.addSubViews([selection, backgroundView, animationView, thumbnailImage, posePickerButton])
         
         selection.snp.makeConstraints { make in
             make.top.equalTo(16)
             make.leading.trailing.equalToSuperview()
             make.height.equalTo(40)
+        }
+        
+        backgroundView.snp.makeConstraints { make in
+            make.top.equalTo(selection.snp.bottom).offset(16)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.bottom.equalTo(posePickerButton.snp.top).offset(-30)
         }
         
         animationView.snp.makeConstraints { make in
@@ -73,7 +85,7 @@ class PosePickViewController: BaseViewController {
         posePickerButton.snp.makeConstraints { make in
             make.leading.trailing.equalTo(animationView)
             make.height.equalTo(60)
-            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
         }
     }
     
