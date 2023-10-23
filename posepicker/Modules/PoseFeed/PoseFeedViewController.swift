@@ -11,6 +11,7 @@ class PoseFeedViewController: BaseViewController {
 
     // MARK: - Functions
     override func configUI() {
+        self.navigationController?.isNavigationBarHidden = true
         view.backgroundColor = .green
         
     }
