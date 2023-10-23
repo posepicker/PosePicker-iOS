@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "imgCaretDown.svg",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}

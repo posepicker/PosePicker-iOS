@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "imgRestart40.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
