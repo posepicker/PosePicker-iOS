@@ -13,6 +13,8 @@ import RxSwift
 class RootViewController: BaseViewController {
     
     // MARK: - Subviews
+    let header = Header()
+    
     lazy var segmentedControl = UnderlineSegmentControl(items: ["포즈픽", "포즈톡", "포즈피드", "북마크"])
         .then {
 //            $0.addTarget(self, action: #selector(changeCurrentPage(control:)), for: .valueChanged)
@@ -55,11 +57,17 @@ class RootViewController: BaseViewController {
     // MARK: - Functions
     override func render() {
         view.backgroundColor = .bgWhite
-        view.addSubViews([segmentedControl, pageViewController.view])
+        view.addSubViews([header, segmentedControl, pageViewController.view])
+        
+        header.snp.makeConstraints { make in
+            make.top.equalTo(view.safeAreaLayoutGuide)
+            make.leading.trailing.equalTo(view)
+            make.height.equalTo(48)
+        }
         
         segmentedControl.snp.makeConstraints { make in
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
-            make.leading.equalTo(view).offset(20)
+            make.top.equalTo(header.snp.bottom)
+            make.leading.equalTo(view).offset(10)
             make.trailing.equalTo(view).offset(-100)
             make.height.equalTo(48)
         }
