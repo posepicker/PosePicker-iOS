@@ -40,7 +40,7 @@ class BasicSelection: UIView {
         }
     let buttonFifth = BasicButton(type: .system)
         .then {
-            $0.setTitle("5인", for: .normal)
+            $0.setTitle("5인+", for: .normal)
             $0.position.accept(.right)
         }
     
