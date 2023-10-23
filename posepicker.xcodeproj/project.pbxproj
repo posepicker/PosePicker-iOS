@@ -11,6 +11,18 @@
 		880E75302AE60937007FAD5A /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E752F2AE60937007FAD5A /* UIImage+.swift */; };
 		880E75342AE67CC4007FAD5A /* BasicSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75332AE67CC4007FAD5A /* BasicSelection.swift */; };
 		880E75372AE67DC8007FAD5A /* BasicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75362AE67DC8007FAD5A /* BasicButton.swift */; };
+		880E753C2AE6BE3A007FAD5A /* BindableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E753B2AE6BE3A007FAD5A /* BindableViewModel.swift */; };
+		880E753E2AE6BE59007FAD5A /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E753D2AE6BE59007FAD5A /* Service.swift */; };
+		880E75402AE6BF2F007FAD5A /* ServicePose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E753F2AE6BF2F007FAD5A /* ServicePose.swift */; };
+		880E75422AE6BF4B007FAD5A /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75412AE6BF4B007FAD5A /* APIService.swift */; };
+		880E75452AE6BFA3007FAD5A /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 880E75442AE6BFA3007FAD5A /* Alamofire */; };
+		880E75472AE6BFBC007FAD5A /* APISession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75462AE6BFBC007FAD5A /* APISession.swift */; };
+		880E75492AE6BFE3007FAD5A /* APIEventLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75482AE6BFE3007FAD5A /* APIEventLogger.swift */; };
+		880E754D2AE6C06E007FAD5A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E754C2AE6C06E007FAD5A /* Constants.swift */; };
+		880E754F2AE6C188007FAD5A /* PosePick.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E754E2AE6C188007FAD5A /* PosePick.swift */; };
+		880E75522AE6C275007FAD5A /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75512AE6C275007FAD5A /* Data+.swift */; };
+		880E75542AE6C28D007FAD5A /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75532AE6C28D007FAD5A /* APIError.swift */; };
+		880E75562AE6C2F7007FAD5A /* APIInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75552AE6C2F7007FAD5A /* APIInterceptor.swift */; };
 		C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2742AE38E26003777EB /* RootViewController.swift */; };
 		C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2762AE38E82003777EB /* AppCoordinator.swift */; };
 		C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2782AE38EBD003777EB /* RootCoordinator.swift */; };
@@ -81,6 +93,17 @@
 		880E752F2AE60937007FAD5A /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		880E75332AE67CC4007FAD5A /* BasicSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicSelection.swift; sourceTree = "<group>"; };
 		880E75362AE67DC8007FAD5A /* BasicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicButton.swift; sourceTree = "<group>"; };
+		880E753B2AE6BE3A007FAD5A /* BindableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindableViewModel.swift; sourceTree = "<group>"; };
+		880E753D2AE6BE59007FAD5A /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
+		880E753F2AE6BF2F007FAD5A /* ServicePose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePose.swift; sourceTree = "<group>"; };
+		880E75412AE6BF4B007FAD5A /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		880E75462AE6BFBC007FAD5A /* APISession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISession.swift; sourceTree = "<group>"; };
+		880E75482AE6BFE3007FAD5A /* APIEventLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIEventLogger.swift; sourceTree = "<group>"; };
+		880E754C2AE6C06E007FAD5A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
+		880E754E2AE6C188007FAD5A /* PosePick.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePick.swift; sourceTree = "<group>"; };
+		880E75512AE6C275007FAD5A /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
+		880E75532AE6C28D007FAD5A /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
+		880E75552AE6C2F7007FAD5A /* APIInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIInterceptor.swift; sourceTree = "<group>"; };
 		C94FD2742AE38E26003777EB /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		C94FD2762AE38E82003777EB /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2782AE38EBD003777EB /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -133,6 +156,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9C890C22AE113590010240A /* Lottie in Frameworks */,
+				880E75452AE6BFA3007FAD5A /* Alamofire in Frameworks */,
 				C9C890952AE107730010240A /* RxRelay in Frameworks */,
 				C9C890932AE107730010240A /* RxCocoa in Frameworks */,
 				C94FD2982AE39E6B003777EB /* Then in Frameworks */,
@@ -198,6 +222,52 @@
 				880E75362AE67DC8007FAD5A /* BasicButton.swift */,
 			);
 			path = Shared;
+			sourceTree = "<group>";
+		};
+		880E75382AE6BDFB007FAD5A /* API */ = {
+			isa = PBXGroup;
+			children = (
+				C9C890A82AE10A370010240A /* APIRouter.swift */,
+				880E75412AE6BF4B007FAD5A /* APIService.swift */,
+				880E75462AE6BFBC007FAD5A /* APISession.swift */,
+				880E75482AE6BFE3007FAD5A /* APIEventLogger.swift */,
+				880E75532AE6C28D007FAD5A /* APIError.swift */,
+				880E75552AE6C2F7007FAD5A /* APIInterceptor.swift */,
+			);
+			path = API;
+			sourceTree = "<group>";
+		};
+		880E75392AE6BE05007FAD5A /* Services */ = {
+			isa = PBXGroup;
+			children = (
+				880E753D2AE6BE59007FAD5A /* Service.swift */,
+				880E753F2AE6BF2F007FAD5A /* ServicePose.swift */,
+			);
+			path = Services;
+			sourceTree = "<group>";
+		};
+		880E753A2AE6BE2B007FAD5A /* Foundation */ = {
+			isa = PBXGroup;
+			children = (
+				880E753B2AE6BE3A007FAD5A /* BindableViewModel.swift */,
+			);
+			path = Foundation;
+			sourceTree = "<group>";
+		};
+		880E754A2AE6C03D007FAD5A /* Constants */ = {
+			isa = PBXGroup;
+			children = (
+				880E754C2AE6C06E007FAD5A /* Constants.swift */,
+			);
+			path = Constants;
+			sourceTree = "<group>";
+		};
+		880E75502AE6C26D007FAD5A /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				880E75512AE6C275007FAD5A /* Data+.swift */,
+			);
+			path = Data;
 			sourceTree = "<group>";
 		};
 		C94FD27A2AE39505003777EB /* PosePick */ = {
@@ -344,6 +414,7 @@
 		C9C890842AE106EF0010240A /* Common */ = {
 			isa = PBXGroup;
 			children = (
+				880E754A2AE6C03D007FAD5A /* Constants */,
 				C94FD29C2AE3AF1E003777EB /* Component */,
 				C9C890862AE106FA0010240A /* Base */,
 			);
@@ -363,6 +434,7 @@
 		C9C8909A2AE107A40010240A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				880E75502AE6C26D007FAD5A /* Data */,
 				880E752E2AE60929007FAD5A /* UIImage */,
 				C94FD2992AE3AC2F003777EB /* UIView */,
 				C9C890C32AE11B7B0010240A /* UIFont */,
@@ -384,6 +456,7 @@
 			children = (
 				C9C8909F2AE109610010240A /* User.swift */,
 				C9C890A12AE1098B0010240A /* Token.swift */,
+				880E754E2AE6C188007FAD5A /* PosePick.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -413,7 +486,9 @@
 		C9C890A72AE10A280010240A /* Networking */ = {
 			isa = PBXGroup;
 			children = (
-				C9C890A82AE10A370010240A /* APIRouter.swift */,
+				880E75382AE6BDFB007FAD5A /* API */,
+				880E75392AE6BE05007FAD5A /* Services */,
+				880E753A2AE6BE2B007FAD5A /* Foundation */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -477,6 +552,7 @@
 				C9C890C12AE113590010240A /* Lottie */,
 				C94FD2942AE39E5C003777EB /* SnapKit */,
 				C94FD2972AE39E6B003777EB /* Then */,
+				880E75442AE6BFA3007FAD5A /* Alamofire */,
 			);
 			productName = posepicker;
 			productReference = C9C8904E2AE103A10010240A /* posepicker.app */;
@@ -555,6 +631,7 @@
 				C9C890C02AE113590010240A /* XCRemoteSwiftPackageReference "lottie-ios" */,
 				C94FD2932AE39E5C003777EB /* XCRemoteSwiftPackageReference "SnapKit" */,
 				C94FD2962AE39E6B003777EB /* XCRemoteSwiftPackageReference "Then" */,
+				880E75432AE6BFA3007FAD5A /* XCRemoteSwiftPackageReference "Alamofire" */,
 			);
 			productRefGroup = C9C8904F2AE103A10010240A /* Products */;
 			projectDirPath = "";
@@ -608,9 +685,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9C8908E2AE1073F0010240A /* BaseCollectionViewCell.swift in Sources */,
+				880E75472AE6BFBC007FAD5A /* APISession.swift in Sources */,
 				C9C890A92AE10A370010240A /* APIRouter.swift in Sources */,
+				880E754F2AE6C188007FAD5A /* PosePick.swift in Sources */,
 				C94FD29F2AE3AF4F003777EB /* UnderlineSegmentControl.swift in Sources */,
 				880E75342AE67CC4007FAD5A /* BasicSelection.swift in Sources */,
+				880E75422AE6BF4B007FAD5A /* APIService.swift in Sources */,
 				C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */,
 				C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */,
 				C94FD27F2AE395E3003777EB /* PosePickViewController.swift in Sources */,
@@ -620,22 +700,30 @@
 				C9C890BF2AE1107B0010240A /* ImageLiteral.swift in Sources */,
 				C94FD2922AE398D6003777EB /* MyPageViewModel.swift in Sources */,
 				C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */,
+				880E753E2AE6BE59007FAD5A /* Service.swift in Sources */,
 				C9C890C52AE11BAB0010240A /* UIFont+.swift in Sources */,
 				C94FD2852AE39612003777EB /* BookMarkViewController.swift in Sources */,
 				C94FD29B2AE3AC3E003777EB /* UIView+.swift in Sources */,
 				880E752D2AE60499007FAD5A /* Header.swift in Sources */,
 				C94FD2812AE39603003777EB /* PoseTokViewController.swift in Sources */,
 				C9C890522AE103A10010240A /* AppDelegate.swift in Sources */,
+				880E75402AE6BF2F007FAD5A /* ServicePose.swift in Sources */,
+				880E75562AE6C2F7007FAD5A /* APIInterceptor.swift in Sources */,
 				C94FD2892AE39635003777EB /* PoseTokViewModel.swift in Sources */,
 				C9C890882AE107090010240A /* BaseViewController.swift in Sources */,
 				880E75372AE67DC8007FAD5A /* BasicButton.swift in Sources */,
 				C9C8909D2AE107BC0010240A /* UIColor+.swift in Sources */,
 				C94FD2872AE3961D003777EB /* PosePickViewModel.swift in Sources */,
 				C94FD2902AE398CF003777EB /* MyPageViewController.swift in Sources */,
+				880E75492AE6BFE3007FAD5A /* APIEventLogger.swift in Sources */,
+				880E75522AE6C275007FAD5A /* Data+.swift in Sources */,
+				880E753C2AE6BE3A007FAD5A /* BindableViewModel.swift in Sources */,
 				C94FD28D2AE39646003777EB /* BookmarkViewModel.swift in Sources */,
 				C9C890A02AE109610010240A /* User.swift in Sources */,
 				C9C890A22AE1098B0010240A /* Token.swift in Sources */,
 				C94FD28B2AE3963E003777EB /* PoseFeedViewModel.swift in Sources */,
+				880E754D2AE6C06E007FAD5A /* Constants.swift in Sources */,
+				880E75542AE6C28D007FAD5A /* APIError.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -977,6 +1065,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		880E75432AE6BFA3007FAD5A /* XCRemoteSwiftPackageReference "Alamofire" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Alamofire/Alamofire.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		C94FD2932AE39E5C003777EB /* XCRemoteSwiftPackageReference "SnapKit" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
@@ -1012,6 +1108,11 @@
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		880E75442AE6BFA3007FAD5A /* Alamofire */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 880E75432AE6BFA3007FAD5A /* XCRemoteSwiftPackageReference "Alamofire" */;
+			productName = Alamofire;
+		};
 		C94FD2942AE39E5C003777EB /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C94FD2932AE39E5C003777EB /* XCRemoteSwiftPackageReference "SnapKit" */;
