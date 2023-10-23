@@ -63,7 +63,7 @@ class UnderlineSegmentControl: UISegmentedControl {
         underlineView.snp.makeConstraints { make in
             make.bottom.equalTo(self.snp.bottom)
             make.width.equalTo((self.bounds.width / CGFloat(self.numberOfSegments)))
-            make.height.equalTo(1)
+            make.height.equalTo(2)
         }
     }
     
