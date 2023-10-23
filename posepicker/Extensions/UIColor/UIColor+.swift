@@ -71,6 +71,49 @@ extension UIColor {
     static var mainVioletDark: UIColor {
         return .init(hex: "#5B2EE0")
     }
+    
+    // violet brand color
+    static var violet050: UIColor {
+        return .init(hex: "#F4F1FE")
+    }
+    static var violet100: UIColor {
+        return .init(hex: "#E2D9FC")
+    }
+    static var violet200: UIColor {
+        return .init(hex: "#C8B8FA")
+    }
+    static var violet300: UIColor {
+        return .init(hex: "#B29BF8")
+    }
+    static var violet400: UIColor {
+        return .init(hex: "#9C7FF5")
+    }
+    static var violet600: UIColor {
+        return .init(hex: "#744CEB")
+    }
+    static var violet700: UIColor {
+        return .init(hex: "#5B2EE0")
+    }
+    static var violet800: UIColor {
+        return .init(hex: "#4B25C1")
+    }
+    static var violet900: UIColor {
+        return .init(hex: "#412499")
+    }
+    static var violet950: UIColor {
+        return .init(hex: "#21005D")
+    }
+    static var appBlack: UIColor {
+        return .init(hex: "#141218")
+    }
+    
+    // gray variation
+    static var gray200: UIColor {
+        return .init(hex: "#E8E8EE")
+    }
+    static var gray950: UIColor {
+        return .init(hex: "#252730")
+    }
 }
 
 extension UIColor {
