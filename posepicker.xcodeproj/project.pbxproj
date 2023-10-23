@@ -9,6 +9,8 @@
 /* Begin PBXBuildFile section */
 		880E752D2AE60499007FAD5A /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E752C2AE60499007FAD5A /* Header.swift */; };
 		880E75302AE60937007FAD5A /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E752F2AE60937007FAD5A /* UIImage+.swift */; };
+		880E75342AE67CC4007FAD5A /* BasicSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75332AE67CC4007FAD5A /* BasicSelection.swift */; };
+		880E75372AE67DC8007FAD5A /* BasicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75362AE67DC8007FAD5A /* BasicButton.swift */; };
 		C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2742AE38E26003777EB /* RootViewController.swift */; };
 		C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2762AE38E82003777EB /* AppCoordinator.swift */; };
 		C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2782AE38EBD003777EB /* RootCoordinator.swift */; };
@@ -77,6 +79,8 @@
 /* Begin PBXFileReference section */
 		880E752C2AE60499007FAD5A /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		880E752F2AE60937007FAD5A /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
+		880E75332AE67CC4007FAD5A /* BasicSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicSelection.swift; sourceTree = "<group>"; };
+		880E75362AE67DC8007FAD5A /* BasicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicButton.swift; sourceTree = "<group>"; };
 		C94FD2742AE38E26003777EB /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		C94FD2762AE38E82003777EB /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2782AE38EBD003777EB /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -171,6 +175,31 @@
 			path = UIImage;
 			sourceTree = "<group>";
 		};
+		880E75312AE67C9C007FAD5A /* Selection */ = {
+			isa = PBXGroup;
+			children = (
+				880E75352AE67DA9007FAD5A /* Shared */,
+				880E75322AE67CB0007FAD5A /* Basic */,
+			);
+			path = Selection;
+			sourceTree = "<group>";
+		};
+		880E75322AE67CB0007FAD5A /* Basic */ = {
+			isa = PBXGroup;
+			children = (
+				880E75332AE67CC4007FAD5A /* BasicSelection.swift */,
+			);
+			path = Basic;
+			sourceTree = "<group>";
+		};
+		880E75352AE67DA9007FAD5A /* Shared */ = {
+			isa = PBXGroup;
+			children = (
+				880E75362AE67DC8007FAD5A /* BasicButton.swift */,
+			);
+			path = Shared;
+			sourceTree = "<group>";
+		};
 		C94FD27A2AE39505003777EB /* PosePick */ = {
 			isa = PBXGroup;
 			children = (
@@ -227,6 +256,7 @@
 		C94FD29C2AE3AF1E003777EB /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				880E75312AE67C9C007FAD5A /* Selection */,
 				880E752B2AE60489007FAD5A /* Header */,
 				C94FD29D2AE3AF2D003777EB /* UnderlineSegmentControl */,
 			);
@@ -580,6 +610,7 @@
 				C9C8908E2AE1073F0010240A /* BaseCollectionViewCell.swift in Sources */,
 				C9C890A92AE10A370010240A /* APIRouter.swift in Sources */,
 				C94FD29F2AE3AF4F003777EB /* UnderlineSegmentControl.swift in Sources */,
+				880E75342AE67CC4007FAD5A /* BasicSelection.swift in Sources */,
 				C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */,
 				C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */,
 				C94FD27F2AE395E3003777EB /* PosePickViewController.swift in Sources */,
@@ -597,6 +628,7 @@
 				C9C890522AE103A10010240A /* AppDelegate.swift in Sources */,
 				C94FD2892AE39635003777EB /* PoseTokViewModel.swift in Sources */,
 				C9C890882AE107090010240A /* BaseViewController.swift in Sources */,
+				880E75372AE67DC8007FAD5A /* BasicButton.swift in Sources */,
 				C9C8909D2AE107BC0010240A /* UIColor+.swift in Sources */,
 				C94FD2872AE3961D003777EB /* PosePickViewModel.swift in Sources */,
 				C94FD2902AE398CF003777EB /* MyPageViewController.swift in Sources */,
