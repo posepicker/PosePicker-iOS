@@ -11,6 +11,7 @@ class PoseFeedViewController: BaseViewController {
 
     // MARK: - Functions
     override func configUI() {
-        view.backgroundColor = .bgDivider
+        view.backgroundColor = .green
+        
     }
 }

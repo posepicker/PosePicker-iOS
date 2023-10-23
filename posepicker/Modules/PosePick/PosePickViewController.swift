@@ -9,8 +9,14 @@ import UIKit
 
 class PosePickViewController: BaseViewController {
     
+    // MARK: - Subviews
+    
+    // MARK: - Properties
+    
     // MARK: - Functions
     override func configUI() {
         view.backgroundColor = .red
     }
+    
+    // MARK: - Objc Functions
 }
