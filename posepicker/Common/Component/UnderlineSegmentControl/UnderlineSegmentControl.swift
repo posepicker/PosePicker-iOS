@@ -12,7 +12,7 @@ class UnderlineSegmentControl: UISegmentedControl {
     
     private lazy var underlineView = UIView()
         .then {
-            $0.backgroundColor = .black
+            $0.backgroundColor = .mainViolet
         }
     
     // MARK: - Properties
@@ -93,13 +93,11 @@ class UnderlineSegmentControl: UISegmentedControl {
         guard let title = titleForSegment(at: self.selectedSegmentIndex) else { return }
         let size = title.size(withAttributes: fontAttributes)
 
-        UIView.animate(withDuration: 0.1) { [weak self] in
-            self?.underlineView.snp.updateConstraints { make in
-                make.width.equalTo(size.width)
-            }
-            
-            self?.layoutIfNeeded()
+        self.underlineView.snp.updateConstraints { make in
+            make.width.equalTo(size.width)
         }
+        
+        self.layoutIfNeeded()
 
     }
 
