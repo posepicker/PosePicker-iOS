@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		880E752D2AE60499007FAD5A /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E752C2AE60499007FAD5A /* Header.swift */; };
+		880E75302AE60937007FAD5A /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E752F2AE60937007FAD5A /* UIImage+.swift */; };
 		C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2742AE38E26003777EB /* RootViewController.swift */; };
 		C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2762AE38E82003777EB /* AppCoordinator.swift */; };
 		C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2782AE38EBD003777EB /* RootCoordinator.swift */; };
@@ -73,6 +75,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		880E752C2AE60499007FAD5A /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
+		880E752F2AE60937007FAD5A /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		C94FD2742AE38E26003777EB /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		C94FD2762AE38E82003777EB /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2782AE38EBD003777EB /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -151,6 +155,22 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		880E752B2AE60489007FAD5A /* Header */ = {
+			isa = PBXGroup;
+			children = (
+				880E752C2AE60499007FAD5A /* Header.swift */,
+			);
+			path = Header;
+			sourceTree = "<group>";
+		};
+		880E752E2AE60929007FAD5A /* UIImage */ = {
+			isa = PBXGroup;
+			children = (
+				880E752F2AE60937007FAD5A /* UIImage+.swift */,
+			);
+			path = UIImage;
+			sourceTree = "<group>";
+		};
 		C94FD27A2AE39505003777EB /* PosePick */ = {
 			isa = PBXGroup;
 			children = (
@@ -207,6 +227,7 @@
 		C94FD29C2AE3AF1E003777EB /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				880E752B2AE60489007FAD5A /* Header */,
 				C94FD29D2AE3AF2D003777EB /* UnderlineSegmentControl */,
 			);
 			path = Component;
@@ -312,6 +333,7 @@
 		C9C8909A2AE107A40010240A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				880E752E2AE60929007FAD5A /* UIImage */,
 				C94FD2992AE3AC2F003777EB /* UIView */,
 				C9C890C32AE11B7B0010240A /* UIFont */,
 				C9C8909B2AE107B20010240A /* UIColor */,
@@ -561,6 +583,7 @@
 				C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */,
 				C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */,
 				C94FD27F2AE395E3003777EB /* PosePickViewController.swift in Sources */,
+				880E75302AE60937007FAD5A /* UIImage+.swift in Sources */,
 				C94FD2832AE3960B003777EB /* PoseFeedViewController.swift in Sources */,
 				C9C8908A2AE107180010240A /* ViewModelType.swift in Sources */,
 				C9C890BF2AE1107B0010240A /* ImageLiteral.swift in Sources */,
@@ -569,6 +592,7 @@
 				C9C890C52AE11BAB0010240A /* UIFont+.swift in Sources */,
 				C94FD2852AE39612003777EB /* BookMarkViewController.swift in Sources */,
 				C94FD29B2AE3AC3E003777EB /* UIView+.swift in Sources */,
+				880E752D2AE60499007FAD5A /* Header.swift in Sources */,
 				C94FD2812AE39603003777EB /* PoseTokViewController.swift in Sources */,
 				C9C890522AE103A10010240A /* AppDelegate.swift in Sources */,
 				C94FD2892AE39635003777EB /* PoseTokViewModel.swift in Sources */,
