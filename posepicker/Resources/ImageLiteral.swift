@@ -22,6 +22,7 @@ enum ImageLiteral {
     static var imgHelp20: UIImage {.load(named: "imgHelp20")}
     static var imgHelp24: UIImage {.load(named: "imgHelp24")}
     static var imgInfo20: UIImage {.load(named: "imgInfo20")}
+    static var imgInfo24: UIImage {.load(named: "imgInfo24")}
     static var imgInstagramLogo: UIImage {.load(named: "imgInstagramLogo")}
     static var imgLink: UIImage {.load(named: "imgLink")}
     static var imgMenu24: UIImage {.load(named: "imgMenu24")}
