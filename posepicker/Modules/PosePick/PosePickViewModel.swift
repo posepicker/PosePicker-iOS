@@ -19,7 +19,7 @@ class PosePickViewModel: ViewModelType {
     }
     
     struct Output {
-        
+        let animate: Driver<Void>
     }
     
     func transform(input: Input) -> Output {
@@ -31,6 +31,6 @@ class PosePickViewModel: ViewModelType {
                 print($0)
             })
             .disposed(by: disposeBag)
-        return Output()
+        return Output(animate: input.posePickButtonTapped.asDriver())
     }
 }
