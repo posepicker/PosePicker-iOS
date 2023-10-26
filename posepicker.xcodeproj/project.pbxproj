@@ -23,6 +23,7 @@
 		880E75522AE6C275007FAD5A /* Data+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75512AE6C275007FAD5A /* Data+.swift */; };
 		880E75542AE6C28D007FAD5A /* APIError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75532AE6C28D007FAD5A /* APIError.swift */; };
 		880E75562AE6C2F7007FAD5A /* APIInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75552AE6C2F7007FAD5A /* APIInterceptor.swift */; };
+		880E75592AEA8BE2007FAD5A /* EmptyBookmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75582AEA8BE2007FAD5A /* EmptyBookmarkView.swift */; };
 		C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2742AE38E26003777EB /* RootViewController.swift */; };
 		C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2762AE38E82003777EB /* AppCoordinator.swift */; };
 		C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2782AE38EBD003777EB /* RootCoordinator.swift */; };
@@ -113,6 +114,7 @@
 		880E75512AE6C275007FAD5A /* Data+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Data+.swift"; sourceTree = "<group>"; };
 		880E75532AE6C28D007FAD5A /* APIError.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIError.swift; sourceTree = "<group>"; };
 		880E75552AE6C2F7007FAD5A /* APIInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIInterceptor.swift; sourceTree = "<group>"; };
+		880E75582AEA8BE2007FAD5A /* EmptyBookmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyBookmarkView.swift; sourceTree = "<group>"; };
 		C94FD2742AE38E26003777EB /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		C94FD2762AE38E82003777EB /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2782AE38EBD003777EB /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -288,6 +290,14 @@
 			path = Data;
 			sourceTree = "<group>";
 		};
+		880E75572AEA8BC0007FAD5A /* BookmarkSubviews */ = {
+			isa = PBXGroup;
+			children = (
+				880E75582AEA8BE2007FAD5A /* EmptyBookmarkView.swift */,
+			);
+			path = BookmarkSubviews;
+			sourceTree = "<group>";
+		};
 		C94FD27A2AE39505003777EB /* PosePick */ = {
 			isa = PBXGroup;
 			children = (
@@ -320,6 +330,7 @@
 		C94FD27D2AE39517003777EB /* Bookmark */ = {
 			isa = PBXGroup;
 			children = (
+				880E75572AEA8BC0007FAD5A /* BookmarkSubviews */,
 				C94FD28C2AE39646003777EB /* BookmarkViewModel.swift */,
 				C94FD2842AE39612003777EB /* BookMarkViewController.swift */,
 			);
@@ -785,6 +796,7 @@
 				C9DC2F8E2AEA193300D5170D /* PoseFeedCoordinator.swift in Sources */,
 				C94FD2852AE39612003777EB /* BookMarkViewController.swift in Sources */,
 				C94FD29B2AE3AC3E003777EB /* UIView+.swift in Sources */,
+				880E75592AEA8BE2007FAD5A /* EmptyBookmarkView.swift in Sources */,
 				C9DC2F902AEA1D5F00D5170D /* PoseFeedFilterViewController.swift in Sources */,
 				880E752D2AE60499007FAD5A /* Header.swift in Sources */,
 				C94FD2812AE39603003777EB /* PoseTalkViewController.swift in Sources */,
