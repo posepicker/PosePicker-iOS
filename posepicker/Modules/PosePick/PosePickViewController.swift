@@ -11,14 +11,14 @@ import Lottie
 class PosePickViewController: BaseViewController {
     
     // MARK: - Subviews
-    let selection = BasicSelection()
+    let selection = BasicSelection(buttonGroup: ["1인", "2인", "3인", "4인", "5인+"])
     
     let backgroundView = UIView()
         .then {
             $0.backgroundColor = .black
         }
     
-    lazy var animationView: LottieAnimationView = .init(name: "posepicker")
+    lazy var animationView: LottieAnimationView = .init(name: "lottiePosePicker")
         .then {
             $0.contentMode = .scaleAspectFit
             $0.play(toProgress: 1.2) { completed in
@@ -33,15 +33,7 @@ class PosePickViewController: BaseViewController {
             $0.contentMode = .scaleAspectFit
         }
     
-    let posePickerButton = UIButton(type: .system)
-        .then {
-            $0.setTitleColor(.textWhite, for: .normal)
-            $0.backgroundColor = .mainViolet
-            $0.clipsToBounds = true
-            $0.layer.cornerRadius = 12
-            $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
-            $0.setTitle("인원수 선택하고 포즈 뽑기!", for: .normal)
-        }
+    let posePickerButton = Button(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "인원수 선택하고 포즈 뽑기!", image: nil)
     
     // MARK: - Properties
     var viewModel: PosePickViewModel
@@ -91,9 +83,14 @@ class PosePickViewController: BaseViewController {
     
     override func configUI() {
         self.navigationController?.isNavigationBarHidden = true
-        view.backgroundColor = .bgSubWhite
+        view.backgroundColor = .bgWhite
+    }
+    
+    override func bindViewModel() {
+        let input = PosePickViewModel.Input(posePickButtonTapped: posePickerButton.rx.tap)
+        let output = viewModel.transform(input: input)
         
-        posePickerButton.rx.tap.asDriver()
+        output.animate
             .drive(onNext: { [unowned self] in
                 self.thumbnailImage.isHidden = true
                 self.animationView.play(fromProgress: 0, toProgress: 1.2) { _ in
@@ -101,13 +98,6 @@ class PosePickViewController: BaseViewController {
                 }
             })
             .disposed(by: disposeBag)
-    }
-    
-    override func bindViewModel() {
-        let input = PosePickViewModel.Input(posePickButtonTapped: posePickerButton.rx.tap)
-        let output = viewModel.transform(input: input)
-        
-        
     }
     
     // MARK: - Objc Functions
