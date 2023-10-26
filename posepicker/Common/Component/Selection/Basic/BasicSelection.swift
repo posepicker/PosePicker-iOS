@@ -12,45 +12,33 @@ import RxSwift
 class BasicSelection: UIView {
     
     // MARK: - Subviews
-    lazy var stackView = UIStackView(arrangedSubviews: [buttonFirst, buttonSecond, buttonThird, buttonFourth, buttonFifth])
-        .then {
-            $0.alignment = .fill
-            $0.distribution = .fillEqually
-            $0.spacing = 0
-            $0.axis = .horizontal
-        }
-    
-    let buttonFirst = BasicButton(type: .system)
-        .then {
-            $0.setTitle("1인", for: .normal)
-            $0.position.accept(.left)
-            $0.isPressed.accept(true)
-        }
-    let buttonSecond = BasicButton(type: .system)
-        .then {
-            $0.setTitle("2인", for: .normal)
-        }
-    let buttonThird = BasicButton(type: .system)
-        .then {
-            $0.setTitle("3인", for: .normal)
-        }
-    let buttonFourth = BasicButton(type: .system)
-        .then {
-            $0.setTitle("4인", for: .normal)
-        }
-    let buttonFifth = BasicButton(type: .system)
-        .then {
-            $0.setTitle("5인+", for: .normal)
-            $0.position.accept(.right)
-        }
+    var stackView: UIStackView
+    var buttons: [BasicButton] = []
     
     // MARK: - Properties
     var pressIndex = BehaviorRelay<Int>(value: 0)
     var disposeBag = DisposeBag()
+    var buttonGroup: [String]
 
     // MARK: - Initialization
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+    required init(buttonGroup: [String]) {
+        self.buttonGroup = buttonGroup
+        
+        self.buttons = buttonGroup.enumerated().map { (offset, element) in
+            let button = BasicButton(type: .system)
+            button.setTitle(element, for: .normal)
+            if offset == 0 {
+                button.position.accept(.left)
+                button.isPressed.accept(true)
+            } else if offset == buttonGroup.count - 1 {
+                button.position.accept(.right)
+            }
+            return button
+        }
+        
+        self.stackView = UIStackView(arrangedSubviews: self.buttons)
+        
+        super.init(frame: .zero)
         
         render()
         bindUI()
@@ -73,7 +61,8 @@ class BasicSelection: UIView {
     }
     
     func bindUI() {
-        let buttons = [buttonFirst, buttonSecond, buttonThird, buttonFourth, buttonFifth]
+        stackView.axis = .horizontal
+        stackView.distribution = .fillEqually
         
         buttons.forEach {
             $0.titleLabel?.font = .pretendard(.medium, ofSize: 14)
@@ -88,8 +77,8 @@ class BasicSelection: UIView {
         }
         
         pressIndex.asDriver()
-            .drive(onNext: { index in
-                buttons.enumerated().forEach { param in
+            .drive(onNext: { [unowned self] index in
+                self.buttons.enumerated().forEach { param in
                     if param.offset == index {
                         param.element.setTitleColor(.mainVioletDark, for: .normal)
                         param.element.isPressed.accept(true)
