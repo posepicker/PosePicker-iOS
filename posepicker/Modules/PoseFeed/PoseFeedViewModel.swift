@@ -6,17 +6,19 @@
 //
 
 import Foundation
+import RxCocoa
+import RxSwift
 
 class PoseFeedViewModel {
     struct Input {
-        
+        let filterButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
-        
+        let presentModal: Driver<Void>
     }
     
     func transform(input: Input) -> Output {
-        return Output()
+        return Output(presentModal: input.filterButtonTapped.asDriver())
     }
 }
