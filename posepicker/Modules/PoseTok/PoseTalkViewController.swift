@@ -1,5 +1,5 @@
 //
-//  PoseTokViewController.swift
+//  PoseTalkViewController.swift
 //  posepicker
 //
 //  Created by 박경준 on 2023/10/21.
@@ -9,7 +9,7 @@ import UIKit
 
 import Lottie
 
-class PoseTokViewController: BaseViewController {
+class PoseTalkViewController: BaseViewController {
     
     // MARK: - Subviews
     
@@ -29,13 +29,28 @@ class PoseTokViewController: BaseViewController {
             $0.text = "제시어에 맞춰\n포즈를 취해요!"
         }
     
-    let animationView: LottieAnimationView = .init(name: "posetalk")
+    var animationView: LottieAnimationView = .init(name: "lottiePoseTalk")
         .then {
             $0.loopMode = .loop
             $0.play()
         }
     
-    let selectButton = Button(status: .defaultStatus, isFill: true, position: .left, buttonTitle: "제시어 뽑기")
+    let selectButton = Button(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "제시어 뽑기", image: nil)
+    
+    // MARK: - Properties
+    
+    let viewModel: PoseTalkViewModel
+    
+    // MARK: - Life Cycles
+    
+    init(viewModel: PoseTalkViewModel) {
+        self.viewModel = viewModel
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Functions
     
@@ -73,5 +88,20 @@ class PoseTokViewController: BaseViewController {
     override func configUI() {
         self.navigationController?.isNavigationBarHidden = true
         view.backgroundColor = .bgWhite
+    }
+    
+    override func bindViewModel() {
+        let input = PoseTalkViewModel.Input(poseTalkButtonTapped: selectButton.rx.controlEvent(.touchUpInside))
+        
+        let output = viewModel.transform(input: input)
+        
+        output.animate
+            .drive(onNext: { [unowned self] in
+                self.animationView.pause()
+                self.animationView.loopMode = .playOnce
+                self.animationView.animation = LottieAnimation.named("lottiePoseTalkTap")
+                self.animationView.play()
+            })
+            .disposed(by: disposeBag)
     }
 }
