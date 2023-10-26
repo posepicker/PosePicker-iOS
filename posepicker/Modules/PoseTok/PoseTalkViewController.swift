@@ -16,7 +16,7 @@ class PoseTalkViewController: BaseViewController {
     let informationLabel = UILabel()
         .then {
             $0.textColor = .mainViolet
-            $0.font = .h3
+            $0.font = UIScreen.main.isWiderThan375pt ? .h3 : .h4
             $0.text = "뽑은 제시어"
         }
     
@@ -25,7 +25,7 @@ class PoseTalkViewController: BaseViewController {
     let mainLabel = UILabel()
         .then {
             $0.numberOfLines = 0
-            $0.font = .h1
+            $0.font = UIScreen.main.isWiderThan375pt ? .h1 : .h2
             $0.text = "제시어에 맞춰\n포즈를 취해요!"
         }
     
@@ -58,7 +58,7 @@ class PoseTalkViewController: BaseViewController {
         view.addSubViews([informationLabel, informationImageView, mainLabel, animationView, selectButton])
         
         informationLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(80)
+            make.top.equalToSuperview().offset(UIScreen.main.isWiderThan375pt ? 80 : 40)
             make.centerX.equalToSuperview().offset(-informationImageView.frame.width)
         }
         
