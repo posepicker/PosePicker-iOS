@@ -27,7 +27,6 @@ enum ImageLiteral {
     static var imgLink: UIImage {.load(named: "imgLink")}
     static var imgMenu24: UIImage {.load(named: "imgMenu24")}
     static var imgRestart24: UIImage {.load(named: "imgRestart24")}
-    static var imgRestart20: UIImage {.load(named: "imgRestart20")}
     static var imgShareFill: UIImage {.load(named: "imgShareFill")}
     static var imgPosePicker: UIImage {.load(named: "imgPosePicker")}
 }
