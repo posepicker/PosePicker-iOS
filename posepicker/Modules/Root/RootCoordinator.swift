@@ -9,7 +9,7 @@ import UIKit
 
 enum RootPage {
     case posepick
-    case posetok
+    case posetalk
     case posefeed
     case bookmark
     case myPage
@@ -18,7 +18,7 @@ enum RootPage {
         switch self {
         case .posepick:
             return "포즈픽"
-        case .posetok:
+        case .posetalk:
             return "포즈톡"
         case .posefeed:
             return "포즈피드"
@@ -33,7 +33,7 @@ enum RootPage {
         switch self {
         case .posepick:
             return 0
-        case .posetok:
+        case .posetalk:
             return 1
         case .posefeed:
             return 2
@@ -59,8 +59,7 @@ class RootCoordinator: NSObject, Coordinator {
     
     // MARK: - Functions
     
-    func start() {
+    func start() { /// 화면 전환에 대한 실질적인 로직들이 전부 뷰컨 내에 내장되는데.. 불필요한 코디네이터 패턴이 된듯
         navigationController.viewControllers = [RootViewController()]
     }
-    
 }

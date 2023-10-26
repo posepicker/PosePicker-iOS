@@ -28,7 +28,7 @@ class RootViewController: BaseViewController {
     
     lazy var pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
         .then {
-            let pages: [RootPage] = [.posepick, .posetok, .posefeed, .bookmark].sorted(by: { $0.pageOrderNumber() < $1.pageOrderNumber() })
+            let pages: [RootPage] = [.posepick, .posetalk, .posefeed, .bookmark].sorted(by: { $0.pageOrderNumber() < $1.pageOrderNumber() })
             viewControllers = pages.map { getNavigationController($0) }
             $0.setViewControllers([viewControllers[0]], direction: .forward, animated: true)
             $0.dataSource = self
@@ -84,7 +84,7 @@ class RootViewController: BaseViewController {
     }
     
     override func configUI() {
-        view.backgroundColor = .bgSubWhite
+        view.backgroundColor = .bgWhite
         divider.layer.zPosition = 999
         self.segmentControl.setTitleTextAttributes(
             [
@@ -117,11 +117,11 @@ class RootViewController: BaseViewController {
         case .posepick:
             let posePickerVC = PosePickViewController(viewModel: PosePickViewModel())
             navController.pushViewController(posePickerVC, animated: true)
-        case .posetok:
-            let poseTokVC = PoseTokViewController()
-            navController.pushViewController(poseTokVC, animated: true)
+        case .posetalk:
+            let poseTalkVC = PoseTalkViewController(viewModel: PoseTalkViewModel())
+            navController.pushViewController(poseTalkVC, animated: true)
         case .posefeed:
-            let poseFeedVC = PoseFeedViewController()
+            let poseFeedVC = PoseFeedViewController(viewModel: PoseFeedViewModel(), coordinator: PoseFeedCoordinator(navigationController: navController))
             navController.pushViewController(poseFeedVC, animated: true)
         case .bookmark:
             let bookmarkVC = BookMarkViewController()
