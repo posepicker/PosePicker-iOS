@@ -77,6 +77,7 @@
 		C9DC2F992AEA28E300D5170D /* PoseFeedFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F982AEA28E300D5170D /* PoseFeedFilterCell.swift */; };
 		C9DC2F9B2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F9A2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift */; };
 		C9DC2F9E2AEA2BB000D5170D /* PoseFeedFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F9D2AEA2BB000D5170D /* PoseFeedFilterViewModel.swift */; };
+		C9DC2FA32AEA564D00D5170D /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2FA22AEA564D00D5170D /* UIScreen+.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -164,6 +165,7 @@
 		C9DC2F982AEA28E300D5170D /* PoseFeedFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterCell.swift; sourceTree = "<group>"; };
 		C9DC2F9A2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterCellViewModel.swift; sourceTree = "<group>"; };
 		C9DC2F9D2AEA2BB000D5170D /* PoseFeedFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterViewModel.swift; sourceTree = "<group>"; };
+		C9DC2FA22AEA564D00D5170D /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -461,6 +463,7 @@
 		C9C8909A2AE107A40010240A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C9DC2FA12AEA563C00D5170D /* UIScreen */,
 				C9DC2F912AEA27F600D5170D /* UICollectionView */,
 				880E75502AE6C26D007FAD5A /* Data */,
 				880E752E2AE60929007FAD5A /* UIImage */,
@@ -590,6 +593,14 @@
 				C9DC2F8F2AEA1D5F00D5170D /* PoseFeedFilterViewController.swift */,
 			);
 			path = PoseFeedFilter;
+			sourceTree = "<group>";
+		};
+		C9DC2FA12AEA563C00D5170D /* UIScreen */ = {
+			isa = PBXGroup;
+			children = (
+				C9DC2FA22AEA564D00D5170D /* UIScreen+.swift */,
+			);
+			path = UIScreen;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -792,6 +803,7 @@
 				880E753C2AE6BE3A007FAD5A /* BindableViewModel.swift in Sources */,
 				C94FD28D2AE39646003777EB /* BookmarkViewModel.swift in Sources */,
 				C9C890A02AE109610010240A /* User.swift in Sources */,
+				C9DC2FA32AEA564D00D5170D /* UIScreen+.swift in Sources */,
 				C9C890A22AE1098B0010240A /* Token.swift in Sources */,
 				C94FD28B2AE3963E003777EB /* PoseFeedViewModel.swift in Sources */,
 				880E754D2AE6C06E007FAD5A /* Constants.swift in Sources */,
