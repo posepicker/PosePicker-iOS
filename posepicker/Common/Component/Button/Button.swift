@@ -12,10 +12,10 @@ import RxCocoa
 class Button: UIButton {
     
     // MARK: - Subviews
-    let buttonImage: UIImage
     
     // MARK: - Properties
     var disposeBag = DisposeBag()
+    
     enum ButtonStatus {
         case defaultStatus
         case pressed
@@ -32,16 +32,16 @@ class Button: UIButton {
     var isFill: Bool
     var position: imagePosition
     var buttonTitle: String
+    var image: UIImage?
 
     // MARK: - Initialization
-    required init(status: ButtonStatus, isFill: Bool, position: imagePosition, buttonTitle: String) {
+    required init(status: ButtonStatus, isFill: Bool, position: imagePosition, buttonTitle: String, image: UIImage?) {
         self.status.accept(status)
         self.isFill = isFill
         self.position = position
         self.buttonTitle = buttonTitle
-        self.buttonImage = ImageLiteral.imgBookmarkOff24
+        self.image = image
         super.init(frame: .zero)
-        
         configUI()
     }
     
@@ -65,6 +65,7 @@ class Button: UIButton {
         } else { // OUTLINE BUTTON
             self.setTitleColor(.mainVioletDark, for: .normal)
             self.setTitleColor(.iconDisabled, for: .disabled)
+            self.setTitleColor(.mainVioletDark, for: .highlighted)
             self.layer.borderColor = UIColor.mainVioletDark.cgColor
             self.layer.borderWidth = 1
         }
@@ -101,28 +102,34 @@ class Button: UIButton {
         self.rx.controlEvent(.touchDown).asDriver()
             .drive(onNext: { [unowned self] in
                 self.status.accept(.pressed)
-                self.setImage(ImageLiteral.imgBookmarkFill24.withRenderingMode(.alwaysOriginal), for: .normal)
             })
             .disposed(by: disposeBag)
         
         self.rx.controlEvent(.touchUpInside).asDriver()
             .drive(onNext: { [unowned self] in
                 self.status.accept(.defaultStatus)
-                self.setImage(ImageLiteral.imgBookmarkOff24.withRenderingMode(.alwaysOriginal), for: .normal)
             })
             .disposed(by: disposeBag)
     }
     
     func setImagePosition() {
-        guard let titleLabel = self.titleLabel else { return }
         if self.position == .none { return }
         
         switch self.position {
         case .left:
-            self.setImage(ImageLiteral.imgBookmarkOff24, for: .normal)
+            self.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            var configuration = UIButton.Configuration.filled()
+            configuration.baseBackgroundColor = .violet050
+            configuration.imagePadding = 10
+            self.configuration = configuration
             self.semanticContentAttribute = .forceLeftToRight
+            
         case .right:
-            self.setImage(ImageLiteral.imgBookmarkOff24, for: .normal)
+            self.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
+            var configuration = UIButton.Configuration.filled()
+            configuration.baseBackgroundColor = .violet050
+            configuration.imagePadding = 10
+            self.configuration = configuration
             self.semanticContentAttribute = .forceRightToLeft
         case .none:
             break
