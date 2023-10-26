@@ -58,7 +58,7 @@ class PoseTalkViewController: BaseViewController {
         view.addSubViews([informationLabel, informationImageView, mainLabel, animationView, selectButton])
         
         informationLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(UIScreen.main.isWiderThan375pt ? 80 : 40)
+            make.top.equalToSuperview().offset(UIScreen.main.isWiderThan375pt ? 64 : 40)
             make.centerX.equalToSuperview().offset(-informationImageView.frame.width)
         }
         
