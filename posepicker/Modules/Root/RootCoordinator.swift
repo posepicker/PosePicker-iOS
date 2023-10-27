@@ -45,11 +45,15 @@ enum RootPage {
     }
 }
 
-class RootCoordinator: NSObject, Coordinator {
+/// 뷰 컨트롤러에서 사용하는 객체들은 마련만 해두고 화면 흐름 제어만 코디네이터에서 처리
+/// 화면 흐름의 요청은 currentPage 데이터 세팅 이후에만 이루어진다
+/// selectedIndex 반응형 처리도 currentPage 세팅을 통해 화면흐름 제어
+class RootCoordinator: Coordinator {
     
     // MARK: - Properties
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
+    lazy var rootViewController = RootViewController(coordinator: self)
     
     // MARK: - Initialization
     
@@ -59,7 +63,31 @@ class RootCoordinator: NSObject, Coordinator {
     
     // MARK: - Functions
     
-    func start() { /// 화면 전환에 대한 실질적인 로직들이 전부 뷰컨 내에 내장되는데.. 불필요한 코디네이터 패턴이 된듯
-        navigationController.viewControllers = [RootViewController()]
+    func start() {
+        rootViewController.pageViewController.setViewControllers([rootViewController.viewControllers[0]], direction: .forward, animated: true)
+        
+        navigationController.viewControllers = [rootViewController]
     }
+    
+    /// UIViewController 참조를 통한 이동
+    func moveWithViewController(viewController: [UIViewController], direction: UIPageViewController.NavigationDirection, pageNumber: Int) {
+        rootViewController.pageViewController.setViewControllers(viewController, direction: direction, animated: true)
+        rootViewController.segmentControl.rx.selectedSegmentIndex.onNext(pageNumber)
+        rootViewController.segmentControl.updateUnderlineViewWidth()
+        rootViewController.segmentControl.moveUnderlineView()
+    }
+    
+    /// RootPage 열거형 참조를 통한 이동
+    func moveWithPage(page: RootPage, direction: UIPageViewController.NavigationDirection) {
+        let viewController = rootViewController.getNavigationController(page)
+        moveWithViewController(viewController: [viewController], direction: direction, pageNumber: page.pageOrderNumber())
+    }
+    
+    /// segmentControl selectedIndex값 변경에 따른 화면흐름 제어
+    func moveWithSegment(pageNumber: Int) {
+        rootViewController.segmentControl.rx.selectedSegmentIndex.onNext(pageNumber)
+        rootViewController.segmentControl.updateUnderlineViewWidth()
+        rootViewController.segmentControl.moveUnderlineView()
+    }
+    
 }
