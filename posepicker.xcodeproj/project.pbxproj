@@ -519,8 +519,8 @@
 		C9C890A62AE10A010010240A /* Root */ = {
 			isa = PBXGroup;
 			children = (
-				C94FD2742AE38E26003777EB /* RootViewController.swift */,
 				C94FD2782AE38EBD003777EB /* RootCoordinator.swift */,
+				C94FD2742AE38E26003777EB /* RootViewController.swift */,
 			);
 			path = Root;
 			sourceTree = "<group>";
