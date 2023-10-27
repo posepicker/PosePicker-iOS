@@ -15,11 +15,13 @@ class BookMarkViewController: BaseViewController {
     
     // MARK: - Properties
     var viewModel: BookMarkViewModel
+    var coordinator: RootCoordinator
     
     // MARK: - Initialization
     
-    init(viewModel: BookMarkViewModel) {
+    init(viewModel: BookMarkViewModel, coordinator: RootCoordinator) {
         self.viewModel = viewModel
+        self.coordinator = coordinator
         super.init()
     }
     
@@ -42,5 +44,13 @@ class BookMarkViewController: BaseViewController {
     override func configUI() {
         self.navigationController?.isNavigationBarHidden = true
         view.backgroundColor = .bgWhite
+    }
+    
+    override func bindViewModel() {
+        emptyView.toPoseFeedButton.rx.tap.asDriver()
+            .drive(onNext: { [unowned self] in
+                self.coordinator.moveWithPage(page: .posefeed, direction: .reverse)
+            })
+            .disposed(by: disposeBag)
     }
 }
