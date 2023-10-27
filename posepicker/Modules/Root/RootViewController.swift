@@ -30,28 +30,31 @@ class RootViewController: BaseViewController {
         .then {
             let pages: [RootPage] = [.posepick, .posetalk, .posefeed, .bookmark].sorted(by: { $0.pageOrderNumber() < $1.pageOrderNumber() })
             viewControllers = pages.map { getNavigationController($0) }
-            $0.setViewControllers([viewControllers[0]], direction: .forward, animated: true)
             $0.dataSource = self
             $0.delegate = self
         }
     
     // MARK: - Properties
     var viewControllers: [UIViewController] = []
+    var coordinator: RootCoordinator
     
     var currentPage: Int = 0 {
         didSet {
             let direction: UIPageViewController.NavigationDirection = oldValue <= self.currentPage ? .forward : .reverse
-            self.pageViewController.setViewControllers(
-                [viewControllers[self.currentPage]],
-                direction: direction,
-                animated: true,
-                completion: nil
-            )
-            segmentControl.rx.selectedSegmentIndex.onNext(currentPage)
+            coordinator.moveWithViewController(viewController: [viewControllers[self.currentPage]], direction: direction, pageNumber: currentPage)
         }
     }
     
     // MARK: - Initialization
+    
+    init(coordinator: RootCoordinator) {
+        self.coordinator = coordinator
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Functions
     override func render() {
@@ -103,13 +106,11 @@ class RootViewController: BaseViewController {
         segmentControl.rx.selectedSegmentIndex.asDriver()
             .drive(onNext: { [unowned self] in
                 self.currentPage = $0
-                self.segmentControl.updateUnderlineViewWidth()
-                self.segmentControl.moveUnderlineView()
             })
             .disposed(by: disposeBag)
     }
     
-    private func getNavigationController(_ page: RootPage) -> UINavigationController {
+    func getNavigationController(_ page: RootPage) -> UINavigationController {
         let navController = UINavigationController()
         navController.setNavigationBarHidden(false, animated: false)
         
@@ -124,7 +125,7 @@ class RootViewController: BaseViewController {
             let poseFeedVC = PoseFeedViewController(viewModel: PoseFeedViewModel(), coordinator: PoseFeedCoordinator(navigationController: navController))
             navController.pushViewController(poseFeedVC, animated: true)
         case .bookmark:
-            let bookmarkVC = BookMarkViewController(viewModel: BookMarkViewModel())
+            let bookmarkVC = BookMarkViewController(viewModel: BookMarkViewModel(), coordinator: self.coordinator)
             navController.pushViewController(bookmarkVC, animated: true)
         case .myPage:
             let myPageVC = MyPageViewController()
@@ -144,10 +145,7 @@ extension RootViewController: UIPageViewControllerDelegate {
     ) {
         guard let navigationVC = pageViewController.viewControllers?[0] as? UINavigationController,
               let index = self.viewControllers.firstIndex(of: navigationVC) else { return }
-        self.currentPage = index
-        self.segmentControl.rx.selectedSegmentIndex.onNext(index)
-        self.segmentControl.updateUnderlineViewWidth()
-        self.segmentControl.moveUnderlineView()
+        coordinator.moveWithSegment(pageNumber: index)
     }
 }
 
