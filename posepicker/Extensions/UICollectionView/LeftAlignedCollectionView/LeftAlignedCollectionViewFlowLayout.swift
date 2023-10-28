@@ -7,6 +7,7 @@
 
 import UIKit
 
+/// 두 줄 이상의 컬렉션 뷰에서만 왼쪽 정렬중
 class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
     override func layoutAttributesForElements(in rect: CGRect) -> [UICollectionViewLayoutAttributes]? {
         let attributes = super.layoutAttributesForElements(in: rect)
