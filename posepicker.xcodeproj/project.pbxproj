@@ -79,6 +79,9 @@
 		C9DC2F9B2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F9A2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift */; };
 		C9DC2F9E2AEA2BB000D5170D /* PoseFeedFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F9D2AEA2BB000D5170D /* PoseFeedFilterViewModel.swift */; };
 		C9DC2FA32AEA564D00D5170D /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2FA22AEA564D00D5170D /* UIScreen+.swift */; };
+		C9DC2FA62AEB6E1800D5170D /* FilterTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2FA52AEB6E1800D5170D /* FilterTags.swift */; };
+		C9DC2FA82AECAD1A00D5170D /* RegisteredFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2FA72AECAD1A00D5170D /* RegisteredFilterCell.swift */; };
+		C9DC2FAA2AECAD4500D5170D /* RegisteredFilterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2FA92AECAD4500D5170D /* RegisteredFilterCellViewModel.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -168,6 +171,9 @@
 		C9DC2F9A2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterCellViewModel.swift; sourceTree = "<group>"; };
 		C9DC2F9D2AEA2BB000D5170D /* PoseFeedFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterViewModel.swift; sourceTree = "<group>"; };
 		C9DC2FA22AEA564D00D5170D /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
+		C9DC2FA52AEB6E1800D5170D /* FilterTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTags.swift; sourceTree = "<group>"; };
+		C9DC2FA72AECAD1A00D5170D /* RegisteredFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredFilterCell.swift; sourceTree = "<group>"; };
+		C9DC2FA92AECAD4500D5170D /* RegisteredFilterCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredFilterCellViewModel.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -277,6 +283,7 @@
 		880E754A2AE6C03D007FAD5A /* Constants */ = {
 			isa = PBXGroup;
 			children = (
+				C9DC2FA42AEB6E0C00D5170D /* enum */,
 				880E754C2AE6C06E007FAD5A /* Constants.swift */,
 			);
 			path = Constants;
@@ -592,6 +599,8 @@
 			children = (
 				C9DC2F9A2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift */,
 				C9DC2F982AEA28E300D5170D /* PoseFeedFilterCell.swift */,
+				C9DC2FA92AECAD4500D5170D /* RegisteredFilterCellViewModel.swift */,
+				C9DC2FA72AECAD1A00D5170D /* RegisteredFilterCell.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -612,6 +621,14 @@
 				C9DC2FA22AEA564D00D5170D /* UIScreen+.swift */,
 			);
 			path = UIScreen;
+			sourceTree = "<group>";
+		};
+		C9DC2FA42AEB6E0C00D5170D /* enum */ = {
+			isa = PBXGroup;
+			children = (
+				C9DC2FA52AEB6E1800D5170D /* FilterTags.swift */,
+			);
+			path = enum;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -787,6 +804,7 @@
 				C9DC2F992AEA28E300D5170D /* PoseFeedFilterCell.swift in Sources */,
 				C9C8908A2AE107180010240A /* ViewModelType.swift in Sources */,
 				C9C890BF2AE1107B0010240A /* ImageLiteral.swift in Sources */,
+				C9DC2FA82AECAD1A00D5170D /* RegisteredFilterCell.swift in Sources */,
 				C94FD2AB2AE8CEEB003777EB /* Button.swift in Sources */,
 				C94FD2922AE398D6003777EB /* MyPageViewModel.swift in Sources */,
 				C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */,
@@ -813,7 +831,9 @@
 				880E75522AE6C275007FAD5A /* Data+.swift in Sources */,
 				C9DC2F942AEA282700D5170D /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				880E753C2AE6BE3A007FAD5A /* BindableViewModel.swift in Sources */,
+				C9DC2FA62AEB6E1800D5170D /* FilterTags.swift in Sources */,
 				C94FD28D2AE39646003777EB /* BookmarkViewModel.swift in Sources */,
+				C9DC2FAA2AECAD4500D5170D /* RegisteredFilterCellViewModel.swift in Sources */,
 				C9C890A02AE109610010240A /* User.swift in Sources */,
 				C9DC2FA32AEA564D00D5170D /* UIScreen+.swift in Sources */,
 				C9C890A22AE1098B0010240A /* Token.swift in Sources */,
