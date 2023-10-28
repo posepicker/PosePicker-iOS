@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 
 class PoseFeedFilterViewController: BaseViewController {
 
@@ -56,6 +58,9 @@ class PoseFeedFilterViewController: BaseViewController {
     // MARK: - Properties
     
     var viewModel: PoseFeedFilterViewModel
+    var selectedHeadCount = BehaviorRelay<String>(value: "")
+    var selectedFrameCount = BehaviorRelay<String>(value: "")
+    var selectedTags = BehaviorRelay<[FilterTags]>(value: [])
     
     // MARK: - Initialization
     
@@ -135,10 +140,16 @@ class PoseFeedFilterViewController: BaseViewController {
                 self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
+        
+        submitButton.rx.tap.asDriver()
+            .drive(onNext: { [unowned self] in
+                self.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func bindViewModel() {
-        let input = PoseFeedFilterViewModel.Input(tagSelection: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable())
+        let input = PoseFeedFilterViewModel.Input(headCountSelection: headCountSelection.pressIndex.asObservable(), frameCountSelection: frameCountSelection.pressIndex.asObservable(), tagSelection: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable())
         
         let output = viewModel.transform(input: input)
         
@@ -146,6 +157,24 @@ class PoseFeedFilterViewController: BaseViewController {
             .drive(tagCollectionView.rx.items(cellIdentifier: PoseFeedFilterCell.identifier, cellType: PoseFeedFilterCell.self)) { _, viewModel, cell in
                 cell.bind(to: viewModel)
             }
+            .disposed(by: disposeBag)
+        
+        output.headCountTag
+            .subscribe(onNext: { [unowned self] in
+                self.selectedHeadCount.accept(self.headCountSelection.buttonGroup[$0])
+            })
+            .disposed(by: disposeBag)
+        
+        output.frameCountTag
+            .subscribe(onNext: { [unowned self] in
+                self.selectedFrameCount.accept(self.frameCountSelection.buttonGroup[$0])
+            })
+            .disposed(by: disposeBag)
+        
+        output.registeredTags
+            .subscribe(onNext: { [unowned self] in
+                self.selectedTags.accept($0)
+            })
             .disposed(by: disposeBag)
         
         tagCollectionView.updateCollectionViewHeight()
