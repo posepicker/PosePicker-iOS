@@ -6,8 +6,12 @@
 //
 
 import Foundation
+import RxSwift
 
 class MyPageViewModel: ViewModelType {
+    
+    var disposeBag = DisposeBag()
+    
     struct Input { }
     
     struct Output { }
