@@ -9,16 +9,39 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-class PoseFeedViewModel {
+class PoseFeedViewModel: ViewModelType {
+    
+    var disposeBag = DisposeBag()
+    
     struct Input {
         let filterButtonTapped: ControlEvent<Void>
+        let tagItems: Observable<(String, String, [FilterTags])>
+        let filterTagSelection: Observable<RegisteredFilterCellViewModel>
+        let filterRegisterCompleted: ControlEvent<Void>
     }
     
     struct Output {
         let presentModal: Driver<Void>
+        let filterTagItems: Driver<[RegisteredFilterCellViewModel]>
     }
     
     func transform(input: Input) -> Output {
-        return Output(presentModal: input.filterButtonTapped.asDriver())
+        let tagItems = BehaviorRelay<[RegisteredFilterCellViewModel]>(value: [])
+        
+        input.filterRegisterCompleted
+            .flatMapLatest { () -> Observable<(String, String, [FilterTags])> in
+                return input.tagItems
+            }
+            .flatMapLatest { (headcount, frameCount, filterTags) -> Observable<[String]> in
+                return BehaviorRelay<[String]>(value: [headcount, frameCount] + filterTags.map { $0.rawValue} ).asObservable()
+            }
+            .subscribe(onNext: { tags in
+                tagItems.accept(tags.map { tagName in
+                    RegisteredFilterCellViewModel(title: tagName)
+                })
+            })
+            .disposed(by: disposeBag)
+        
+        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver())
     }
 }
