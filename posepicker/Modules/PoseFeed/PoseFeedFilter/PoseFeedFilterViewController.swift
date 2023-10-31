@@ -61,6 +61,8 @@ class PoseFeedFilterViewController: BaseViewController {
     var selectedHeadCount = BehaviorRelay<String>(value: "")
     var selectedFrameCount = BehaviorRelay<String>(value: "")
     var selectedTags = BehaviorRelay<[FilterTags]>(value: [])
+    var isPresenting = BehaviorRelay<Bool>(value: false)
+    var cancelTrigger = PublishSubject<Void>()
     
     // MARK: - Initialization
     
@@ -137,19 +139,21 @@ class PoseFeedFilterViewController: BaseViewController {
         
         closeButton.rx.tap.asDriver()
             .drive(onNext: { [unowned self] in
+                self.cancelTrigger.onNext(())
                 self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
         
         submitButton.rx.tap.asDriver()
             .drive(onNext: { [unowned self] in
+                self.isPresenting.accept(false)
                 self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
     }
     
     override func bindViewModel() {
-        let input = PoseFeedFilterViewModel.Input(headCountSelection: headCountSelection.pressIndex.asObservable(), frameCountSelection: frameCountSelection.pressIndex.asObservable(), tagSelection: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable())
+        let input = PoseFeedFilterViewModel.Input(headCountSelection: headCountSelection.pressIndex.asObservable(), frameCountSelection: frameCountSelection.pressIndex.asObservable(), tagSelection: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable(), tagSelectCanceled: cancelTrigger.asObservable(), isPresenting: isPresenting.asObservable())
         
         let output = viewModel.transform(input: input)
         
@@ -160,19 +164,21 @@ class PoseFeedFilterViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         output.headCountTag
-            .subscribe(onNext: { [unowned self] in
+            .drive(onNext: { [unowned self] in
+                self.headCountSelection.pressIndex.accept($0)
                 self.selectedHeadCount.accept(self.headCountSelection.buttonGroup[$0])
             })
             .disposed(by: disposeBag)
         
         output.frameCountTag
-            .subscribe(onNext: { [unowned self] in
+            .drive(onNext: { [unowned self] in
+                self.frameCountSelection.pressIndex.accept($0)
                 self.selectedFrameCount.accept(self.frameCountSelection.buttonGroup[$0])
             })
             .disposed(by: disposeBag)
         
         output.registeredTags
-            .subscribe(onNext: { [unowned self] in
+            .drive(onNext: { [unowned self] in
                 self.selectedTags.accept($0)
             })
             .disposed(by: disposeBag)
