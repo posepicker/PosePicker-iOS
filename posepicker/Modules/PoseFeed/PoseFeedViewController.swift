@@ -26,8 +26,8 @@ class PoseFeedViewController: BaseViewController {
     
     let filterDivider = UIImageView(image: ImageLiteral.imgDividerVertical.withRenderingMode(.alwaysOriginal))
     
-    let filterCollectionView: UICollectionView = {
-        let layout = LeftAlignedCollectionViewFlowLayout()
+    lazy var filterCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .horizontal
         layout.minimumInteritemSpacing = 8
         layout.minimumLineSpacing = 8
@@ -36,6 +36,7 @@ class PoseFeedViewController: BaseViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.showsHorizontalScrollIndicator = false
         cv.register(RegisteredFilterCell.self, forCellWithReuseIdentifier: RegisteredFilterCell.identifier)
+        cv.delegate = self
         return cv
     }()
     
@@ -83,7 +84,6 @@ class PoseFeedViewController: BaseViewController {
     override func configUI() {
         self.navigationController?.isNavigationBarHidden = true
         view.backgroundColor = .bgWhite
-        filterCollectionView.backgroundColor = .red
     }
     
     override func bindViewModel() {
@@ -102,5 +102,11 @@ class PoseFeedViewController: BaseViewController {
                 cell.bind(to: viewModel)
             }
             .disposed(by: disposeBag)
+    }
+}
+
+extension PoseFeedViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 120, height: 60)
     }
 }
