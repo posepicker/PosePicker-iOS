@@ -87,12 +87,13 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside))
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable())
         
         let output = viewModel.transform(input: input)
         
         output.presentModal
             .drive(onNext: { [unowned self] in
+                self.coordinator.poseFeedFilterViewController.isPresenting.accept(true)
                 self.coordinator.presentModal()
             })
             .disposed(by: disposeBag)
@@ -107,6 +108,6 @@ class PoseFeedViewController: BaseViewController {
 
 extension PoseFeedViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 120, height: 60)
+        return CGSize(width: 120, height: 80)
     }
 }
