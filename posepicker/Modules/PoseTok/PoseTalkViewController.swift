@@ -7,14 +7,25 @@
 
 import UIKit
 
+import RxCocoa
+import RxSwift
 import Lottie
 
 class PoseTalkViewController: BaseViewController {
     
     // MARK: - Subviews
     
+    lazy var informationStackView = UIStackView(arrangedSubviews: [self.informationLabel, self.informationImageView])
+        .then {
+            $0.alignment = .center
+            $0.axis = .horizontal
+            $0.distribution = .fillProportionally
+            $0.spacing = 0
+        }
+    
     let informationLabel = UILabel()
         .then {
+            $0.textAlignment = .center
             $0.textColor = .mainViolet
             $0.font = .h3
             $0.text = "뽑은 제시어"
@@ -24,9 +35,9 @@ class PoseTalkViewController: BaseViewController {
     
     let mainLabel = UILabel()
         .then {
+            $0.textAlignment = .center
             $0.numberOfLines = 0
             $0.font = .h1
-            $0.text = "제시어에 맞춰\n포즈를 취해요!"
         }
     
     var animationView: LottieAnimationView = .init(name: "lottiePoseTalk")
@@ -40,6 +51,7 @@ class PoseTalkViewController: BaseViewController {
     // MARK: - Properties
     
     let viewModel: PoseTalkViewModel
+    var isAnimating = BehaviorRelay<Bool>(value: false)
     
     // MARK: - Life Cycles
     
@@ -55,21 +67,17 @@ class PoseTalkViewController: BaseViewController {
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([informationLabel, informationImageView, mainLabel, animationView, selectButton])
+        view.addSubViews([informationStackView, mainLabel, animationView, selectButton])
         
-        informationLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(UIScreen.main.isWiderThan375pt ? 64 : 40)
-            make.centerX.equalToSuperview().offset(-informationImageView.frame.width)
-        }
-        
-        informationImageView.snp.makeConstraints { make in
-            make.centerY.equalTo(informationLabel)
-            make.leading.equalTo(informationLabel.snp.trailing)
+        informationStackView.snp.makeConstraints { make in
+            make.top.equalToSuperview().offset(UIScreen.main.isWiderThan375pt ? 64: 40)
+            make.centerX.equalToSuperview()
         }
         
         mainLabel.snp.makeConstraints { make in
             make.top.equalTo(informationLabel.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
+            make.width.equalTo(UIScreen.main.bounds.width - 100)
         }
         
         animationView.snp.makeConstraints { make in
@@ -91,7 +99,7 @@ class PoseTalkViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseTalkViewModel.Input(poseTalkButtonTapped: selectButton.rx.controlEvent(.touchUpInside))
+        let input = PoseTalkViewModel.Input(poseTalkButtonTapped: selectButton.rx.controlEvent(.touchUpInside), isAnimating: isAnimating.asObservable())
         
         let output = viewModel.transform(input: input)
         
@@ -100,8 +108,28 @@ class PoseTalkViewController: BaseViewController {
                 self.animationView.pause()
                 self.animationView.loopMode = .playOnce
                 self.animationView.animation = LottieAnimation.named("lottiePoseTalkTap")
-                self.animationView.play()
+                self.isAnimating.accept(true)
+                self.animationView.play() {
+                    if $0 {
+                        self.isAnimating.accept(false)
+                    }
+                }
             })
             .disposed(by: disposeBag)
+        
+        output.isLoading
+            .flatMapLatest { isLoading -> Observable<String> in
+                if isLoading {
+                    return Observable<String>.empty()
+                } else {
+                    return output.poseWord
+                }
+            }
+            .asDriver(onErrorJustReturn: "")
+            .drive(onNext: { [unowned self] in
+                self.mainLabel.text = $0
+            })
+            .disposed(by: disposeBag)
+            
     }
 }
