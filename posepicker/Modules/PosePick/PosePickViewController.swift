@@ -6,7 +6,11 @@
 //
 
 import UIKit
+
+import Kingfisher
 import Lottie
+import RxCocoa
+import RxSwift
 
 class PosePickViewController: BaseViewController {
     
@@ -20,23 +24,32 @@ class PosePickViewController: BaseViewController {
     
     lazy var animationView: LottieAnimationView = .init(name: "lottiePosePicker")
         .then {
+            $0.layer.zPosition = 1
             $0.contentMode = .scaleAspectFit
-            $0.play(toProgress: 1.2) { completed in
-                self.thumbnailImage.isHidden = false
-            }
+            $0.play(toProgress: 1.2)
         }
     
-    let thumbnailImage = UIImageView(image: ImageLiteral.imgPosePicker)
+    let posepickerImage = UIImageView(image: ImageLiteral.imgPosePicker)
         .then {
+            $0.layer.zPosition = 0
+            $0.clipsToBounds = true
+            $0.contentMode = .scaleAspectFit
+        }
+    
+    let retrievedImage = UIImageView(image: ImageLiteral.imgPosePicker)
+        .then {
+            $0.contentMode = .scaleAspectFit
             $0.clipsToBounds = true
             $0.isHidden = true
-            $0.contentMode = .scaleAspectFit
         }
     
     let posePickerButton = Button(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "인원수 선택하고 포즈 뽑기!", image: nil)
     
     // MARK: - Properties
     var viewModel: PosePickViewModel
+    let isImageLoading = BehaviorRelay<Bool>(value: false)
+    let isAnimating = BehaviorRelay<Bool>(value: false)
+    let refetchTrigger = PublishSubject<Void>()
     
     // MARK: - Life Cycles
     init(viewModel: PosePickViewModel) {
@@ -47,10 +60,11 @@ class PosePickViewController: BaseViewController {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
     
     // MARK: - Functions
     override func render() {
-        view.addSubViews([selection, backgroundView, animationView, thumbnailImage, posePickerButton])
+        view.addSubViews([selection, backgroundView, animationView, posePickerButton, retrievedImage, posepickerImage])
         
         selection.snp.makeConstraints { make in
             make.top.equalTo(16)
@@ -70,7 +84,11 @@ class PosePickViewController: BaseViewController {
             make.bottom.equalTo(posePickerButton.snp.top).offset(-30)
         }
         
-        thumbnailImage.snp.makeConstraints { make in
+        retrievedImage.snp.makeConstraints { make in
+            make.top.trailing.bottom.leading.equalTo(animationView)
+        }
+        
+        posepickerImage.snp.makeConstraints { make in
             make.top.trailing.bottom.leading.equalTo(animationView)
         }
         
@@ -87,16 +105,39 @@ class PosePickViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PosePickViewModel.Input(posePickButtonTapped: posePickerButton.rx.tap)
+        let input = PosePickViewModel.Input(posePickButtonTapped: posePickerButton.rx.tap, isImageLoading: isImageLoading.asObservable(), isAnimating: isAnimating.asObservable(), refetchTrigger: refetchTrigger.asObservable())
+
         let output = viewModel.transform(input: input)
         
         output.animate
             .drive(onNext: { [unowned self] in
-                self.thumbnailImage.isHidden = true
-                self.animationView.play(fromProgress: 0, toProgress: 1.2) { _ in
-                    self.thumbnailImage.isHidden = false
+                self.isAnimating.accept(true)
+                self.animationView.play() {
+                    if $0 && self.isImageLoading.value { // 애니메이션은 끝났지만 이미지가 여전히 로딩중이면
+                        self.refetchTrigger.onNext(())
+                    } else if $0 {
+                        self.isAnimating.accept(false)
+                    }
                 }
             })
+            .disposed(by: disposeBag)
+        
+        output.imageUrl
+            .drive(onNext: { [unowned self] urlString in
+                self.isImageLoading.accept(true)
+                self.retrievedImage.kf.setImage(with: URL(string: urlString)) { _ in
+                    self.isImageLoading.accept(false)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.isLoading.bind(to: retrievedImage.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        output.isLoading.map { !$0 }.bind(to: animationView.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        output.isPosePickerImageHidden.bind(to: posepickerImage.rx.isHidden)
             .disposed(by: disposeBag)
     }
     
