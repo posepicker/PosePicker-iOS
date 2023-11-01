@@ -18,6 +18,7 @@ class PoseFeedViewModel: ViewModelType {
         let tagItems: Observable<(String, String, [FilterTags])>
         let filterTagSelection: Observable<RegisteredFilterCellViewModel>
         let filterRegisterCompleted: ControlEvent<Void>
+        let poseFeedFilterViewIsPresenting: Observable<Bool>
     }
     
     struct Output {
@@ -29,8 +30,15 @@ class PoseFeedViewModel: ViewModelType {
         let tagItems = BehaviorRelay<[RegisteredFilterCellViewModel]>(value: [])
         
         input.filterRegisterCompleted
-            .flatMapLatest { () -> Observable<(String, String, [FilterTags])> in
-                return input.tagItems
+            .flatMapLatest { () -> Observable<Bool> in
+                return input.poseFeedFilterViewIsPresenting
+            }
+            .flatMapLatest { isPresenting -> Observable<(String, String, [FilterTags])> in
+                if isPresenting {
+                    return Observable<(String, String, [FilterTags])>.empty()
+                } else {
+                    return input.tagItems
+                }
             }
             .flatMapLatest { (headcount, frameCount, filterTags) -> Observable<[String]> in
                 return BehaviorRelay<[String]>(value: [headcount, frameCount] + filterTags.map { $0.rawValue} ).asObservable()
