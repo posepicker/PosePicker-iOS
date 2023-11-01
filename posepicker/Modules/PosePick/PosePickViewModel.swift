@@ -19,6 +19,7 @@ class PosePickViewModel: ViewModelType {
         let isImageLoading: Observable<Bool>
         let isAnimating: Observable<Bool>
         let refetchTrigger: Observable<Void>
+        let selectedIndex: BehaviorRelay<Int>
     }
     
     struct Output {
@@ -37,7 +38,7 @@ class PosePickViewModel: ViewModelType {
         /// 포즈픽 데이터 요청
         input.posePickButtonTapped
             .flatMapLatest { [unowned self] _ -> Observable<PosePick> in
-                self.apiSession.requestSingle(.retrievePosePick(peopleCount: 1)).asObservable()
+                self.apiSession.requestSingle(.retrievePosePick(peopleCount: input.selectedIndex.value + 1)).asObservable()
             }
             .subscribe(onNext: {
                 imageUrl.accept($0.poseInfo.imageKey)

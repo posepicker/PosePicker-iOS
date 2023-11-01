@@ -105,7 +105,7 @@ class PosePickViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PosePickViewModel.Input(posePickButtonTapped: posePickerButton.rx.tap, isImageLoading: isImageLoading.asObservable(), isAnimating: isAnimating.asObservable(), refetchTrigger: refetchTrigger.asObservable())
+        let input = PosePickViewModel.Input(posePickButtonTapped: posePickerButton.rx.tap, isImageLoading: isImageLoading.asObservable(), isAnimating: isAnimating.asObservable(), refetchTrigger: refetchTrigger.asObservable(), selectedIndex: selection.pressIndex)
 
         let output = viewModel.transform(input: input)
         
