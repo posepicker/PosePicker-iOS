@@ -12,6 +12,7 @@ import Alamofire
 enum APIRouter: URLRequestConvertible {
     
     case retrievePosePick(peopleCount: Int)
+    case retrievePoseTalk
     
     // MARK: - HttpMethod
     
@@ -19,6 +20,8 @@ enum APIRouter: URLRequestConvertible {
     private var method: HTTPMethod {
         switch self {
         case .retrievePosePick:
+            return .get
+        case .retrievePoseTalk:
             return .get
         }
     }
@@ -30,6 +33,8 @@ enum APIRouter: URLRequestConvertible {
         switch self {
         case .retrievePosePick(let peopleCount):
             return "/api/pose/pick/\(peopleCount)"
+        case .retrievePoseTalk:
+            return "/api/pose/talk"
         }
     }
     
@@ -40,6 +45,8 @@ enum APIRouter: URLRequestConvertible {
     private var parameters: Parameters? {
         switch self {
         case .retrievePosePick:
+            return nil
+        case .retrievePoseTalk:
             return nil
         }
     }
