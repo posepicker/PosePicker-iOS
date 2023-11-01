@@ -153,7 +153,7 @@ class PoseFeedFilterViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedFilterViewModel.Input(headCountSelection: headCountSelection.pressIndex.asObservable(), frameCountSelection: frameCountSelection.pressIndex.asObservable(), tagSelection: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable(), tagSelectCanceled: cancelTrigger.asObservable(), isPresenting: isPresenting.asObservable())
+        let input = PoseFeedFilterViewModel.Input(headCountSelection: headCountSelection.pressIndex.asObservable(), frameCountSelection: frameCountSelection.pressIndex.asObservable(), tagSelection: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable(), tagSelectCanceled: cancelTrigger.asObservable(), isPresenting: isPresenting.asObservable(), resetButtonTapped: resetButton.rx.tap)
         
         let output = viewModel.transform(input: input)
         

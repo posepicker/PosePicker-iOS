@@ -19,6 +19,7 @@ class PoseFeedFilterViewModel: ViewModelType {
         let tagSelection: Observable<PoseFeedFilterCellViewModel>
         let tagSelectCanceled: Observable<Void>
         let isPresenting: Observable<Bool>
+        let resetButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
@@ -92,6 +93,17 @@ class PoseFeedFilterViewModel: ViewModelType {
                 headCountTagIndex.accept(initialValue.value.0)
                 frameCountTagIndex.accept(initialValue.value.1)
                 registeredTags.accept(initialValue.value.2)
+            })
+            .disposed(by: disposeBag)
+        
+        /// 필터 초기화
+        input.resetButtonTapped
+            .subscribe(onNext: {
+                headCountTagIndex.accept(0)
+                frameCountTagIndex.accept(0)
+                tagItems.accept(tags.map {
+                    PoseFeedFilterCellViewModel(title: $0.rawValue)
+                })
             })
             .disposed(by: disposeBag)
         
