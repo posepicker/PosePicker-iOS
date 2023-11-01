@@ -12,7 +12,7 @@ struct PosePick: Codable {
 }
 
 struct Pose: Codable {
-    let createdAt: String
+    let createdAt: String?
     let frameCount: Int
     let imageKey: String
     let peopleCount: Int
@@ -20,5 +20,5 @@ struct Pose: Codable {
     let source: String
     let sourceUrl: String
     let tagAttributes: String
-    let updatedAt: String
+    let updatedAt: String?
 }
