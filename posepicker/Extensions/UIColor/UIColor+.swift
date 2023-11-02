@@ -108,11 +108,44 @@ extension UIColor {
     }
     
     // gray variation
+    static var gray030: UIColor {
+        return .init(hex: "#F9F9FB")
+    }
+    static var gray050: UIColor {
+        return .init(hex: "#F7F7FA")
+    }
+    static var gray100: UIColor {
+        return .init(hex: "#F0F0F5")
+    }
     static var gray200: UIColor {
         return .init(hex: "#E8E8EE")
     }
+    static var gray300: UIColor {
+        return .init(hex: "#E1E1E8")
+    }
+    static var gray400: UIColor {
+        return .init(hex: "#CDCED6")
+    }
+    static var gray500: UIColor {
+        return .init(hex: "#A9ABB8")
+    }
+    static var gray600: UIColor {
+        return .init(hex: "#858899")
+    }
+    static var gray700: UIColor {
+        return .init(hex: "#525463")
+    }
+    static var gray800: UIColor {
+        return .init(hex: "#3E404C")
+    }
+    static var gray900: UIColor {
+        return .init(hex: "#2B2D36")
+    }
     static var gray950: UIColor {
         return .init(hex: "#252730")
+    }
+    static var blackCTO: UIColor {
+        return .init(hex: "#141218")
     }
 }
 
