@@ -30,4 +30,5 @@ enum ImageLiteral {
     static var imgShareFill: UIImage {.load(named: "imgShareFill")}
     static var imgPosePicker: UIImage {.load(named: "imgPosePicker")}
     static var imgDividerVertical: UIImage {.load(named: "imgDividerVertical")}
+    static var imgPolygon: UIImage {.load(named: "imgPolygon")}
 }
