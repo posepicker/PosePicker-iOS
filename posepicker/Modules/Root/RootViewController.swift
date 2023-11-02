@@ -119,7 +119,7 @@ class RootViewController: BaseViewController {
             let posePickerVC = PosePickViewController(viewModel: PosePickViewModel())
             navController.pushViewController(posePickerVC, animated: true)
         case .posetalk:
-            let poseTalkVC = PoseTalkViewController(viewModel: PoseTalkViewModel())
+            let poseTalkVC = PoseTalkViewController(viewModel: PoseTalkViewModel(), coordinator: self.coordinator)
             navController.pushViewController(poseTalkVC, animated: true)
         case .posefeed:
             let poseFeedVC = PoseFeedViewController(viewModel: PoseFeedViewModel(), coordinator: PoseFeedCoordinator(navigationController: navController))
