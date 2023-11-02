@@ -53,6 +53,7 @@
 		C94FD2A82AE3B282003777EB /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890BD2AE110660010240A /* Pretendard-Thin.otf */; };
 		C94FD2AB2AE8CEEB003777EB /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2AA2AE8CEEB003777EB /* Button.swift */; };
 		C9C0CDC82AF1D9160041E423 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = C9C0CDC72AF1D9160041E423 /* Kingfisher */; };
+		C9C0CDCE2AF353AB0041E423 /* ToolTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */; };
 		C9C890522AE103A10010240A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890512AE103A10010240A /* AppDelegate.swift */; };
 		C9C8905B2AE103A30010240A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9C8905A2AE103A30010240A /* Assets.xcassets */; };
 		C9C8905E2AE103A30010240A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9C8905C2AE103A30010240A /* LaunchScreen.storyboard */; };
@@ -137,6 +138,7 @@
 		C94FD29A2AE3AC3E003777EB /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		C94FD29E2AE3AF4F003777EB /* UnderlineSegmentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentControl.swift; sourceTree = "<group>"; };
 		C94FD2AA2AE8CEEB003777EB /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolTip.swift; sourceTree = "<group>"; };
 		C9C8904E2AE103A10010240A /* posepicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = posepicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9C890512AE103A10010240A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9C8905A2AE103A30010240A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -368,6 +370,7 @@
 		C94FD29C2AE3AF1E003777EB /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				C9C0CDCA2AF3538C0041E423 /* ToolTip */,
 				C94FD2A92AE8CED2003777EB /* Button */,
 				880E75312AE67C9C007FAD5A /* Selection */,
 				880E752B2AE60489007FAD5A /* Header */,
@@ -390,6 +393,14 @@
 				C94FD2AA2AE8CEEB003777EB /* Button.swift */,
 			);
 			path = Button;
+			sourceTree = "<group>";
+		};
+		C9C0CDCA2AF3538C0041E423 /* ToolTip */ = {
+			isa = PBXGroup;
+			children = (
+				C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */,
+			);
+			path = ToolTip;
 			sourceTree = "<group>";
 		};
 		C9C890452AE103A10010240A = {
@@ -818,6 +829,7 @@
 				C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */,
 				880E753E2AE6BE59007FAD5A /* Service.swift in Sources */,
 				C9DC2F9E2AEA2BB000D5170D /* PoseFeedFilterViewModel.swift in Sources */,
+				C9C0CDCE2AF353AB0041E423 /* ToolTip.swift in Sources */,
 				C9C890C52AE11BAB0010240A /* UIFont+.swift in Sources */,
 				C9DC2F8E2AEA193300D5170D /* PoseFeedCoordinator.swift in Sources */,
 				C94FD2852AE39612003777EB /* BookMarkViewController.swift in Sources */,
