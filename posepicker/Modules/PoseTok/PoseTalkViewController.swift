@@ -75,6 +75,11 @@ class PoseTalkViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        toolTip.isHidden = true
+    }
+    
     // MARK: - Functions
     
     override func render() {
@@ -114,7 +119,6 @@ class PoseTalkViewController: BaseViewController {
             make.height.equalTo(UIScreen.main.isWiderThan375pt ? 80 : 68)
             make.top.equalTo(coordinator.rootViewController.view.safeAreaLayoutGuide.snp.top).offset(segmentHeight + headerHeight)
         }
-        
     }
     
     override func configUI() {
