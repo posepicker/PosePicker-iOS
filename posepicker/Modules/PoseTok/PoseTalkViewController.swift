@@ -15,7 +15,7 @@ class PoseTalkViewController: BaseViewController {
     
     // MARK: - Subviews
     
-    lazy var informationStackView = UIStackView(arrangedSubviews: [self.informationLabel, self.informationImageView])
+    lazy var informationStackView = UIStackView(arrangedSubviews: [self.informationLabel, self.informationTooltipButton])
         .then {
             $0.alignment = .center
             $0.axis = .horizontal
@@ -31,7 +31,10 @@ class PoseTalkViewController: BaseViewController {
             $0.text = "뽑은 제시어"
         }
     
-    let informationImageView = UIImageView(image: ImageLiteral.imgInfo24.withRenderingMode(.alwaysOriginal))
+    let informationTooltipButton = UIButton(type: .system)
+        .then {
+            $0.setImage(ImageLiteral.imgInfo24.withRenderingMode(.alwaysOriginal), for: .normal)
+        }
     
     let mainLabel = UILabel()
         .then {
@@ -42,21 +45,29 @@ class PoseTalkViewController: BaseViewController {
     
     var animationView: LottieAnimationView = .init(name: "lottiePoseTalk")
         .then {
+            $0.backgroundColor = .clear
             $0.loopMode = .loop
             $0.play()
         }
     
     let selectButton = Button(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "제시어 뽑기", image: nil)
     
+    let toolTip = ToolTip()
+        .then {
+            $0.layer.zPosition = 999
+        }
+    
     // MARK: - Properties
     
     let viewModel: PoseTalkViewModel
+    var coordinator: RootCoordinator
     var isAnimating = BehaviorRelay<Bool>(value: false)
     
     // MARK: - Life Cycles
     
-    init(viewModel: PoseTalkViewModel) {
+    init(viewModel: PoseTalkViewModel, coordinator: RootCoordinator) {
         self.viewModel = viewModel
+        self.coordinator = coordinator
         super.init()
     }
     
@@ -67,7 +78,7 @@ class PoseTalkViewController: BaseViewController {
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([informationStackView, mainLabel, animationView, selectButton])
+        view.addSubViews([informationStackView, toolTip, mainLabel, animationView, selectButton])
         
         informationStackView.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(UIScreen.main.isWiderThan375pt ? 64: 40)
@@ -81,9 +92,9 @@ class PoseTalkViewController: BaseViewController {
         }
         
         animationView.snp.makeConstraints { make in
-            make.top.equalTo(mainLabel.snp.bottom).offset( UIScreen.main.isWiderThan375pt ? 16 : 0)
             make.centerX.equalToSuperview()
             make.leading.trailing.equalToSuperview().inset(UIScreen.main.isWiderThan375pt ? 0 : 40)
+            make.bottom.equalTo(selectButton.snp.top).offset(UIScreen.main.isWiderThan375pt ? -84 : -20)
         }
         
         selectButton.snp.makeConstraints { make in
@@ -91,6 +102,19 @@ class PoseTalkViewController: BaseViewController {
             make.height.equalTo(60)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
         }
+        
+        coordinator.rootViewController.view.addSubViews([toolTip])
+    
+        let segmentHeight = coordinator.rootViewController.segmentControl.frame.height
+        let headerHeight = UIScreen.main.isWiderThan375pt ? coordinator.rootViewController.header.frame.height - 10 : coordinator.rootViewController.header.frame.height - 20
+        
+        toolTip.snp.makeConstraints { make in
+            make.leading.equalTo(56)
+            make.width.equalTo(UIScreen.main.isWiderThan375pt ? 250 : 220)
+            make.height.equalTo(UIScreen.main.isWiderThan375pt ? 80 : 68)
+            make.top.equalTo(coordinator.rootViewController.view.safeAreaLayoutGuide.snp.top).offset(segmentHeight + headerHeight)
+        }
+        
     }
     
     override func configUI() {
@@ -130,6 +154,20 @@ class PoseTalkViewController: BaseViewController {
                 self.mainLabel.text = $0
             })
             .disposed(by: disposeBag)
-            
+        
+        toolTip.closeButton.rx.tap.asDriver()
+            .drive(onNext: { [unowned self] in
+                self.toolTip.isHidden = true
+            })
+            .disposed(by: disposeBag)
+        
+        informationTooltipButton.rx.tap.asDriver()
+            .drive(onNext: {
+                self.toolTip.isHidden = false
+            })
+            .disposed(by: disposeBag)
+        
     }
+    
+    // MARK: - Objc Functions
 }
