@@ -14,14 +14,19 @@ class PoseFeedViewController: BaseViewController {
     // MARK: - Subviews
     let filterButton = UIButton(type: .system)
         .then {
+            $0.setTitleColor(.textSecondary, for: .normal)
+            var configuration = UIButton.Configuration.filled()
+            var attrString = AttributedString("필터")
+            attrString.font = .pretendard(.medium, ofSize: 14)
+            attrString.foregroundColor = UIColor.textSecondary
+            configuration.baseBackgroundColor = .bgSubWhite
+            configuration.imagePadding = 10
+            configuration.attributedTitle = attrString
+            $0.configuration = configuration
             $0.clipsToBounds = true
             $0.layer.cornerRadius = 8
-            $0.titleLabel?.font = .pretendard(.medium, ofSize: 14)
-            $0.tintColor = .textSecondary
-            $0.backgroundColor = .bgSubWhite
             $0.semanticContentAttribute = .forceRightToLeft
-            $0.setImage(ImageLiteral.imgCaretDown, for: .normal)
-            $0.setTitle("필터", for: .normal)
+            $0.setImage(ImageLiteral.imgCaretDown.withTintColor(.textSecondary).withRenderingMode(.alwaysOriginal), for: .normal)
         }
     
     let filterDivider = UIImageView(image: ImageLiteral.imgDividerVertical.withRenderingMode(.alwaysOriginal))
