@@ -165,14 +165,12 @@ class PoseFeedFilterViewController: BaseViewController {
         
         output.headCountTag
             .drive(onNext: { [unowned self] in
-                self.headCountSelection.pressIndex.accept($0)
                 self.selectedHeadCount.accept(self.headCountSelection.buttonGroup[$0])
             })
             .disposed(by: disposeBag)
         
         output.frameCountTag
             .drive(onNext: { [unowned self] in
-                self.frameCountSelection.pressIndex.accept($0)
                 self.selectedFrameCount.accept(self.frameCountSelection.buttonGroup[$0])
             })
             .disposed(by: disposeBag)
