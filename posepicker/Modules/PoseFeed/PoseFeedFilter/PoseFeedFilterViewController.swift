@@ -153,7 +153,7 @@ class PoseFeedFilterViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedFilterViewModel.Input(headCountSelection: headCountSelection.pressIndex.asObservable(), frameCountSelection: frameCountSelection.pressIndex.asObservable(), tagSelection: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable(), tagSelectCanceled: cancelTrigger.asObservable(), isPresenting: isPresenting.asObservable(), resetButtonTapped: resetButton.rx.tap)
+        let input = PoseFeedFilterViewModel.Input(headCountSelection: headCountSelection.buttonTapTrigger.asObservable(), frameCountSelection: frameCountSelection.buttonTapTrigger.asObservable(), tagSelection: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable(), tagSelectCanceled: cancelTrigger.asObservable(), isPresenting: isPresenting.asObservable(), resetButtonTapped: resetButton.rx.tap)
         
         let output = viewModel.transform(input: input)
         
@@ -165,12 +165,14 @@ class PoseFeedFilterViewController: BaseViewController {
         
         output.headCountTag
             .drive(onNext: { [unowned self] in
+                self.headCountSelection.pressIndex.accept($0)
                 self.selectedHeadCount.accept(self.headCountSelection.buttonGroup[$0])
             })
             .disposed(by: disposeBag)
         
         output.frameCountTag
             .drive(onNext: { [unowned self] in
+                self.frameCountSelection.pressIndex.accept($0)
                 self.selectedFrameCount.accept(self.frameCountSelection.buttonGroup[$0])
             })
             .disposed(by: disposeBag)

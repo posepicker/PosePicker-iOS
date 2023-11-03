@@ -77,7 +77,7 @@ class PoseFeedFilterViewModel: ViewModelType {
         input.isPresenting
             .flatMapLatest { isPresenting -> Observable<(Int, Int, [FilterTags])> in
                 if isPresenting {
-                    return Observable<(Int, Int, [FilterTags])>.just((headCountTagIndex.value, frameCountTagIndex.value, registeredTags.value))
+                    return Observable.just((headCountTagIndex.value, frameCountTagIndex.value, registeredTags.value))
                 } else {
                     return Observable<(Int, Int, [FilterTags])>.empty()
                 }
