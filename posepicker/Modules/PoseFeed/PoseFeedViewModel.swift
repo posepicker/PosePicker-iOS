@@ -45,8 +45,9 @@ class PoseFeedViewModel: ViewModelType {
                 return BehaviorRelay<[String]>(value: [headcount, frameCount] + filterTags.map { $0.rawValue} ).asObservable()
             }
             .subscribe(onNext: { tags in
-                tagItems.accept(tags.map { tagName in
-                    RegisteredFilterCellViewModel(title: tagName)
+                tagItems.accept(tags.compactMap { tagName in
+                    if tagName == "전체" { return nil }
+                    return RegisteredFilterCellViewModel(title: tagName)
                 })
             })
             .disposed(by: disposeBag)
