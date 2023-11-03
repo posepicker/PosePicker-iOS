@@ -19,6 +19,7 @@ class PoseFeedViewModel: ViewModelType {
         let filterTagSelection: Observable<RegisteredFilterCellViewModel>
         let filterRegisterCompleted: ControlEvent<Void>
         let poseFeedFilterViewIsPresenting: Observable<Bool>
+        let filterReset: ControlEvent<Void>
     }
     
     struct Output {
@@ -49,6 +50,7 @@ class PoseFeedViewModel: ViewModelType {
                 })
             })
             .disposed(by: disposeBag)
+        
         
         return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver())
     }
