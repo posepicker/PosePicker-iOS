@@ -101,6 +101,7 @@ class PoseFeedFilterViewModel: ViewModelType {
             .subscribe(onNext: {
                 headCountTagIndex.accept(0)
                 frameCountTagIndex.accept(0)
+                registeredTags.accept([])
                 tagItems.accept(tags.map {
                     PoseFeedFilterCellViewModel(title: $0.rawValue)
                 })
