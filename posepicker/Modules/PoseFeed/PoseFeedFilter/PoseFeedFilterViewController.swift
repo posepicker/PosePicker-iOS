@@ -88,6 +88,7 @@ class PoseFeedFilterViewController: BaseViewController {
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
+        isPresenting.accept(false)
         viewWillDisappearTrigger.onNext(())
     }
     
