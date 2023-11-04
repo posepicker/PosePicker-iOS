@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Kingfisher
 
 import RxCocoa
 import RxSwift
@@ -33,12 +34,16 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
         self.addSubViews([imageView])
         
         imageView.snp.makeConstraints { make in
+            make.width.equalTo((UIScreen.main.bounds.width - 56) / 2)
             make.top.leading.bottom.trailing.equalToSuperview()
         }
     }
     
     func bind(to viewModel: PoseFeedPhotoCellViewModel) {
-        viewModel.image.bind(to: imageView.rx.image)
+        viewModel.imageUrl.asDriver()
+            .drive(onNext: { [unowned self] in
+                self.imageView.kf.setImage(with: URL(string: $0))
+            })
             .disposed(by: disposeBag)
     }
 }
