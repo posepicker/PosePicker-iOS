@@ -11,12 +11,13 @@ import RxSwift
 
 class PoseFeedViewModel: ViewModelType {
     
+    var apiSession: APIService = APISession()
+    var disposeBag = DisposeBag()
+    
     enum CountTagType {
         case head
         case frame
     }
-    
-    var disposeBag = DisposeBag()
     
     struct Input {
         let filterButtonTapped: ControlEvent<Void>
@@ -25,6 +26,7 @@ class PoseFeedViewModel: ViewModelType {
         let filterRegisterCompleted: ControlEvent<Void>
         let poseFeedFilterViewIsPresenting: Observable<Bool>
         let filterReset: ControlEvent<Void>
+        let viewDidAppearTrigger: Observable<Void>
     }
     
     struct Output {
@@ -80,6 +82,14 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.viewDidAppearTrigger
+            .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
+                self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: 0, pageSize: 10)).asObservable()
+            }
+            .subscribe(onNext: {
+                print("posefeed: \($0)")
+            })
+            .disposed(by: disposeBag)
         
         return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver())
     }
