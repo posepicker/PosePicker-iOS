@@ -25,6 +25,9 @@
 		880E75562AE6C2F7007FAD5A /* APIInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75552AE6C2F7007FAD5A /* APIInterceptor.swift */; };
 		880E75592AEA8BE2007FAD5A /* EmptyBookmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75582AEA8BE2007FAD5A /* EmptyBookmarkView.swift */; };
 		880E755B2AF296E7007FAD5A /* PoseTalk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E755A2AF296E7007FAD5A /* PoseTalk.swift */; };
+		88EA81F12AF69BD700020DEA /* PoseFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F02AF69BD700020DEA /* PoseFeed.swift */; };
+		88EA81F62AF6A17A00020DEA /* PoseFeedPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F52AF6A17A00020DEA /* PoseFeedPhotoCell.swift */; };
+		88EA81F82AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F72AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift */; };
 		C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2742AE38E26003777EB /* RootViewController.swift */; };
 		C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2762AE38E82003777EB /* AppCoordinator.swift */; };
 		C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2782AE38EBD003777EB /* RootCoordinator.swift */; };
@@ -122,6 +125,9 @@
 		880E75552AE6C2F7007FAD5A /* APIInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIInterceptor.swift; sourceTree = "<group>"; };
 		880E75582AEA8BE2007FAD5A /* EmptyBookmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyBookmarkView.swift; sourceTree = "<group>"; };
 		880E755A2AF296E7007FAD5A /* PoseTalk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseTalk.swift; sourceTree = "<group>"; };
+		88EA81F02AF69BD700020DEA /* PoseFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeed.swift; sourceTree = "<group>"; };
+		88EA81F52AF6A17A00020DEA /* PoseFeedPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedPhotoCell.swift; sourceTree = "<group>"; };
+		88EA81F72AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedPhotoCellViewModel.swift; sourceTree = "<group>"; };
 		C94FD2742AE38E26003777EB /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		C94FD2762AE38E82003777EB /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2782AE38EBD003777EB /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -311,6 +317,34 @@
 			path = BookmarkSubviews;
 			sourceTree = "<group>";
 		};
+		88EA81EE2AF69BB900020DEA /* User */ = {
+			isa = PBXGroup;
+			children = (
+				C9C8909F2AE109610010240A /* User.swift */,
+				C9C890A12AE1098B0010240A /* Token.swift */,
+			);
+			path = User;
+			sourceTree = "<group>";
+		};
+		88EA81EF2AF69BBD00020DEA /* Pose */ = {
+			isa = PBXGroup;
+			children = (
+				880E754E2AE6C188007FAD5A /* PosePick.swift */,
+				880E755A2AF296E7007FAD5A /* PoseTalk.swift */,
+				88EA81F02AF69BD700020DEA /* PoseFeed.swift */,
+			);
+			path = Pose;
+			sourceTree = "<group>";
+		};
+		88EA81F22AF6A12A00020DEA /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				88EA81F72AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift */,
+				88EA81F52AF6A17A00020DEA /* PoseFeedPhotoCell.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		C94FD27A2AE39505003777EB /* PosePick */ = {
 			isa = PBXGroup;
 			children = (
@@ -332,6 +366,7 @@
 		C94FD27C2AE39512003777EB /* PoseFeed */ = {
 			isa = PBXGroup;
 			children = (
+				88EA81F22AF6A12A00020DEA /* Cell */,
 				C9DC2F9C2AEA2B8C00D5170D /* PoseFeedFilter */,
 				C94FD28A2AE3963E003777EB /* PoseFeedViewModel.swift */,
 				C9DC2F8D2AEA193300D5170D /* PoseFeedCoordinator.swift */,
@@ -518,10 +553,8 @@
 		C9C8909E2AE107CA0010240A /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				C9C8909F2AE109610010240A /* User.swift */,
-				C9C890A12AE1098B0010240A /* Token.swift */,
-				880E754E2AE6C188007FAD5A /* PosePick.swift */,
-				880E755A2AF296E7007FAD5A /* PoseTalk.swift */,
+				88EA81EE2AF69BB900020DEA /* User */,
+				88EA81EF2AF69BBD00020DEA /* Pose */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -815,6 +848,7 @@
 				880E75342AE67CC4007FAD5A /* BasicSelection.swift in Sources */,
 				880E75422AE6BF4B007FAD5A /* APIService.swift in Sources */,
 				C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */,
+				88EA81F82AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift in Sources */,
 				C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */,
 				C94FD27F2AE395E3003777EB /* PosePickViewController.swift in Sources */,
 				C9DC2F9B2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift in Sources */,
@@ -823,6 +857,7 @@
 				C9DC2F992AEA28E300D5170D /* PoseFeedFilterCell.swift in Sources */,
 				C9C8908A2AE107180010240A /* ViewModelType.swift in Sources */,
 				C9C890BF2AE1107B0010240A /* ImageLiteral.swift in Sources */,
+				88EA81F62AF6A17A00020DEA /* PoseFeedPhotoCell.swift in Sources */,
 				C9DC2FA82AECAD1A00D5170D /* RegisteredFilterCell.swift in Sources */,
 				C94FD2AB2AE8CEEB003777EB /* Button.swift in Sources */,
 				C94FD2922AE398D6003777EB /* MyPageViewModel.swift in Sources */,
@@ -841,6 +876,7 @@
 				C9C890522AE103A10010240A /* AppDelegate.swift in Sources */,
 				880E75402AE6BF2F007FAD5A /* ServicePose.swift in Sources */,
 				880E75562AE6C2F7007FAD5A /* APIInterceptor.swift in Sources */,
+				88EA81F12AF69BD700020DEA /* PoseFeed.swift in Sources */,
 				C94FD2892AE39635003777EB /* PoseTalkViewModel.swift in Sources */,
 				C9C890882AE107090010240A /* BaseViewController.swift in Sources */,
 				880E75372AE67DC8007FAD5A /* BasicButton.swift in Sources */,
