@@ -45,12 +45,13 @@ class PoseFeedViewController: BaseViewController {
         return cv
     }()
     
-    let poseFeedCollectionView: UICollectionView = {
+    lazy var poseFeedCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = 16
+        layout.minimumInteritemSpacing = 8
         layout.minimumLineSpacing = 16
-        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        layout.estimatedItemSize = CGSize(width: (UIScreen.main.bounds.width - 56) / 2, height: 100)
+        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 56) / 2, height: 100)
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.register(PoseFeedPhotoCell.self, forCellWithReuseIdentifier: PoseFeedPhotoCell.identifier)
@@ -152,6 +153,14 @@ class PoseFeedViewController: BaseViewController {
                 self.coordinator.poseFeedFilterViewController.filterTagRemoveTrigger.onNext(removeTarget)
             })
             .disposed(by: disposeBag)
+        
+        output.photoCellItems
+            .drive(poseFeedCollectionView.rx.items(cellIdentifier: PoseFeedPhotoCell.identifier, cellType: PoseFeedPhotoCell.self)) { _, viewModel, cell in
+                cell.bind(to: viewModel)
+            }
+            .disposed(by: disposeBag)
+        
+        poseFeedCollectionView.updateCollectionViewHeight()
     }
 }
 
