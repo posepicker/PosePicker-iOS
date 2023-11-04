@@ -34,12 +34,14 @@ class PoseFeedViewModel: ViewModelType {
         let filterTagItems: Driver<[RegisteredFilterCellViewModel]>
         let deleteTargetFilterTag: Driver<FilterTags?>
         let deleteTargetCountTag: Driver<CountTagType?>
+        let photoCellItems: Driver<[PoseFeedPhotoCellViewModel]>
     }
     
     func transform(input: Input) -> Output {
         let tagItems = BehaviorRelay<[RegisteredFilterCellViewModel]>(value: [])
         let deleteTargetFilterTag = BehaviorRelay<FilterTags?>(value: nil)
         let deleteTargetCountTag = BehaviorRelay<CountTagType?>(value: nil)
+        let photoCellItems = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
         
         input.filterRegisterCompleted
             .flatMapLatest { () -> Observable<Bool> in
@@ -86,11 +88,14 @@ class PoseFeedViewModel: ViewModelType {
             .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
                 self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: 0, pageSize: 10)).asObservable()
             }
-            .subscribe(onNext: {
-                print("posefeed: \($0)")
+            .subscribe(onNext: { posefeed in
+                let viewModels = posefeed.content.map { pose in
+                    PoseFeedPhotoCellViewModel(imageUrl: pose.poseInfo.imageKey)
+                }
+                photoCellItems.accept(viewModels)
             })
             .disposed(by: disposeBag)
         
-        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver())
+        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), photoCellItems: photoCellItems.asDriver())
     }
 }
