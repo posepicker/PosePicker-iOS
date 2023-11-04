@@ -45,12 +45,23 @@ class PoseFeedViewController: BaseViewController {
         return cv
     }()
     
-    
+    let poseFeedCollectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = 16
+        layout.minimumLineSpacing = 16
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.register(PoseFeedPhotoCell.self, forCellWithReuseIdentifier: PoseFeedPhotoCell.identifier)
+        return cv
+    }()
     
     // MARK: - Properties
     
     var viewModel: PoseFeedViewModel
     var coordinator: PoseFeedCoordinator
+    let viewDidAppearTrigger = PublishSubject<Void>()
     
     // MARK: - Initialization
     
@@ -64,10 +75,16 @@ class PoseFeedViewController: BaseViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    // MARK: - Life Cycles
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewDidAppearTrigger.onNext(())
+    }
+    
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([filterButton, filterDivider, filterCollectionView])
+        view.addSubViews([filterButton, filterDivider, filterCollectionView, poseFeedCollectionView])
         
         filterButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
@@ -86,6 +103,12 @@ class PoseFeedViewController: BaseViewController {
             make.leading.equalTo(filterDivider.snp.trailing).offset(8)
             make.trailing.equalTo(view).offset(-20)
         }
+        
+        poseFeedCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(filterButton.snp.bottom).offset(24)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        }
     }
     
     override func configUI() {
@@ -94,7 +117,7 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), filterReset: coordinator.poseFeedFilterViewController.resetButton.rx.tap)
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), filterReset: coordinator.poseFeedFilterViewController.resetButton.rx.tap, viewDidAppearTrigger: viewDidAppearTrigger.asObservable())
         
         let output = viewModel.transform(input: input)
         
