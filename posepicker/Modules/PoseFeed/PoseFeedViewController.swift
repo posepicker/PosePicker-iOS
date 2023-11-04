@@ -110,6 +110,25 @@ class PoseFeedViewController: BaseViewController {
                 cell.bind(to: viewModel)
             }
             .disposed(by: disposeBag)
+        
+        output.deleteTargetCountTag
+            .drive(onNext: { [unowned self] in
+                guard let tag = $0 else { return }
+                switch tag {
+                case .head:
+                    self.coordinator.poseFeedFilterViewController.countTagRemoveTrigger.onNext(.head)
+                case .frame:
+                    self.coordinator.poseFeedFilterViewController.countTagRemoveTrigger.onNext(.frame)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.deleteTargetFilterTag
+            .drive(onNext: { [unowned self] in
+                guard let removeTarget = $0 else { return }
+                self.coordinator.poseFeedFilterViewController.filterTagRemoveTrigger.onNext(removeTarget)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
