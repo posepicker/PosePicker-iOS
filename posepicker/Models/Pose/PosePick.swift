@@ -19,6 +19,6 @@ struct Pose: Codable {
     let poseId: Int
     let source: String
     let sourceUrl: String
-    let tagAttributes: String
+    let tagAttributes: String?
     let updatedAt: String?
 }
