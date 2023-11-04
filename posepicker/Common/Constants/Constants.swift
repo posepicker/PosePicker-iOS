@@ -23,6 +23,8 @@ struct K {
         static let peopleCount = "peopleCount"
         static let frameCount = "frameCount"
         static let tagAttributes = "tagAttributes"
+        static let pageNumber = "pageNumber"
+        static let pageSize = "pageSize"
     }
     
     /// 헤더 필드
