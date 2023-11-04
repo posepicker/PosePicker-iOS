@@ -11,6 +11,11 @@ import RxSwift
 
 class PoseFeedViewModel: ViewModelType {
     
+    enum CountTagType {
+        case head
+        case frame
+    }
+    
     var disposeBag = DisposeBag()
     
     struct Input {
@@ -25,10 +30,14 @@ class PoseFeedViewModel: ViewModelType {
     struct Output {
         let presentModal: Driver<Void>
         let filterTagItems: Driver<[RegisteredFilterCellViewModel]>
+        let deleteTargetFilterTag: Driver<FilterTags?>
+        let deleteTargetCountTag: Driver<CountTagType?>
     }
     
     func transform(input: Input) -> Output {
         let tagItems = BehaviorRelay<[RegisteredFilterCellViewModel]>(value: [])
+        let deleteTargetFilterTag = BehaviorRelay<FilterTags?>(value: nil)
+        let deleteTargetCountTag = BehaviorRelay<CountTagType?>(value: nil)
         
         input.filterRegisterCompleted
             .flatMapLatest { () -> Observable<Bool> in
@@ -52,7 +61,26 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        input.filterTagSelection
+            .subscribe(onNext: {
+                if let filterTag = FilterTags.getTagFromTitle(title: $0.title.value) {
+                    deleteTargetFilterTag.accept(filterTag)
+                } else if !$0.title.value.isEmpty { // 인원수 or 프레임 수 태그인 경우
+                    let tagName = $0.title.value
+                    let tagUnit = tagName[tagName.index(tagName.startIndex, offsetBy: 1)]
+                    switch tagUnit {
+                    case "컷":
+                        deleteTargetCountTag.accept(.frame)
+                    case "인":
+                        deleteTargetCountTag.accept(.head)
+                    default:
+                        break
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
         
-        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver())
+        
+        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver())
     }
 }
