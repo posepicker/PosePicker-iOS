@@ -8,7 +8,7 @@
 import Foundation
 
 struct PoseFeed: Codable {
-    let content: Pose
+    let content: [PosePick]
     let empty: Bool
     let first: Bool
     let last: Bool
