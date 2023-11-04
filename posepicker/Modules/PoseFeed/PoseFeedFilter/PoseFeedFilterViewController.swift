@@ -63,6 +63,11 @@ class PoseFeedFilterViewController: BaseViewController {
     var selectedTags = BehaviorRelay<[FilterTags]>(value: [])
     var isPresenting = BehaviorRelay<Bool>(value: false)
     var cancelTrigger = PublishSubject<Void>()
+    var dismissState = BehaviorRelay<PoseFeedFilterViewModel.DismissState>(value: .normal)
+    var viewWillDisappearTrigger = PublishSubject<Void>()
+    
+    var countTagRemoveTrigger = PublishSubject<PoseFeedViewModel.CountTagType>()
+    var filterTagRemoveTrigger = PublishSubject<FilterTags>()
     
     // MARK: - Initialization
     
@@ -73,6 +78,17 @@ class PoseFeedFilterViewController: BaseViewController {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    // MARK: - Life Cycles
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        dismissState.accept(.normal)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        viewWillDisappearTrigger.onNext(())
     }
     
     // MARK: - Functions
@@ -139,6 +155,7 @@ class PoseFeedFilterViewController: BaseViewController {
         
         closeButton.rx.tap.asDriver()
             .drive(onNext: { [unowned self] in
+                self.dismissState.accept(.normal)
                 self.cancelTrigger.onNext(())
                 self.dismiss(animated: true)
             })
@@ -146,6 +163,7 @@ class PoseFeedFilterViewController: BaseViewController {
         
         submitButton.rx.tap.asDriver()
             .drive(onNext: { [unowned self] in
+                self.dismissState.accept(.save)
                 self.isPresenting.accept(false)
                 self.dismiss(animated: true)
             })
@@ -153,7 +171,7 @@ class PoseFeedFilterViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedFilterViewModel.Input(headCountSelection: headCountSelection.buttonTapTrigger.asObservable(), frameCountSelection: frameCountSelection.buttonTapTrigger.asObservable(), tagSelection: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable(), tagSelectCanceled: cancelTrigger.asObservable(), isPresenting: isPresenting.asObservable(), resetButtonTapped: resetButton.rx.tap)
+        let input = PoseFeedFilterViewModel.Input(headCountSelection: headCountSelection.buttonTapTrigger.asObservable(), frameCountSelection: frameCountSelection.buttonTapTrigger.asObservable(), tagSelection: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable(), tagSelectCanceled: cancelTrigger.asObservable(), isPresenting: isPresenting.asObservable(), resetButtonTapped: resetButton.rx.tap, dismissState: dismissState.asObservable(), viewWillDisappearTrigger: viewWillDisappearTrigger.asObservable(), countTagRemoveTrigger: countTagRemoveTrigger.asObservable(), filterTagRemoveTrigger: filterTagRemoveTrigger.asObservable())
         
         let output = viewModel.transform(input: input)
         
