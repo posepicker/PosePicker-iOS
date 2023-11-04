@@ -1,6 +1,7 @@
 {
   "images" : [
     {
+      "filename" : "favicon-1024-round_image.png",
       "idiom" : "universal",
       "platform" : "ios",
       "size" : "1024x1024"
