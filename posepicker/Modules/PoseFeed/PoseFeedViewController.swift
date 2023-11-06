@@ -47,10 +47,9 @@ class PoseFeedViewController: BaseViewController {
     }()
     
     lazy var poseFeedCollectionView: UICollectionView = {
-        let layout = UICollectionViewFlowLayout()
+        let layout = PinterestLayout()
         layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = 8
-        layout.minimumLineSpacing = 16
+        layout.delegate = self
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.register(PoseFeedPhotoCell.self, forCellWithReuseIdentifier: PoseFeedPhotoCell.identifier)
@@ -63,7 +62,7 @@ class PoseFeedViewController: BaseViewController {
     var viewModel: PoseFeedViewModel
     var coordinator: PoseFeedCoordinator
     let viewDidAppearTrigger = PublishSubject<Void>()
-    var intrinsicContentSizeUpdateTrigger = PublishSubject<Observable<CGSize>>()
+    let viewDidDisappearTrigger = PublishSubject<Void>()
 
     // MARK: - Initialization
     
@@ -81,6 +80,11 @@ class PoseFeedViewController: BaseViewController {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         viewDidAppearTrigger.onNext(())
+    }
+    
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewDidDisappearTrigger.onNext(())
     }
     
     // MARK: - Functions
@@ -119,7 +123,7 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), filterReset: coordinator.poseFeedFilterViewController.resetButton.rx.tap, viewDidAppearTrigger: viewDidAppearTrigger.asObservable())
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), filterReset: coordinator.poseFeedFilterViewController.resetButton.rx.tap, viewDidAppearTrigger: viewDidAppearTrigger.asObservable(), viewDidDisappearTrigger: viewDidDisappearTrigger.asObservable())
         
         let output = viewModel.transform(input: input)
         
@@ -160,21 +164,20 @@ class PoseFeedViewController: BaseViewController {
                 cell.bind(to: viewModel)
             }
             .disposed(by: disposeBag)
-        
-        poseFeedCollectionView.updateCollectionViewHeight()
     }
 }
 
 extension PoseFeedViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        
         if collectionView == poseFeedCollectionView {
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PoseFeedPhotoCell.identifier, for: indexPath) as? PoseFeedPhotoCell else { return CGSize(width: 60, height: 30) }
-            
-
-            return CGSize(width: 60, height: 30)   
+            return viewModel.sizes.value[indexPath.item]
         }
-        
         return CGSize(width: 60, height: 30)
+    }
+}
+
+extension PoseFeedViewController: PinterestLayoutDelegate {
+    func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
+        return viewModel.sizes.value[indexPath.item].height
     }
 }
