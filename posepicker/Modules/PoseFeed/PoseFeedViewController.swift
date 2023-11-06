@@ -8,6 +8,7 @@
 import UIKit
 import RxCocoa
 import RxSwift
+import Kingfisher
 
 class PoseFeedViewController: BaseViewController {
     
@@ -41,7 +42,7 @@ class PoseFeedViewController: BaseViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.showsHorizontalScrollIndicator = false
         cv.register(RegisteredFilterCell.self, forCellWithReuseIdentifier: RegisteredFilterCell.identifier)
-        cv.delegate = self
+        cv.rx.setDelegate(self).disposed(by: disposeBag)
         return cv
     }()
     
@@ -50,11 +51,10 @@ class PoseFeedViewController: BaseViewController {
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 8
         layout.minimumLineSpacing = 16
-        layout.estimatedItemSize = CGSize(width: (UIScreen.main.bounds.width - 56) / 2, height: 100)
-        layout.itemSize = CGSize(width: (UIScreen.main.bounds.width - 56) / 2, height: 100)
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.register(PoseFeedPhotoCell.self, forCellWithReuseIdentifier: PoseFeedPhotoCell.identifier)
+        cv.rx.setDelegate(self).disposed(by: disposeBag)
         return cv
     }()
     
@@ -63,7 +63,8 @@ class PoseFeedViewController: BaseViewController {
     var viewModel: PoseFeedViewModel
     var coordinator: PoseFeedCoordinator
     let viewDidAppearTrigger = PublishSubject<Void>()
-    
+    var intrinsicContentSizeUpdateTrigger = PublishSubject<Observable<CGSize>>()
+
     // MARK: - Initialization
     
     init(viewModel: PoseFeedViewModel, coordinator: PoseFeedCoordinator) {
@@ -155,7 +156,7 @@ class PoseFeedViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         output.photoCellItems
-            .drive(poseFeedCollectionView.rx.items(cellIdentifier: PoseFeedPhotoCell.identifier, cellType: PoseFeedPhotoCell.self)) { _, viewModel, cell in
+            .drive(poseFeedCollectionView.rx.items(cellIdentifier: PoseFeedPhotoCell.identifier, cellType: PoseFeedPhotoCell.self)) { row, viewModel, cell in
                 cell.bind(to: viewModel)
             }
             .disposed(by: disposeBag)
@@ -166,6 +167,14 @@ class PoseFeedViewController: BaseViewController {
 
 extension PoseFeedViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        
+        if collectionView == poseFeedCollectionView {
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PoseFeedPhotoCell.identifier, for: indexPath) as? PoseFeedPhotoCell else { return CGSize(width: 60, height: 30) }
+            
+
+            return CGSize(width: 60, height: 30)   
+        }
+        
         return CGSize(width: 60, height: 30)
     }
 }
