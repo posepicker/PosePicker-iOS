@@ -21,7 +21,6 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
     
     // MARK: - Properties
     static let identifier = "PoseFeedPhotoCell"
-    var updatedIntrinsicContentSize: CGSize = .init(width: 0, height: 0)
     
     // MARK: - Life Cycles
     
@@ -36,7 +35,6 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
         self.addSubViews([imageView])
         
         imageView.snp.makeConstraints { make in
-            make.width.equalTo((UIScreen.main.bounds.width - 56) / 2)
             make.top.leading.bottom.trailing.equalToSuperview()
         }
     }
