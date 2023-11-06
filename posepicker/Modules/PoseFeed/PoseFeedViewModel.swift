@@ -5,9 +5,10 @@
 //  Created by 박경준 on 2023/10/21.
 //
 
-import Foundation
+import UIKit
 import RxCocoa
 import RxSwift
+import Kingfisher
 
 class PoseFeedViewModel: ViewModelType {
     
@@ -42,6 +43,8 @@ class PoseFeedViewModel: ViewModelType {
         let deleteTargetFilterTag = BehaviorRelay<FilterTags?>(value: nil)
         let deleteTargetCountTag = BehaviorRelay<CountTagType?>(value: nil)
         let photoCellItems = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
+        let retrievedCacheImage = BehaviorRelay<[UIImage?]>(value: [])
+        let urlsCount = BehaviorRelay<Int>(value: 0)
         
         input.filterRegisterCompleted
             .flatMapLatest { () -> Observable<Bool> in
@@ -89,12 +92,30 @@ class PoseFeedViewModel: ViewModelType {
                 self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: 0, pageSize: 10)).asObservable()
             }
             .subscribe(onNext: { posefeed in
-                let viewModels = posefeed.content.map { pose in
-                    PoseFeedPhotoCellViewModel(imageUrl: pose.poseInfo.imageKey)
+                urlsCount.accept(0)
+                urlsCount.accept(posefeed.content.count)
+                posefeed.content.forEach { pose in
+                    ImageCache.default.retrieveImage(forKey: pose.poseInfo.imageKey, options: nil) { result in
+                        switch result {
+                        case .success(let value):
+                            retrievedCacheImage.accept(retrievedCacheImage.value + [value.image])
+                        case .failure:
+                            retrievedCacheImage.accept(retrievedCacheImage.value + [nil])
+                        }
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        retrievedCacheImage
+            .subscribe(onNext: { images in
+                let viewModels = images.map { image in
+                    PoseFeedPhotoCellViewModel(image: image)
                 }
                 photoCellItems.accept(viewModels)
             })
             .disposed(by: disposeBag)
+        
         
         return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), photoCellItems: photoCellItems.asDriver())
     }

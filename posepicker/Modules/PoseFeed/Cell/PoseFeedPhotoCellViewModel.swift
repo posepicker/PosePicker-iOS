@@ -11,9 +11,9 @@ import RxCocoa
 import RxSwift
 
 class PoseFeedPhotoCellViewModel {
-    let imageUrl = BehaviorRelay<String>(value: "")
+    let image = BehaviorRelay<UIImage?>(value: nil)
     
-    init(imageUrl: String) {
-        self.imageUrl.accept(imageUrl)
+    init(image: UIImage?) {
+        self.image.accept(image)
     }
 }
