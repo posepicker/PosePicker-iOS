@@ -25,6 +25,7 @@
 		880E75562AE6C2F7007FAD5A /* APIInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75552AE6C2F7007FAD5A /* APIInterceptor.swift */; };
 		880E75592AEA8BE2007FAD5A /* EmptyBookmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75582AEA8BE2007FAD5A /* EmptyBookmarkView.swift */; };
 		880E755B2AF296E7007FAD5A /* PoseTalk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E755A2AF296E7007FAD5A /* PoseTalk.swift */; };
+		8851477F2AF9490C00DCDD4E /* PinterestLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8851477E2AF9490C00DCDD4E /* PinterestLayout.swift */; };
 		88EA81F12AF69BD700020DEA /* PoseFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F02AF69BD700020DEA /* PoseFeed.swift */; };
 		88EA81F62AF6A17A00020DEA /* PoseFeedPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F52AF6A17A00020DEA /* PoseFeedPhotoCell.swift */; };
 		88EA81F82AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F72AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift */; };
@@ -126,6 +127,7 @@
 		880E75552AE6C2F7007FAD5A /* APIInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIInterceptor.swift; sourceTree = "<group>"; };
 		880E75582AEA8BE2007FAD5A /* EmptyBookmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyBookmarkView.swift; sourceTree = "<group>"; };
 		880E755A2AF296E7007FAD5A /* PoseTalk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseTalk.swift; sourceTree = "<group>"; };
+		8851477E2AF9490C00DCDD4E /* PinterestLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestLayout.swift; sourceTree = "<group>"; };
 		88EA81F02AF69BD700020DEA /* PoseFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeed.swift; sourceTree = "<group>"; };
 		88EA81F52AF6A17A00020DEA /* PoseFeedPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedPhotoCell.swift; sourceTree = "<group>"; };
 		88EA81F72AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedPhotoCellViewModel.swift; sourceTree = "<group>"; };
@@ -317,6 +319,14 @@
 				880E75582AEA8BE2007FAD5A /* EmptyBookmarkView.swift */,
 			);
 			path = BookmarkSubviews;
+			sourceTree = "<group>";
+		};
+		8851477D2AF948BF00DCDD4E /* PinterestLayout */ = {
+			isa = PBXGroup;
+			children = (
+				8851477E2AF9490C00DCDD4E /* PinterestLayout.swift */,
+			);
+			path = PinterestLayout;
 			sourceTree = "<group>";
 		};
 		88EA81EE2AF69BB900020DEA /* User */ = {
@@ -640,6 +650,7 @@
 		C9DC2F912AEA27F600D5170D /* UICollectionView */ = {
 			isa = PBXGroup;
 			children = (
+				8851477D2AF948BF00DCDD4E /* PinterestLayout */,
 				C9DC2F922AEA280000D5170D /* LeftAlignedCollectionView */,
 				C9DC2F952AEA284900D5170D /* UICollectionView+.swift */,
 			);
@@ -849,6 +860,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				8851477F2AF9490C00DCDD4E /* PinterestLayout.swift in Sources */,
 				C9C8908E2AE1073F0010240A /* BaseCollectionViewCell.swift in Sources */,
 				880E75472AE6BFBC007FAD5A /* APISession.swift in Sources */,
 				880E755B2AF296E7007FAD5A /* PoseTalk.swift in Sources */,
