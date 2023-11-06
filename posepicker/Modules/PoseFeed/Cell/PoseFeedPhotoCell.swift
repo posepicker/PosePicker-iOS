@@ -21,6 +21,7 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
     
     // MARK: - Properties
     static let identifier = "PoseFeedPhotoCell"
+    var updatedIntrinsicContentSize: CGSize = .init(width: 0, height: 0)
     
     // MARK: - Life Cycles
     
@@ -30,6 +31,7 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
     }
     
     // MARK: - Functions
+    
     override func render() {
         self.addSubViews([imageView])
         
@@ -39,11 +41,11 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
         }
     }
     
+    override func configUI() {
+        self.clipsToBounds = true
+    }
+    
     func bind(to viewModel: PoseFeedPhotoCellViewModel) {
-        viewModel.imageUrl.asDriver()
-            .drive(onNext: { [unowned self] in
-                self.imageView.kf.setImage(with: URL(string: $0))
-            })
-            .disposed(by: disposeBag)
+        viewModel.image.bind(to: imageView.rx.image).disposed(by: disposeBag)
     }
 }
