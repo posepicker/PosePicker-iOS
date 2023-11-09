@@ -18,18 +18,3 @@ struct PoseFeed: Codable {
     let size: Int
     let sort: Sort
 }
-
-struct Page: Codable {
-    let offset: Int
-    let pageNumber: Int
-    let pageSize: Int
-    let paged: Bool
-    let sort: Sort
-    let unpaged: Bool
-}
-
-struct Sort: Codable {
-    let empty: Bool
-    let sorted: Bool
-    let unsorted: Bool
-}
