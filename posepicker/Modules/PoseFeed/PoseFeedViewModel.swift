@@ -48,6 +48,8 @@ class PoseFeedViewModel: ViewModelType {
         let retrievedCacheImage = BehaviorRelay<[UIImage?]>(value: [])
         let downloadCountForPageSize = BehaviorRelay<Int>(value: 0)
         let queryParameters = BehaviorRelay<[String]>(value: [])
+        let pageSize = BehaviorRelay<Int>(value: 10)
+        
         
         /// 필터 등록 완료 + 필터 모달이 Present 상태일때
         /// 인원 수 & 프레임 수 셀렉션으로부터 데이터 추출
@@ -71,23 +73,6 @@ class PoseFeedViewModel: ViewModelType {
                     if tagName == "전체" { return nil }
                     return RegisteredFilterCellViewModel(title: tagName)
                 })
-            })
-            .disposed(by: disposeBag)
-        
-        queryParameters
-            .flatMapLatest { [unowned self] tags -> Observable<FilteredPose> in
-                if tags.count < 2 {
-                    return Observable<FilteredPose>.empty()
-                }
-                var filterTags: [String] = []
-                if tags.count > 2 {
-                    filterTags = Array(tags[2..<tags.count])
-                }
-                return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: tags[0], frameCount: tags[1], filterTags: filterTags, pageNumber: 0)).asObservable()
-            }
-            .subscribe(onNext: {
-                print("필터 적용된 포즈피드 !")
-                print($0)
             })
             .disposed(by: disposeBag)
         
@@ -115,9 +100,11 @@ class PoseFeedViewModel: ViewModelType {
         /// viewDidAppear 이후 데이터 요청
         input.viewDidAppearTrigger
             .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
-                self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: 0, pageSize: 20)).asObservable()
+                self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: 0, pageSize: 10)).asObservable()
             }
             .subscribe(onNext: { [unowned self] posefeed in
+                pageSize.accept(posefeed.content.count) // 데이터 로드 대기 갯수
+                
                 posefeed.content.forEach { pose in
                     ImageCache.default.retrieveImage(forKey: pose.poseInfo.imageKey, options: nil) { result in
                         switch result {
@@ -150,18 +137,64 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        retrievedCacheImage
-            .subscribe(onNext: { images in
-                if downloadCountForPageSize.value < 10 { // 이미지 킹피셔 URL로 다운로드 하는 갯수를 카운팅
-                    return
+        /// 쿼리 파라미터 세팅 이후 이미지 세팅
+        queryParameters
+            .flatMapLatest { [unowned self] tags -> Observable<FilteredPose> in
+                if tags.count < 2 {
+                    return Observable<FilteredPose>.empty()
                 }
-                let viewModels = images.map { image in
-                    PoseFeedPhotoCellViewModel(image: image)
+                var filterTags: [String] = []
+                if tags.count > 2 {
+                    filterTags = Array(tags[2..<tags.count])
                 }
-                photoCellItems.accept(viewModels)
+                return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: tags[0], frameCount: tags[1], filterTags: filterTags, pageNumber: 0)).asObservable()
+            }
+            .map { $0.filteredContents.content }
+            .subscribe(onNext: { [unowned self] filteredContent in
+                retrievedCacheImage.accept([])
+                pageSize.accept(filteredContent.count)
+                
+                filteredContent.forEach { pose in
+                    ImageCache.default.retrieveImage(forKey: pose.poseInfo.imageKey, options: nil) { result in
+                        switch result {
+                        case .success(let value):
+                            if let image = value.image {
+                                let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
+                                retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
+                                self.sizes.accept(self.sizes.value + [newSizeImage.size])
+                                downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
+                            } else {
+                                guard let url = URL(string: pose.poseInfo.imageKey) else { return }
+                                KingfisherManager.shared.retrieveImage(with: url) { downloadResult in
+                                    switch downloadResult {
+                                    case .success(let downloadedImage):
+                                        let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadedImage.image)
+                                        retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
+                                        self.sizes.accept(self.sizes.value + [newSizeImage.size])
+                                        downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
+                                    case .failure:
+                                        return
+                                    }
+                                }
+                            }
+                            
+                        case .failure:
+                            retrievedCacheImage.accept(retrievedCacheImage.value + [nil])
+                        }
+                    }
+                }
             })
             .disposed(by: disposeBag)
         
+        Observable.combineLatest(retrievedCacheImage, downloadCountForPageSize, pageSize)
+            .subscribe(onNext: { images, downloadCount, pageSize in
+                if downloadCount < pageSize {
+                    return
+                }
+                let viewModels = images.map { image in PoseFeedPhotoCellViewModel(image: image) }
+                photoCellItems.accept(viewModels)
+            })
+            .disposed(by: disposeBag)
         
         return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), photoCellItems: photoCellItems.asDriver())
     }
@@ -169,7 +202,10 @@ class PoseFeedViewModel: ViewModelType {
     func newSizeImageWidthDownloadedResource(image: UIImage) -> UIImage {
         let targetWidth = (UIScreen.main.bounds.width - 56) / 2
         let targetSize = CGSize(width: targetWidth, height: targetWidth * image.size.height / image.size.width)
-        let newSizeImage = image.resize(to: targetSize)
+//        let newSizeImage = image.resize(to: targetSize)
+        let newSizeImage = image.resize(newWidth: targetWidth)
+        print("BEFORE SIZE!!", image.size)
+        print("NEW SIZE!!!",newSizeImage.size)
         return newSizeImage
     }
 }
