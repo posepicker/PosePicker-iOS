@@ -18,4 +18,15 @@ extension UICollectionView {
             }
         }
     }
+    
+    func collectionViewHeightFitting() {
+        self.setNeedsLayout()
+        self.layoutIfNeeded()
+        
+        if(self.contentSize.height < self.frame.height) {
+            self.snp.updateConstraints {
+                $0.height.equalTo(self.contentSize.height)
+            }
+        }
+    }
 }
