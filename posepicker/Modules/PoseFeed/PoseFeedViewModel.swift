@@ -47,7 +47,7 @@ class PoseFeedViewModel: ViewModelType {
         let photoCellItems = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
         let retrievedCacheImage = BehaviorRelay<[UIImage?]>(value: [])
         let downloadCountForPageSize = BehaviorRelay<Int>(value: 0)
-        
+        let queryParameters = BehaviorRelay<[String]>(value: [])
         
         /// 필터 등록 완료 + 필터 모달이 Present 상태일때
         /// 인원 수 & 프레임 수 셀렉션으로부터 데이터 추출
@@ -66,10 +66,28 @@ class PoseFeedViewModel: ViewModelType {
                 return BehaviorRelay<[String]>(value: [headcount, frameCount] + filterTags.map { $0.rawValue} ).asObservable()
             }
             .subscribe(onNext: { tags in
+                queryParameters.accept(tags)
                 tagItems.accept(tags.compactMap { tagName in
                     if tagName == "전체" { return nil }
                     return RegisteredFilterCellViewModel(title: tagName)
                 })
+            })
+            .disposed(by: disposeBag)
+        
+        queryParameters
+            .flatMapLatest { [unowned self] tags -> Observable<FilteredPose> in
+                if tags.count < 2 {
+                    return Observable<FilteredPose>.empty()
+                }
+                var filterTags: [String] = []
+                if tags.count > 2 {
+                    filterTags = Array(tags[2..<tags.count])
+                }
+                return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: tags[0], frameCount: tags[1], filterTags: filterTags, pageNumber: 0)).asObservable()
+            }
+            .subscribe(onNext: {
+                print("필터 적용된 포즈피드 !")
+                print($0)
             })
             .disposed(by: disposeBag)
         
@@ -95,7 +113,6 @@ class PoseFeedViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         /// viewDidAppear 이후 데이터 요청
-        ///
         input.viewDidAppearTrigger
             .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
                 self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: 0, pageSize: 20)).asObservable()
