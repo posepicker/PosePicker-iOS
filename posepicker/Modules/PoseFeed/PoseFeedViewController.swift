@@ -47,15 +47,17 @@ class PoseFeedViewController: BaseViewController {
     }()
     
     lazy var poseFeedCollectionView: UICollectionView = {
-        let layout = PinterestLayout()
-        layout.scrollDirection = .vertical
-        layout.delegate = self
-        
-        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: self.pinterestLayout)
         cv.register(PoseFeedPhotoCell.self, forCellWithReuseIdentifier: PoseFeedPhotoCell.identifier)
         cv.rx.setDelegate(self).disposed(by: disposeBag)
         return cv
     }()
+    
+    lazy var pinterestLayout = PinterestLayout()
+        .then {
+            $0.delegate = self
+            $0.scrollDirection = .vertical
+        }
     
     // MARK: - Properties
     
