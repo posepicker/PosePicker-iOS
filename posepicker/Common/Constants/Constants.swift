@@ -25,6 +25,7 @@ struct K {
         static let tagAttributes = "tagAttributes"
         static let pageNumber = "pageNumber"
         static let pageSize = "pageSize"
+        static let tags = "tags"
     }
     
     /// 헤더 필드
