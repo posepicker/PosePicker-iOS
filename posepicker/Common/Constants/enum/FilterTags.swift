@@ -37,6 +37,44 @@ enum FilterTags: String {
         }
     }
     
+    static func getNumberFromPeopleCountString(countString: String) -> Int {
+        switch countString {
+        case "전체":
+            return 0
+        case "1인":
+            return 1
+        case "2인":
+            return 2
+        case "3인":
+            return 3
+        case "4인":
+            return 4
+        case "5인+":
+            return 5
+        default:
+            return 0
+        }
+    }
+    
+    static func getNumberFromFrameCountString(countString: String) -> Int {
+        switch countString {
+        case "전체":
+            return 0
+        case "1컷":
+            return 1
+        case "3컷":
+            return 3
+        case "4컷":
+            return 4
+        case "6컷":
+            return 6
+        case "8컷+":
+            return 8
+        default:
+            return 0
+        }
+    }
+    
     func getTagNumber() -> Int {
         switch self {
         case .friend: return 0
