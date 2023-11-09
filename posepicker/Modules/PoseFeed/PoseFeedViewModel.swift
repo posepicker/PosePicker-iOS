@@ -39,7 +39,7 @@ class PoseFeedViewModel: ViewModelType {
         let deleteTargetCountTag: Driver<CountTagType?>
         let photoCellItems: Driver<[PoseFeedPhotoCellViewModel]>
     }
-    
+    // MARK: - 이미지 하나씩 바인딩하지 말고 모두 다 받고 진행
     func transform(input: Input) -> Output {
         let tagItems = BehaviorRelay<[RegisteredFilterCellViewModel]>(value: [])
         let deleteTargetFilterTag = BehaviorRelay<FilterTags?>(value: nil)
@@ -132,6 +132,9 @@ class PoseFeedViewModel: ViewModelType {
         
         retrievedCacheImage
             .subscribe(onNext: { images in
+                if images.count < 2 { // FIXME: 네트워크 스로틀 테스트 필요 (count 비굣값)
+                    return
+                }
                 let viewModels = images.map { image in
                     PoseFeedPhotoCellViewModel(image: image)
                 }
@@ -146,7 +149,6 @@ class PoseFeedViewModel: ViewModelType {
     func newSizeImageWidthDownloadedResource(image: UIImage) -> UIImage {
         let targetWidth = (UIScreen.main.bounds.width - 56) / 2
         let targetSize = CGSize(width: targetWidth, height: targetWidth * image.size.height / image.size.width)
-        print("NEW SIZE ! : \(targetSize)")
         let newSizeImage = image.resize(to: targetSize)
         return newSizeImage
     }
