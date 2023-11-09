@@ -46,6 +46,7 @@ class PoseFeedViewModel: ViewModelType {
         let deleteTargetCountTag = BehaviorRelay<CountTagType?>(value: nil)
         let photoCellItems = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
         let retrievedCacheImage = BehaviorRelay<[UIImage?]>(value: [])
+        let downloadCountForPageSize = BehaviorRelay<Int>(value: 0)
         
         
         /// 필터 등록 완료 + 필터 모달이 Present 상태일때
@@ -108,6 +109,7 @@ class PoseFeedViewModel: ViewModelType {
                                 let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
                                 retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
                                 self.sizes.accept(self.sizes.value + [newSizeImage.size])
+                                downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
                             } else {
                                 guard let url = URL(string: pose.poseInfo.imageKey) else { return }
                                 KingfisherManager.shared.retrieveImage(with: url) { downloadResult in
@@ -116,6 +118,7 @@ class PoseFeedViewModel: ViewModelType {
                                         let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadedImage.image)
                                         retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
                                         self.sizes.accept(self.sizes.value + [newSizeImage.size])
+                                        downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
                                     case .failure:
                                         return
                                     }
@@ -132,7 +135,7 @@ class PoseFeedViewModel: ViewModelType {
         
         retrievedCacheImage
             .subscribe(onNext: { images in
-                if images.count < 2 { // FIXME: 네트워크 스로틀 테스트 필요 (count 비굣값)
+                if downloadCountForPageSize.value < 10 { // 이미지 킹피셔 URL로 다운로드 하는 갯수를 카운팅
                     return
                 }
                 let viewModels = images.map { image in
