@@ -41,6 +41,7 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
     
     override func configUI() {
         self.clipsToBounds = true
+        self.layer.cornerRadius = 8
     }
     
     func bind(to viewModel: PoseFeedPhotoCellViewModel) {
