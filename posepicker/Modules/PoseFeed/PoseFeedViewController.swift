@@ -47,6 +47,7 @@ class PoseFeedViewController: BaseViewController {
     }()
     
     lazy var poseFeedCollectionView: UICollectionView = {
+        
         let cv = UICollectionView(frame: .zero, collectionViewLayout: self.pinterestLayout)
         cv.register(PoseFeedPhotoCell.self, forCellWithReuseIdentifier: PoseFeedPhotoCell.identifier)
         cv.rx.setDelegate(self).disposed(by: disposeBag)
@@ -166,6 +167,12 @@ class PoseFeedViewController: BaseViewController {
                 cell.bind(to: viewModel)
             }
             .disposed(by: disposeBag)
+        
+//        output.collectionViewReloadTrigger
+//            .drive(onNext: { [unowned self] in
+//                
+//            })
+//            .disposed(by: disposeBag)
     }
 }
 
