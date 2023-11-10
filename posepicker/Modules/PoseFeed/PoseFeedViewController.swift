@@ -64,7 +64,7 @@ class PoseFeedViewController: BaseViewController {
     
     var viewModel: PoseFeedViewModel
     var coordinator: PoseFeedCoordinator
-    let viewDidAppearTrigger = PublishSubject<Void>()
+    let viewDidLoadTrigger = PublishSubject<Void>()
     let viewDidDisappearTrigger = PublishSubject<Void>()
 
     // MARK: - Initialization
@@ -80,9 +80,9 @@ class PoseFeedViewController: BaseViewController {
     }
     
     // MARK: - Life Cycles
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        viewDidAppearTrigger.onNext(())
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewDidLoadTrigger.onNext(())
     }
     
     override func viewDidDisappear(_ animated: Bool) {
@@ -126,7 +126,7 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), filterReset: coordinator.poseFeedFilterViewController.resetButton.rx.tap, viewDidAppearTrigger: viewDidAppearTrigger.asObservable(), viewDidDisappearTrigger: viewDidDisappearTrigger.asObservable())
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), filterReset: coordinator.poseFeedFilterViewController.resetButton.rx.tap, viewDidLoadTrigger: viewDidLoadTrigger.asObservable(), viewDidDisappearTrigger: viewDidDisappearTrigger.asObservable())
         
         let output = viewModel.transform(input: input)
         

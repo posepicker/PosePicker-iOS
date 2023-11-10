@@ -28,7 +28,7 @@ class PoseFeedViewModel: ViewModelType {
         let filterRegisterCompleted: ControlEvent<Void>
         let poseFeedFilterViewIsPresenting: Observable<Bool>
         let filterReset: ControlEvent<Void>
-        let viewDidAppearTrigger: Observable<Void>
+        let viewDidLoadTrigger: Observable<Void>
         let viewDidDisappearTrigger: Observable<Void>
     }
     
@@ -98,7 +98,7 @@ class PoseFeedViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         /// viewDidAppear 이후 데이터 요청
-        input.viewDidAppearTrigger
+        input.viewDidLoadTrigger
             .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
                 self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: 0, pageSize: 10)).asObservable()
             }
@@ -202,7 +202,6 @@ class PoseFeedViewModel: ViewModelType {
     
     func newSizeImageWidthDownloadedResource(image: UIImage) -> UIImage {
         let targetWidth = (UIScreen.main.bounds.width - 56) / 2
-        let targetSize = CGSize(width: targetWidth, height: targetWidth * image.size.height / image.size.width)
         let newSizeImage = image.resize(newWidth: targetWidth)
         return newSizeImage
     }
