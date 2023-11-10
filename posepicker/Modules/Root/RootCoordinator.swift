@@ -90,4 +90,15 @@ class RootCoordinator: Coordinator {
         rootViewController.segmentControl.moveUnderlineView()
     }
     
+    /// 북마크 페이지 푸시
+    func push(page: RootPage) {
+        switch page {
+        case .myPage:
+            self.navigationController.pushViewController(MyPageViewController(viewModel: MyPageViewModel(), coordinator: self), animated: true)
+        case .bookmark:
+            self.navigationController.pushViewController(BookMarkViewController(viewModel: BookMarkViewModel(), coordinator: self), animated: true)
+        default:
+            break
+        }
+    }
 }
