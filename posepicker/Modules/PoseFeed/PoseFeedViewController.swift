@@ -167,12 +167,6 @@ class PoseFeedViewController: BaseViewController {
                 cell.bind(to: viewModel)
             }
             .disposed(by: disposeBag)
-        
-//        output.collectionViewReloadTrigger
-//            .drive(onNext: { [unowned self] in
-//                
-//            })
-//            .disposed(by: disposeBag)
     }
 }
 

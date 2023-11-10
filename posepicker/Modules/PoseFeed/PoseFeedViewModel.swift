@@ -152,6 +152,7 @@ class PoseFeedViewModel: ViewModelType {
             .map { $0.filteredContents.content }
             .subscribe(onNext: { [unowned self] filteredContent in
                 retrievedCacheImage.accept([])
+                self.sizes.accept([])
                 pageSize.accept(filteredContent.count)
                 
                 filteredContent.forEach { pose in
@@ -202,10 +203,7 @@ class PoseFeedViewModel: ViewModelType {
     func newSizeImageWidthDownloadedResource(image: UIImage) -> UIImage {
         let targetWidth = (UIScreen.main.bounds.width - 56) / 2
         let targetSize = CGSize(width: targetWidth, height: targetWidth * image.size.height / image.size.width)
-//        let newSizeImage = image.resize(to: targetSize)
         let newSizeImage = image.resize(newWidth: targetWidth)
-        print("BEFORE SIZE!!", image.size)
-        print("NEW SIZE!!!",newSizeImage.size)
         return newSizeImage
     }
 }
