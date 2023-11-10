@@ -21,6 +21,11 @@ class Header: UIView {
             $0.setImage(ImageLiteral.imgMenu24.withRenderingMode(.alwaysOriginal), for: .normal)
         }
     
+    let bookMarkButton = UIButton(type: .system)
+        .then {
+            $0.setImage(ImageLiteral.imgBookmarkFill24.withTintColor(.iconDefault).withRenderingMode(.alwaysOriginal), for: .normal)
+        }
+    
     // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -41,7 +46,7 @@ class Header: UIView {
     // MARK: - Functions
     
     func render() {
-        self.addSubViews([appTitleLabel, menuButton])
+        self.addSubViews([appTitleLabel, menuButton, bookMarkButton])
         
         appTitleLabel.snp.makeConstraints { make in
             make.leading.equalTo(self).offset(20)
@@ -50,6 +55,11 @@ class Header: UIView {
         
         menuButton.snp.makeConstraints { make in
             make.trailing.equalTo(self).offset(-20)
+            make.centerY.equalTo(self)
+        }
+        
+        bookMarkButton.snp.makeConstraints { make in
+            make.trailing.equalTo(menuButton.snp.leading).offset(-20)
             make.centerY.equalTo(self)
         }
     }
