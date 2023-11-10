@@ -20,7 +20,7 @@ class RootViewController: BaseViewController {
             $0.backgroundColor = .bgDivider
         }
     
-    lazy var segmentControl = UnderlineSegmentControl(items: ["포즈픽", "포즈톡", "포즈피드", "북마크"])
+    lazy var segmentControl = UnderlineSegmentControl(items: ["포즈픽", "포즈톡", "포즈피드"])
         .then {
             $0.selectedSegmentTintColor = .mainViolet
             $0.selectedSegmentIndex = 0
@@ -43,6 +43,12 @@ class RootViewController: BaseViewController {
             let direction: UIPageViewController.NavigationDirection = oldValue <= self.currentPage ? .forward : .reverse
             coordinator.moveWithViewController(viewController: [viewControllers[self.currentPage]], direction: direction, pageNumber: currentPage)
         }
+    }
+    
+    // MARK: - Life Cycles
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     // MARK: - Initialization
@@ -70,7 +76,7 @@ class RootViewController: BaseViewController {
         segmentControl.snp.makeConstraints { make in
             make.top.equalTo(header.snp.bottom)
             make.leading.equalTo(view).offset(10)
-            make.trailing.equalTo(view).offset(-100)
+            make.trailing.equalTo(view).offset(-160)
             make.height.equalTo(48)
         }
         
@@ -108,6 +114,18 @@ class RootViewController: BaseViewController {
                 self.currentPage = $0
             })
             .disposed(by: disposeBag)
+        
+        header.menuButton.rx.tap.asDriver()
+            .drive(onNext: { [unowned self] in
+                self.coordinator.push(page: .myPage)
+            })
+            .disposed(by: disposeBag)
+        
+        header.bookMarkButton.rx.tap.asDriver()
+            .drive(onNext: { [unowned self] in
+                self.coordinator.push(page: .bookmark)
+            })
+            .disposed(by: disposeBag)
     }
     
     func getNavigationController(_ page: RootPage) -> UINavigationController {
@@ -128,7 +146,7 @@ class RootViewController: BaseViewController {
             let bookmarkVC = BookMarkViewController(viewModel: BookMarkViewModel(), coordinator: self.coordinator)
             navController.pushViewController(bookmarkVC, animated: true)
         case .myPage:
-            let myPageVC = MyPageViewController()
+            let myPageVC = MyPageViewController(viewModel: MyPageViewModel(), coordinator: self.coordinator)
             navController.pushViewController(myPageVC, animated: true)
         }
         
