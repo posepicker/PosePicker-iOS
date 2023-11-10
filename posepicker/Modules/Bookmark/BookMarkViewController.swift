@@ -37,12 +37,13 @@ class BookMarkViewController: BaseViewController {
         emptyView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(52)
             make.height.equalTo(170)
-            make.top.equalToSuperview().offset(80)
+            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(80)
         }
     }
     
     override func configUI() {
-        self.navigationController?.isNavigationBarHidden = true
+        self.navigationController?.isNavigationBarHidden = false
+        self.navigationItem.title = "북마크"
         view.backgroundColor = .bgWhite
     }
     
