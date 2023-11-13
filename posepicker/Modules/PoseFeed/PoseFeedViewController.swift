@@ -69,6 +69,7 @@ class PoseFeedViewController: BaseViewController {
     let viewDidLoadTrigger = PublishSubject<Void>()
     let viewDidDisappearTrigger = PublishSubject<Void>()
     let viewDidAppearTrigger = PublishSubject<Void>()
+    let nextPageRequestTrigger = PublishSubject<Void>()
 
     // MARK: - Initialization
     
@@ -137,10 +138,18 @@ class PoseFeedViewController: BaseViewController {
     override func configUI() {
         self.navigationController?.isNavigationBarHidden = true
         view.backgroundColor = .bgWhite
+        
+        poseFeedCollectionView.rx.contentOffset
+            .subscribe(onNext: { [unowned self] in
+                if $0.y > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height {
+                    self.nextPageRequestTrigger.onNext(())
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), filterReset: coordinator.poseFeedFilterViewController.resetButton.rx.tap, viewDidLoadTrigger: viewDidLoadTrigger.asObservable(), viewDidDisappearTrigger: viewDidDisappearTrigger.asObservable(), viewDidAppearTrigger: viewDidAppearTrigger.asObservable())
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), filterReset: coordinator.poseFeedFilterViewController.resetButton.rx.tap, viewDidLoadTrigger: viewDidLoadTrigger.asObservable(), viewDidDisappearTrigger: viewDidDisappearTrigger.asObservable(), viewDidAppearTrigger: viewDidAppearTrigger.asObservable(), nextPageRequestTrigger: nextPageRequestTrigger.asObservable())
         
         let output = viewModel.transform(input: input)
         

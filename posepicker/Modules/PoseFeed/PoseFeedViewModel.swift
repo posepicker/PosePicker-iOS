@@ -31,6 +31,7 @@ class PoseFeedViewModel: ViewModelType {
         let viewDidLoadTrigger: Observable<Void>
         let viewDidDisappearTrigger: Observable<Void>
         let viewDidAppearTrigger: Observable<Void>
+        let nextPageRequestTrigger: Observable<Void>
     }
     
     struct Output {
@@ -53,7 +54,7 @@ class PoseFeedViewModel: ViewModelType {
         let queryParameters = BehaviorRelay<[String]>(value: [])
         let pageSize = BehaviorRelay<Int>(value: 10)
         let isEmptyViewHidden = BehaviorRelay<Bool>(value: true)
-        
+        let currentPage = BehaviorRelay<Page?>(value: nil)
         
         /// 필터 등록 완료 + 필터 모달이 Present 상태일때
         /// 인원 수 & 프레임 수 셀렉션으로부터 데이터 추출
@@ -104,9 +105,10 @@ class PoseFeedViewModel: ViewModelType {
         /// viewDidAppear 이후 데이터 요청
         input.viewDidLoadTrigger
             .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
-                self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: 0, pageSize: 10)).asObservable()
+                return self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: 0, pageSize: 10)).asObservable()
             }
             .subscribe(onNext: { [unowned self] posefeed in
+                currentPage.accept(posefeed.pageable)
                 pageSize.accept(posefeed.content.count) // 데이터 로드 대기 갯수
                 posefeed.content.forEach { pose in
                     ImageCache.default.retrieveImage(forKey: pose.poseInfo.imageKey, options: nil) { result in
@@ -118,7 +120,9 @@ class PoseFeedViewModel: ViewModelType {
                                 self.sizes.accept(self.sizes.value + [newSizeImage.size])
                                 downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
                             } else {
-                                guard let url = URL(string: pose.poseInfo.imageKey) else { return }
+                                guard let url = URL(string: pose.poseInfo.imageKey) else {
+                                    return
+                                }
                                 KingfisherManager.shared.retrieveImage(with: url) { downloadResult in
                                     switch downloadResult {
                                     case .success(let downloadedImage):
@@ -131,7 +135,6 @@ class PoseFeedViewModel: ViewModelType {
                                     }
                                 }
                             }
-                            
                         case .failure:
                             retrievedCacheImage.accept(retrievedCacheImage.value + [nil])
                         }
@@ -152,7 +155,9 @@ class PoseFeedViewModel: ViewModelType {
                 }
                 return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: tags[0], frameCount: tags[1], filterTags: filterTags, pageNumber: 0)).asObservable()
             }
-            .map { $0.filteredContents.content }
+            .map { [unowned self] filteredContents -> [PosePick] in
+                return filteredContents.filteredContents.content
+            }
             .subscribe(onNext: { [unowned self] filteredContent in
                 retrievedCacheImage.accept([])
                 self.sizes.accept([])
@@ -181,7 +186,6 @@ class PoseFeedViewModel: ViewModelType {
                                     }
                                 }
                             }
-                            
                         case .failure:
                             retrievedCacheImage.accept(retrievedCacheImage.value + [nil])
                         }
@@ -189,6 +193,8 @@ class PoseFeedViewModel: ViewModelType {
                 }
             })
             .disposed(by: disposeBag)
+        
+        /// 무한스크롤 로직
         
         Observable.combineLatest(retrievedCacheImage, downloadCountForPageSize, pageSize)
             .subscribe(onNext: { images, downloadCount, pageSize in
