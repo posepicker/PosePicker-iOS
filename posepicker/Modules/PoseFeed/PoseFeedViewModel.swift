@@ -7,6 +7,7 @@
 
 import UIKit
 import RxCocoa
+import RxDataSources
 import RxSwift
 import Kingfisher
 
@@ -19,6 +20,13 @@ class PoseFeedViewModel: ViewModelType {
     var isLoading = false
     var currentPage = -1
     var isLast = false
+    
+    /// 포즈피드 컬렉션뷰 datasource 정의
+    let dataSource = RxCollectionViewSectionedReloadDataSource<PoseSection>(configureCell: { dataSource, collectionView, indexPath, item in
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PoseFeedPhotoCell.identifier, for: indexPath) as? PoseFeedPhotoCell else { return UICollectionViewCell() }
+        cell.bind(to: item)
+        return cell
+    })
     
     enum CountTagType {
         case head
@@ -45,6 +53,7 @@ class PoseFeedViewModel: ViewModelType {
         let deleteTargetCountTag: Driver<CountTagType?>
         let photoCellItems: Driver<[PoseFeedPhotoCellViewModel]>
         let isEmptyViewHidden: Observable<Bool>
+        let sections: Observable<[PoseSection]>
     }
     
     // MARK: - 이미지 하나씩 바인딩하지 말고 모두 다 받고 진행
@@ -59,6 +68,8 @@ class PoseFeedViewModel: ViewModelType {
         let pageSize = BehaviorRelay<Int>(value: 10)
         let isEmptyViewHidden = BehaviorRelay<Bool>(value: true)
         let currentPage = BehaviorRelay<Page?>(value: nil)
+        let sections = BehaviorRelay<[PoseSection]>(value: [PoseSection(header: "", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])])
+
         
         /// 필터 등록 완료 + 필터 모달이 Present 상태일때
         /// 인원 수 & 프레임 수 셀렉션으로부터 데이터 추출
@@ -326,6 +337,13 @@ class PoseFeedViewModel: ViewModelType {
                 }
                 let viewModels = images.map { image in PoseFeedPhotoCellViewModel(image: image) }
                 photoCellItems.accept(viewModels)
+                
+                // FIXME: 필터링 섹션 업데이트 로직을 모든 곳에 삽입해야되나?
+                var filteredSectionItems: [PoseFeedPhotoCellViewModel] = sections.value[0].items
+                filteredSectionItems += viewModels
+                let recommendedSection = sections.value[1]
+                
+                sections.accept([PoseSection(header: "", items: filteredSectionItems), recommendedSection])
             })
             .disposed(by: disposeBag)
         
@@ -338,7 +356,7 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), photoCellItems: photoCellItems.asDriver(), isEmptyViewHidden: isEmptyViewHidden.asObservable())
+        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), photoCellItems: photoCellItems.asDriver(), isEmptyViewHidden: isEmptyViewHidden.asObservable(), sections: sections.asObservable())
     }
     
     func newSizeImageWidthDownloadedResource(image: UIImage) -> UIImage {
