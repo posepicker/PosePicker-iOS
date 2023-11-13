@@ -141,7 +141,7 @@ class PoseFeedViewController: BaseViewController {
         
         poseFeedCollectionView.rx.contentOffset
             .subscribe(onNext: { [unowned self] in
-                if $0.y > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height {
+                if $0.y > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height && !self.viewModel.isLoading && !viewModel.isLast {
                     self.nextPageRequestTrigger.onNext(())
                 }
             })

@@ -16,6 +16,10 @@ class PoseFeedViewModel: ViewModelType {
     var disposeBag = DisposeBag()
     var sizes = BehaviorRelay<[CGSize]>(value: [])
     
+    var isLoading = false
+    var currentPage = -1
+    var isLast = false
+    
     enum CountTagType {
         case head
         case frame
@@ -146,6 +150,7 @@ class PoseFeedViewModel: ViewModelType {
         /// 쿼리 파라미터 세팅 이후 이미지 세팅
         queryParameters
             .flatMapLatest { [unowned self] tags -> Observable<FilteredPose> in
+                currentPage.accept(nil) // 필터 세팅 후 기존 페이지네이션 정보 초기화
                 if tags.count < 2 {
                     return Observable<FilteredPose>.empty()
                 }
@@ -155,7 +160,7 @@ class PoseFeedViewModel: ViewModelType {
                 }
                 return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: tags[0], frameCount: tags[1], filterTags: filterTags, pageNumber: 0)).asObservable()
             }
-            .map { [unowned self] filteredContents -> [PosePick] in
+            .map { filteredContents -> [PosePick] in
                 return filteredContents.filteredContents.content
             }
             .subscribe(onNext: { [unowned self] filteredContent in
@@ -195,6 +200,124 @@ class PoseFeedViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         /// 무한스크롤 로직
+        /// 1. queryParameters가 비어있는데 스크롤이 트리거되면 필터 없이 무한스크롤 요청
+        input.nextPageRequestTrigger
+            .flatMapLatest { queryParameters }
+            .flatMapLatest { [unowned self] tags -> Observable<PoseFeed> in
+                if tags.isEmpty {
+                    self.beginLoading()
+                    return self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: self.currentPage + 1, pageSize: 8)).asObservable()
+                } else {
+                    return Observable<PoseFeed>.empty()
+                }
+            }
+            .subscribe(onNext: { [unowned self] posefeed in
+                currentPage.accept(posefeed.pageable)
+                self.isLast = posefeed.last
+                pageSize.accept(posefeed.content.count) // 데이터 로드 대기 갯수
+                posefeed.content.forEach { pose in
+                    ImageCache.default.retrieveImage(forKey: pose.poseInfo.imageKey, options: nil) { result in
+                        switch result {
+                        case .success(let value):
+                            if let image = value.image {
+                                let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
+                                retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
+                                self.sizes.accept(self.sizes.value + [newSizeImage.size])
+                                downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
+                            } else {
+                                guard let url = URL(string: pose.poseInfo.imageKey) else {
+                                    return
+                                }
+                                KingfisherManager.shared.retrieveImage(with: url) { downloadResult in
+                                    switch downloadResult {
+                                    case .success(let downloadedImage):
+                                        let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadedImage.image)
+                                        retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
+                                        self.sizes.accept(self.sizes.value + [newSizeImage.size])
+                                        downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
+                                    case .failure:
+                                        return
+                                    }
+                                }
+                            }
+                        case .failure:
+                            retrievedCacheImage.accept(retrievedCacheImage.value + [nil])
+                        }
+                    }
+                }
+                self.endLoading()
+            })
+            .disposed(by: disposeBag)
+        
+        /// 2. queryParameters 있는채로 스크롤 트리거 - 필터 API 요청
+        input.nextPageRequestTrigger
+            .flatMapLatest { queryParameters }
+            .flatMapLatest { [unowned self] tags -> Observable<FilteredPose> in
+                if tags.isEmpty {
+                    return Observable<FilteredPose>.empty()
+                } else {
+                    self.beginLoading()
+                    if tags.count < 2 {
+                        return Observable<FilteredPose>.empty()
+                    }
+                    var filterTags: [String] = []
+                    if tags.count > 2 {
+                        filterTags = Array(tags[2..<tags.count])
+                    }
+                    return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: tags[0], frameCount: tags[1], filterTags: filterTags, pageNumber: self.currentPage + 1)).asObservable()
+                }
+            }
+            .map { filteredContents -> [PosePick] in
+                currentPage.accept(filteredContents.filteredContents.pageable)
+                self.isLast = filteredContents.filteredContents.last
+                return filteredContents.filteredContents.content
+            }
+            .subscribe(onNext: { [unowned self] filteredContent in
+                pageSize.accept(filteredContent.count)
+                
+                filteredContent.forEach { pose in
+                    ImageCache.default.retrieveImage(forKey: pose.poseInfo.imageKey, options: nil) { result in
+                        switch result {
+                        case .success(let value):
+                            if let image = value.image {
+                                let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
+                                retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
+                                self.sizes.accept(self.sizes.value + [newSizeImage.size])
+                                downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
+                            } else {
+                                guard let url = URL(string: pose.poseInfo.imageKey) else { return }
+                                KingfisherManager.shared.retrieveImage(with: url) { downloadResult in
+                                    switch downloadResult {
+                                    case .success(let downloadedImage):
+                                        let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadedImage.image)
+                                        retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
+                                        self.sizes.accept(self.sizes.value + [newSizeImage.size])
+                                        downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
+                                    case .failure:
+                                        return
+                                    }
+                                }
+                            }
+                        case .failure:
+                            retrievedCacheImage.accept(retrievedCacheImage.value + [nil])
+                        }
+                    }
+                }
+                self.endLoading()
+            })
+            .disposed(by: disposeBag)
+        
+        /// 3. 페이지 세팅 이후
+        currentPage
+            .subscribe(onNext: { [unowned self] in
+                guard let page = $0 else {
+                    self.currentPage = 0
+                    self.isLast = false
+                    return
+                }
+                self.currentPage = page.pageNumber
+            })
+            .disposed(by: disposeBag)
         
         Observable.combineLatest(retrievedCacheImage, downloadCountForPageSize, pageSize)
             .subscribe(onNext: { images, downloadCount, pageSize in
@@ -222,5 +345,13 @@ class PoseFeedViewModel: ViewModelType {
         let targetWidth = (UIScreen.main.bounds.width - 56) / 2
         let newSizeImage = image.resize(newWidth: targetWidth)
         return newSizeImage
+    }
+    
+    func beginLoading() {
+        self.isLoading = true
+    }
+    
+    func endLoading() {
+        self.isLoading = false
     }
 }
