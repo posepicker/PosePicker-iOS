@@ -42,7 +42,7 @@ class PoseFeedFilterViewController: BaseViewController {
     let tagCollectionView: UICollectionView = {
         let layout = LeftAlignedCollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = 8
+        layout.minimumInteritemSpacing = 4
         layout.minimumLineSpacing = 8
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
