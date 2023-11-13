@@ -30,6 +30,7 @@ class PoseFeedViewModel: ViewModelType {
         let filterReset: ControlEvent<Void>
         let viewDidLoadTrigger: Observable<Void>
         let viewDidDisappearTrigger: Observable<Void>
+        let viewDidAppearTrigger: Observable<Void>
     }
     
     struct Output {
@@ -38,7 +39,9 @@ class PoseFeedViewModel: ViewModelType {
         let deleteTargetFilterTag: Driver<FilterTags?>
         let deleteTargetCountTag: Driver<CountTagType?>
         let photoCellItems: Driver<[PoseFeedPhotoCellViewModel]>
+        let isEmptyViewHidden: Observable<Bool>
     }
+    
     // MARK: - 이미지 하나씩 바인딩하지 말고 모두 다 받고 진행
     func transform(input: Input) -> Output {
         let tagItems = BehaviorRelay<[RegisteredFilterCellViewModel]>(value: [])
@@ -49,6 +52,7 @@ class PoseFeedViewModel: ViewModelType {
         let downloadCountForPageSize = BehaviorRelay<Int>(value: 0)
         let queryParameters = BehaviorRelay<[String]>(value: [])
         let pageSize = BehaviorRelay<Int>(value: 10)
+        let isEmptyViewHidden = BehaviorRelay<Bool>(value: true)
         
         
         /// 필터 등록 완료 + 필터 모달이 Present 상태일때
@@ -104,7 +108,6 @@ class PoseFeedViewModel: ViewModelType {
             }
             .subscribe(onNext: { [unowned self] posefeed in
                 pageSize.accept(posefeed.content.count) // 데이터 로드 대기 갯수
-                
                 posefeed.content.forEach { pose in
                     ImageCache.default.retrieveImage(forKey: pose.poseInfo.imageKey, options: nil) { result in
                         switch result {
@@ -197,7 +200,16 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), photoCellItems: photoCellItems.asDriver())
+        /// viewDidAppear 이후 셀이 비어있지 않았으면 empty 노출
+        input.viewDidAppearTrigger
+            .flatMapLatest { photoCellItems }
+            .flatMapLatest { Observable.just(!$0.isEmpty) }
+            .subscribe(onNext: {
+                isEmptyViewHidden.accept($0)
+            })
+            .disposed(by: disposeBag)
+        
+        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), photoCellItems: photoCellItems.asDriver(), isEmptyViewHidden: isEmptyViewHidden.asObservable())
     }
     
     func newSizeImageWidthDownloadedResource(image: UIImage) -> UIImage {

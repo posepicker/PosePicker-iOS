@@ -60,12 +60,15 @@ class PoseFeedViewController: BaseViewController {
             $0.scrollDirection = .vertical
         }
     
+    let emptyView = PoseFeedEmptyView()
+    
     // MARK: - Properties
     
     var viewModel: PoseFeedViewModel
     var coordinator: PoseFeedCoordinator
     let viewDidLoadTrigger = PublishSubject<Void>()
     let viewDidDisappearTrigger = PublishSubject<Void>()
+    let viewDidAppearTrigger = PublishSubject<Void>()
 
     // MARK: - Initialization
     
@@ -90,10 +93,15 @@ class PoseFeedViewController: BaseViewController {
         viewDidDisappearTrigger.onNext(())
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewDidAppearTrigger.onNext(())
+    }
+    
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([filterButton, filterDivider, filterCollectionView, poseFeedCollectionView])
+        view.addSubViews([filterButton, filterDivider, filterCollectionView, poseFeedCollectionView, emptyView])
         
         filterButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
@@ -118,6 +126,12 @@ class PoseFeedViewController: BaseViewController {
             make.leading.trailing.equalToSuperview().inset(20)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
+        
+        emptyView.snp.makeConstraints { make in
+            make.top.equalTo(filterCollectionView.snp.bottom)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(300)
+        }
     }
     
     override func configUI() {
@@ -126,7 +140,7 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), filterReset: coordinator.poseFeedFilterViewController.resetButton.rx.tap, viewDidLoadTrigger: viewDidLoadTrigger.asObservable(), viewDidDisappearTrigger: viewDidDisappearTrigger.asObservable())
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), filterReset: coordinator.poseFeedFilterViewController.resetButton.rx.tap, viewDidLoadTrigger: viewDidLoadTrigger.asObservable(), viewDidDisappearTrigger: viewDidDisappearTrigger.asObservable(), viewDidAppearTrigger: viewDidAppearTrigger.asObservable())
         
         let output = viewModel.transform(input: input)
         
@@ -166,6 +180,10 @@ class PoseFeedViewController: BaseViewController {
             .drive(poseFeedCollectionView.rx.items(cellIdentifier: PoseFeedPhotoCell.identifier, cellType: PoseFeedPhotoCell.self)) { row, viewModel, cell in
                 cell.bind(to: viewModel)
             }
+            .disposed(by: disposeBag)
+        
+        output.isEmptyViewHidden
+            .bind(to: emptyView.rx.isHidden)
             .disposed(by: disposeBag)
     }
 }
