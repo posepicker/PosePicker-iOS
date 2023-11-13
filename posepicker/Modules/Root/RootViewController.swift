@@ -76,7 +76,7 @@ class RootViewController: BaseViewController {
         segmentControl.snp.makeConstraints { make in
             make.top.equalTo(header.snp.bottom)
             make.leading.equalTo(view).offset(10)
-            make.trailing.equalTo(view).offset(-160)
+            make.width.equalTo(220)
             make.height.equalTo(48)
         }
         
