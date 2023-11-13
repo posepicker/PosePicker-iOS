@@ -33,6 +33,7 @@
 		C903E5402AFCC46E00BD004F /* FilteredPose.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903E53F2AFCC46E00BD004F /* FilteredPose.swift */; };
 		C903E5422AFCC60D00BD004F /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903E5412AFCC60D00BD004F /* Page.swift */; };
 		C903E5442AFCC62600BD004F /* RecommendedContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903E5432AFCC62600BD004F /* RecommendedContents.swift */; };
+		C903E5472B01F51F00BD004F /* PoseFeedEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903E5462B01F51F00BD004F /* PoseFeedEmptyView.swift */; };
 		C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2742AE38E26003777EB /* RootViewController.swift */; };
 		C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2762AE38E82003777EB /* AppCoordinator.swift */; };
 		C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2782AE38EBD003777EB /* RootCoordinator.swift */; };
@@ -138,6 +139,7 @@
 		C903E53F2AFCC46E00BD004F /* FilteredPose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilteredPose.swift; sourceTree = "<group>"; };
 		C903E5412AFCC60D00BD004F /* Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 		C903E5432AFCC62600BD004F /* RecommendedContents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedContents.swift; sourceTree = "<group>"; };
+		C903E5462B01F51F00BD004F /* PoseFeedEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedEmptyView.swift; sourceTree = "<group>"; };
 		C94FD2742AE38E26003777EB /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		C94FD2762AE38E82003777EB /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2782AE38EBD003777EB /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -374,6 +376,14 @@
 			path = UIImageView;
 			sourceTree = "<group>";
 		};
+		C903E5452B01F50C00BD004F /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				C903E5462B01F51F00BD004F /* PoseFeedEmptyView.swift */,
+			);
+			path = Subviews;
+			sourceTree = "<group>";
+		};
 		C94FD27A2AE39505003777EB /* PosePick */ = {
 			isa = PBXGroup;
 			children = (
@@ -395,6 +405,7 @@
 		C94FD27C2AE39512003777EB /* PoseFeed */ = {
 			isa = PBXGroup;
 			children = (
+				C903E5452B01F50C00BD004F /* Subviews */,
 				88EA81F22AF6A12A00020DEA /* Cell */,
 				C9DC2F9C2AEA2B8C00D5170D /* PoseFeedFilter */,
 				C94FD28A2AE3963E003777EB /* PoseFeedViewModel.swift */,
@@ -908,6 +919,7 @@
 				880E752D2AE60499007FAD5A /* Header.swift in Sources */,
 				C94FD2812AE39603003777EB /* PoseTalkViewController.swift in Sources */,
 				C9C890522AE103A10010240A /* AppDelegate.swift in Sources */,
+				C903E5472B01F51F00BD004F /* PoseFeedEmptyView.swift in Sources */,
 				880E75402AE6BF2F007FAD5A /* ServicePose.swift in Sources */,
 				880E75562AE6C2F7007FAD5A /* APIInterceptor.swift in Sources */,
 				88EA81F12AF69BD700020DEA /* PoseFeed.swift in Sources */,
