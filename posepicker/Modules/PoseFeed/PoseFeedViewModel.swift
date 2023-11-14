@@ -26,6 +26,12 @@ class PoseFeedViewModel: ViewModelType {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PoseFeedPhotoCell.identifier, for: indexPath) as? PoseFeedPhotoCell else { return UICollectionViewCell() }
         cell.bind(to: item)
         return cell
+    }, configureSupplementaryView: { (dataSource, collectionView, kind, indexPath) -> UICollectionReusableView in
+        
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PoseFeedHeader.identifier, for: indexPath) as! PoseFeedHeader
+        header.configureHeader(with: "EFWFWEWFEWFWEFEFW")
+        header.backgroundColor = .red
+        return header
     })
     
     enum CountTagType {
@@ -68,7 +74,9 @@ class PoseFeedViewModel: ViewModelType {
         let pageSize = BehaviorRelay<Int>(value: 10)
         let isEmptyViewHidden = BehaviorRelay<Bool>(value: true)
         let currentPage = BehaviorRelay<Page?>(value: nil)
-        let sections = BehaviorRelay<[PoseSection]>(value: [PoseSection(header: "", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])])
+        let sections = BehaviorRelay<[PoseSection]>(value: [PoseSection(header: "ㅈㄷㄹㄷㅈㄹㅈㄷㄹ", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])])
+        let contents = BehaviorRelay<[PosePick]>(value: []) // 이미지 키값을 셀 뷰모델에 저장하기 위해 생성한 객체
+        let recommendedContents = BehaviorRelay<RecommendedContents?>(value: nil)
 
         
         /// 필터 등록 완료 + 필터 모달이 Present 상태일때
@@ -125,6 +133,7 @@ class PoseFeedViewModel: ViewModelType {
             .subscribe(onNext: { [unowned self] posefeed in
                 currentPage.accept(posefeed.pageable)
                 pageSize.accept(posefeed.content.count) // 데이터 로드 대기 갯수
+                contents.accept(posefeed.content)
                 posefeed.content.forEach { pose in
                     ImageCache.default.retrieveImage(forKey: pose.poseInfo.imageKey, options: nil) { result in
                         switch result {
@@ -172,9 +181,11 @@ class PoseFeedViewModel: ViewModelType {
                 return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: tags[0], frameCount: tags[1], filterTags: filterTags, pageNumber: 0)).asObservable()
             }
             .map { filteredContents -> [PosePick] in
+                recommendedContents.accept(filteredContents.recommendedContents)
                 return filteredContents.filteredContents.content
             }
             .subscribe(onNext: { [unowned self] filteredContent in
+                contents.accept(filteredContent)
                 retrievedCacheImage.accept([])
                 self.sizes.accept([])
                 pageSize.accept(filteredContent.count)
@@ -223,6 +234,7 @@ class PoseFeedViewModel: ViewModelType {
                 }
             }
             .subscribe(onNext: { [unowned self] posefeed in
+                contents.accept(contents.value + posefeed.content)
                 currentPage.accept(posefeed.pageable)
                 self.isLast = posefeed.last
                 pageSize.accept(posefeed.content.count) // 데이터 로드 대기 갯수
@@ -284,6 +296,7 @@ class PoseFeedViewModel: ViewModelType {
                 return filteredContents.filteredContents.content
             }
             .subscribe(onNext: { [unowned self] filteredContent in
+                contents.accept(contents.value + filteredContent)
                 pageSize.accept(filteredContent.count)
                 
                 filteredContent.forEach { pose in
@@ -322,6 +335,7 @@ class PoseFeedViewModel: ViewModelType {
         currentPage
             .subscribe(onNext: { [unowned self] in
                 guard let page = $0 else {
+                    contents.accept([])
                     self.currentPage = 0
                     self.isLast = false
                     return
@@ -330,17 +344,21 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        Observable.combineLatest(retrievedCacheImage, downloadCountForPageSize, pageSize)
-            .subscribe(onNext: { images, downloadCount, pageSize in
+        Observable.combineLatest(retrievedCacheImage, downloadCountForPageSize, pageSize, contents)
+            .subscribe(onNext: { images, downloadCount, pageSize, contents in
                 if downloadCount < pageSize {
                     return
                 }
-                let viewModels = images.map { image in PoseFeedPhotoCellViewModel(image: image) }
+                
+                let viewModels = zip(images, contents).map { image, content in
+                    PoseFeedPhotoCellViewModel(image: image, imageKey: content.poseInfo.imageKey)
+                }
                 photoCellItems.accept(viewModels)
                 
+                
                 // FIXME: 필터링 섹션 업데이트 로직을 모든 곳에 삽입해야되나?
-                var filteredSectionItems: [PoseFeedPhotoCellViewModel] = sections.value[0].items
-                filteredSectionItems += viewModels
+                var filteredSectionItems = sections.value[0].items
+                filteredSectionItems = viewModels
                 let recommendedSection = sections.value[1]
                 
                 sections.accept([PoseSection(header: "", items: filteredSectionItems), recommendedSection])
