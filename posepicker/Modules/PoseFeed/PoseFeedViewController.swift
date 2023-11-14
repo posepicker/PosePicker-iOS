@@ -49,17 +49,27 @@ class PoseFeedViewController: BaseViewController {
     lazy var poseFeedCollectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: self.pinterestLayout)
         cv.register(PoseFeedPhotoCell.self, forCellWithReuseIdentifier: PoseFeedPhotoCell.identifier)
+        cv.register(PoseFeedHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedHeader.identifier)
         cv.rx.setDelegate(self).disposed(by: disposeBag)
         return cv
     }()
     
     lazy var pinterestLayout = PinterestLayout()
         .then {
+            $0.headerReferenceSize = .init(width: UIScreen.main.bounds.width, height: 50)
             $0.delegate = self
             $0.scrollDirection = .vertical
         }
     
     let emptyView = PoseFeedEmptyView()
+    
+    let supplementLabel = UILabel()
+        .then {
+            $0.textAlignment = .left
+            $0.textColor = .textPrimary
+            $0.font = .h4
+            $0.text = "이런 포즈는 어때요?"
+        }
     
     // MARK: - Properties
     
@@ -101,7 +111,7 @@ class PoseFeedViewController: BaseViewController {
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([filterButton, filterDivider, filterCollectionView, poseFeedCollectionView, emptyView])
+        view.addSubViews([filterButton, filterDivider, filterCollectionView, poseFeedCollectionView, emptyView, supplementLabel])
         
         filterButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
@@ -184,19 +194,23 @@ class PoseFeedViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        output.photoCellItems
-            .drive(poseFeedCollectionView.rx.items(cellIdentifier: PoseFeedPhotoCell.identifier, cellType: PoseFeedPhotoCell.self)) { row, viewModel, cell in
-                cell.bind(to: viewModel)
-            }
-            .disposed(by: disposeBag)
-        
-//        output.sections
-//            .bind(to: poseFeedCollectionView.rx.items(dataSource: viewModel.dataSource))
+//        output.photoCellItems
+//            .drive(poseFeedCollectionView.rx.items(cellIdentifier: PoseFeedPhotoCell.identifier, cellType: PoseFeedPhotoCell.self)) { row, viewModel, cell in
+//                cell.bind(to: viewModel)
+//            }
 //            .disposed(by: disposeBag)
+        
+        output.sections
+            .bind(to: poseFeedCollectionView.rx.items(dataSource: viewModel.dataSource))
+            .disposed(by: disposeBag)
         
         output.isEmptyViewHidden
             .bind(to: emptyView.rx.isHidden)
             .disposed(by: disposeBag)
+        
+//        viewModel.dataSource.configureSupplementaryView = { (dataSource, collectionView, kind, indexPath) -> UICollectionReusableView in
+//            return PoseFeedHeader()
+//        }
     }
 }
 
