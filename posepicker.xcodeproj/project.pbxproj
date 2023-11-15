@@ -374,6 +374,7 @@
 				88EA81F72AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift */,
 				88EA81F52AF6A17A00020DEA /* PoseFeedPhotoCell.swift */,
 				88D5C4842B0318040045C081 /* PoseFeedHeader.swift */,
+				C903E5462B01F51F00BD004F /* PoseFeedEmptyView.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -384,14 +385,6 @@
 				C903E53B2AF8C1BD00BD004F /* UIImageView+.swift */,
 			);
 			path = UIImageView;
-			sourceTree = "<group>";
-		};
-		C903E5452B01F50C00BD004F /* Subviews */ = {
-			isa = PBXGroup;
-			children = (
-				C903E5462B01F51F00BD004F /* PoseFeedEmptyView.swift */,
-			);
-			path = Subviews;
 			sourceTree = "<group>";
 		};
 		C94FD27A2AE39505003777EB /* PosePick */ = {
@@ -415,7 +408,6 @@
 		C94FD27C2AE39512003777EB /* PoseFeed */ = {
 			isa = PBXGroup;
 			children = (
-				C903E5452B01F50C00BD004F /* Subviews */,
 				88EA81F22AF6A12A00020DEA /* Cell */,
 				C9DC2F9C2AEA2B8C00D5170D /* PoseFeedFilter */,
 				C94FD28A2AE3963E003777EB /* PoseFeedViewModel.swift */,
