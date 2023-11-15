@@ -37,7 +37,8 @@ class PoseFeedHeader: UICollectionReusableView {
         self.addSubview(label)
         
         label.snp.makeConstraints { make in
-            make.leading.centerY.equalToSuperview()
+            make.leading.equalToSuperview().inset(16)
+            make.centerY.equalToSuperview()
         }
     }
 
