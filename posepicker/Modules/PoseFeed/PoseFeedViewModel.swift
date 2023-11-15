@@ -16,6 +16,7 @@ class PoseFeedViewModel: ViewModelType {
     var apiSession: APIService = APISession()
     var disposeBag = DisposeBag()
     var sizes = BehaviorRelay<[CGSize]>(value: [])
+    var recommendedContentsSizes = BehaviorRelay<[CGSize]>(value: [])
     
     var isLoading = false
     var currentPage = -1
@@ -26,11 +27,10 @@ class PoseFeedViewModel: ViewModelType {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PoseFeedPhotoCell.identifier, for: indexPath) as? PoseFeedPhotoCell else { return UICollectionViewCell() }
         cell.bind(to: item)
         return cell
-    }, configureSupplementaryView: { (dataSource, collectionView, kind, indexPath) -> UICollectionReusableView in
-        
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: PoseFeedHeader.identifier, for: indexPath) as! PoseFeedHeader
-        header.configureHeader(with: "EFWFWEWFEWFWEFEFW")
-        header.backgroundColor = .red
+    }, configureSupplementaryView: { dataSource, collectionView, kind, indexPath -> UICollectionReusableView in
+        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedHeader.identifier, for: indexPath) as! PoseFeedHeader
+        let title = dataSource.sectionModels[indexPath.section].header
+        header.configureHeader(with: title)
         return header
     })
     
@@ -68,14 +68,18 @@ class PoseFeedViewModel: ViewModelType {
         let deleteTargetFilterTag = BehaviorRelay<FilterTags?>(value: nil)
         let deleteTargetCountTag = BehaviorRelay<CountTagType?>(value: nil)
         let photoCellItems = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
+        
         let retrievedCacheImage = BehaviorRelay<[UIImage?]>(value: [])
+        let recommendedCacheImage = BehaviorRelay<[UIImage?]>(value: [])
+        
         let downloadCountForPageSize = BehaviorRelay<Int>(value: 0)
+        let recommendedCountForPageSize = BehaviorRelay<Int>(value: 0)
+        
         let queryParameters = BehaviorRelay<[String]>(value: [])
         let pageSize = BehaviorRelay<Int>(value: 10)
         let isEmptyViewHidden = BehaviorRelay<Bool>(value: true)
         let currentPage = BehaviorRelay<Page?>(value: nil)
-        let sections = BehaviorRelay<[PoseSection]>(value: [PoseSection(header: "ㅈㄷㄹㄷㅈㄹㅈㄷㄹ", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])])
-        let contents = BehaviorRelay<[PosePick]>(value: []) // 이미지 키값을 셀 뷰모델에 저장하기 위해 생성한 객체
+        let sections = BehaviorRelay<[PoseSection]>(value: [PoseSection(header: "", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])])
         let recommendedContents = BehaviorRelay<RecommendedContents?>(value: nil)
 
         
@@ -133,36 +137,8 @@ class PoseFeedViewModel: ViewModelType {
             .subscribe(onNext: { [unowned self] posefeed in
                 currentPage.accept(posefeed.pageable)
                 pageSize.accept(posefeed.content.count) // 데이터 로드 대기 갯수
-                contents.accept(posefeed.content)
-                posefeed.content.forEach { pose in
-                    ImageCache.default.retrieveImage(forKey: pose.poseInfo.imageKey, options: nil) { result in
-                        switch result {
-                        case .success(let value):
-                            if let image = value.image {
-                                let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
-                                retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
-                                self.sizes.accept(self.sizes.value + [newSizeImage.size])
-                                downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
-                            } else {
-                                guard let url = URL(string: pose.poseInfo.imageKey) else {
-                                    return
-                                }
-                                KingfisherManager.shared.retrieveImage(with: url) { downloadResult in
-                                    switch downloadResult {
-                                    case .success(let downloadedImage):
-                                        let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadedImage.image)
-                                        retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
-                                        self.sizes.accept(self.sizes.value + [newSizeImage.size])
-                                        downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
-                                    case .failure:
-                                        return
-                                    }
-                                }
-                            }
-                        case .failure:
-                            retrievedCacheImage.accept(retrievedCacheImage.value + [nil])
-                        }
-                    }
+                posefeed.content.forEach { [weak self] pose in
+                    self?.retrieveCacheImage(cacheKey: pose.poseInfo.imageKey, cacheImageRelayObject: retrievedCacheImage, downloadCount: downloadCountForPageSize)
                 }
             })
             .disposed(by: disposeBag)
@@ -185,41 +161,16 @@ class PoseFeedViewModel: ViewModelType {
                 return filteredContents.filteredContents.content
             }
             .subscribe(onNext: { [unowned self] filteredContent in
-                contents.accept(filteredContent)
                 retrievedCacheImage.accept([])
                 self.sizes.accept([])
                 pageSize.accept(filteredContent.count)
                 
-                filteredContent.forEach { pose in
-                    ImageCache.default.retrieveImage(forKey: pose.poseInfo.imageKey, options: nil) { result in
-                        switch result {
-                        case .success(let value):
-                            if let image = value.image {
-                                let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
-                                retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
-                                self.sizes.accept(self.sizes.value + [newSizeImage.size])
-                                downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
-                            } else {
-                                guard let url = URL(string: pose.poseInfo.imageKey) else { return }
-                                KingfisherManager.shared.retrieveImage(with: url) { downloadResult in
-                                    switch downloadResult {
-                                    case .success(let downloadedImage):
-                                        let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadedImage.image)
-                                        retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
-                                        self.sizes.accept(self.sizes.value + [newSizeImage.size])
-                                        downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
-                                    case .failure:
-                                        return
-                                    }
-                                }
-                            }
-                        case .failure:
-                            retrievedCacheImage.accept(retrievedCacheImage.value + [nil])
-                        }
-                    }
+                filteredContent.forEach { [weak self] pose in
+                    self?.retrieveCacheImage(cacheKey: pose.poseInfo.imageKey, cacheImageRelayObject: retrievedCacheImage, downloadCount: downloadCountForPageSize)
                 }
             })
             .disposed(by: disposeBag)
+        
         
         /// 무한스크롤 로직
         /// 1. queryParameters가 비어있는데 스크롤이 트리거되면 필터 없이 무한스크롤 요청
@@ -234,41 +185,12 @@ class PoseFeedViewModel: ViewModelType {
                 }
             }
             .subscribe(onNext: { [unowned self] posefeed in
-                contents.accept(contents.value + posefeed.content)
                 currentPage.accept(posefeed.pageable)
                 self.isLast = posefeed.last
                 pageSize.accept(posefeed.content.count) // 데이터 로드 대기 갯수
-                posefeed.content.forEach { pose in
-                    ImageCache.default.retrieveImage(forKey: pose.poseInfo.imageKey, options: nil) { result in
-                        switch result {
-                        case .success(let value):
-                            if let image = value.image {
-                                let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
-                                retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
-                                self.sizes.accept(self.sizes.value + [newSizeImage.size])
-                                downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
-                            } else {
-                                guard let url = URL(string: pose.poseInfo.imageKey) else {
-                                    return
-                                }
-                                KingfisherManager.shared.retrieveImage(with: url) { downloadResult in
-                                    switch downloadResult {
-                                    case .success(let downloadedImage):
-                                        let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadedImage.image)
-                                        retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
-                                        self.sizes.accept(self.sizes.value + [newSizeImage.size])
-                                        downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
-                                    case .failure:
-                                        return
-                                    }
-                                }
-                            }
-                        case .failure:
-                            retrievedCacheImage.accept(retrievedCacheImage.value + [nil])
-                        }
-                    }
+                posefeed.content.forEach { [weak self] pose in
+                    self?.retrieveCacheImage(cacheKey: pose.poseInfo.imageKey, cacheImageRelayObject: retrievedCacheImage, downloadCount: downloadCountForPageSize)
                 }
-                self.endLoading()
             })
             .disposed(by: disposeBag)
         
@@ -296,38 +218,11 @@ class PoseFeedViewModel: ViewModelType {
                 return filteredContents.filteredContents.content
             }
             .subscribe(onNext: { [unowned self] filteredContent in
-                contents.accept(contents.value + filteredContent)
                 pageSize.accept(filteredContent.count)
                 
-                filteredContent.forEach { pose in
-                    ImageCache.default.retrieveImage(forKey: pose.poseInfo.imageKey, options: nil) { result in
-                        switch result {
-                        case .success(let value):
-                            if let image = value.image {
-                                let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
-                                retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
-                                self.sizes.accept(self.sizes.value + [newSizeImage.size])
-                                downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
-                            } else {
-                                guard let url = URL(string: pose.poseInfo.imageKey) else { return }
-                                KingfisherManager.shared.retrieveImage(with: url) { downloadResult in
-                                    switch downloadResult {
-                                    case .success(let downloadedImage):
-                                        let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadedImage.image)
-                                        retrievedCacheImage.accept(retrievedCacheImage.value + [newSizeImage])
-                                        self.sizes.accept(self.sizes.value + [newSizeImage.size])
-                                        downloadCountForPageSize.accept(downloadCountForPageSize.value + 1)
-                                    case .failure:
-                                        return
-                                    }
-                                }
-                            }
-                        case .failure:
-                            retrievedCacheImage.accept(retrievedCacheImage.value + [nil])
-                        }
-                    }
+                filteredContent.forEach { [weak self] pose in
+                    self?.retrieveCacheImage(cacheKey: pose.poseInfo.imageKey, cacheImageRelayObject: retrievedCacheImage, downloadCount: downloadCountForPageSize)
                 }
-                self.endLoading()
             })
             .disposed(by: disposeBag)
         
@@ -335,7 +230,6 @@ class PoseFeedViewModel: ViewModelType {
         currentPage
             .subscribe(onNext: { [unowned self] in
                 guard let page = $0 else {
-                    contents.accept([])
                     self.currentPage = 0
                     self.isLast = false
                     return
@@ -344,19 +238,31 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        Observable.combineLatest(retrievedCacheImage, downloadCountForPageSize, pageSize, contents)
-            .subscribe(onNext: { images, downloadCount, pageSize, contents in
+        /// 추천 컨텐츠 바인딩 로직
+        recommendedContents
+            .compactMap { $0 }
+            .subscribe(onNext: { recommended in
+                let posepick = recommended.content
+                posepick.forEach { [weak self] pose in
+                    // 추천이미지 섹션 item에 객체 저장
+                    self?.retrieveCacheImage(cacheKey: pose.poseInfo.imageKey, cacheImageRelayObject: recommendedCacheImage, downloadCount: recommendedCountForPageSize, isRecommendedContents: true)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        /// 필터링 이미지 로딩
+        Observable.combineLatest(retrievedCacheImage, downloadCountForPageSize, pageSize)
+            .subscribe(onNext: { [unowned self] images, downloadCount, pageSize in
                 if downloadCount < pageSize {
                     return
                 }
+                self.endLoading()
                 
-                let viewModels = zip(images, contents).map { image, content in
-                    PoseFeedPhotoCellViewModel(image: image, imageKey: content.poseInfo.imageKey)
+                let viewModels = images.map { image in
+                    PoseFeedPhotoCellViewModel(image: image)
                 }
                 photoCellItems.accept(viewModels)
                 
-                
-                // FIXME: 필터링 섹션 업데이트 로직을 모든 곳에 삽입해야되나?
                 var filteredSectionItems = sections.value[0].items
                 filteredSectionItems = viewModels
                 let recommendedSection = sections.value[1]
@@ -365,12 +271,47 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        /// 추천 이미지 로딩
+        Observable.combineLatest(recommendedCacheImage, recommendedCountForPageSize, pageSize, recommendedContents)
+            .subscribe(onNext: { [unowned self] images, downloadCount, pageSize, contents in
+                if downloadCount < pageSize {
+                    return
+                }
+                guard let posepick = contents?.content else { return }
+                self.endLoading()
+                
+                let viewModels = images.map { image in
+                    PoseFeedPhotoCellViewModel(image: image)
+                }
+                photoCellItems.accept(viewModels)
+                
+                var recommendedSectionItems = sections.value[1].items
+                recommendedSectionItems = viewModels
+                let filteredSection = sections.value[0]
+                
+                sections.accept([filteredSection, PoseSection(header: "이런 포즈는 어때요?", items: recommendedSectionItems)])
+            })
+            .disposed(by: disposeBag)
+        
         /// viewDidAppear 이후 셀이 비어있지 않았으면 empty 노출
         input.viewDidAppearTrigger
             .flatMapLatest { photoCellItems }
-            .flatMapLatest { Observable.just(!$0.isEmpty) }
+            .flatMapLatest { [unowned self] items -> Observable<Bool> in
+                if self.isLoading {
+                    return Observable.just(true)
+                } else {
+                    return Observable.just(!items.isEmpty)
+                }
+            }
             .subscribe(onNext: {
                 isEmptyViewHidden.accept($0)
+            })
+            .disposed(by: disposeBag)
+        
+        /// viewDidDisappear 이후 emptyView isHidden 상태값 초기화
+        input.viewDidDisappearTrigger
+            .subscribe(onNext: {
+                isEmptyViewHidden.accept(true)
             })
             .disposed(by: disposeBag)
         
@@ -389,5 +330,34 @@ class PoseFeedViewModel: ViewModelType {
     
     func endLoading() {
         self.isLoading = false
+    }
+    
+    func retrieveCacheImage(cacheKey: String, cacheImageRelayObject: BehaviorRelay<[UIImage?]>, downloadCount: BehaviorRelay<Int>, isRecommendedContents: Bool = false) {
+        ImageCache.default.retrieveImage(forKey: cacheKey, options: nil) { result in
+            switch result {
+            case .success(let value):
+                if let image = value.image {
+                    let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
+                    cacheImageRelayObject.accept(cacheImageRelayObject.value + [newSizeImage])
+                    isRecommendedContents ? self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size]) : self.sizes.accept(self.sizes.value + [newSizeImage.size])
+                    downloadCount.accept(downloadCount.value + 1)
+                } else {
+                    guard let url = URL(string: cacheKey) else { return }
+                    KingfisherManager.shared.retrieveImage(with: url) { downloadResult in
+                        switch downloadResult {
+                        case .success(let downloadImage):
+                            let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadImage.image)
+                            cacheImageRelayObject.accept(cacheImageRelayObject.value + [newSizeImage])
+                            isRecommendedContents ? self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size]) : self.sizes.accept(self.sizes.value + [newSizeImage.size])
+                            downloadCount.accept(downloadCount.value + 1)
+                        case .failure:
+                            return
+                        }
+                    }
+                }
+            case .failure:
+                cacheImageRelayObject.accept(cacheImageRelayObject.value + [nil])
+            }
+        }
     }
 }
