@@ -32,4 +32,8 @@ class PoseFeedCoordinator: NSObject, Coordinator {
         
         navigationController.viewControllers.first?.present(poseFeedFilterViewController, animated: true)
     }
+    
+    func pushDetailView(viewController: PoseDetailViewController) {
+        self.navigationController.pushViewController(viewController, animated: true)
+    }
 }
