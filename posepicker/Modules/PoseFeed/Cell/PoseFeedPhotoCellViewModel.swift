@@ -12,8 +12,10 @@ import RxSwift
 
 class PoseFeedPhotoCellViewModel {
     let image = BehaviorRelay<UIImage?>(value: nil)
+    let poseId = BehaviorRelay<Int>(value: -1)
     
-    init(image: UIImage?) {
+    init(image: UIImage?, poseId: Int) {
         self.image.accept(image)
+        self.poseId.accept(poseId)
     }
 }
