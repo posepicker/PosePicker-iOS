@@ -28,10 +28,15 @@ class PoseFeedViewModel: ViewModelType {
         cell.bind(to: item)
         return cell
     }, configureSupplementaryView: { dataSource, collectionView, kind, indexPath -> UICollectionReusableView in
-        let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedHeader.identifier, for: indexPath) as! PoseFeedHeader
-        let title = dataSource.sectionModels[indexPath.section].header
-        header.configureHeader(with: title)
-        return header
+        if indexPath.section == 0 {
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedEmptyView.identifier, for: indexPath) as! PoseFeedEmptyView
+            return header
+        } else if indexPath.section == 1 {
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedHeader.identifier, for: indexPath) as! PoseFeedHeader
+            let title = dataSource.sectionModels[indexPath.section].header
+            header.configureHeader(with: title)
+            return header
+        } else { return UICollectionReusableView() }
     })
     
     enum CountTagType {
@@ -57,7 +62,6 @@ class PoseFeedViewModel: ViewModelType {
         let filterTagItems: Driver<[RegisteredFilterCellViewModel]>
         let deleteTargetFilterTag: Driver<FilterTags?>
         let deleteTargetCountTag: Driver<CountTagType?>
-        let isEmptyViewHidden: Observable<Bool>
         let sections: Observable<[PoseSection]>
     }
     
@@ -66,7 +70,6 @@ class PoseFeedViewModel: ViewModelType {
         let tagItems = BehaviorRelay<[RegisteredFilterCellViewModel]>(value: [])
         let deleteTargetFilterTag = BehaviorRelay<FilterTags?>(value: nil)
         let deleteTargetCountTag = BehaviorRelay<CountTagType?>(value: nil)
-        let photoCellItems = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
         
         let retrievedCacheImage = BehaviorRelay<[UIImage?]>(value: [])
         let recommendedCacheImage = BehaviorRelay<[UIImage?]>(value: [])
@@ -76,7 +79,6 @@ class PoseFeedViewModel: ViewModelType {
         
         let queryParameters = BehaviorRelay<[String]>(value: [])
         let pageSize = BehaviorRelay<Int>(value: 10)
-        let isEmptyViewHidden = BehaviorRelay<Bool>(value: true)
         let currentPage = BehaviorRelay<Page?>(value: nil)
         let sections = BehaviorRelay<[PoseSection]>(value: [PoseSection(header: "", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])])
         let recommendedContents = BehaviorRelay<RecommendedContents?>(value: nil)
@@ -292,29 +294,7 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        /// viewDidAppear 이후 셀이 비어있지 않았으면 empty 노출
-        input.viewDidAppearTrigger
-            .flatMapLatest { sections }
-            .flatMapLatest { [unowned self] items -> Observable<Bool> in
-                if self.isLoading {
-                    return Observable.just(true)
-                } else {
-                    return Observable.just(!items[0].items.isEmpty || !items[1].items.isEmpty)
-                }
-            }
-            .subscribe(onNext: {
-                isEmptyViewHidden.accept($0)
-            })
-            .disposed(by: disposeBag)
-        
-        /// viewDidDisappear 이후 emptyView isHidden 상태값 초기화
-        input.viewDidDisappearTrigger
-            .subscribe(onNext: {
-                isEmptyViewHidden.accept(true)
-            })
-            .disposed(by: disposeBag)
-        
-        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), isEmptyViewHidden: isEmptyViewHidden.asObservable(), sections: sections.asObservable())
+        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), sections: sections.asObservable())
     }
     
     /// 디자인 수치 기준으로 이미지 리사이징
