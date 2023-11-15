@@ -299,7 +299,7 @@ class PoseFeedViewModel: ViewModelType {
                 if self.isLoading {
                     return Observable.just(true)
                 } else {
-                    return Observable.just(!items[0].items.isEmpty)
+                    return Observable.just(!items[0].items.isEmpty || !items[1].items.isEmpty)
                 }
             }
             .subscribe(onNext: {
