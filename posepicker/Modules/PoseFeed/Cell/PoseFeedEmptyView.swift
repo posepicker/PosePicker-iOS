@@ -9,7 +9,7 @@ import UIKit
 
 import RxSwift
 
-class PoseFeedEmptyView: UIView {
+class PoseFeedEmptyView: UICollectionReusableView {
     
     // MARK: - Subviews
     let mainLabel = UILabel()
@@ -34,6 +34,9 @@ class PoseFeedEmptyView: UIView {
             $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
         }
+    
+    // MARK: - Properties
+    static let identifier = "PoseFeedEmptyView"
 
     // MARK: - Initialization
     override init(frame: CGRect) {
@@ -53,7 +56,7 @@ class PoseFeedEmptyView: UIView {
         self.addSubViews([mainLabel, subLabel, linkButton])
         
         mainLabel.snp.makeConstraints { make in
-            make.top.equalTo(self).offset(100)
+            make.top.equalTo(self).offset(80)
             make.centerX.equalTo(self)
         }
         
