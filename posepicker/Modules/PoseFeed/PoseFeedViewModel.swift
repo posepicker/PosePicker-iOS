@@ -146,6 +146,8 @@ class PoseFeedViewModel: ViewModelType {
         queryParameters
             .flatMapLatest { [unowned self] tags -> Observable<FilteredPose> in
                 currentPage.accept(nil) // 필터 세팅 후 기존 페이지네이션 정보 초기화
+                self.resetBinding(sectionRelayObject: sections, filteredCacheImage: retrievedCacheImage, recommendedCacheImage: recommendedCacheImage)
+                recommendedContents.accept(nil)
                 if tags.count < 2 {
                     return Observable<FilteredPose>.empty()
                 }
@@ -260,7 +262,6 @@ class PoseFeedViewModel: ViewModelType {
                 let viewModels = images.map { image in
                     PoseFeedPhotoCellViewModel(image: image)
                 }
-//                photoCellItems.accept(viewModels)
                 
                 var filteredSectionItems = sections.value[0].items
                 filteredSectionItems = viewModels
@@ -271,18 +272,17 @@ class PoseFeedViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         /// 추천 이미지 로딩
-        Observable.combineLatest(recommendedCacheImage, recommendedCountForPageSize, pageSize, recommendedContents)
-            .subscribe(onNext: { [unowned self] images, downloadCount, pageSize, contents in
+        Observable.combineLatest(recommendedCacheImage, recommendedCountForPageSize, pageSize)
+            .subscribe(onNext: { [unowned self] images, downloadCount, pageSize in
                 if downloadCount < pageSize {
                     return
                 }
-                guard let posepick = contents?.content else { return }
+                
                 self.endLoading()
                 
                 let viewModels = images.map { image in
                     PoseFeedPhotoCellViewModel(image: image)
                 }
-//                photoCellItems.accept(viewModels)
                 
                 var recommendedSectionItems = sections.value[1].items
                 recommendedSectionItems = viewModels
@@ -317,12 +317,14 @@ class PoseFeedViewModel: ViewModelType {
         return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), isEmptyViewHidden: isEmptyViewHidden.asObservable(), sections: sections.asObservable())
     }
     
+    /// 디자인 수치 기준으로 이미지 리사이징
     func newSizeImageWidthDownloadedResource(image: UIImage) -> UIImage {
         let targetWidth = (UIScreen.main.bounds.width - 56) / 2
         let newSizeImage = image.resize(newWidth: targetWidth)
         return newSizeImage
     }
     
+    /// 로딩상태 업데이트
     func beginLoading() {
         self.isLoading = true
     }
@@ -331,6 +333,15 @@ class PoseFeedViewModel: ViewModelType {
         self.isLoading = false
     }
     
+    /// 이미지 바인딩 리셋
+    func resetBinding(sectionRelayObject: BehaviorRelay<[PoseSection]>, filteredCacheImage: BehaviorRelay<[UIImage?]>, recommendedCacheImage: BehaviorRelay<[UIImage?]>) {
+        let defaultValue = [PoseSection(header: "", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])]
+        sectionRelayObject.accept(defaultValue)
+        filteredCacheImage.accept([])
+        recommendedCacheImage.accept([])
+    }
+    
+    /// call by reference 활용 - 캐시처리 로직 함수화
     func retrieveCacheImage(cacheKey: String, cacheImageRelayObject: BehaviorRelay<[UIImage?]>, downloadCount: BehaviorRelay<Int>, isRecommendedContents: Bool = false) {
         ImageCache.default.retrieveImage(forKey: cacheKey, options: nil) { result in
             switch result {
