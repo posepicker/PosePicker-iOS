@@ -50,6 +50,7 @@ class PoseFeedViewController: BaseViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: self.pinterestLayout)
         cv.register(PoseFeedPhotoCell.self, forCellWithReuseIdentifier: PoseFeedPhotoCell.identifier)
         cv.register(PoseFeedHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedHeader.identifier)
+        cv.register(PoseFeedEmptyView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedEmptyView.identifier)
         cv.rx.setDelegate(self).disposed(by: disposeBag)
         return cv
     }()
@@ -60,8 +61,6 @@ class PoseFeedViewController: BaseViewController {
             $0.delegate = self
             $0.scrollDirection = .vertical
         }
-    
-    let emptyView = PoseFeedEmptyView()
     
     let supplementLabel = UILabel()
         .then {
@@ -111,7 +110,7 @@ class PoseFeedViewController: BaseViewController {
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([filterButton, filterDivider, filterCollectionView, poseFeedCollectionView, emptyView, supplementLabel])
+        view.addSubViews([filterButton, filterDivider, filterCollectionView, poseFeedCollectionView, supplementLabel])
         
         filterButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
@@ -135,12 +134,6 @@ class PoseFeedViewController: BaseViewController {
             make.top.equalTo(filterButton.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(20)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
-        }
-        
-        emptyView.snp.makeConstraints { make in
-            make.top.equalTo(filterCollectionView.snp.bottom)
-            make.leading.trailing.equalToSuperview()
-            make.height.equalTo(300)
         }
     }
     
@@ -197,11 +190,6 @@ class PoseFeedViewController: BaseViewController {
         output.sections
             .bind(to: poseFeedCollectionView.rx.items(dataSource: viewModel.dataSource))
             .disposed(by: disposeBag)
-
-        output.isEmptyViewHidden
-            .bind(to: emptyView.rx.isHidden)
-            .disposed(by: disposeBag)
-        
     }
 }
 
