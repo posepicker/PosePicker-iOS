@@ -48,10 +48,48 @@ class PinterestLayout: UICollectionViewFlowLayout {
         var yOffSet: [CGFloat] = .init(repeating: 0, count: numberOfColumns) // // cell 의 y 위치를 나타내는 배열
         
         var column: Int = 0 // 현재 행의 위치
-
+        
         for item in 0..<collectionView.numberOfItems(inSection: 0) {
             // IndexPath 에 맞는 셀의 크기, 위치를 계산합니다.
             let indexPath = IndexPath(item: item, section: 0)
+            let imageHeight = delegate?.collectionView(collectionView, heightForPhotoAtIndexPath: indexPath) ?? 180
+            let height = cellPadding * 2 + imageHeight
+            
+            let frame = CGRect(x: xOffSet[column],
+                               y: yOffSet[column],
+                               width: cellWidth,
+                               height: height)
+            let insetFrame = frame.insetBy(dx: cellPadding, dy: cellPadding)
+            
+            // 위에서 계산한 Frame 을 기반으로 cache 에 들어갈 레이아웃 정보를 추가합니다.
+            let attributes = UICollectionViewLayoutAttributes(forCellWith: indexPath)
+            attributes.frame = insetFrame
+            cache.append(attributes)
+            
+            // 콜렉션 뷰의 contentHeight 를 다시 지정합니다.
+            contentHeight = max(contentHeight, frame.maxY)
+            yOffSet[column] = yOffSet[column] + height
+            
+            // 다른 이미지 크기로 인해서, 한쪽 열에만 이미지가 추가되는 것을 방지합니다.
+            column = yOffSet[0] > yOffSet[1] ? 1 : 0
+        }
+        
+        // 추천컨텐츠 섹션 관련 레이아웃
+        let sectionIndex = IndexPath(item: 0, section: 1)
+        let headerAttribute = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, with: sectionIndex)
+        headerAttribute.isHidden = collectionView.numberOfItems(inSection: 1) == 0 ? true : false
+        headerAttribute.frame = CGRect(x: 0, y: max(yOffSet[0], yOffSet[1]), width: UIScreen.main.bounds.width, height: 40)
+        cache.append(headerAttribute)
+        
+        // 오프셋 둘중 큰걸로 초기화하고 40 더하기
+        let yOffsetMax = max(yOffSet[0], yOffSet[1]) + 40
+        yOffSet[0] = yOffsetMax // 헤더뷰 height값 40 + 마지막 요소 위치
+        yOffSet[1] = yOffsetMax
+        
+        // MARK: - 추천섹션에 데이터 바인딩 후 레이블 삽입 위치 추가
+        for item in 0..<collectionView.numberOfItems(inSection: 1) {
+            // IndexPath 에 맞는 셀의 크기, 위치를 계산합니다.
+            let indexPath = IndexPath(item: item, section: 1)
             let imageHeight = delegate?.collectionView(collectionView, heightForPhotoAtIndexPath: indexPath) ?? 180
             let height = cellPadding * 2 + imageHeight
             
