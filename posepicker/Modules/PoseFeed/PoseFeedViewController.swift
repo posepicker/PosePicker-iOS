@@ -203,14 +203,11 @@ class PoseFeedViewController: BaseViewController {
         output.sections
             .bind(to: poseFeedCollectionView.rx.items(dataSource: viewModel.dataSource))
             .disposed(by: disposeBag)
-        
+
         output.isEmptyViewHidden
             .bind(to: emptyView.rx.isHidden)
             .disposed(by: disposeBag)
         
-//        viewModel.dataSource.configureSupplementaryView = { (dataSource, collectionView, kind, indexPath) -> UICollectionReusableView in
-//            return PoseFeedHeader()
-//        }
     }
 }
 
@@ -225,6 +222,10 @@ extension PoseFeedViewController: UICollectionViewDelegateFlowLayout {
 
 extension PoseFeedViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-        return viewModel.sizes.value[indexPath.item].height
+        if indexPath.section == 0 {
+            return viewModel.sizes.value[indexPath.item].height
+        } else {
+            return viewModel.recommendedContentsSizes.value[indexPath.item].height
+        }
     }
 }
