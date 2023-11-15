@@ -19,6 +19,14 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
             $0.contentMode = .scaleAspectFill
         }
     
+    let bookmarkButton = UIButton()
+        .then {
+            $0.setImage(ImageLiteral.imgBookmarkOff24.withTintColor(.iconWhite, renderingMode: .alwaysOriginal), for: .normal)
+            $0.layer.cornerRadius = 18
+            $0.clipsToBounds = true
+            $0.backgroundColor = .bgWhite.withAlphaComponent(0.38)
+        }
+    
     // MARK: - Properties
     static let identifier = "PoseFeedPhotoCell"
     
@@ -32,16 +40,28 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
     // MARK: - Functions
     
     override func render() {
-        self.addSubViews([imageView])
+        self.addSubViews([imageView, bookmarkButton])
         
         imageView.snp.makeConstraints { make in
             make.top.leading.bottom.trailing.equalToSuperview()
+        }
+        
+        bookmarkButton.snp.makeConstraints { make in
+            make.bottom.trailing.equalToSuperview().inset(6)
+            make.width.height.equalTo(36)
         }
     }
     
     override func configUI() {
         self.clipsToBounds = true
         self.layer.cornerRadius = 8
+        
+        bookmarkButton.rx.tap
+            .asDriver()
+            .drive(onNext: {
+                print("TAP")
+            })
+            .disposed(by: disposeBag)
     }
     
     func bind(to viewModel: PoseFeedPhotoCellViewModel) {
