@@ -49,6 +49,13 @@ class PinterestLayout: UICollectionViewFlowLayout {
         
         var column: Int = 0 // 현재 행의 위치
         
+        let filteredSectionNumberOfItems = collectionView.numberOfItems(inSection: 0)
+        let filteredSectionIndex = IndexPath(item: 0, section: 0)
+        let filteredHeaderAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, with: filteredSectionIndex)
+        filteredHeaderAttributes.isHidden = filteredSectionNumberOfItems == 0 ? false : true
+        filteredHeaderAttributes.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 32, height: filteredSectionNumberOfItems > 0 ? 0 : 300)
+        cache.append(filteredHeaderAttributes)
+        
         for item in 0..<collectionView.numberOfItems(inSection: 0) {
             // IndexPath 에 맞는 셀의 크기, 위치를 계산합니다.
             let indexPath = IndexPath(item: item, section: 0)
@@ -78,11 +85,11 @@ class PinterestLayout: UICollectionViewFlowLayout {
         let sectionIndex = IndexPath(item: 0, section: 1)
         let headerAttribute = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, with: sectionIndex)
         headerAttribute.isHidden = collectionView.numberOfItems(inSection: 1) == 0 ? true : false
-        headerAttribute.frame = CGRect(x: 0, y: max(yOffSet[0], yOffSet[1]), width: UIScreen.main.bounds.width, height: 40)
+        headerAttribute.frame = CGRect(x: 0, y: collectionView.numberOfItems(inSection: 0) > 0 ? max(yOffSet[0], yOffSet[1]) : 300, width: UIScreen.main.bounds.width, height: 40)
         cache.append(headerAttribute)
         
         // 오프셋 둘중 큰걸로 초기화하고 40 더하기
-        let yOffsetMax = max(yOffSet[0], yOffSet[1]) + 40
+        let yOffsetMax = collectionView.numberOfItems(inSection: 0) > 0 ? max(yOffSet[0], yOffSet[1]) + 40 : 340 // emptyView 높이가 300 & 헤더뷰 40
         yOffSet[0] = yOffsetMax // 헤더뷰 height값 40 + 마지막 요소 위치
         yOffSet[1] = yOffsetMax
         
