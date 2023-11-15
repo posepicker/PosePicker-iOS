@@ -194,12 +194,6 @@ class PoseFeedViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-//        output.photoCellItems
-//            .drive(poseFeedCollectionView.rx.items(cellIdentifier: PoseFeedPhotoCell.identifier, cellType: PoseFeedPhotoCell.self)) { row, viewModel, cell in
-//                cell.bind(to: viewModel)
-//            }
-//            .disposed(by: disposeBag)
-        
         output.sections
             .bind(to: poseFeedCollectionView.rx.items(dataSource: viewModel.dataSource))
             .disposed(by: disposeBag)

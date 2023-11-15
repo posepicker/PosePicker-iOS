@@ -57,7 +57,6 @@ class PoseFeedViewModel: ViewModelType {
         let filterTagItems: Driver<[RegisteredFilterCellViewModel]>
         let deleteTargetFilterTag: Driver<FilterTags?>
         let deleteTargetCountTag: Driver<CountTagType?>
-        let photoCellItems: Driver<[PoseFeedPhotoCellViewModel]>
         let isEmptyViewHidden: Observable<Bool>
         let sections: Observable<[PoseSection]>
     }
@@ -261,7 +260,7 @@ class PoseFeedViewModel: ViewModelType {
                 let viewModels = images.map { image in
                     PoseFeedPhotoCellViewModel(image: image)
                 }
-                photoCellItems.accept(viewModels)
+//                photoCellItems.accept(viewModels)
                 
                 var filteredSectionItems = sections.value[0].items
                 filteredSectionItems = viewModels
@@ -283,7 +282,7 @@ class PoseFeedViewModel: ViewModelType {
                 let viewModels = images.map { image in
                     PoseFeedPhotoCellViewModel(image: image)
                 }
-                photoCellItems.accept(viewModels)
+//                photoCellItems.accept(viewModels)
                 
                 var recommendedSectionItems = sections.value[1].items
                 recommendedSectionItems = viewModels
@@ -295,12 +294,12 @@ class PoseFeedViewModel: ViewModelType {
         
         /// viewDidAppear 이후 셀이 비어있지 않았으면 empty 노출
         input.viewDidAppearTrigger
-            .flatMapLatest { photoCellItems }
+            .flatMapLatest { sections }
             .flatMapLatest { [unowned self] items -> Observable<Bool> in
                 if self.isLoading {
                     return Observable.just(true)
                 } else {
-                    return Observable.just(!items.isEmpty)
+                    return Observable.just(!items[0].items.isEmpty)
                 }
             }
             .subscribe(onNext: {
@@ -315,7 +314,7 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), photoCellItems: photoCellItems.asDriver(), isEmptyViewHidden: isEmptyViewHidden.asObservable(), sections: sections.asObservable())
+        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), isEmptyViewHidden: isEmptyViewHidden.asObservable(), sections: sections.asObservable())
     }
     
     func newSizeImageWidthDownloadedResource(image: UIImage) -> UIImage {
