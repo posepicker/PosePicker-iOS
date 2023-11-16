@@ -34,6 +34,6 @@ class PoseFeedCoordinator: NSObject, Coordinator {
     }
     
     func pushDetailView(viewController: PoseDetailViewController) {
-        self.navigationController.pushViewController(viewController, animated: true)
+        self.navigationController.present(viewController, animated: true)
     }
 }
