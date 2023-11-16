@@ -331,6 +331,9 @@ class PoseFeedViewModel: ViewModelType {
         self.isLoading = false
         self.currentPage = 0
         
+        self.filteredContentSizes.accept([])
+        self.recommendedContentsSizes.accept([])
+        
         filteredViewModels.accept([])
         recommendedViewModels.accept([])
         
