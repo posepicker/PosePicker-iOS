@@ -40,6 +40,8 @@
 		C903E5422AFCC60D00BD004F /* Page.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903E5412AFCC60D00BD004F /* Page.swift */; };
 		C903E5442AFCC62600BD004F /* RecommendedContents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903E5432AFCC62600BD004F /* RecommendedContents.swift */; };
 		C903E5472B01F51F00BD004F /* PoseFeedEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903E5462B01F51F00BD004F /* PoseFeedEmptyView.swift */; };
+		C903E54A2B05BCA300BD004F /* PopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903E5492B05BCA300BD004F /* PopUpViewController.swift */; };
+		C903E54C2B05C13B00BD004F /* PopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C903E54B2B05C13B00BD004F /* PopUpView.swift */; };
 		C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2742AE38E26003777EB /* RootViewController.swift */; };
 		C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2762AE38E82003777EB /* AppCoordinator.swift */; };
 		C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2782AE38EBD003777EB /* RootCoordinator.swift */; };
@@ -150,6 +152,8 @@
 		C903E5412AFCC60D00BD004F /* Page.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Page.swift; sourceTree = "<group>"; };
 		C903E5432AFCC62600BD004F /* RecommendedContents.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RecommendedContents.swift; sourceTree = "<group>"; };
 		C903E5462B01F51F00BD004F /* PoseFeedEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedEmptyView.swift; sourceTree = "<group>"; };
+		C903E5492B05BCA300BD004F /* PopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpViewController.swift; sourceTree = "<group>"; };
+		C903E54B2B05C13B00BD004F /* PopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopUpView.swift; sourceTree = "<group>"; };
 		C94FD2742AE38E26003777EB /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		C94FD2762AE38E82003777EB /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2782AE38EBD003777EB /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -400,6 +404,15 @@
 			path = UIImageView;
 			sourceTree = "<group>";
 		};
+		C903E5482B05BC4D00BD004F /* PopUp */ = {
+			isa = PBXGroup;
+			children = (
+				C903E5492B05BCA300BD004F /* PopUpViewController.swift */,
+				C903E54B2B05C13B00BD004F /* PopUpView.swift */,
+			);
+			path = PopUp;
+			sourceTree = "<group>";
+		};
 		C94FD27A2AE39505003777EB /* PosePick */ = {
 			isa = PBXGroup;
 			children = (
@@ -461,6 +474,7 @@
 		C94FD29C2AE3AF1E003777EB /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				C903E5482B05BC4D00BD004F /* PopUp */,
 				C9C0CDCA2AF3538C0041E423 /* ToolTip */,
 				C94FD2A92AE8CED2003777EB /* Button */,
 				880E75312AE67C9C007FAD5A /* Selection */,
@@ -918,6 +932,7 @@
 				880E75302AE60937007FAD5A /* UIImage+.swift in Sources */,
 				C94FD2832AE3960B003777EB /* PoseFeedViewController.swift in Sources */,
 				C9DC2F992AEA28E300D5170D /* PoseFeedFilterCell.swift in Sources */,
+				C903E54A2B05BCA300BD004F /* PopUpViewController.swift in Sources */,
 				C9C8908A2AE107180010240A /* ViewModelType.swift in Sources */,
 				C9C890BF2AE1107B0010240A /* ImageLiteral.swift in Sources */,
 				88EA81F62AF6A17A00020DEA /* PoseFeedPhotoCell.swift in Sources */,
@@ -933,6 +948,7 @@
 				C9DC2F8E2AEA193300D5170D /* PoseFeedCoordinator.swift in Sources */,
 				8803ADB92B04FB0D00185933 /* PoseDetailViewController.swift in Sources */,
 				C94FD2852AE39612003777EB /* BookMarkViewController.swift in Sources */,
+				C903E54C2B05C13B00BD004F /* PopUpView.swift in Sources */,
 				C94FD29B2AE3AC3E003777EB /* UIView+.swift in Sources */,
 				880E75592AEA8BE2007FAD5A /* EmptyBookmarkView.swift in Sources */,
 				C9DC2F902AEA1D5F00D5170D /* PoseFeedFilterViewController.swift in Sources */,
