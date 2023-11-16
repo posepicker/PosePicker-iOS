@@ -52,9 +52,8 @@ class PoseFeedViewModel: ViewModelType {
         let poseFeedFilterViewIsPresenting: Observable<Bool>
         let filterReset: ControlEvent<Void>
         let viewDidLoadTrigger: Observable<Void>
-        let viewDidDisappearTrigger: Observable<Void>
-        let viewDidAppearTrigger: Observable<Void>
         let nextPageRequestTrigger: Observable<Void>
+        let posefeedSelection: ControlEvent<PoseFeedPhotoCellViewModel>
     }
     
     struct Output {
@@ -63,6 +62,7 @@ class PoseFeedViewModel: ViewModelType {
         let deleteTargetFilterTag: Driver<FilterTags?>
         let deleteTargetCountTag: Driver<CountTagType?>
         let sections: Observable<[PoseSection]>
+        let poseDetailViewPush: Driver<PoseDetailViewModel?>
     }
     
     // MARK: - 이미지 하나씩 바인딩하지 말고 모두 다 받고 진행
@@ -85,7 +85,7 @@ class PoseFeedViewModel: ViewModelType {
         let currentPage = BehaviorRelay<Page?>(value: nil)
         let sections = BehaviorRelay<[PoseSection]>(value: [PoseSection(header: "", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])])
         let recommendedContents = BehaviorRelay<RecommendedContents?>(value: nil)
-
+        let poseDetailViewModel = BehaviorRelay<PoseDetailViewModel?>(value: nil)
         
         /// 필터 등록 완료 + 필터 모달이 Present 상태일때
         /// 인원 수 & 프레임 수 셀렉션으로부터 데이터 추출
@@ -133,7 +133,7 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        /// viewDidAppear 이후 데이터 요청
+        /// viewDidLoad 이후 데이터 요청
         input.viewDidLoadTrigger
             .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
                 return self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: 0, pageSize: 10)).asObservable()
@@ -302,7 +302,18 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), sections: sections.asObservable())
+        /// 포즈피드 셀렉션
+        input.posefeedSelection
+            .flatMapLatest { [unowned self] viewModel -> Observable<PosePick> in
+                return self.apiSession.requestSingle(.retrievePoseDetail(poseId: viewModel.poseId.value)).asObservable()
+            }
+            .subscribe(onNext: {
+                let viewModel = PoseDetailViewModel(poseDetailData: $0)
+                poseDetailViewModel.accept(viewModel)
+            })
+            .disposed(by: disposeBag)
+        
+        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), sections: sections.asObservable(), poseDetailViewPush: poseDetailViewModel.asDriver())
     }
     
     /// 디자인 수치 기준으로 이미지 리사이징
