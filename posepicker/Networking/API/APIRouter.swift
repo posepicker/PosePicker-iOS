@@ -15,6 +15,7 @@ enum APIRouter: URLRequestConvertible {
     case retrievePoseTalk
     case retrieveAllPoseFeed(pageNumber: Int, pageSize: Int)
     case retrieveFilteringPoseFeed(peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int)
+    case retrievePoseDetail(poseId: Int)
     
     // MARK: - HttpMethod
     
@@ -28,6 +29,8 @@ enum APIRouter: URLRequestConvertible {
         case .retrieveAllPoseFeed:
             return .get
         case .retrieveFilteringPoseFeed:
+            return .get
+        case .retrievePoseDetail:
             return .get
         }
     }
@@ -45,6 +48,8 @@ enum APIRouter: URLRequestConvertible {
             return "/api/pose/all"
         case .retrieveFilteringPoseFeed:
             return "/api/pose"
+        case .retrievePoseDetail(let poseId):
+            return "/api/pose/\(poseId)"
         }
     }
     
@@ -72,6 +77,8 @@ enum APIRouter: URLRequestConvertible {
                 K.Parameters.tags: tagString,
                 K.Parameters.pageNumber: pageNumber
             ]
+        case .retrievePoseDetail:
+            return nil
         }
     }
     
