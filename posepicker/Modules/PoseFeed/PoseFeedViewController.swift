@@ -75,8 +75,7 @@ class PoseFeedViewController: BaseViewController {
     var viewModel: PoseFeedViewModel
     var coordinator: PoseFeedCoordinator
     let viewDidLoadTrigger = PublishSubject<Void>()
-    let viewDidDisappearTrigger = PublishSubject<Void>()
-    let viewDidAppearTrigger = PublishSubject<Void>()
+
     let nextPageRequestTrigger = PublishSubject<Void>()
 
     // MARK: - Initialization
@@ -95,16 +94,6 @@ class PoseFeedViewController: BaseViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         viewDidLoadTrigger.onNext(())
-    }
-    
-    override func viewDidDisappear(_ animated: Bool) {
-        super.viewDidDisappear(animated)
-        viewDidDisappearTrigger.onNext(())
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        viewDidAppearTrigger.onNext(())
     }
     
     // MARK: - Functions
@@ -151,8 +140,8 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), filterReset: coordinator.poseFeedFilterViewController.resetButton.rx.tap, viewDidLoadTrigger: viewDidLoadTrigger.asObservable(), viewDidDisappearTrigger: viewDidDisappearTrigger.asObservable(), viewDidAppearTrigger: viewDidAppearTrigger.asObservable(), nextPageRequestTrigger: nextPageRequestTrigger.asObservable())
-        
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), filterReset: coordinator.poseFeedFilterViewController.resetButton.rx.tap, viewDidLoadTrigger: viewDidLoadTrigger.asObservable(), nextPageRequestTrigger: nextPageRequestTrigger.asObservable(), posefeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self))
+    
         let output = viewModel.transform(input: input)
         
         output.presentModal
@@ -189,6 +178,13 @@ class PoseFeedViewController: BaseViewController {
         
         output.sections
             .bind(to: poseFeedCollectionView.rx.items(dataSource: viewModel.dataSource))
+            .disposed(by: disposeBag)
+        
+        output.poseDetailViewPush
+            .drive(onNext: { [unowned self] in
+                guard let viewModel = $0 else { return }
+                self.coordinator.pushDetailView(viewController: PoseDetailViewController(viewModel: viewModel, coordinator: self.coordinator))
+            })
             .disposed(by: disposeBag)
     }
 }
