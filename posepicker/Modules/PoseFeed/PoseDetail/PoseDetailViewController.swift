@@ -86,7 +86,7 @@ class PoseDetailViewController: BaseViewController {
         
         navigationBar.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.top.equalTo(view.safeAreaLayoutGuide.snp.top)
+            make.top.equalTo(view.snp.top)
             make.height.equalTo(50)
         }
         
