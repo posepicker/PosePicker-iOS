@@ -132,7 +132,7 @@ class PoseFeedViewController: BaseViewController {
         
         poseFeedCollectionView.rx.contentOffset
             .subscribe(onNext: { [unowned self] in
-                if $0.y > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height && !self.viewModel.isLoading && !viewModel.isLast {
+                if $0.y > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height && !self.viewModel.isLoading && !self.viewModel.isLast {
                     self.nextPageRequestTrigger.onNext(())
                 }
             })
@@ -186,13 +186,19 @@ class PoseFeedViewController: BaseViewController {
                 self.coordinator.pushDetailView(viewController: PoseDetailViewController(viewModel: viewModel, coordinator: self.coordinator))
             })
             .disposed(by: disposeBag)
+        
+        output.resetCollectionViewOffset
+            .drive(onNext: { [unowned self] in
+                self.poseFeedCollectionView.rx.contentOffset.onNext($0)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
 extension PoseFeedViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == poseFeedCollectionView {
-            return viewModel.sizes.value[indexPath.item]
+            return viewModel.filteredContentSizes.value[indexPath.item]
         }
         return CGSize(width: 60, height: 30)
     }
@@ -201,7 +207,7 @@ extension PoseFeedViewController: UICollectionViewDelegateFlowLayout {
 extension PoseFeedViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-            return viewModel.sizes.value[indexPath.item].height
+            return viewModel.filteredContentSizes.value[indexPath.item].height
         } else {
             return viewModel.recommendedContentsSizes.value[indexPath.item].height
         }

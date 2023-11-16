@@ -15,7 +15,8 @@ class PoseFeedViewModel: ViewModelType {
     
     var apiSession: APIService = APISession()
     var disposeBag = DisposeBag()
-    var sizes = BehaviorRelay<[CGSize]>(value: [])
+    
+    var filteredContentSizes = BehaviorRelay<[CGSize]>(value: [])
     var recommendedContentsSizes = BehaviorRelay<[CGSize]>(value: [])
     
     var isLoading = false
@@ -63,6 +64,7 @@ class PoseFeedViewModel: ViewModelType {
         let deleteTargetCountTag: Driver<CountTagType?>
         let sections: Observable<[PoseSection]>
         let poseDetailViewPush: Driver<PoseDetailViewModel?>
+        let resetCollectionViewOffset: Driver<CGPoint>
     }
     
     // MARK: - 이미지 하나씩 바인딩하지 말고 모두 다 받고 진행
@@ -71,21 +73,24 @@ class PoseFeedViewModel: ViewModelType {
         let deleteTargetFilterTag = BehaviorRelay<FilterTags?>(value: nil)
         let deleteTargetCountTag = BehaviorRelay<CountTagType?>(value: nil)
         
-        let retrievedCacheImage = BehaviorRelay<[UIImage?]>(value: [])
-        let recommendedCacheImage = BehaviorRelay<[UIImage?]>(value: [])
-        
-        let downloadCountForPageSize = BehaviorRelay<Int>(value: 0)
+        let filteredCountForPageSize = BehaviorRelay<Int>(value: 0)
         let recommendedCountForPageSize = BehaviorRelay<Int>(value: 0)
         
         let filteredPoseId = BehaviorRelay<[Int]>(value: [])
         let recommendedPoseId = BehaviorRelay<[Int]>(value: [])
         
+        let filteredViewModels = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
+        let recommendedViewModels = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
+        
         let queryParameters = BehaviorRelay<[String]>(value: [])
         let pageSize = BehaviorRelay<Int>(value: 10)
         let currentPage = BehaviorRelay<Page?>(value: nil)
-        let sections = BehaviorRelay<[PoseSection]>(value: [PoseSection(header: "", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])])
+        
+        let sections = BehaviorRelay<[PoseSection]>(value: [PoseSection(header: "", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])]) // 캐시 로드를 위한 임시 데이터
+        
         let recommendedContents = BehaviorRelay<RecommendedContents?>(value: nil)
         let poseDetailViewModel = BehaviorRelay<PoseDetailViewModel?>(value: nil)
+        let resetCollectionViewOffset = PublishSubject<CGPoint>()
         
         /// 필터 등록 완료 + 필터 모달이 Present 상태일때
         /// 인원 수 & 프레임 수 셀렉션으로부터 데이터 추출
@@ -143,7 +148,7 @@ class PoseFeedViewModel: ViewModelType {
                 pageSize.accept(posefeed.content.count) // 데이터 로드 대기 갯수
                 posefeed.content.forEach { [weak self] pose in
                     filteredPoseId.accept(filteredPoseId.value + [pose.poseInfo.poseId])
-                    self?.retrieveCacheImage(cacheKey: pose.poseInfo.imageKey, cacheImageRelayObject: retrievedCacheImage, downloadCount: downloadCountForPageSize)
+                    self?.retrieveCacheImage(cacheKey: pose.poseInfo.imageKey, downloadCount: filteredCountForPageSize, filteredViewModels: filteredViewModels, recommendedViewModels: recommendedViewModels, poseId: pose.poseInfo.poseId)
                 }
             })
             .disposed(by: disposeBag)
@@ -151,8 +156,9 @@ class PoseFeedViewModel: ViewModelType {
         /// 쿼리 파라미터 세팅 이후 이미지 세팅
         queryParameters
             .flatMapLatest { [unowned self] tags -> Observable<FilteredPose> in
+                resetCollectionViewOffset.onNext(CGPoint(x: 0, y: 0))
                 currentPage.accept(nil) // 필터 세팅 후 기존 페이지네이션 정보 초기화
-                self.resetBinding(sectionRelayObject: sections, filteredCacheImage: retrievedCacheImage, recommendedCacheImage: recommendedCacheImage, filteredPoseId: filteredPoseId, recommendedPoseId: recommendedPoseId)
+                self.resetBinding(sectionRelayObject: sections,filteredViewModels: filteredViewModels,recommendedViewModels: recommendedViewModels, filteredPoseId: filteredPoseId, recommendedPoseId: recommendedPoseId, downloadCountFiltered: filteredCountForPageSize, downloadCountRecommended: recommendedCountForPageSize)
                 recommendedContents.accept(nil)
                 if tags.count < 2 {
                     return Observable<FilteredPose>.empty()
@@ -168,13 +174,12 @@ class PoseFeedViewModel: ViewModelType {
                 return filteredContents.filteredContents.content
             }
             .subscribe(onNext: { [unowned self] filteredContent in
-                retrievedCacheImage.accept([])
-                self.sizes.accept([])
+                self.filteredContentSizes.accept([])
                 pageSize.accept(filteredContent.count)
                 
                 filteredContent.forEach { [weak self] pose in
                     filteredPoseId.accept(filteredPoseId.value + [pose.poseInfo.poseId])
-                    self?.retrieveCacheImage(cacheKey: pose.poseInfo.imageKey, cacheImageRelayObject: retrievedCacheImage, downloadCount: downloadCountForPageSize)
+                    self?.retrieveCacheImage(cacheKey: pose.poseInfo.imageKey, downloadCount: filteredCountForPageSize, filteredViewModels: filteredViewModels, recommendedViewModels: recommendedViewModels, poseId: pose.poseInfo.poseId)
                 }
             })
             .disposed(by: disposeBag)
@@ -198,7 +203,7 @@ class PoseFeedViewModel: ViewModelType {
                 pageSize.accept(posefeed.content.count) // 데이터 로드 대기 갯수
                 posefeed.content.forEach { [weak self] pose in
                     filteredPoseId.accept(filteredPoseId.value + [pose.poseInfo.poseId])
-                    self?.retrieveCacheImage(cacheKey: pose.poseInfo.imageKey, cacheImageRelayObject: retrievedCacheImage, downloadCount: downloadCountForPageSize)
+                    self?.retrieveCacheImage(cacheKey: pose.poseInfo.imageKey, downloadCount: filteredCountForPageSize, filteredViewModels: filteredViewModels, recommendedViewModels: recommendedViewModels, poseId: pose.poseInfo.poseId)
                 }
             })
             .disposed(by: disposeBag)
@@ -231,7 +236,7 @@ class PoseFeedViewModel: ViewModelType {
                 
                 filteredContent.forEach { [weak self] pose in
                     filteredPoseId.accept(filteredPoseId.value + [pose.poseInfo.poseId])
-                    self?.retrieveCacheImage(cacheKey: pose.poseInfo.imageKey, cacheImageRelayObject: retrievedCacheImage, downloadCount: downloadCountForPageSize)
+                    self?.retrieveCacheImage(cacheKey: pose.poseInfo.imageKey, downloadCount: filteredCountForPageSize, filteredViewModels: filteredViewModels, recommendedViewModels: recommendedViewModels, poseId: pose.poseInfo.poseId)
                 }
             })
             .disposed(by: disposeBag)
@@ -256,49 +261,36 @@ class PoseFeedViewModel: ViewModelType {
                 posepick.forEach { [weak self] pose in
                     // 추천이미지 섹션 item에 객체 저장
                     recommendedPoseId.accept(recommendedPoseId.value + [pose.poseInfo.poseId])
-                    self?.retrieveCacheImage(cacheKey: pose.poseInfo.imageKey, cacheImageRelayObject: recommendedCacheImage, downloadCount: recommendedCountForPageSize, isRecommendedContents: true)
+                    self?.retrieveCacheImage(cacheKey: pose.poseInfo.imageKey, downloadCount: recommendedCountForPageSize, filteredViewModels: filteredViewModels, recommendedViewModels: recommendedViewModels, poseId: pose.poseInfo.poseId)
                 }
             })
             .disposed(by: disposeBag)
         
         /// 필터링 이미지 로딩
-        Observable.combineLatest(retrievedCacheImage, downloadCountForPageSize, pageSize, filteredPoseId)
-            .subscribe(onNext: { [unowned self] images, downloadCount, pageSize, poseId in
-                if downloadCount < pageSize {
+        Observable.combineLatest(filteredViewModels, filteredCountForPageSize, pageSize, filteredPoseId)
+            .subscribe(onNext: { [unowned self] viewModel, filteredCount, pageSize, poseId in
+                if viewModel.count < pageSize {
                     return
                 }
                 self.endLoading()
+                var sectionsValue = sections.value
+                sectionsValue[0].items = viewModel
                 
-                let viewModels = zip(images, poseId).map { image, id in
-                    return PoseFeedPhotoCellViewModel(image: image, poseId: id)
-                }
-                
-                var filteredSectionItems = sections.value[0].items
-                filteredSectionItems = viewModels
-                let recommendedSection = sections.value[1]
-                
-                sections.accept([PoseSection(header: "", items: filteredSectionItems), recommendedSection])
+                sections.accept(sectionsValue)
             })
             .disposed(by: disposeBag)
         
         /// 추천 이미지 로딩
-        Observable.combineLatest(recommendedCacheImage, recommendedCountForPageSize, pageSize, recommendedPoseId)
-            .subscribe(onNext: { [unowned self] images, downloadCount, pageSize, poseId in
-                if downloadCount < pageSize {
+        Observable.combineLatest(recommendedViewModels, recommendedCountForPageSize, pageSize, recommendedPoseId)
+            .subscribe(onNext: { [unowned self] viewModel, downloadCount, pageSize, poseId in
+                if viewModel.count < pageSize {
                     return
                 }
+                var sectionsValue = sections.value
+                sectionsValue[1].items = viewModel
                 
+                sections.accept(sectionsValue)
                 self.endLoading()
-                
-                let viewModels = zip(images, poseId).map { image, id in
-                    return PoseFeedPhotoCellViewModel(image: image, poseId: id)
-                }
-                
-                var recommendedSectionItems = sections.value[1].items
-                recommendedSectionItems = viewModels
-                let filteredSection = sections.value[0]
-                
-                sections.accept([filteredSection, PoseSection(header: "이런 포즈는 어때요?", items: recommendedSectionItems)])
             })
             .disposed(by: disposeBag)
         
@@ -312,8 +304,9 @@ class PoseFeedViewModel: ViewModelType {
                 poseDetailViewModel.accept(viewModel)
             })
             .disposed(by: disposeBag)
+            
         
-        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), sections: sections.asObservable(), poseDetailViewPush: poseDetailViewModel.asDriver())
+        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), sections: sections.asObservable(), poseDetailViewPush: poseDetailViewModel.asDriver(), resetCollectionViewOffset: resetCollectionViewOffset.asDriver(onErrorJustReturn: CGPoint(x: 0, y: 0)))
     }
     
     /// 디자인 수치 기준으로 이미지 리사이징
@@ -333,24 +326,38 @@ class PoseFeedViewModel: ViewModelType {
     }
     
     /// 이미지 바인딩 리셋
-    func resetBinding(sectionRelayObject: BehaviorRelay<[PoseSection]>, filteredCacheImage: BehaviorRelay<[UIImage?]>, recommendedCacheImage: BehaviorRelay<[UIImage?]>, filteredPoseId: BehaviorRelay<[Int]>, recommendedPoseId: BehaviorRelay<[Int]>) {
+    func resetBinding(sectionRelayObject: BehaviorRelay<[PoseSection]>, filteredViewModels: BehaviorRelay<[PoseFeedPhotoCellViewModel]>, recommendedViewModels: BehaviorRelay<[PoseFeedPhotoCellViewModel]>, filteredPoseId: BehaviorRelay<[Int]>, recommendedPoseId: BehaviorRelay<[Int]>, downloadCountFiltered: BehaviorRelay<Int>, downloadCountRecommended: BehaviorRelay<Int>) {
+        self.isLast = false
+        self.isLoading = false
+        self.currentPage = 0
+        
+        filteredViewModels.accept([])
+        recommendedViewModels.accept([])
+        
         let defaultValue = [PoseSection(header: "", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])]
         sectionRelayObject.accept(defaultValue)
-        filteredCacheImage.accept([])
-        recommendedCacheImage.accept([])
+        
         filteredPoseId.accept([])
         recommendedPoseId.accept([])
+        
+        downloadCountFiltered.accept(0)
+        downloadCountRecommended.accept(0)
     }
     
     /// call by reference 활용 - 캐시처리 로직 함수화
-    func retrieveCacheImage(cacheKey: String, cacheImageRelayObject: BehaviorRelay<[UIImage?]>, downloadCount: BehaviorRelay<Int>, isRecommendedContents: Bool = false) {
+    func retrieveCacheImage(cacheKey: String, downloadCount: BehaviorRelay<Int>, filteredViewModels: BehaviorRelay<[PoseFeedPhotoCellViewModel]>, recommendedViewModels: BehaviorRelay<[PoseFeedPhotoCellViewModel]>, poseId: Int, isRecommendedContents: Bool = false) {
+        
         ImageCache.default.retrieveImage(forKey: cacheKey, options: nil) { result in
             switch result {
             case .success(let value):
                 if let image = value.image {
                     let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
-                    cacheImageRelayObject.accept(cacheImageRelayObject.value + [newSizeImage])
-                    isRecommendedContents ? self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size]) : self.sizes.accept(self.sizes.value + [newSizeImage.size])
+                    let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: poseId)
+                    
+                    isRecommendedContents ? recommendedViewModels.accept(recommendedViewModels.value + [viewModel]) : filteredViewModels.accept(filteredViewModels.value + [viewModel])
+                    
+                    isRecommendedContents ? self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size]) : self.filteredContentSizes.accept(self.filteredContentSizes.value + [newSizeImage.size])
+                    
                     downloadCount.accept(downloadCount.value + 1)
                 } else {
                     guard let url = URL(string: cacheKey) else { return }
@@ -358,8 +365,10 @@ class PoseFeedViewModel: ViewModelType {
                         switch downloadResult {
                         case .success(let downloadImage):
                             let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadImage.image)
-                            cacheImageRelayObject.accept(cacheImageRelayObject.value + [newSizeImage])
-                            isRecommendedContents ? self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size]) : self.sizes.accept(self.sizes.value + [newSizeImage.size])
+                            let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: poseId)
+                            isRecommendedContents ? recommendedViewModels.accept(recommendedViewModels.value + [viewModel]) : filteredViewModels.accept(filteredViewModels.value + [viewModel])
+//                            cacheImageRelayObject.accept(cacheImageRelayObject.value + [newSizeImage])
+                            isRecommendedContents ? self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size]) : self.filteredContentSizes.accept(self.filteredContentSizes.value + [newSizeImage.size])
                             downloadCount.accept(downloadCount.value + 1)
                         case .failure:
                             return
@@ -367,7 +376,7 @@ class PoseFeedViewModel: ViewModelType {
                     }
                 }
             case .failure:
-                cacheImageRelayObject.accept(cacheImageRelayObject.value + [nil])
+                return
             }
         }
     }
