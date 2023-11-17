@@ -175,6 +175,10 @@ class PoseFeedViewController: BaseViewController {
                 self.coordinator.poseFeedFilterViewController.filterTagRemoveTrigger.onNext(removeTarget)
             })
             .disposed(by: disposeBag)
+        
+        output.sectionItems
+            .bind(to: poseFeedCollectionView.rx.items(dataSource: viewModel.dataSource))
+            .disposed(by: disposeBag)
     }
 }
 

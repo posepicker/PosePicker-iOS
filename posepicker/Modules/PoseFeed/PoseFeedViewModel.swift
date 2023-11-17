@@ -52,7 +52,6 @@ class PoseFeedViewModel: ViewModelType {
         let filterRegisterCompleted: ControlEvent<Void> // O
         let poseFeedFilterViewIsPresenting: Observable<Bool> // O
         let viewDidLoadTrigger: Observable<Void>
-
     }
     
     struct Output {
@@ -60,6 +59,7 @@ class PoseFeedViewModel: ViewModelType {
         let filterTagItems: Driver<[RegisteredFilterCellViewModel]> // O
         let deleteTargetFilterTag: Driver<FilterTags?>
         let deleteTargetCountTag: Driver<CountTagType?>
+        let sectionItems: Observable<[PoseSection]>
     }
     
     // MARK: - 이미지 하나씩 바인딩하지 말고 모두 다 받고 진행
@@ -68,8 +68,10 @@ class PoseFeedViewModel: ViewModelType {
         let tagItems = BehaviorRelay<[RegisteredFilterCellViewModel]>(value: [])
         let deleteTargetFilterTag = BehaviorRelay<FilterTags?>(value: nil)
         let deleteTargetCountTag = BehaviorRelay<CountTagType?>(value: nil)
-        let filteredSection = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
-        let 
+        
+        let filterSection = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
+        let recommendSection = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
+        let sectionItems = BehaviorRelay<[PoseSection]>(value: [PoseSection(header: "", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])])
         
         /// 필터 등록 완료 + 필터 모달이 Present 상태일때
         /// 인원 수 & 프레임 수 셀렉션으로부터 데이터 추출
@@ -119,13 +121,25 @@ class PoseFeedViewModel: ViewModelType {
         /// 1. 포즈피드 초기 진입시 데이터 요청
         input.viewDidLoadTrigger
             .flatMapLatest { _ -> Observable<PoseFeed> in self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: 0, pageSize: 8)).asObservable() }
+            .map { $0.content }
+            .flatMapLatest { [unowned self] posefeed -> Observable<[PoseFeedPhotoCellViewModel]> in
+                return self.retrieveCacheObservable(posefeed: posefeed)
+            }
             .subscribe(onNext: {
-                print($0)
+                filterSection.accept($0)
+            })
+            .disposed(by: disposeBag)
+        
+        /// 필터 섹션 & 추천 섹션 결합 후 셀 아이템에 바인딩
+        Observable.combineLatest(filterSection, recommendSection)
+            .subscribe(onNext: { filter, recommend in
+                let newSectionItems = [PoseSection(header: "", items: filter), PoseSection(header: "이런 포즈는 어때요?", items: recommend)]
+                sectionItems.accept(newSectionItems)
             })
             .disposed(by: disposeBag)
             
         
-        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver())
+        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), sectionItems: sectionItems.asObservable())
     }
     
     /// 디자인 수치 기준으로 이미지 리사이징
@@ -142,5 +156,42 @@ class PoseFeedViewModel: ViewModelType {
     
     func endLoading() {
         self.isLoading = false
+    }
+    
+    func retrieveCacheObservable(posefeed: [PosePick], isFilterSection: Bool = true) -> Observable<[PoseFeedPhotoCellViewModel]> {
+        let viewModelObservable = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
+        
+        posefeed.forEach { posepick in
+            ImageCache.default.retrieveImage(forKey: posepick.poseInfo.imageKey, options: nil) { [weak self] result in
+                guard let self = self else { return }
+                switch result {
+                case .success(let value):
+                    if let image = value.image {
+                        let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
+                        isFilterSection ? self.filteredContentSizes.accept(self.filteredContentSizes.value + [newSizeImage.size]) : self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size])
+                        
+                        let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId)
+                        viewModelObservable.accept(viewModelObservable.value + [viewModel])
+                    } else {
+                        guard let url = URL(string: posepick.poseInfo.imageKey) else { return }
+                        KingfisherManager.shared.retrieveImage(with: url) { downloadResult in
+                            switch downloadResult {
+                            case .success(let downloadImage):
+                                let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadImage.image)
+                                isFilterSection ? self.filteredContentSizes.accept(self.filteredContentSizes.value + [newSizeImage.size]) : self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size])
+                                
+                                let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId)
+                                viewModelObservable.accept(viewModelObservable.value + [viewModel])
+                            case .failure:
+                                return
+                            }
+                        }
+                    }
+                case .failure:
+                    return
+                }
+            }
+        }
+        return viewModelObservable.asObservable().skip(while: { $0.count < posefeed.count })
     }
 }
