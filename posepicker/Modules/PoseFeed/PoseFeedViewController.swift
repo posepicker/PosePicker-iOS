@@ -140,7 +140,7 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), filterReset: coordinator.poseFeedFilterViewController.resetButton.rx.tap, viewDidLoadTrigger: viewDidLoadTrigger.asObservable(), nextPageRequestTrigger: nextPageRequestTrigger.asObservable(), posefeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self))
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable())
     
         let output = viewModel.transform(input: input)
         
@@ -175,23 +175,6 @@ class PoseFeedViewController: BaseViewController {
                 self.coordinator.poseFeedFilterViewController.filterTagRemoveTrigger.onNext(removeTarget)
             })
             .disposed(by: disposeBag)
-        
-        output.sections
-            .bind(to: poseFeedCollectionView.rx.items(dataSource: viewModel.dataSource))
-            .disposed(by: disposeBag)
-        
-        output.poseDetailViewPush
-            .drive(onNext: { [unowned self] in
-                guard let viewModel = $0 else { return }
-                self.coordinator.pushDetailView(viewController: PoseDetailViewController(viewModel: viewModel, coordinator: self.coordinator))
-            })
-            .disposed(by: disposeBag)
-        
-        output.resetCollectionViewOffset
-            .drive(onNext: { [unowned self] in
-                self.poseFeedCollectionView.rx.contentOffset.onNext($0)
-            })
-            .disposed(by: disposeBag)
     }
 }
 
@@ -207,6 +190,11 @@ extension PoseFeedViewController: UICollectionViewDelegateFlowLayout {
 extension PoseFeedViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
+//            print("===")
+//            print("item: \(indexPath.item)")
+//            print("size count: \(viewModel.filteredContentSizes.value.count)")
+//            print("===")
+            
             return viewModel.filteredContentSizes.value[indexPath.item].height
         } else {
             return viewModel.recommendedContentsSizes.value[indexPath.item].height
