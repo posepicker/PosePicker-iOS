@@ -131,7 +131,6 @@ class PoseFeedFilterViewModel: ViewModelType {
         /// 뷰 dismiss
         /// 데이터 저장하지 않고 dismiss하면 모달 올라올때 세팅되어 있던 초기값으로 다시 수정하는 로직
         Observable.combineLatest(input.dismissState, input.viewWillDisappearTrigger)
-            .debug()
             .subscribe(onNext: { (dismissState, _) in
                 switch dismissState {
                 case .normal:
