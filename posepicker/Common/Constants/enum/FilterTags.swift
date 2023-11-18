@@ -39,7 +39,7 @@ enum FilterTags: String {
         }
     }
     
-    static func getNumberFromPeopleCountString(countString: String) -> Int {
+    static func getNumberFromPeopleCountString(countString: String) -> Int? {
         switch countString {
         case "전체":
             return 0
@@ -54,11 +54,11 @@ enum FilterTags: String {
         case "5인+":
             return 5
         default:
-            return 0
+            return nil
         }
     }
     
-    static func getNumberFromFrameCountString(countString: String) -> Int {
+    static func getNumberFromFrameCountString(countString: String) -> Int? {
         switch countString {
         case "전체":
             return 0
@@ -73,7 +73,7 @@ enum FilterTags: String {
         case "8컷+":
             return 8
         default:
-            return 0
+            return nil
         }
     }
     
