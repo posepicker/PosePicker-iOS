@@ -144,8 +144,6 @@ class PoseDetailViewController: BaseViewController {
             make.trailing.equalTo(shareButtonGroup).offset(-20)
             make.centerY.equalTo(shareButtonGroup)
         }
-        
-        tagCollectionView.updateCollectionViewHeight()
     }
     
     override func configUI() {
@@ -184,6 +182,17 @@ class PoseDetailViewController: BaseViewController {
                 cell.bind(to: viewModel)
             }
             .disposed(by: disposeBag)
+        
+        tagCollectionView.rx.modelSelected(PoseDetailTagCellViewModel.self)
+            .flatMapLatest { $0.title }
+            .subscribe(onNext: { [unowned self] in
+                self.coordinator.dismissPoseDetailWithTagSelection(tag: $0)
+                self.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
+            
+        
+        tagCollectionView.updateCollectionViewHeight()
     }
     
     // MARK: - Objc Functions
