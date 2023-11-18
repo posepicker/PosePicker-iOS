@@ -72,8 +72,8 @@ enum APIRouter: URLRequestConvertible {
             var tagString = ""
             filterTags.forEach { tagString += "\($0),"}
             return [
-                K.Parameters.peopleCount: FilterTags.getNumberFromPeopleCountString(countString: peopleCount),
-                K.Parameters.frameCount: FilterTags.getNumberFromFrameCountString(countString: frameCount),
+                K.Parameters.peopleCount: FilterTags.getNumberFromPeopleCountString(countString: peopleCount) ?? 0,
+                K.Parameters.frameCount: FilterTags.getNumberFromFrameCountString(countString: frameCount) ?? 0,
                 K.Parameters.tags: tagString,
                 K.Parameters.pageNumber: pageNumber
             ]
