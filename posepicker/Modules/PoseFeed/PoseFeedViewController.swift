@@ -77,6 +77,7 @@ class PoseFeedViewController: BaseViewController {
     let requestAllPoseTrigger = PublishSubject<Void>()
 
     let nextPageRequestTrigger = PublishSubject<Void>()
+    let modalDismissWithTag = PublishSubject<String>() // 상세 페이지에서 태그 tap과 함께 dismiss 트리거
 
     // MARK: - Initialization
     
@@ -140,7 +141,7 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), requestAllPoseTrigger: requestAllPoseTrigger, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), nextPageRequestTrigger: nextPageRequestTrigger)
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), requestAllPoseTrigger: requestAllPoseTrigger, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), nextPageRequestTrigger: nextPageRequestTrigger, modalDismissWithTag: modalDismissWithTag)
     
         let output = viewModel.transform(input: input)
         
@@ -201,11 +202,6 @@ extension PoseFeedViewController: UICollectionViewDelegateFlowLayout {
 extension PoseFeedViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
         if indexPath.section == 0 {
-//            print("===")
-//            print("item: \(indexPath.item)")
-//            print("size count: \(viewModel.filteredContentSizes.value.count)")
-//            print("===")
-            
             return viewModel.filteredContentSizes.value[indexPath.item].height
         } else {
             return viewModel.recommendedContentsSizes.value[indexPath.item].height
