@@ -36,4 +36,9 @@ class PoseFeedCoordinator: NSObject, Coordinator {
     func pushDetailView(viewController: PoseDetailViewController) {
         self.navigationController.present(viewController, animated: true)
     }
+    
+    func dismissPoseDetailWithTagSelection(tag: String) {
+        guard let posefeedViewController = self.navigationController.viewControllers.first as? PoseFeedViewController else { return }
+        posefeedViewController.modalDismissWithTag.onNext(tag)
+    }
 }
