@@ -27,6 +27,8 @@
 		880E75562AE6C2F7007FAD5A /* APIInterceptor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75552AE6C2F7007FAD5A /* APIInterceptor.swift */; };
 		880E75592AEA8BE2007FAD5A /* EmptyBookmarkView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75582AEA8BE2007FAD5A /* EmptyBookmarkView.swift */; };
 		880E755B2AF296E7007FAD5A /* PoseTalk.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E755A2AF296E7007FAD5A /* PoseTalk.swift */; };
+		883132972B08EF9100DAA5A7 /* PoseDetailTagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883132962B08EF9100DAA5A7 /* PoseDetailTagCell.swift */; };
+		883132992B08EF9E00DAA5A7 /* PoseDetailTagCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 883132982B08EF9E00DAA5A7 /* PoseDetailTagCellViewModel.swift */; };
 		8851477F2AF9490C00DCDD4E /* PinterestLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8851477E2AF9490C00DCDD4E /* PinterestLayout.swift */; };
 		88D5C47B2B0277BE0045C081 /* Differentiator in Frameworks */ = {isa = PBXBuildFile; productRef = 88D5C47A2B0277BE0045C081 /* Differentiator */; };
 		88D5C47D2B0277BE0045C081 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 88D5C47C2B0277BE0045C081 /* RxDataSources */; };
@@ -141,6 +143,8 @@
 		880E75552AE6C2F7007FAD5A /* APIInterceptor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIInterceptor.swift; sourceTree = "<group>"; };
 		880E75582AEA8BE2007FAD5A /* EmptyBookmarkView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyBookmarkView.swift; sourceTree = "<group>"; };
 		880E755A2AF296E7007FAD5A /* PoseTalk.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseTalk.swift; sourceTree = "<group>"; };
+		883132962B08EF9100DAA5A7 /* PoseDetailTagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseDetailTagCell.swift; sourceTree = "<group>"; };
+		883132982B08EF9E00DAA5A7 /* PoseDetailTagCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseDetailTagCellViewModel.swift; sourceTree = "<group>"; };
 		8851477E2AF9490C00DCDD4E /* PinterestLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestLayout.swift; sourceTree = "<group>"; };
 		88D5C4802B027B0A0045C081 /* PoseFeedSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedSection.swift; sourceTree = "<group>"; };
 		88D5C4842B0318040045C081 /* PoseFeedHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedHeader.swift; sourceTree = "<group>"; };
@@ -252,6 +256,7 @@
 		8803ADB72B04FAEF00185933 /* PoseDetail */ = {
 			isa = PBXGroup;
 			children = (
+				883132952B08ECED00DAA5A7 /* Cell */,
 				8803ADBA2B04FB4100185933 /* PoseDetailViewModel.swift */,
 				8803ADB82B04FB0D00185933 /* PoseDetailViewController.swift */,
 			);
@@ -352,6 +357,15 @@
 				880E75582AEA8BE2007FAD5A /* EmptyBookmarkView.swift */,
 			);
 			path = BookmarkSubviews;
+			sourceTree = "<group>";
+		};
+		883132952B08ECED00DAA5A7 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				883132982B08EF9E00DAA5A7 /* PoseDetailTagCellViewModel.swift */,
+				883132962B08EF9100DAA5A7 /* PoseDetailTagCell.swift */,
+			);
+			path = Cell;
 			sourceTree = "<group>";
 		};
 		8851477D2AF948BF00DCDD4E /* PinterestLayout */ = {
@@ -923,6 +937,7 @@
 				C903E53C2AF8C1BD00BD004F /* UIImageView+.swift in Sources */,
 				C94FD29F2AE3AF4F003777EB /* UnderlineSegmentControl.swift in Sources */,
 				880E75342AE67CC4007FAD5A /* BasicSelection.swift in Sources */,
+				883132992B08EF9E00DAA5A7 /* PoseDetailTagCellViewModel.swift in Sources */,
 				880E75422AE6BF4B007FAD5A /* APIService.swift in Sources */,
 				C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */,
 				88EA81F82AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift in Sources */,
@@ -955,6 +970,7 @@
 				88D5C4812B027B0A0045C081 /* PoseFeedSection.swift in Sources */,
 				880E752D2AE60499007FAD5A /* Header.swift in Sources */,
 				C94FD2812AE39603003777EB /* PoseTalkViewController.swift in Sources */,
+				883132972B08EF9100DAA5A7 /* PoseDetailTagCell.swift in Sources */,
 				C9C890522AE103A10010240A /* AppDelegate.swift in Sources */,
 				C903E5472B01F51F00BD004F /* PoseFeedEmptyView.swift in Sources */,
 				880E75402AE6BF2F007FAD5A /* ServicePose.swift in Sources */,
