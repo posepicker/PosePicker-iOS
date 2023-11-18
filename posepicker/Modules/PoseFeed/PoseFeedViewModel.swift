@@ -54,6 +54,7 @@ class PoseFeedViewModel: ViewModelType {
         let requestAllPoseTrigger: Observable<Void>
         let poseFeedSelection: ControlEvent<PoseFeedPhotoCellViewModel>
         let nextPageRequestTrigger: Observable<Void>
+        let modalDismissWithTag: Observable<String>
     }
     
     struct Output {
@@ -152,6 +153,22 @@ class PoseFeedViewModel: ViewModelType {
                 self.recommendedContentsSizes.accept([])
                 
                 let filterTags: [String] = tags.count > 2 ? Array(tags[2..<tags.count]) : []
+                
+                // MARK: - 상세 뷰에서 셀 탭을 통해 모달로 태그 세팅되었을때
+                if tags.count == 1 {
+                    // 인원 수 태그일때
+                    if let _ = FilterTags.getNumberFromPeopleCountString(countString: tags.first!) {
+                        return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: tags.first!, frameCount: "전체", filterTags: [], pageNumber: 0)).asObservable()
+                    }
+                    
+                    // 프레임 수 태그일때
+                    if let _ = FilterTags.getNumberFromFrameCountString(countString: tags.first!) {
+                        return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: "전체", frameCount: tags.first!, filterTags: [], pageNumber: 0)).asObservable()
+                    }
+                    
+                    return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: "전체", frameCount: "전체", filterTags: tags, pageNumber: 0)).asObservable()
+                }
+                
                 return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: tags[0], frameCount: tags[1], filterTags: filterTags, pageNumber: self.currentPage)).asObservable()
             }
             .flatMapLatest { [unowned self] filteredPose -> Observable<[PoseFeedPhotoCellViewModel]> in
@@ -222,6 +239,22 @@ class PoseFeedViewModel: ViewModelType {
                     let filterTags: [String] = querySet.count > 2 ? Array(querySet[2..<querySet.count]) : []
                     self.beginLoading()
                     self.currentPage += 1
+                    
+                    // MARK: - 상세 뷰에서 셀 탭을 통해 모달로 태그 세팅되었을때의 무한스크롤
+                    if querySet.count == 1 {
+                        // 인원 수 태그일때
+                        if let _ = FilterTags.getNumberFromPeopleCountString(countString: querySet.first!) {
+                            return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: querySet.first!, frameCount: "전체", filterTags: [], pageNumber: self.currentPage)).asObservable()
+                        }
+                        
+                        // 프레임 수 태그일때
+                        if let _ = FilterTags.getNumberFromFrameCountString(countString: querySet.first!) {
+                            return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: "전체", frameCount: querySet.first!, filterTags: [], pageNumber: self.currentPage)).asObservable()
+                        }
+                        
+                        return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: "전체", frameCount: "전체", filterTags: querySet, pageNumber: self.currentPage)).asObservable()
+                    }
+                    
                     return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: querySet[0], frameCount: querySet[1], filterTags: filterTags, pageNumber: self.currentPage)).asObservable()
                 }
             }
@@ -233,6 +266,15 @@ class PoseFeedViewModel: ViewModelType {
             .subscribe(onNext: {
                 self.endLoading()
                 filterSection.accept(filterSection.value + $0)
+            })
+            .disposed(by: disposeBag)
+        
+        /// 5. 상세 페이지 태그 tap 이후 쿼리 파라미터 새로 세팅
+        input.modalDismissWithTag
+            .subscribe(onNext: {
+                let viewModel = RegisteredFilterCellViewModel(title: $0)
+                tagItems.accept([viewModel])
+                queryParameters.accept([$0])
             })
             .disposed(by: disposeBag)
         
