@@ -74,7 +74,7 @@ class PoseFeedViewController: BaseViewController {
     
     var viewModel: PoseFeedViewModel
     var coordinator: PoseFeedCoordinator
-    let viewDidLoadTrigger = PublishSubject<Void>()
+    let requestAllPoseTrigger = PublishSubject<Void>()
 
     let nextPageRequestTrigger = PublishSubject<Void>()
 
@@ -93,7 +93,7 @@ class PoseFeedViewController: BaseViewController {
     // MARK: - Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewDidLoadTrigger.onNext(())
+        requestAllPoseTrigger.onNext(())
     }
     
     // MARK: - Functions
@@ -140,7 +140,7 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), viewDidLoadTrigger: viewDidLoadTrigger)
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), requestAllPoseTrigger: requestAllPoseTrigger, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), nextPageRequestTrigger: nextPageRequestTrigger)
     
         let output = viewModel.transform(input: input)
         
@@ -178,6 +178,13 @@ class PoseFeedViewController: BaseViewController {
         
         output.sectionItems
             .bind(to: poseFeedCollectionView.rx.items(dataSource: viewModel.dataSource))
+            .disposed(by: disposeBag)
+        
+        output.poseDetailViewPush
+            .drive(onNext: { [unowned self] in
+                guard let viewModel = $0 else { return }
+                self.coordinator.pushDetailView(viewController: PoseDetailViewController(viewModel: viewModel, coordinator: self.coordinator))
+            })
             .disposed(by: disposeBag)
     }
 }
