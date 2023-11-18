@@ -50,6 +50,18 @@ class PoseDetailViewController: BaseViewController {
             $0.contentMode = .scaleAspectFill
         }
     
+    let tagCollectionView: UICollectionView = {
+        let layout = LeftAlignedCollectionViewFlowLayout()
+        layout.scrollDirection = .vertical
+        layout.minimumInteritemSpacing = 4
+        layout.minimumLineSpacing = 8
+        layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
+        
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.register(PoseDetailTagCell.self, forCellWithReuseIdentifier: PoseDetailTagCell.identifier)
+        return cv
+    }()
+    
     let shareButtonGroup = UIView()
         .then {
             $0.backgroundColor = .bgWhite
@@ -81,7 +93,7 @@ class PoseDetailViewController: BaseViewController {
     override func render() {
         self.view.addSubViews([navigationBar, scrollView, shareButtonGroup])
         
-        scrollView.subviews.first!.addSubViews([imageSourceButton, imageView])
+        scrollView.subviews.first!.addSubViews([imageSourceButton, imageView, tagCollectionView])
         shareButtonGroup.addSubViews([linkShareButton, kakaoShareButton])
         
         navigationBar.snp.makeConstraints { make in
@@ -104,6 +116,12 @@ class PoseDetailViewController: BaseViewController {
         imageView.snp.makeConstraints { make in
             make.top.equalTo(imageSourceButton.snp.bottom)
             make.leading.trailing.equalTo(scrollView)
+        }
+        
+        tagCollectionView.snp.makeConstraints { make in
+            make.top.equalTo(imageView.snp.bottom).offset(12)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(72)
             make.bottom.equalTo(scrollView.snp.bottom).offset(-20)
         }
         
@@ -126,6 +144,8 @@ class PoseDetailViewController: BaseViewController {
             make.trailing.equalTo(shareButtonGroup).offset(-20)
             make.centerY.equalTo(shareButtonGroup)
         }
+        
+        tagCollectionView.updateCollectionViewHeight()
     }
     
     override func configUI() {
@@ -157,6 +177,12 @@ class PoseDetailViewController: BaseViewController {
                 popupViewController.popUpView.alertText.accept("링크가 복사되었습니다.")
                 self.present(popupViewController, animated: true)
             })
+            .disposed(by: disposeBag)
+        
+        output.tagItems
+            .drive(tagCollectionView.rx.items(cellIdentifier: PoseDetailTagCell.identifier, cellType: PoseDetailTagCell.self)) { _, viewModel, cell in
+                cell.bind(to: viewModel)
+            }
             .disposed(by: disposeBag)
     }
     
