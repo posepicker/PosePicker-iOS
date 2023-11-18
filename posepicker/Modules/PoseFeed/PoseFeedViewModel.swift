@@ -110,9 +110,26 @@ class PoseFeedViewModel: ViewModelType {
         /// 필터태그는 그냥 삭제
         input.filterTagSelection
             .subscribe(onNext: {
+                if tagItems.value.count == 1 {
+                    // 일반태그도 아니고 인원수 및 프레임 수 태그도 아닌 경우 그냥 삭제
+                    // 필터 모달 내 컬렉션뷰와 상관없는 데이터이기 때문
+                    // 쿼리셋과 데이터는 연결해줘야함
+                    let generalTag = $0
+                    if let index = tagItems.value.firstIndex(where: { viewModel in
+                        generalTag.title.value == viewModel.title.value
+                    }) {
+                        var tagItemsValue = tagItems.value
+                        tagItemsValue.remove(at: index)
+                        tagItems.accept(tagItemsValue)
+                        queryParameters.accept(["전체", "전체"])
+                        return
+                    }
+                }
+                
                 if let filterTag = FilterTags.getTagFromTitle(title: $0.title.value) {
                     deleteTargetFilterTag.accept(filterTag)
                 } else if !$0.title.value.isEmpty { // 인원수 or 프레임 수 태그인 경우
+                    
                     let tagName = $0.title.value
                     let tagUnit = tagName[tagName.index(tagName.startIndex, offsetBy: 1)]
                     switch tagUnit {
