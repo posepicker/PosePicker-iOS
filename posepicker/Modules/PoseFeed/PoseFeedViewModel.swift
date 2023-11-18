@@ -165,7 +165,7 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        /// 2-2. 포즈피드 필터 세팅 이후
+        /// 2-2. 포즈피드 필터 세팅 이후 추천 컨텐츠
         recommendContents
             .compactMap { $0 }
             .flatMapLatest { [unowned self] recommendedContents -> Observable<[PoseFeedPhotoCellViewModel]> in
