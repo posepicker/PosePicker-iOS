@@ -74,6 +74,8 @@ class PoseFeedViewModel: ViewModelType {
         
         let filterSection = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
         let recommendSection = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
+        let recommendContents = BehaviorRelay<RecommendedContents?>(value: nil)
+        
         let sectionItems = BehaviorRelay<[PoseSection]>(value: [PoseSection(header: "", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])])
         let poseDetailViewModel = BehaviorRelay<PoseDetailViewModel?>(value: nil)
         let queryParameters = BehaviorRelay<[String]>(value: [])
@@ -136,9 +138,47 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        /// 2. 포즈피드 필터 세팅 이후 데이터 요청
+        /// 2-1. 포즈피드 필터 세팅 이후 데이터 요청 (필터링 데이터 세팅)
+        queryParameters
+            .flatMapLatest { [unowned self] tags -> Observable<FilteredPose> in
+                if tags.isEmpty { return Observable<FilteredPose>.empty() }
+                
+                // MARK: - 초기화 로직
+                self.currentPage = 0
+                self.beginLoading()
+                filterSection.accept([])
+                recommendSection.accept([])
+                self.filteredContentSizes.accept([])
+                self.recommendedContentsSizes.accept([])
+                
+                let filterTags: [String] = tags.count > 2 ? Array(tags[2..<tags.count]) : []
+                return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: tags[0], frameCount: tags[1], filterTags: filterTags, pageNumber: self.currentPage)).asObservable()
+            }
+            .flatMapLatest { [unowned self] filteredPose -> Observable<[PoseFeedPhotoCellViewModel]> in
+                self.isLast = filteredPose.filteredContents.last // 추천섹션 데이터 accept처리
+                recommendContents.accept(filteredPose.recommendedContents)
+                return self.retrieveCacheObservable(posefeed: filteredPose.filteredContents.content)
+            }
+            .subscribe(onNext: {
+                self.endLoading()
+                filterSection.accept($0) // 기존 필터링 섹션 데이터 전체 초기화 후 새로 가져온 데이터로 교체
+            })
+            .disposed(by: disposeBag)
         
-        /// 2. 셀 탭 이후 디테일 뷰 표시를 위한 PoseDetailViewModel 뷰모델 바인딩
+        /// 2-2. 포즈피드 필터 세팅 이후
+        recommendContents
+            .compactMap { $0 }
+            .flatMapLatest { [unowned self] recommendedContents -> Observable<[PoseFeedPhotoCellViewModel]> in
+                self.isLast = recommendedContents.last
+                self.endLoading()
+                return self.retrieveCacheObservable(posefeed: recommendedContents.content, isFilterSection: false)
+            }
+            .subscribe(onNext: {
+                recommendSection.accept(recommendSection.value + $0)
+            })
+            .disposed(by: disposeBag)
+        
+        /// 3. 셀 탭 이후 디테일 뷰 표시를 위한 PoseDetailViewModel 뷰모델 바인딩
         input.poseFeedSelection
             .flatMapLatest { [unowned self] viewModel -> Observable<PosePick> in
                 return self.apiSession.requestSingle(.retrievePoseDetail(poseId: viewModel.poseId.value)).asObservable()
@@ -149,7 +189,7 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        /// 3. 다음 페이지 요청 트리거 - 쿼리 세팅 안된 상태 (포즈피드 초기 진입 이후의 무한스크롤)
+        /// 4-1. 다음 페이지 요청 트리거 - 쿼리 세팅 안된 상태 (포즈피드 초기 진입 이후의 무한스크롤)
         input.nextPageRequestTrigger
             .flatMapLatest { queryParameters }
             .flatMapLatest { [unowned self] querySet -> Observable<PoseFeed> in
@@ -171,7 +211,7 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        /// 3. 다음 페이지 요청 트리거 - 쿼리 세팅 된 상태 (포즈피드 진입 후 필터 세팅된 이후의 무한스크롤)
+        /// 4-2. 다음 페이지 요청 트리거 - 쿼리 세팅 된 상태 (포즈피드 진입 후 필터 세팅된 이후의 무한스크롤)
         input.nextPageRequestTrigger
             .flatMapLatest { queryParameters }
             .flatMapLatest { [unowned self] querySet -> Observable<FilteredPose> in
@@ -179,18 +219,20 @@ class PoseFeedViewModel: ViewModelType {
                     return Observable<FilteredPose>.empty()
                 } else {
                     // 인원 수 & 프레임 수 제외한 나머지 태그들 추출하는 로직
-                    var filterTags: [String] = querySet.count > 2 ? Array(querySet[2..<querySet.count]) : []
+                    let filterTags: [String] = querySet.count > 2 ? Array(querySet[2..<querySet.count]) : []
                     self.beginLoading()
-                    return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: querySet[0], frameCount: querySet[1], filterTags: filterTags, pageNumber: self.currentPage + 1)).asObservable()
+                    self.currentPage += 1
+                    return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: querySet[0], frameCount: querySet[1], filterTags: filterTags, pageNumber: self.currentPage)).asObservable()
                 }
             }
             .flatMapLatest { [unowned self] filteredPose -> Observable<[PoseFeedPhotoCellViewModel]> in
                 self.isLast = filteredPose.filteredContents.last
+                recommendContents.accept(filteredPose.recommendedContents) // 2-2로 이동
                 return retrieveCacheObservable(posefeed: filteredPose.filteredContents.content)
             }
             .subscribe(onNext: {
                 self.endLoading()
-                print("filtered: \($0)")
+                filterSection.accept(filterSection.value + $0)
             })
             .disposed(by: disposeBag)
         
