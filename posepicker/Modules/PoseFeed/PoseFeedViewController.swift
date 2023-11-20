@@ -141,7 +141,7 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), requestAllPoseTrigger: requestAllPoseTrigger, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), nextPageRequestTrigger: nextPageRequestTrigger, modalDismissWithTag: modalDismissWithTag)
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags, coordinator.poseFeedFilterViewController.registeredSubTag), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), requestAllPoseTrigger: requestAllPoseTrigger, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), nextPageRequestTrigger: nextPageRequestTrigger, modalDismissWithTag: modalDismissWithTag)
     
         let output = viewModel.transform(input: input)
         
@@ -174,6 +174,12 @@ class PoseFeedViewController: BaseViewController {
             .drive(onNext: { [unowned self] in
                 guard let removeTarget = $0 else { return }
                 self.coordinator.poseFeedFilterViewController.filterTagRemoveTrigger.onNext(removeTarget)
+            })
+            .disposed(by: disposeBag)
+        
+        output.deleteSubTag
+            .drive(onNext: { [unowned self] in
+                self.coordinator.poseFeedFilterViewController.subTagRemoveTrigger.onNext(())
             })
             .disposed(by: disposeBag)
         

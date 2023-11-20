@@ -47,7 +47,7 @@ class PoseFeedViewModel: ViewModelType {
     
     struct Input {
         let filterButtonTapped: ControlEvent<Void> // O
-        let tagItems: Observable<(PeopleCountTags, FrameCountTags, [FilterTags])> // O
+        let tagItems: Observable<(PeopleCountTags, FrameCountTags, [FilterTags], String?)> // 이 외에도 일반 스트링값이 있을 수 있다
         let filterTagSelection: Observable<RegisteredFilterCellViewModel> // O
         let filterRegisterCompleted: ControlEvent<Void> // O
         let poseFeedFilterViewIsPresenting: Observable<Bool> // O
@@ -62,6 +62,7 @@ class PoseFeedViewModel: ViewModelType {
         let filterTagItems: Driver<[RegisteredFilterCellViewModel]> // O
         let deleteTargetFilterTag: Driver<FilterTags?>
         let deleteTargetCountTag: Driver<CountTagType?>
+        let deleteSubTag: Driver<Void>
         let sectionItems: Observable<[PoseSection]>
         let poseDetailViewPush: Driver<PoseDetailViewModel?>
     }
@@ -71,11 +72,8 @@ class PoseFeedViewModel: ViewModelType {
         
         let tagItems = BehaviorRelay<[RegisteredFilterCellViewModel]>(value: [])
         let deleteTargetFilterTag = BehaviorRelay<FilterTags?>(value: nil)
-        
-        let deleteTargetPeopleCountTag = BehaviorRelay<PeopleCountTags?>(value: nil)
-        let deleteTargetFrameCountTag = BehaviorRelay<FrameCountTags?>(value: nil)
-        
         let deleteTargetCountTag = BehaviorRelay<CountTagType?>(value: nil) // FIXME: 리팩토링 대상
+        let deleteSubTag = PublishSubject<Void>()
         
         let filterSection = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
         let recommendSection = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
@@ -91,15 +89,19 @@ class PoseFeedViewModel: ViewModelType {
             .flatMapLatest { () -> Observable<Bool> in
                 return input.poseFeedFilterViewIsPresenting
             }
-            .flatMapLatest { isPresenting -> Observable<(PeopleCountTags, FrameCountTags, [FilterTags])> in
+            .flatMapLatest { isPresenting -> Observable<(PeopleCountTags, FrameCountTags, [FilterTags], String?)> in
                 if isPresenting {
-                    return Observable<(PeopleCountTags, FrameCountTags, [FilterTags])>.empty()
+                    return Observable<(PeopleCountTags, FrameCountTags, [FilterTags], String?)>.empty()
                 } else {
                     return input.tagItems
                 }
             }
-            .flatMapLatest { (headcount, frameCount, filterTags) -> Observable<[String]> in
-                return BehaviorRelay<[String]>(value: [headcount.rawValue, frameCount.rawValue] + filterTags.map { $0.rawValue} ).asObservable()
+            .flatMapLatest { (headcount, frameCount, filterTags, registeredSubTag) -> Observable<[String]> in
+                var subTag: [String] = []
+                if let tag = registeredSubTag {
+                    subTag.append(tag)
+                }
+                return BehaviorRelay<[String]>(value: [headcount.rawValue, frameCount.rawValue] + filterTags.map { $0.rawValue} + subTag ).asObservable()
             }
             .subscribe(onNext: { tags in
                 queryParameters.accept(tags)
@@ -137,30 +139,18 @@ class PoseFeedViewModel: ViewModelType {
                 }
                 
                 // 인원 수 태그인 경우
-                if let peopleCount = PeopleCountTags.getTagFromTitle(title: $0.title.value) {
-                    deleteTargetPeopleCountTag.accept(peopleCount)
-                    print("people!!: \(peopleCount)")
+                if let _ = PeopleCountTags.getTagFromTitle(title: $0.title.value) {
+                    deleteTargetCountTag.accept(.head)
+                    return
                 }
                 
                 // 프레임 수 태그인 경우
-                if let frameCount = FrameCountTags.getTagFromTitle(title: $0.title.value) {
-                    deleteTargetFrameCountTag.accept(frameCount)
-                    print("FRAME!!: \(frameCount)")
+                if let _ = FrameCountTags.getTagFromTitle(title: $0.title.value) {
+                    deleteTargetCountTag.accept(.frame)
+                    return
                 }
                 
-                // 인원 수 및 프레임 수 태그인 경우 -> 문자열로 표기하지 말고 해당 데이터도 열거형 처리
-                if !$0.title.value.isEmpty { // 인원수 or 프레임 수 태그인 경우
-                    let tagName = $0.title.value
-                    let tagUnit = tagName[tagName.index(tagName.startIndex, offsetBy: 1)]
-                    switch tagUnit {
-                    case "컷":
-                        deleteTargetCountTag.accept(.frame)
-                    case "인":
-                        deleteTargetCountTag.accept(.head)
-                    default:
-                        break
-                    }
-                }
+                deleteSubTag.onNext(())
             })
             .disposed(by: disposeBag)
         
@@ -324,7 +314,7 @@ class PoseFeedViewModel: ViewModelType {
             .disposed(by: disposeBag)
             
         
-        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), sectionItems: sectionItems.asObservable(), poseDetailViewPush: poseDetailViewModel.asDriver())
+        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), deleteSubTag: deleteSubTag.asDriver(onErrorJustReturn: ()), sectionItems: sectionItems.asObservable(), poseDetailViewPush: poseDetailViewModel.asDriver())
     }
     
     /// 디자인 수치 기준으로 이미지 리사이징
