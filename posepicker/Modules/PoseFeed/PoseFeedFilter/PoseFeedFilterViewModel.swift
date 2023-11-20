@@ -22,13 +22,19 @@ class PoseFeedFilterViewModel: ViewModelType {
         let headCountSelection: Observable<Int>
         let frameCountSelection: Observable<Int>
         let tagSelection: Observable<PoseFeedFilterCellViewModel>
+        let registeredSubTag: BehaviorRelay<String?>
         let tagSelectCanceled: Observable<Void>
         let isPresenting: Observable<Bool>
         let resetButtonTapped: ControlEvent<Void>
         let dismissState: Observable<DismissState>
         let viewWillDisappearTrigger: Observable<Void>
+        
         let countTagRemoveTrigger: Observable<PoseFeedViewModel.CountTagType>
         let filterTagRemoveTrigger: Observable<FilterTags>
+        let subTagRemoveTrigger: Observable<Void>
+        
+        let detailViewDismissTrigger: Observable<Void>
+        let filteredTagAfterDismiss: Observable<FilterTags?>
     }
     
     struct Output {
@@ -36,6 +42,7 @@ class PoseFeedFilterViewModel: ViewModelType {
         let headCountTag: Driver<Int>
         let frameCountTag: Driver<Int>
         let registeredTags: Driver<[FilterTags]>
+        let registeredSubTag: Driver<String?>
     }
     
     func transform(input: Input) -> Output {
@@ -43,9 +50,16 @@ class PoseFeedFilterViewModel: ViewModelType {
         let tags = FilterTags.getAllFilterTags()
         let headCountTagIndex = BehaviorRelay<Int>(value: 0)
         let frameCountTagIndex = BehaviorRelay<Int>(value: 0)
+        let subTag = BehaviorRelay<String?>(value: nil)
+        
         let registeredTags = BehaviorRelay<[FilterTags]>(value: [])
         let tagItems = BehaviorRelay<[PoseFeedFilterCellViewModel]>(value: [])
-        let initialValue = BehaviorRelay<(Int, Int, [FilterTags])>(value: (0, 0, []))
+        let initialValue = BehaviorRelay<(Int, Int, [FilterTags], String?)>(value: (0, 0, [], nil))
+        
+        /// 초기 태그 아이템 세팅
+        tagItems.accept(tags.map {
+            PoseFeedFilterCellViewModel(title: $0.rawValue)
+        })
         
         /// 인원 수 셀렉팅
         input.headCountSelection
@@ -82,13 +96,20 @@ class PoseFeedFilterViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        /// 서브태그 전달
+        input.registeredSubTag
+            .subscribe(onNext: {
+                subTag.accept($0)
+            })
+            .disposed(by: disposeBag)
+        
         /// present 이후 데이터 초기값 불러오기
         input.isPresenting
-            .flatMapLatest { isPresenting -> Observable<(Int, Int, [FilterTags])> in
+            .flatMapLatest { isPresenting -> Observable<(Int, Int, [FilterTags], String?)> in
                 if isPresenting {
-                    return Observable.just((headCountTagIndex.value, frameCountTagIndex.value, registeredTags.value))
+                    return Observable.just((headCountTagIndex.value, frameCountTagIndex.value, registeredTags.value, subTag.value))
                 } else {
-                    return Observable<(Int, Int, [FilterTags])>.empty()
+                    return Observable<(Int, Int, [FilterTags], String?)>.empty()
                 }
             }
             .subscribe(onNext: {
@@ -102,6 +123,7 @@ class PoseFeedFilterViewModel: ViewModelType {
                 headCountTagIndex.accept(initialValue.value.0)
                 frameCountTagIndex.accept(initialValue.value.1)
                 registeredTags.accept(initialValue.value.2) // 포즈피드 루트뷰 태그 리스트
+                subTag.accept(initialValue.value.3)
                 
                 let initialTags = tags.filter {
                     registeredTags.value.contains($0)
@@ -116,12 +138,29 @@ class PoseFeedFilterViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        /// 상세뷰 dismiss 이후 컬렉션뷰 아이템 셀렉팅
+        input.filteredTagAfterDismiss
+            .compactMap { $0 }
+            .subscribe(onNext: { tag in
+                subTag.accept(nil) // 서브태그는 삭제
+                registeredTags.accept([tag])
+                
+                tagItems.accept(tags.map {
+                    let viewModel = PoseFeedFilterCellViewModel(title: $0.rawValue)
+                    if tag.rawValue == $0.rawValue { viewModel.isSelected.accept(true) }
+                    return viewModel
+                })
+            })
+            .disposed(by: disposeBag)
+        
         /// 필터 초기화
         input.resetButtonTapped
             .subscribe(onNext: {
                 headCountTagIndex.accept(0)
                 frameCountTagIndex.accept(0)
                 registeredTags.accept([])
+                subTag.accept(nil)
+                
                 tagItems.accept(tags.map {
                     PoseFeedFilterCellViewModel(title: $0.rawValue)
                 })
@@ -137,6 +176,7 @@ class PoseFeedFilterViewModel: ViewModelType {
                     headCountTagIndex.accept(initialValue.value.0)
                     frameCountTagIndex.accept(initialValue.value.1)
                     registeredTags.accept(initialValue.value.2)
+                    subTag.accept(initialValue.value.3)
                     
                     let initialTags = tags.filter {
                         registeredTags.value.contains($0)
@@ -179,11 +219,27 @@ class PoseFeedFilterViewModel: ViewModelType {
                 tagItems.accept(viewModels)
             })
             .disposed(by: disposeBag)
-            
-        tagItems.accept(tags.map {
-            PoseFeedFilterCellViewModel(title: $0.rawValue)
-        })
         
-        return Output(tagItems: tagItems.asDriver(), headCountTag: headCountTagIndex.asDriver(), frameCountTag: frameCountTagIndex.asDriver(), registeredTags: registeredTags.asDriver())
+        /// 서브태그 삭제 트리거
+        input.subTagRemoveTrigger
+            .subscribe(onNext: {
+                subTag.accept(nil)
+            })
+            .disposed(by: disposeBag)
+        
+        /// 디테일 뷰 dismiss시 셀렉션 태그 제외하고 모든 태그정보 초기화
+        input.detailViewDismissTrigger
+            .subscribe(onNext: {
+                headCountTagIndex.accept(0)
+                frameCountTagIndex.accept(0)
+                registeredTags.accept([])
+                subTag.accept(nil)
+                tagItems.accept(tags.map {
+                    PoseFeedFilterCellViewModel(title: $0.rawValue)
+                })
+            })
+            .disposed(by: disposeBag)
+        
+        return Output(tagItems: tagItems.asDriver(), headCountTag: headCountTagIndex.asDriver(), frameCountTag: frameCountTagIndex.asDriver(), registeredTags: registeredTags.asDriver(), registeredSubTag: subTag.asDriver())
     }
 }
