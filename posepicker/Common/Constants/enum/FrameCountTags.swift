@@ -27,6 +27,7 @@ enum FrameCountTags: String {
         case "4컷": return .fourCut
         case "6컷": return .sixCut
         case "8컷+": return .moreThanEight
+        case "8컷": return .moreThanEight
         default: return nil
         }
     }
@@ -43,8 +44,31 @@ enum FrameCountTags: String {
             return 4
         case "6컷":
             return 6
-        case "7컷+":
+        case "8컷+":
             return 8
+        case "8컷":
+            return 8
+        default:
+            return nil
+        }
+    }
+    
+    static func getIndexFromFrameCountString(countString: String) -> Int? {
+        switch countString {
+        case "전체":
+            return 0
+        case "1컷":
+            return 1
+        case "3컷":
+            return 2
+        case "4컷":
+            return 3
+        case "6컷":
+            return 4
+        case "8컷+":
+            return 5
+        case "8컷":
+            return 5
         default:
             return nil
         }

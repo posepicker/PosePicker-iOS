@@ -49,4 +49,23 @@ enum PeopleCountTags: String {
             return nil
         }
     }
+    
+    static func getIndexFromPeopleCountString(countString: String) -> Int? {
+        switch countString {
+        case "전체":
+            return 0
+        case "1인":
+            return 1
+        case "2인":
+            return 2
+        case "3인":
+            return 3
+        case "4인":
+            return 4
+        case "5인+":
+            return 5
+        default:
+            return nil
+        }
+    }
 }
