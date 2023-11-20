@@ -20,7 +20,7 @@ class BasicSelection: UIView {
     var pressIndex = BehaviorRelay<Int>(value: 0)
     var disposeBag = DisposeBag()
     var buttonGroup: [String]
-    var buttonTapTrigger = PublishSubject<Int>()
+    var buttonTapTrigger = BehaviorRelay<Int>(value: 0)
 
     // MARK: - Initialization
     required init(buttonGroup: [String]) {
@@ -74,7 +74,7 @@ class BasicSelection: UIView {
             param.element.rx.tap.asDriver()
                 .drive(onNext: { [unowned self] in
                     self.pressIndex.accept(param.offset)
-                    self.buttonTapTrigger.onNext(param.offset)
+                    self.buttonTapTrigger.accept(param.offset)
                 })
                 .disposed(by: disposeBag)
         }
