@@ -47,7 +47,7 @@ class PoseFeedViewModel: ViewModelType {
     
     struct Input {
         let filterButtonTapped: ControlEvent<Void> // O
-        let tagItems: Observable<(String, String, [FilterTags])> // O
+        let tagItems: Observable<(PeopleCountTags, FrameCountTags, [FilterTags])> // O
         let filterTagSelection: Observable<RegisteredFilterCellViewModel> // O
         let filterRegisterCompleted: ControlEvent<Void> // O
         let poseFeedFilterViewIsPresenting: Observable<Bool> // O
@@ -71,7 +71,11 @@ class PoseFeedViewModel: ViewModelType {
         
         let tagItems = BehaviorRelay<[RegisteredFilterCellViewModel]>(value: [])
         let deleteTargetFilterTag = BehaviorRelay<FilterTags?>(value: nil)
-        let deleteTargetCountTag = BehaviorRelay<CountTagType?>(value: nil)
+        
+        let deleteTargetPeopleCountTag = BehaviorRelay<PeopleCountTags?>(value: nil)
+        let deleteTargetFrameCountTag = BehaviorRelay<FrameCountTags?>(value: nil)
+        
+        let deleteTargetCountTag = BehaviorRelay<CountTagType?>(value: nil) // FIXME: 리팩토링 대상
         
         let filterSection = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
         let recommendSection = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
@@ -87,15 +91,15 @@ class PoseFeedViewModel: ViewModelType {
             .flatMapLatest { () -> Observable<Bool> in
                 return input.poseFeedFilterViewIsPresenting
             }
-            .flatMapLatest { isPresenting -> Observable<(String, String, [FilterTags])> in
+            .flatMapLatest { isPresenting -> Observable<(PeopleCountTags, FrameCountTags, [FilterTags])> in
                 if isPresenting {
-                    return Observable<(String, String, [FilterTags])>.empty()
+                    return Observable<(PeopleCountTags, FrameCountTags, [FilterTags])>.empty()
                 } else {
                     return input.tagItems
                 }
             }
             .flatMapLatest { (headcount, frameCount, filterTags) -> Observable<[String]> in
-                return BehaviorRelay<[String]>(value: [headcount, frameCount] + filterTags.map { $0.rawValue} ).asObservable()
+                return BehaviorRelay<[String]>(value: [headcount.rawValue, frameCount.rawValue] + filterTags.map { $0.rawValue} ).asObservable()
             }
             .subscribe(onNext: { tags in
                 queryParameters.accept(tags)
@@ -110,13 +114,13 @@ class PoseFeedViewModel: ViewModelType {
         /// 필터태그는 그냥 삭제
         input.filterTagSelection
             .subscribe(onNext: {
-                if tagItems.value.count == 1 {
-                    // 일반태그도 아니고 인원수 및 프레임 수 태그도 아닌 경우 그냥 삭제
-                    // 필터 모달 내 컬렉션뷰와 상관없는 데이터이기 때문
+                // MARK: - 상세 뷰에서 탭하여 태그가 하나만 생성된 경우
+                /// 모달을 통한 필터 세팅시에는 카운트값이 프레임 & 인원 수 태그로 인해 쿼리 파라미터 갯수가 최소 2부터 시작임
+                if queryParameters.value.count == 1 {
                     // 쿼리셋과 데이터는 연결해줘야함
-                    let generalTag = $0
+                    let singleTag = $0
                     if let index = tagItems.value.firstIndex(where: { viewModel in
-                        generalTag.title.value == viewModel.title.value
+                        singleTag.title.value == viewModel.title.value
                     }) {
                         var tagItemsValue = tagItems.value
                         tagItemsValue.remove(at: index)
@@ -126,10 +130,26 @@ class PoseFeedViewModel: ViewModelType {
                     }
                 }
                 
+                // 일반 태그인 경우
                 if let filterTag = FilterTags.getTagFromTitle(title: $0.title.value) {
                     deleteTargetFilterTag.accept(filterTag)
-                } else if !$0.title.value.isEmpty { // 인원수 or 프레임 수 태그인 경우
-                    
+                    return
+                }
+                
+                // 인원 수 태그인 경우
+                if let peopleCount = PeopleCountTags.getTagFromTitle(title: $0.title.value) {
+                    deleteTargetPeopleCountTag.accept(peopleCount)
+                    print("people!!: \(peopleCount)")
+                }
+                
+                // 프레임 수 태그인 경우
+                if let frameCount = FrameCountTags.getTagFromTitle(title: $0.title.value) {
+                    deleteTargetFrameCountTag.accept(frameCount)
+                    print("FRAME!!: \(frameCount)")
+                }
+                
+                // 인원 수 및 프레임 수 태그인 경우 -> 문자열로 표기하지 말고 해당 데이터도 열거형 처리
+                if !$0.title.value.isEmpty { // 인원수 or 프레임 수 태그인 경우
                     let tagName = $0.title.value
                     let tagUnit = tagName[tagName.index(tagName.startIndex, offsetBy: 1)]
                     switch tagUnit {
