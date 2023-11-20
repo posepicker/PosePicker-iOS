@@ -14,7 +14,7 @@ class LeftAlignedCollectionViewFlowLayout: UICollectionViewFlowLayout {
 
         var leftMargin = sectionInset.left
         var maxY: CGFloat = -1.0
-        let padding: CGFloat = UIScreen.main.isWiderThan375pt ? 5 : 15
+        let padding: CGFloat = UIScreen.main.isWiderThan375pt ? 5 : 10
         
         attributes?.forEach { layoutAttribute in
             // MARK: 한줄 넘어간 시점에 y값을 초기화해주는 코드
