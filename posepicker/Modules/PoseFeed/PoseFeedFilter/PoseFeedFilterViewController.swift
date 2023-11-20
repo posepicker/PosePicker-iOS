@@ -58,8 +58,8 @@ class PoseFeedFilterViewController: BaseViewController {
     // MARK: - Properties
     
     var viewModel: PoseFeedFilterViewModel
-    var selectedHeadCount = BehaviorRelay<String>(value: "")
-    var selectedFrameCount = BehaviorRelay<String>(value: "")
+    var selectedHeadCount = BehaviorRelay<PeopleCountTags>(value: .all)
+    var selectedFrameCount = BehaviorRelay<FrameCountTags>(value: .allCut)
     var selectedTags = BehaviorRelay<[FilterTags]>(value: [])
     var isPresenting = BehaviorRelay<Bool>(value: false)
     var cancelTrigger = PublishSubject<Void>()
@@ -68,6 +68,7 @@ class PoseFeedFilterViewController: BaseViewController {
     
     var countTagRemoveTrigger = PublishSubject<PoseFeedViewModel.CountTagType>()
     var filterTagRemoveTrigger = PublishSubject<FilterTags>()
+    var peopleCountTagRemoveTrigger = PublishSubject<PeopleCountTags>()
     
     // MARK: - Initialization
     
@@ -172,7 +173,7 @@ class PoseFeedFilterViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedFilterViewModel.Input(headCountSelection: headCountSelection.buttonTapTrigger.asObservable(), frameCountSelection: frameCountSelection.buttonTapTrigger.asObservable(), tagSelection: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable(), tagSelectCanceled: cancelTrigger.asObservable(), isPresenting: isPresenting.asObservable(), resetButtonTapped: resetButton.rx.tap, dismissState: dismissState.asObservable(), viewWillDisappearTrigger: viewWillDisappearTrigger.asObservable(), countTagRemoveTrigger: countTagRemoveTrigger.asObservable(), filterTagRemoveTrigger: filterTagRemoveTrigger.asObservable())
+        let input = PoseFeedFilterViewModel.Input(headCountSelection: headCountSelection.buttonTapTrigger.asObservable(), frameCountSelection: frameCountSelection.buttonTapTrigger.asObservable(), tagSelection: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable(), tagSelectCanceled: cancelTrigger.asObservable(), isPresenting: isPresenting.asObservable(), resetButtonTapped: resetButton.rx.tap, dismissState: dismissState.asObservable(), viewWillDisappearTrigger: viewWillDisappearTrigger.asObservable(), countTagRemoveTrigger: countTagRemoveTrigger.asObservable(), filterTagRemoveTrigger: filterTagRemoveTrigger.asObservable(), peopleCountTagRemoveTrigger: peopleCountTagRemoveTrigger)
         
         let output = viewModel.transform(input: input)
         
@@ -185,14 +186,16 @@ class PoseFeedFilterViewController: BaseViewController {
         output.headCountTag
             .drive(onNext: { [unowned self] in
                 self.headCountSelection.pressIndex.accept($0)
-                self.selectedHeadCount.accept(self.headCountSelection.buttonGroup[$0])
+                guard let headCountTag = PeopleCountTags.getTagFromTitle(title: self.headCountSelection.buttonGroup[$0]) else { return }
+                self.selectedHeadCount.accept(headCountTag)
             })
             .disposed(by: disposeBag)
         
         output.frameCountTag
             .drive(onNext: { [unowned self] in
                 self.frameCountSelection.pressIndex.accept($0)
-                self.selectedFrameCount.accept(self.frameCountSelection.buttonGroup[$0])
+                guard let frameCountTag = FrameCountTags.getTagFromTitle(title: self.frameCountSelection.buttonGroup[$0]) else { return }
+                self.selectedFrameCount.accept(frameCountTag)
             })
             .disposed(by: disposeBag)
         
