@@ -41,8 +41,10 @@ class PoseFeedCoordinator: NSObject, Coordinator {
         guard let posefeedViewController = self.navigationController.viewControllers.first as? PoseFeedViewController else { return }
         
         // 셀렉션 초기화
+        self.poseFeedFilterViewController.loadViewIfNeeded()
         self.poseFeedFilterViewController.detailViewDismissTrigger.onNext(())
         self.poseFeedFilterViewController.registeredSubTag.accept(nil)
+        self.poseFeedFilterViewController.subTagRemoveTrigger.onNext(())
         
         if let _ = PeopleCountTags.getTagFromTitle(title: tag) {
             // 1. 인원 수 태그인 경우
