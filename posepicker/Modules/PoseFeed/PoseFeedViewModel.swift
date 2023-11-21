@@ -96,7 +96,8 @@ class PoseFeedViewModel: ViewModelType {
                     return input.tagItems
                 }
             }
-            .flatMapLatest { (headcount, frameCount, filterTags, registeredSubTag) -> Observable<[String]> in
+            .flatMapLatest { [unowned self] (headcount, frameCount, filterTags, registeredSubTag) -> Observable<[String]> in
+                self.currentPage = 0 // 태그 세팅 이후 페이지값 0으로 초기화
                 var subTag: [String] = []
                 if let tag = registeredSubTag {
                     subTag.append(tag)
@@ -135,6 +136,10 @@ class PoseFeedViewModel: ViewModelType {
                     return
                 }
                 
+                /// 필터 세팅되지 않고 키워드 설정부터 진행한 경우
+                /// queryParameter 배열값이 ["전체", "전체"]가 아니어서 isEmpty 옵저버블 리턴
+                /// 따라서 쿼리 하나일때 삭제 인풋이 들어오면 ["전체", "전체"]로 쿼리를 세팅해야 요청 이루어짐
+                
                 // tagItems에서 서브태그 바로 삭제
                 deleteSubTag.onNext(())
                 let singleTag = $0
@@ -151,6 +156,7 @@ class PoseFeedViewModel: ViewModelType {
                 }) {
                     var queryParameterValue = queryParameters.value
                     queryParameterValue.remove(at: index)
+                    if queryParameterValue.isEmpty { queryParameterValue.append(contentsOf: ["전체", "전체"]) }
                     queryParameters.accept(queryParameterValue)
                 }
             })
@@ -314,9 +320,6 @@ class PoseFeedViewModel: ViewModelType {
                 sectionItems.accept(newSectionItems)
             })
             .disposed(by: disposeBag)
-        
-        
-            
         
         return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), deleteSubTag: deleteSubTag.asDriver(onErrorJustReturn: ()), sectionItems: sectionItems.asObservable(), poseDetailViewPush: poseDetailViewModel.asDriver())
     }
