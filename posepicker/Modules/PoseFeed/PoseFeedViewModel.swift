@@ -116,21 +116,6 @@ class PoseFeedViewModel: ViewModelType {
         /// 필터태그는 그냥 삭제
         input.filterTagSelection
             .subscribe(onNext: {
-                // MARK: - 상세 뷰에서 탭하여 태그가 하나만 생성된 경우
-                /// 모달을 통한 필터 세팅시에는 카운트값이 프레임 & 인원 수 태그로 인해 쿼리 파라미터 갯수가 최소 2부터 시작임
-                if queryParameters.value.count == 1 {
-                    // 쿼리셋과 데이터는 연결해줘야함
-                    let singleTag = $0
-                    if let index = tagItems.value.firstIndex(where: { viewModel in
-                        singleTag.title.value == viewModel.title.value
-                    }) {
-                        var tagItemsValue = tagItems.value
-                        tagItemsValue.remove(at: index)
-                        tagItems.accept(tagItemsValue)
-                        queryParameters.accept(["전체", "전체"])
-                        return
-                    }
-                }
                 
                 // 일반 태그인 경우
                 if let filterTag = FilterTags.getTagFromTitle(title: $0.title.value) {
@@ -150,7 +135,24 @@ class PoseFeedViewModel: ViewModelType {
                     return
                 }
                 
+                // tagItems에서 서브태그 바로 삭제
                 deleteSubTag.onNext(())
+                let singleTag = $0
+                if let index = tagItems.value.firstIndex(where: { viewModel in
+                    singleTag.title.value == viewModel.title.value
+                }) {
+                    var tagItemsValue = tagItems.value
+                    tagItemsValue.remove(at: index)
+                    tagItems.accept(tagItemsValue)
+                }
+                
+                if let index = queryParameters.value.firstIndex(where: { parameter in
+                    singleTag.title.value == parameter
+                }) {
+                    var queryParameterValue = queryParameters.value
+                    queryParameterValue.remove(at: index)
+                    queryParameters.accept(queryParameterValue)
+                }
             })
             .disposed(by: disposeBag)
         
@@ -312,6 +314,8 @@ class PoseFeedViewModel: ViewModelType {
                 sectionItems.accept(newSectionItems)
             })
             .disposed(by: disposeBag)
+        
+        
             
         
         return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), deleteSubTag: deleteSubTag.asDriver(onErrorJustReturn: ()), sectionItems: sectionItems.asObservable(), poseDetailViewPush: poseDetailViewModel.asDriver())
