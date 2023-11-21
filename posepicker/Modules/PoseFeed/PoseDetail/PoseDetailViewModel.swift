@@ -95,7 +95,7 @@ class PoseDetailViewModel: ViewModelType {
     
     /// 주입된 포즈 디테일 데이터를 String 배열값으로 정리
     func getTagArrayFromData(peopleCount: Int, frameCount: Int, tagString: String?) -> [String] {
-        var tags: [String] = ["\(peopleCount)인", "\(frameCount)컷"]
+        var tags: [String] = [peopleCount >= 5 ? "5인+" : "\(peopleCount)인", frameCount >= 8 ? "8컷+" : "\(frameCount)컷"]
         
         if let tagString = tagString {
             tags += tagString.split(separator: ",").map { String($0) }
