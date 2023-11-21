@@ -88,6 +88,7 @@ class PoseFeedFilterViewController: BaseViewController {
     }
     
     // MARK: - Life Cycles
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         dismissState.accept(.normal)
@@ -208,6 +209,12 @@ class PoseFeedFilterViewController: BaseViewController {
         output.registeredTags
             .drive(onNext: { [unowned self] in
                 self.selectedTags.accept($0)
+            })
+            .disposed(by: disposeBag)
+        
+        subTagRemoveTrigger
+            .subscribe(onNext: { [unowned self] in
+                self.registeredSubTag.accept(nil)
             })
             .disposed(by: disposeBag)
         
