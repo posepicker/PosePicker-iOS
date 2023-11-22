@@ -55,13 +55,6 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
     override func configUI() {
         self.clipsToBounds = true
         self.layer.cornerRadius = 8
-        
-        bookmarkButton.rx.tap
-            .asDriver()
-            .drive(onNext: {
-                print("TAP")
-            })
-            .disposed(by: disposeBag)
     }
     
     func bind(to viewModel: PoseFeedPhotoCellViewModel) {
