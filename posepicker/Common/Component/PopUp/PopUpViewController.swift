@@ -76,7 +76,7 @@ class PopUpViewController: BaseViewController {
                             
                                 //do something
                                 let tokens = oauthToken
-                                print("TOKEN!!!!")
+                                print("IDTOKEN: \(tokens.idToken)")
                                 print(tokens)
                             }, onError: {error in
                                 print(error)
@@ -86,5 +86,11 @@ class PopUpViewController: BaseViewController {
                 })
                 .disposed(by: disposeBag)
         }
+        UserApi.shared.rx.me()
+            .asObservable()
+            .subscribe(onNext: {
+                print("USER: \($0.kakaoAccount)")
+            })
+            .disposed(by: disposeBag)
     }
 }
