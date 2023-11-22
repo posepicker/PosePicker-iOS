@@ -51,9 +51,9 @@ class PoseDetailViewController: BaseViewController {
         }
     
     let tagCollectionView: UICollectionView = {
-        let layout = LeftAlignedCollectionViewFlowLayout()
+        let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
-        layout.minimumInteritemSpacing = 4
+        layout.minimumInteritemSpacing = 8
         layout.minimumLineSpacing = 8
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
