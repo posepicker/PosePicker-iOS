@@ -7,6 +7,8 @@
 
 import UIKit
 import RxSwift
+import KakaoSDKUser
+import RxKakaoSDKUser
 
 class PopUpViewController: BaseViewController {
 
@@ -65,7 +67,24 @@ class PopUpViewController: BaseViewController {
         
         /// 로그인 팝업일때
         if let popUpView = popUpView as? LoginPopUpView {
-            
+            popUpView.kakaoLoginButton.rx.tap.asDriver()
+                .drive(onNext: {[unowned self] in
+                    if (UserApi.isKakaoTalkLoginAvailable()) {
+                        UserApi.shared.rx.loginWithKakaoTalk()
+                            .subscribe(onNext:{ (oauthToken) in
+                                print("loginWithKakaoTalk() success.")
+                            
+                                //do something
+                                let tokens = oauthToken
+                                print("TOKEN!!!!")
+                                print(tokens)
+                            }, onError: {error in
+                                print(error)
+                            })
+                            .disposed(by: self.disposeBag)
+                    }
+                })
+                .disposed(by: disposeBag)
         }
     }
 }
