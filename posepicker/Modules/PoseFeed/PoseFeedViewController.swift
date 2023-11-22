@@ -193,6 +193,15 @@ class PoseFeedViewController: BaseViewController {
                 self.coordinator.pushDetailView(viewController: PoseDetailViewController(viewModel: viewModel, coordinator: self.coordinator))
             })
             .disposed(by: disposeBag)
+        
+        viewModel.presentLoginPopUp
+            .subscribe(onNext: { [unowned self] in
+                let popUpVC = PopUpViewController(isLoginPopUp: true)
+                popUpVC.modalTransitionStyle = .crossDissolve
+                popUpVC.modalPresentationStyle = .overFullScreen
+                self.present(popUpVC, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
 }
 
