@@ -43,7 +43,7 @@ class PosePickViewController: BaseViewController {
             $0.isHidden = true
         }
     
-    let posePickerButton = Button(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "인원수 선택하고 포즈 뽑기!", image: nil)
+    let posePickerButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "인원수 선택하고 포즈 뽑기!", image: nil)
     
     // MARK: - Properties
     var viewModel: PosePickViewModel

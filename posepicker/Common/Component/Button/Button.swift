@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class Button: UIButton {
+class PosePickButton: UIButton {
     
     // MARK: - Subviews
     

@@ -24,7 +24,7 @@ class PopUpView: UIView {
             $0.font = .pretendard(.regular, ofSize: 16)
         }
     
-    let completeButton = Button(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "확인", image: nil)
+    let completeButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "확인", image: nil)
     
     // MARK: - Properties
     let alertText = BehaviorRelay<String>(value: "")

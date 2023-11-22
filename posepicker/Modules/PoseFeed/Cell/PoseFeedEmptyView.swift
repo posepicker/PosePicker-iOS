@@ -28,7 +28,7 @@ class PoseFeedEmptyView: UICollectionReusableView {
             $0.text = "찾고 싶은 포즈를 저희에게 알려주세요."
         }
     
-    let linkButton = Button(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "문의사항 남기기", image: nil)
+    let linkButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "문의사항 남기기", image: nil)
         .then {
             $0.addTarget(self, action: #selector(linkButtonTapped), for: .touchUpInside)
             $0.layer.cornerRadius = 8

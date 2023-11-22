@@ -51,9 +51,9 @@ class PoseFeedFilterViewController: BaseViewController {
         return cv
     }()
     
-    let resetButton = Button(status: .defaultStatus, isFill: false, position: .left, buttonTitle: "필터 초기화", image: ImageLiteral.imgRestart24.resize(to: CGSize(width: 20, height: 20)))
+    let resetButton = PosePickButton(status: .defaultStatus, isFill: false, position: .left, buttonTitle: "필터 초기화", image: ImageLiteral.imgRestart24.resize(to: CGSize(width: 20, height: 20)))
     
-    let submitButton = Button(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "포즈보기", image: nil)
+    let submitButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "포즈보기", image: nil)
     
     // MARK: - Properties
     

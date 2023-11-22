@@ -51,7 +51,7 @@ class PoseTalkViewController: BaseViewController {
             $0.play()
         }
     
-    let selectButton = Button(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "제시어 뽑기", image: nil)
+    let selectButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "제시어 뽑기", image: nil)
     
     let toolTip = ToolTip()
         .then {

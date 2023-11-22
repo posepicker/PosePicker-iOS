@@ -67,9 +67,9 @@ class PoseDetailViewController: BaseViewController {
             $0.backgroundColor = .bgWhite
         }
     
-    let linkShareButton = Button(status: .defaultStatus, isFill: false, position: .none, buttonTitle: "링크 공유", image: nil)
+    let linkShareButton = PosePickButton(status: .defaultStatus, isFill: false, position: .none, buttonTitle: "링크 공유", image: nil)
     
-    let kakaoShareButton = Button(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "카카오 공유", image: nil)
+    let kakaoShareButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "카카오 공유", image: nil)
     
     
     // MARK: - Properties
@@ -154,7 +154,7 @@ class PoseDetailViewController: BaseViewController {
         navigationBar.standardAppearance.shadowColor = nil
     }
     override func bindViewModel() {
-        let input = PoseDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap)
+        let input = PoseDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap)
         
         let output = viewModel.transform(input: input)
         
@@ -191,7 +191,6 @@ class PoseDetailViewController: BaseViewController {
                 self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
-            
         
         tagCollectionView.updateCollectionViewHeight()
     }
