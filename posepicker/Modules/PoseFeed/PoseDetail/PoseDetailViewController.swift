@@ -169,10 +169,11 @@ class PoseDetailViewController: BaseViewController {
         
         output.popupPresent
             .drive(onNext: { [unowned self] in
-                let popupViewController = PopUpViewController()
+                let popupViewController = PopUpViewController(isLoginPopUp: false)
                 popupViewController.modalTransitionStyle = .crossDissolve
                 popupViewController.modalPresentationStyle = .overFullScreen
-                popupViewController.popUpView.alertText.accept("링크가 복사되었습니다.")
+                let popupView = popupViewController.popUpView as! PopUpView
+                popupView.alertText.accept("링크가 복사되었습니다.")
                 self.present(popupViewController, animated: true)
             })
             .disposed(by: disposeBag)
