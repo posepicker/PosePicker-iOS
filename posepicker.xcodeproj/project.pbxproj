@@ -1076,6 +1076,7 @@
 /* Begin XCBuildConfiguration section */
 		C9C890762AE103A30010240A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1136,6 +1137,7 @@
 		};
 		C9C890772AE103A30010240A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1190,6 +1192,7 @@
 		};
 		C9C890792AE103A30010240A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1221,6 +1224,7 @@
 		};
 		C9C8907A2AE103A30010240A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1252,6 +1256,7 @@
 		};
 		C9C8907C2AE103A30010240A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1272,6 +1277,7 @@
 		};
 		C9C8907D2AE103A30010240A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1292,6 +1298,7 @@
 		};
 		C9C8907F2AE103A30010240A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1310,6 +1317,7 @@
 		};
 		C9C890802AE103A30010240A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
