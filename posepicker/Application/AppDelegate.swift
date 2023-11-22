@@ -6,6 +6,10 @@
 //
 
 import UIKit
+import RxKakaoSDKAuth
+import KakaoSDKAuth
+import RxKakaoSDKCommon
+import RxSwift
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -13,6 +17,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var window: UIWindow?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        if let kakaoKey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_KEY") as? String {
+            RxKakaoSDK.initSDK(appKey: kakaoKey)
+        }
+        
         
         window = UIWindow(frame: UIScreen.main.bounds)
         guard let window = window else { return false }
@@ -30,6 +39,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window.makeKeyAndVisible()
         
         return true
+    }
+    
+    func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
+        if AuthApi.isKakaoTalkLoginUrl(url) {
+            return AuthController.rx.handleOpenUrl(url: url)
+        }
+        
+        return false
     }
 }
 
