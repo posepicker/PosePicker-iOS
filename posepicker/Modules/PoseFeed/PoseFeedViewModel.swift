@@ -23,10 +23,17 @@ class PoseFeedViewModel: ViewModelType {
     var currentPage = 0
     var isLast = false
     
+    let presentLoginPopUp = PublishSubject<Void>() // 셀 내의 북마크 버튼 탭 이벤트를 데이터소스 내에서 방출 가능하여 뷰모델 내에 옵저버블을 추가해두고, 포즈피드 뷰 컨트롤러에서 구독
+    
     /// 포즈피드 컬렉션뷰 datasource 정의
-    let dataSource = RxCollectionViewSectionedReloadDataSource<PoseSection>(configureCell: { dataSource, collectionView, indexPath, item in
+    lazy var dataSource = RxCollectionViewSectionedReloadDataSource<PoseSection>(configureCell: { dataSource, collectionView, indexPath, item in
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PoseFeedPhotoCell.identifier, for: indexPath) as? PoseFeedPhotoCell else { return UICollectionViewCell() }
         cell.bind(to: item)
+        cell.bookmarkButton.rx.tap
+            .subscribe(onNext: { [unowned self] in
+                self.presentLoginPopUp.onNext(())
+            })
+            .disposed(by: self.disposeBag)
         return cell
     }, configureSupplementaryView: { dataSource, collectionView, kind, indexPath -> UICollectionReusableView in
         if indexPath.section == 0 {
@@ -82,6 +89,8 @@ class PoseFeedViewModel: ViewModelType {
         let sectionItems = BehaviorRelay<[PoseSection]>(value: [PoseSection(header: "", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])])
         let poseDetailViewModel = BehaviorRelay<PoseDetailViewModel?>(value: nil)
         let queryParameters = BehaviorRelay<[String]>(value: [])
+        
+        let presentLoginPopUp = PublishSubject<Void>()
         
         /// 필터 등록 완료 + 필터 모달이 Present 상태일때
         /// 인원 수 & 프레임 수 셀렉션으로부터 데이터 추출
