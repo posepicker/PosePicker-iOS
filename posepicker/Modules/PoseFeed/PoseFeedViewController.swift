@@ -194,6 +194,13 @@ class PoseFeedViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        output.isLoading
+            .subscribe(onNext: { [unowned self] in
+                guard let flowLayout = self.poseFeedCollectionView.collectionViewLayout as? PinterestLayout else { return }
+                flowLayout.isLoading.accept($0)
+            })
+            .disposed(by: disposeBag)
+        
         viewModel.presentLoginPopUp
             .subscribe(onNext: { [unowned self] in
                 let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
