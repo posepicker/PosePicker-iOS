@@ -32,4 +32,5 @@ enum ImageLiteral {
     static var imgDividerVertical: UIImage {.load(named: "imgDividerVertical")}
     static var imgPolygon: UIImage {.load(named: "imgPolygon")}
     static var imgKakaoLogo: UIImage { .load(named: "imgKakaoLogo") }
+    static var imgLoginLogo: UIImage {.load(named: "imgLoginLogo")}
 }
