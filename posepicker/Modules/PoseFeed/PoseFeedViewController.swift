@@ -70,6 +70,12 @@ class PoseFeedViewController: BaseViewController {
             $0.text = "이런 포즈는 어때요?"
         }
     
+    let loadingIndicator = UIActivityIndicatorView(style: .large)
+        .then {
+            $0.startAnimating()
+            $0.color = .mainViolet
+        }
+    
     // MARK: - Properties
     
     var viewModel: PoseFeedViewModel
@@ -100,7 +106,7 @@ class PoseFeedViewController: BaseViewController {
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([filterButton, filterDivider, filterCollectionView, poseFeedCollectionView, supplementLabel])
+        view.addSubViews([filterButton, filterDivider, filterCollectionView, poseFeedCollectionView, supplementLabel, loadingIndicator])
         
         filterButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
@@ -124,6 +130,11 @@ class PoseFeedViewController: BaseViewController {
             make.top.equalTo(filterButton.snp.bottom).offset(8)
             make.leading.trailing.equalToSuperview().inset(20)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
+        }
+        
+        loadingIndicator.snp.makeConstraints { make in
+            make.centerY.equalToSuperview().offset(-50)
+            make.centerX.equalToSuperview()
         }
     }
     
@@ -194,10 +205,11 @@ class PoseFeedViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        output.isLoading
-            .subscribe(onNext: { [unowned self] in
+        output.isLoading.asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [unowned self] in
                 guard let flowLayout = self.poseFeedCollectionView.collectionViewLayout as? PinterestLayout else { return }
                 flowLayout.isLoading.accept($0)
+                self.loadingIndicator.isHidden = !$0
             })
             .disposed(by: disposeBag)
         
