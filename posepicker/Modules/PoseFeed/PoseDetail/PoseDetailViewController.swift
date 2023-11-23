@@ -28,9 +28,15 @@ class PoseDetailViewController: BaseViewController {
     
     let imageSourceButton = UIButton(type: .system)
         .then {
-            $0.setTitleColor(.textTertiary, for: .normal)
+            var configuration = UIButton.Configuration.filled()
+            configuration.titlePadding = 5
+            configuration.baseBackgroundColor = .bgDivider
+            configuration.attributedTitle = AttributedString("", attributes: AttributeContainer([NSAttributedString.Key.font : UIFont.pretendard(.medium, ofSize: 14)]))
+            $0.configuration = configuration
             $0.titleLabel?.font = .pretendard(.medium, ofSize: 14)
-            $0.setTitle("↗이미지 출처", for: .normal)
+            $0.setTitleColor(.textBrand, for: .normal)
+            $0.clipsToBounds = true
+            $0.layer.cornerRadius = 8
         }
     
     let navigationBar = UINavigationBar()
@@ -109,12 +115,12 @@ class PoseDetailViewController: BaseViewController {
         }
         
         imageSourceButton.snp.makeConstraints { make in
-            make.centerX.equalTo(scrollView)
-            make.top.equalTo(scrollView).offset(2)
+            make.leading.equalTo(scrollView).offset(20)
+            make.top.equalTo(scrollView).offset(14)
         }
         
         imageView.snp.makeConstraints { make in
-            make.top.equalTo(imageSourceButton.snp.bottom)
+            make.top.equalTo(imageSourceButton.snp.bottom).offset(14)
             make.leading.trailing.equalTo(scrollView)
         }
         
@@ -152,6 +158,9 @@ class PoseDetailViewController: BaseViewController {
         
         navigationBar.standardAppearance.backgroundColor = .bgWhite
         navigationBar.standardAppearance.shadowColor = nil
+        
+        let sourceText = viewModel.poseDetailData.poseInfo.source
+        imageSourceButton.configuration?.attributedTitle = AttributedString(!sourceText.isEmpty ? sourceText + "↗" : "링크 바로가기↗", attributes: AttributeContainer([NSAttributedString.Key.font : UIFont.pretendard(.medium, ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.textBrand]))
     }
     override func bindViewModel() {
         let input = PoseDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap)
