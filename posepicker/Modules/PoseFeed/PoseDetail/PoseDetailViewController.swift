@@ -169,7 +169,7 @@ class PoseDetailViewController: BaseViewController {
         
         output.popupPresent
             .drive(onNext: { [unowned self] in
-                let popupViewController = PopUpViewController(isLoginPopUp: false)
+                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: false)
                 popupViewController.modalTransitionStyle = .crossDissolve
                 popupViewController.modalPresentationStyle = .overFullScreen
                 let popupView = popupViewController.popUpView as! PopUpView
