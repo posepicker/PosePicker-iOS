@@ -26,14 +26,36 @@ class PopUpView: UIView {
     
     let completeButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "확인", image: nil)
     
+    let cancelButton = UIButton(type: .system)
+        .then {
+            $0.setTitle("취소", for: .normal)
+            $0.setTitleColor(.textSecondary, for: .normal)
+            $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
+            $0.backgroundColor = .bgSubWhite
+            $0.clipsToBounds = true
+            $0.layer.cornerRadius = 12
+        }
+    
+    let confirmButton = UIButton(type: .system)
+        .then {
+            $0.setTitle("확인", for: .normal)
+            $0.setTitleColor(.textWhite, for: .normal)
+            $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
+            $0.backgroundColor = .mainViolet
+            $0.clipsToBounds = true
+            $0.layer.cornerRadius = 12
+        }
+    
     // MARK: - Properties
     let alertText = BehaviorRelay<String>(value: "")
     var disposeBag = DisposeBag()
+    var isChoice: Bool
     
     // MARK: - Initialization
-    override init(frame: CGRect) {
-        super.init(frame: frame)
-        
+    
+    required init(isChoice: Bool) {
+        self.isChoice = isChoice
+        super.init(frame: .zero)
         render()
         configUI()
     }
@@ -45,7 +67,7 @@ class PopUpView: UIView {
 
     // MARK: - Functions
     func render() {
-        self.addSubViews([box, alertLabel, completeButton])
+        self.addSubViews([box, alertLabel, completeButton, cancelButton, confirmButton])
         
         box.snp.makeConstraints { make in
             make.top.leading.bottom.trailing.equalToSuperview()
@@ -61,9 +83,31 @@ class PopUpView: UIView {
             make.leading.trailing.bottom.equalToSuperview().inset(16)
             make.height.equalTo(54)
         }
+        
+        cancelButton.snp.makeConstraints { make in
+            make.leading.bottom.equalTo(box).inset(16)
+            make.height.equalTo(54)
+            make.trailing.equalTo(box.snp.centerX).offset(-4)
+        }
+        
+        confirmButton.snp.makeConstraints { make in
+            make.trailing.bottom.equalTo(box).inset(16)
+            make.height.equalTo(54)
+            make.leading.equalTo(box.snp.centerX).offset(4)
+        }
     }
     
     func configUI() {
         alertText.asObservable().bind(to: alertLabel.rx.text).disposed(by: disposeBag)
+        
+        if isChoice {
+            completeButton.isHidden = true
+            confirmButton.isHidden = false
+            cancelButton.isHidden = false
+        } else {
+            completeButton.isHidden = false
+            confirmButton.isHidden = true
+            cancelButton.isHidden = true
+        }
     }
 }
