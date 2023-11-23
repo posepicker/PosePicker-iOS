@@ -160,7 +160,12 @@ class PoseDetailViewController: BaseViewController {
         navigationBar.standardAppearance.shadowColor = nil
         
         let sourceText = viewModel.poseDetailData.poseInfo.source
-        imageSourceButton.configuration?.attributedTitle = AttributedString(!sourceText.isEmpty ? sourceText + "↗" : "링크 바로가기↗", attributes: AttributeContainer([NSAttributedString.Key.font : UIFont.pretendard(.medium, ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.textBrand]))
+        if !sourceText.isEmpty {
+            imageSourceButton.configuration?.attributedTitle = AttributedString(sourceText + "↗", attributes: AttributeContainer([NSAttributedString.Key.font : UIFont.pretendard(.medium, ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.textBrand]))
+        } else {
+            imageSourceButton.isHidden = true
+        }
+        
     }
     override func bindViewModel() {
         let input = PoseDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap)
