@@ -120,5 +120,13 @@ class MyPageViewController: BaseViewController {
                 self.present(popupViewController, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        serviceInformationButton.rx.tap.asDriver()
+            .drive(onNext: {
+                if let url = URL(string: "https://shineshine.notion.site/a668d9eba61f48e584df2ad3a946c313") {
+                    UIApplication.shared.open(url)
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }
