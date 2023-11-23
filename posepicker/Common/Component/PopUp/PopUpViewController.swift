@@ -13,14 +13,16 @@ import RxKakaoSDKUser
 class PopUpViewController: BaseViewController {
 
     // MARK: - Subviews
-    lazy var popUpView = self.isLoginPopUp ? LoginPopUpView() : PopUpView()
+    lazy var popUpView = self.isLoginPopUp ? LoginPopUpView() : PopUpView(isChoice: self.isChoice)
     
     // MARK: - Properties
     var isLoginPopUp: Bool
+    var isChoice: Bool
     
     // MARK: - Initialization
-    init(isLoginPopUp: Bool) {
+    init(isLoginPopUp: Bool, isChoice: Bool) {
         self.isLoginPopUp = isLoginPopUp
+        self.isChoice = isChoice
         super.init()
     }
     
