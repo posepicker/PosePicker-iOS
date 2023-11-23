@@ -72,6 +72,7 @@ class PoseFeedViewModel: ViewModelType {
         let deleteSubTag: Driver<Void>
         let sectionItems: Observable<[PoseSection]>
         let poseDetailViewPush: Driver<PoseDetailViewModel?>
+        let isLoading: Observable<Bool>
     }
     
     // MARK: - 이미지 하나씩 바인딩하지 말고 모두 다 받고 진행
@@ -90,7 +91,7 @@ class PoseFeedViewModel: ViewModelType {
         let poseDetailViewModel = BehaviorRelay<PoseDetailViewModel?>(value: nil)
         let queryParameters = BehaviorRelay<[String]>(value: [])
         
-        let presentLoginPopUp = PublishSubject<Void>()
+        let loadable = BehaviorRelay<Bool>(value: false)
         
         /// 필터 등록 완료 + 필터 모달이 Present 상태일때
         /// 인원 수 & 프레임 수 셀렉션으로부터 데이터 추출
@@ -173,12 +174,16 @@ class PoseFeedViewModel: ViewModelType {
         
         /// 1. 포즈피드 초기 진입시 데이터 요청
         input.requestAllPoseTrigger
-            .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: self.currentPage, pageSize: 8)).asObservable() }
+            .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
+                loadable.accept(true)
+                return self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: self.currentPage, pageSize: 8)).asObservable()
+            }
             .map { $0.content }
             .flatMapLatest { [unowned self] posefeed -> Observable<[PoseFeedPhotoCellViewModel]> in
                 return self.retrieveCacheObservable(posefeed: posefeed)
             }
             .subscribe(onNext: {
+                loadable.accept(false)
                 filterSection.accept($0)
             })
             .disposed(by: disposeBag)
@@ -195,6 +200,7 @@ class PoseFeedViewModel: ViewModelType {
                 recommendSection.accept([])
                 self.filteredContentSizes.accept([])
                 self.recommendedContentsSizes.accept([])
+                loadable.accept(true)
                 
                 let filterTags: [String] = tags.count > 2 ? Array(tags[2..<tags.count]) : []
                 
@@ -221,6 +227,7 @@ class PoseFeedViewModel: ViewModelType {
                 return self.retrieveCacheObservable(posefeed: filteredPose.filteredContents.content)
             }
             .subscribe(onNext: {
+                loadable.accept(false)
                 self.endLoading()
                 filterSection.accept($0) // 기존 필터링 섹션 데이터 전체 초기화 후 새로 가져온 데이터로 교체
             })
@@ -232,6 +239,7 @@ class PoseFeedViewModel: ViewModelType {
             .flatMapLatest { [unowned self] recommendedContents -> Observable<[PoseFeedPhotoCellViewModel]> in
                 self.isLast = recommendedContents.last
                 self.endLoading()
+                loadable.accept(false)
                 return self.retrieveCacheObservable(posefeed: recommendedContents.content, isFilterSection: false)
             }
             .subscribe(onNext: {
@@ -256,6 +264,7 @@ class PoseFeedViewModel: ViewModelType {
             .flatMapLatest { [unowned self] querySet -> Observable<PoseFeed> in
                 if querySet.isEmpty {
                     self.beginLoading() // 로딩 시작
+                    loadable.accept(true)
                     self.currentPage += 1
                     return self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: self.currentPage, pageSize: 8)).asObservable()
                 } else {
@@ -268,6 +277,7 @@ class PoseFeedViewModel: ViewModelType {
             }
             .subscribe(onNext: { [unowned self] in
                 self.endLoading() // 로딩 끝
+                loadable.accept(false)
                 filterSection.accept(filterSection.value + $0)
             })
             .disposed(by: disposeBag)
@@ -282,6 +292,7 @@ class PoseFeedViewModel: ViewModelType {
                     // 인원 수 & 프레임 수 제외한 나머지 태그들 추출하는 로직
                     let filterTags: [String] = querySet.count > 2 ? Array(querySet[2..<querySet.count]) : []
                     self.beginLoading()
+                    loadable.accept(true)
                     self.currentPage += 1
                     
                     // MARK: - 상세 뷰에서 셀 탭을 통해 모달로 태그 세팅되었을때의 무한스크롤
@@ -309,6 +320,7 @@ class PoseFeedViewModel: ViewModelType {
             }
             .subscribe(onNext: {
                 self.endLoading()
+                loadable.accept(false)
                 filterSection.accept(filterSection.value + $0)
             })
             .disposed(by: disposeBag)
@@ -330,7 +342,7 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), deleteSubTag: deleteSubTag.asDriver(onErrorJustReturn: ()), sectionItems: sectionItems.asObservable(), poseDetailViewPush: poseDetailViewModel.asDriver())
+        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), deleteSubTag: deleteSubTag.asDriver(onErrorJustReturn: ()), sectionItems: sectionItems.asObservable(), poseDetailViewPush: poseDetailViewModel.asDriver(), isLoading: loadable.asObservable())
     }
     
     /// 디자인 수치 기준으로 이미지 리사이징
