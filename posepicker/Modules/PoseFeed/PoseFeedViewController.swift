@@ -196,7 +196,7 @@ class PoseFeedViewController: BaseViewController {
         
         viewModel.presentLoginPopUp
             .subscribe(onNext: { [unowned self] in
-                let popUpVC = PopUpViewController(isLoginPopUp: true)
+                let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
                 popUpVC.modalTransitionStyle = .crossDissolve
                 popUpVC.modalPresentationStyle = .overFullScreen
                 self.present(popUpVC, animated: true)
