@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 
 protocol PinterestLayoutDelegate: AnyObject {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat
@@ -32,6 +34,9 @@ class PinterestLayout: UICollectionViewFlowLayout {
     
     // 다시 레이아웃을 계산할 필요가 없도록 메모리에 저장합니다.
     private var cache: [UICollectionViewLayoutAttributes] = []
+    
+    let isLoading = BehaviorRelay<Bool>(value: false)
+    var disposeBag = DisposeBag()
 
     // 2. 콜렉션 뷰가 처음 초기화되거나 뷰가 변경될 떄 실행됩니다. 이 메서드에서 레이아웃을
     //    미리 계산하여 메모리에 적재하고, 필요할 때마다 효율적으로 접근할 수 있도록 구현해야 합니다.
@@ -52,7 +57,15 @@ class PinterestLayout: UICollectionViewFlowLayout {
         let filteredSectionNumberOfItems = collectionView.numberOfItems(inSection: 0)
         let filteredSectionIndex = IndexPath(item: 0, section: 0)
         let filteredHeaderAttributes = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, with: filteredSectionIndex)
-        filteredHeaderAttributes.isHidden = filteredSectionNumberOfItems == 0 ? false : true
+        isLoading.asObservable()
+            .subscribe(onNext: {
+                if $0 { // 로딩이 안끝났을때
+                    filteredHeaderAttributes.isHidden = true
+                } else { // 로딩이 끝났을때
+                    filteredHeaderAttributes.isHidden = filteredSectionNumberOfItems == 0 ? false : true
+                }
+            })
+            .disposed(by: disposeBag)
         filteredHeaderAttributes.frame = CGRect(x: 0, y: 0, width: UIScreen.main.bounds.width - 32, height: filteredSectionNumberOfItems > 0 ? 0 : 300)
         cache.append(filteredHeaderAttributes)
         
