@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import SmartlookAnalytics
 import RxKakaoSDKAuth
 import KakaoSDKAuth
 import RxKakaoSDKCommon
@@ -18,10 +19,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        /// 카카오 셋업
         if let kakaoKey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_KEY") as? String {
             RxKakaoSDK.initSDK(appKey: kakaoKey)
         }
         
+        /// SmartLook 셋업
+        if let smartlookProjectKey = Bundle.main.object(forInfoDictionaryKey: "SMARTLOOK_PROJECT_KEY") as? String {
+            Smartlook.instance.preferences.projectKey = smartlookProjectKey
+            Smartlook.instance.start()
+        }
+         
         
         window = UIWindow(frame: UIScreen.main.bounds)
         guard let window = window else { return false }
