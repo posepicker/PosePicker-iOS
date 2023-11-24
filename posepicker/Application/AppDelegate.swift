@@ -6,7 +6,10 @@
 //
 
 import UIKit
+
 import SmartlookAnalytics
+import FirebaseCore
+
 import RxKakaoSDKAuth
 import KakaoSDKAuth
 import RxKakaoSDKCommon
@@ -29,7 +32,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Smartlook.instance.preferences.projectKey = smartlookProjectKey
             Smartlook.instance.start()
         }
-         
+        
+        /// Firebase 셋업
+        FirebaseApp.configure()
         
         window = UIWindow(frame: UIScreen.main.bounds)
         guard let window = window else { return false }
