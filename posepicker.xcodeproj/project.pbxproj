@@ -82,6 +82,9 @@
 		C94FD2A82AE3B282003777EB /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890BD2AE110660010240A /* Pretendard-Thin.otf */; };
 		C94FD2AB2AE8CEEB003777EB /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2AA2AE8CEEB003777EB /* Button.swift */; };
 		C99A8A6E2B109AA60072B361 /* SmartlookAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A6D2B109AA60072B361 /* SmartlookAnalytics */; };
+		C99A8A702B10A4970072B361 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */; };
+		C99A8A732B10A54E0072B361 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A722B10A54E0072B361 /* FirebaseAnalytics */; };
+		C99A8A752B10A54E0072B361 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A742B10A54E0072B361 /* FirebaseCrashlytics */; };
 		C9C0CDC82AF1D9160041E423 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = C9C0CDC72AF1D9160041E423 /* Kingfisher */; };
 		C9C0CDCE2AF353AB0041E423 /* ToolTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */; };
 		C9C890522AE103A10010240A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890512AE103A10010240A /* AppDelegate.swift */; };
@@ -188,6 +191,7 @@
 		C94FD29A2AE3AC3E003777EB /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		C94FD29E2AE3AF4F003777EB /* UnderlineSegmentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentControl.swift; sourceTree = "<group>"; };
 		C94FD2AA2AE8CEEB003777EB /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolTip.swift; sourceTree = "<group>"; };
 		C9C8904E2AE103A10010240A /* posepicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = posepicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9C890512AE103A10010240A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -239,6 +243,7 @@
 				C9C890C22AE113590010240A /* Lottie in Frameworks */,
 				880E75452AE6BFA3007FAD5A /* Alamofire in Frameworks */,
 				C9C890952AE107730010240A /* RxRelay in Frameworks */,
+				C99A8A752B10A54E0072B361 /* FirebaseCrashlytics in Frameworks */,
 				C9C0CDC82AF1D9160041E423 /* Kingfisher in Frameworks */,
 				C99A8A6E2B109AA60072B361 /* SmartlookAnalytics in Frameworks */,
 				C9042E862B0DD78400BB4182 /* RxKakaoSDKFriend in Frameworks */,
@@ -254,6 +259,7 @@
 				C94FD2952AE39E5C003777EB /* SnapKit in Frameworks */,
 				C9C890972AE107730010240A /* RxSwift in Frameworks */,
 				C9C890912AE107730010240A /* RxBlocking in Frameworks */,
+				C99A8A732B10A54E0072B361 /* FirebaseAnalytics in Frameworks */,
 				C9042E8A2B0DD78400BB4182 /* RxKakaoSDKTalk in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -714,6 +720,7 @@
 				C9C8905A2AE103A30010240A /* Assets.xcassets */,
 				C9C890BE2AE1107B0010240A /* ImageLiteral.swift */,
 				C9C8905F2AE103A30010240A /* Info.plist */,
+				C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -809,6 +816,7 @@
 				C9C8904A2AE103A10010240A /* Sources */,
 				C9C8904B2AE103A10010240A /* Frameworks */,
 				C9C8904C2AE103A10010240A /* Resources */,
+				C99A8A762B10A92E0072B361 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -835,6 +843,8 @@
 				C9042E892B0DD78400BB4182 /* RxKakaoSDKTalk */,
 				C9042E8B2B0DD78400BB4182 /* RxKakaoSDKUser */,
 				C99A8A6D2B109AA60072B361 /* SmartlookAnalytics */,
+				C99A8A722B10A54E0072B361 /* FirebaseAnalytics */,
+				C99A8A742B10A54E0072B361 /* FirebaseCrashlytics */,
 			);
 			productName = posepicker;
 			productReference = C9C8904E2AE103A10010240A /* posepicker.app */;
@@ -918,6 +928,7 @@
 				88D5C4792B0277BE0045C081 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 				C9042E7E2B0DD78400BB4182 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
 				C99A8A6C2B109AA60072B361 /* XCRemoteSwiftPackageReference "analytics-swift-package" */,
+				C99A8A712B10A54E0072B361 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 			);
 			productRefGroup = C9C8904F2AE103A10010240A /* Products */;
 			projectDirPath = "";
@@ -940,6 +951,7 @@
 				C94FD2A22AE3B282003777EB /* Pretendard-ExtraBold.otf in Resources */,
 				C94FD2A32AE3B282003777EB /* Pretendard-ExtraLight.otf in Resources */,
 				C94FD2A42AE3B282003777EB /* Pretendard-Light.otf in Resources */,
+				C99A8A702B10A4970072B361 /* GoogleService-Info.plist in Resources */,
 				C94FD2A52AE3B282003777EB /* Pretendard-Medium.otf in Resources */,
 				C94FD2A62AE3B282003777EB /* Pretendard-Regular.otf in Resources */,
 				C94FD2A72AE3B282003777EB /* Pretendard-SemiBold.otf in Resources */,
@@ -964,6 +976,30 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		C99A8A762B10A92E0072B361 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${DWARF_DSYM_FOLDER_PATH}/${DWARF_DSYM_FILE_NAME}/Contents/Resources/DWARF/${PRODUCT_NAME}",
+				"$(TARGET_BUILD_DIR)/$(UNLOCALIZED_RESOURCES_FOLDER_PATH)/Resources/GoogleService-Info.plist",
+				"$(TARGET_BUILD_DIR)/$(EXECUTABLE_PATH)",
+				"$(SRCROOT)/$(BUILD_PRODUCT_DIR)/$(INFOPLIST_PATH)",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\n\"${BUILD_DIR%/Build/*}/SourcePackages/checkouts/firebase-ios-sdk/Crashlytics/run\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		C9C8904A2AE103A10010240A /* Sources */ = {
@@ -1216,6 +1252,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				DEVELOPMENT_TEAM = 5JQS3FU5R6;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = posepicker/Resources/Info.plist;
@@ -1229,6 +1266,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.parkjju.posepicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1261,6 +1299,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 1.0;
+				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.parkjju.posepicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
@@ -1442,6 +1481,14 @@
 				minimumVersion = 2.0.0;
 			};
 		};
+		C99A8A712B10A54E0072B361 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/firebase/firebase-ios-sdk";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 10.0.0;
+			};
+		};
 		C9C0CDC62AF1D9160041E423 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -1533,6 +1580,16 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C99A8A6C2B109AA60072B361 /* XCRemoteSwiftPackageReference "analytics-swift-package" */;
 			productName = SmartlookAnalytics;
+		};
+		C99A8A722B10A54E0072B361 /* FirebaseAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C99A8A712B10A54E0072B361 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseAnalytics;
+		};
+		C99A8A742B10A54E0072B361 /* FirebaseCrashlytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C99A8A712B10A54E0072B361 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseCrashlytics;
 		};
 		C9C0CDC72AF1D9160041E423 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
