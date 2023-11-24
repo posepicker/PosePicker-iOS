@@ -10,6 +10,15 @@
       }
     },
     {
+      "identity" : "analytics-swift-package",
+      "kind" : "remoteSourceControl",
+      "location" : "https://github.com/smartlook/analytics-swift-package",
+      "state" : {
+        "revision" : "027a8ec051885483fb2037af0f85b7ef1913d13b",
+        "version" : "2.2.8"
+      }
+    },
+    {
       "identity" : "kakao-ios-sdk",
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/kakao/kakao-ios-sdk.git",

@@ -81,6 +81,7 @@
 		C94FD2A72AE3B282003777EB /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890BA2AE110660010240A /* Pretendard-SemiBold.otf */; };
 		C94FD2A82AE3B282003777EB /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890BD2AE110660010240A /* Pretendard-Thin.otf */; };
 		C94FD2AB2AE8CEEB003777EB /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2AA2AE8CEEB003777EB /* Button.swift */; };
+		C99A8A6E2B109AA60072B361 /* SmartlookAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A6D2B109AA60072B361 /* SmartlookAnalytics */; };
 		C9C0CDC82AF1D9160041E423 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = C9C0CDC72AF1D9160041E423 /* Kingfisher */; };
 		C9C0CDCE2AF353AB0041E423 /* ToolTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */; };
 		C9C890522AE103A10010240A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890512AE103A10010240A /* AppDelegate.swift */; };
@@ -239,6 +240,7 @@
 				880E75452AE6BFA3007FAD5A /* Alamofire in Frameworks */,
 				C9C890952AE107730010240A /* RxRelay in Frameworks */,
 				C9C0CDC82AF1D9160041E423 /* Kingfisher in Frameworks */,
+				C99A8A6E2B109AA60072B361 /* SmartlookAnalytics in Frameworks */,
 				C9042E862B0DD78400BB4182 /* RxKakaoSDKFriend in Frameworks */,
 				C9042E882B0DD78400BB4182 /* RxKakaoSDKShare in Frameworks */,
 				C9042E8C2B0DD78400BB4182 /* RxKakaoSDKUser in Frameworks */,
@@ -832,6 +834,7 @@
 				C9042E872B0DD78400BB4182 /* RxKakaoSDKShare */,
 				C9042E892B0DD78400BB4182 /* RxKakaoSDKTalk */,
 				C9042E8B2B0DD78400BB4182 /* RxKakaoSDKUser */,
+				C99A8A6D2B109AA60072B361 /* SmartlookAnalytics */,
 			);
 			productName = posepicker;
 			productReference = C9C8904E2AE103A10010240A /* posepicker.app */;
@@ -914,6 +917,7 @@
 				C9C0CDC62AF1D9160041E423 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				88D5C4792B0277BE0045C081 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 				C9042E7E2B0DD78400BB4182 /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
+				C99A8A6C2B109AA60072B361 /* XCRemoteSwiftPackageReference "analytics-swift-package" */,
 			);
 			productRefGroup = C9C8904F2AE103A10010240A /* Products */;
 			projectDirPath = "";
@@ -1430,6 +1434,14 @@
 				minimumVersion = 3.0.0;
 			};
 		};
+		C99A8A6C2B109AA60072B361 /* XCRemoteSwiftPackageReference "analytics-swift-package" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/smartlook/analytics-swift-package";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 2.0.0;
+			};
+		};
 		C9C0CDC62AF1D9160041E423 /* XCRemoteSwiftPackageReference "Kingfisher" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/onevcat/Kingfisher.git";
@@ -1516,6 +1528,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C94FD2962AE39E6B003777EB /* XCRemoteSwiftPackageReference "Then" */;
 			productName = Then;
+		};
+		C99A8A6D2B109AA60072B361 /* SmartlookAnalytics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C99A8A6C2B109AA60072B361 /* XCRemoteSwiftPackageReference "analytics-swift-package" */;
+			productName = SmartlookAnalytics;
 		};
 		C9C0CDC72AF1D9160041E423 /* Kingfisher */ = {
 			isa = XCSwiftPackageProductDependency;
