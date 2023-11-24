@@ -9,6 +9,8 @@
 	</array>
 	<key>KAKAO_NATIVE_KEY</key>
 	<string>${KAKAO_NATIVE_KEY}</string>
+	<key>SMARTLOOK_PROJECT_KEY</key>
+	<string>${SMARTLOOK_PROJECT_KEY}</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
