@@ -219,6 +219,15 @@ class PoseFeedViewController: BaseViewController {
                 popUpVC.modalTransitionStyle = .crossDissolve
                 popUpVC.modalPresentationStyle = .overFullScreen
                 self.present(popUpVC, animated: true)
+                
+                popUpVC.appleIdentityToken
+                    .subscribe(onNext: {
+                        guard let token = $0 else { return }
+                        print("TOKEN SET! \(token)")
+                        popUpVC.dismiss(animated: true)
+                    })
+                    .disposed(by: self.disposeBag)
+                
             })
             .disposed(by: disposeBag)
     }
