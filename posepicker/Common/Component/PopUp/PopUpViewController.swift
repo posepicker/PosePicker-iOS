@@ -48,7 +48,7 @@ class PopUpViewController: BaseViewController {
         } else {
             popUpView.snp.makeConstraints { make in
                 make.width.equalTo(300)
-                make.height.equalTo(220)
+                make.height.equalTo(282)
                 make.center.equalToSuperview()
             }
         }
