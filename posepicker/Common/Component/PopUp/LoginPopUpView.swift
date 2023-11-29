@@ -31,7 +31,7 @@ class LoginPopUpView: UIView {
             $0.textAlignment = .center
             $0.font = .pretendard(.regular, ofSize: 16)
             $0.numberOfLines = 0
-            $0.text = "로그인해야 북마크를 쓸 수 있어요.\n카카오로 3초만에 가입할 수 있어요!"
+            $0.text = "로그인하면 북마크도 쓸 수 있어요!\n간편 로그인으로 3초만에 가입해요."
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.minimumLineHeight = 24
             paragraphStyle.alignment = .center
@@ -121,6 +121,5 @@ class LoginPopUpView: UIView {
     }
     
     func configUI() {
-        
     }
 }
