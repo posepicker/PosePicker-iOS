@@ -46,12 +46,28 @@ class LoginPopUpView: UIView {
             var configuration = UIButton.Configuration.filled()
             configuration.baseBackgroundColor = .init(hex: "#FEE500")
             configuration.imagePadding = 10
+            let attrString = NSAttributedString(string: "카카오 로그인", attributes: [NSAttributedString.Key.font: UIFont.pretendard(.medium, ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.init(hex: "#191600")])
+            configuration.attributedTitle = AttributedString(attrString)
             $0.configuration = configuration
             $0.semanticContentAttribute = .forceLeftToRight
-            $0.setTitle("카카오 로그인", for: .normal)
-            $0.setTitleColor(.init(hex: "#191600"), for: .normal)
             $0.backgroundColor = .init(hex: "#FEE500")
             $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
+            $0.layer.cornerRadius = 8
+            $0.clipsToBounds = true
+        }
+    
+    let appleLoginButton = UIButton(type: .system)
+        .then {
+            $0.setImage(ImageLiteral.imgAppleLogo.withRenderingMode(.alwaysOriginal), for: .normal)
+            var configuration = UIButton.Configuration.filled()
+            configuration.baseBackgroundColor = .init(hex: "#000000")
+            configuration.imagePadding = 10
+            let attrString = NSAttributedString(string: "Apple로 로그인", attributes: [NSAttributedString.Key.font: UIFont.pretendard(.medium, ofSize: 16), NSAttributedString.Key.foregroundColor: UIColor.init(hex: "#FFFFFF")])
+            configuration.attributedTitle = AttributedString(attrString)
+            $0.configuration = configuration
+            $0.semanticContentAttribute = .forceLeftToRight
+            $0.backgroundColor = .init(hex: "#000000")
+            $0.titleLabel?.font = .pretendard(.bold, ofSize: 16)
             $0.layer.cornerRadius = 8
             $0.clipsToBounds = true
         }
@@ -75,7 +91,7 @@ class LoginPopUpView: UIView {
 
     // MARK: - Functions
     func render() {
-        self.addSubViews([box, titleLabel, infoLabel, kakaoLoginButton])
+        self.addSubViews([box, titleLabel, infoLabel, kakaoLoginButton, appleLoginButton])
         
         box.snp.makeConstraints { make in
             make.top.leading.bottom.trailing.equalToSuperview()
@@ -92,6 +108,12 @@ class LoginPopUpView: UIView {
         }
         
         kakaoLoginButton.snp.makeConstraints { make in
+            make.leading.trailing.equalTo(box).inset(16)
+            make.height.equalTo(54)
+            make.bottom.equalTo(appleLoginButton.snp.top).offset(-8)
+        }
+        
+        appleLoginButton.snp.makeConstraints { make in
             make.leading.trailing.equalTo(box).inset(16)
             make.bottom.equalTo(box).offset(-16)
             make.height.equalTo(54)
