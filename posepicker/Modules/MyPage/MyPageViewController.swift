@@ -59,6 +59,8 @@ class MyPageViewController: BaseViewController {
     override func configUI() {
         self.navigationController?.isNavigationBarHidden = false
         self.title = "메뉴"
+        let backButton = UIBarButtonItem(image: ImageLiteral.imgArrowBack24.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(backButtonTapped))
+        self.navigationItem.leftBarButtonItem = backButton
         view.backgroundColor = .bgWhite
     }
     
@@ -95,6 +97,24 @@ class MyPageViewController: BaseViewController {
     }
     
     override func bindViewModel() {
+        
+        loginButton.rx.tap.asDriver()
+            .drive(onNext: { [unowned self] in
+                let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
+                popUpVC.modalTransitionStyle = .crossDissolve
+                popUpVC.modalPresentationStyle = .overFullScreen
+                self.present(popUpVC, animated: true)
+                
+                popUpVC.appleIdentityToken
+                    .subscribe(onNext: {
+                        guard let token = $0 else { return }
+                        print("TOKEN SET! \(token)")
+                        popUpVC.dismiss(animated: true)
+                    })
+                    .disposed(by: self.disposeBag)
+            })
+            .disposed(by: disposeBag)
+        
         serviceUsageInquiryButton.rx.tap.asDriver()
             .drive(onNext: { [unowned self] in
                 let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: true)
@@ -128,5 +148,11 @@ class MyPageViewController: BaseViewController {
                 }
             })
             .disposed(by: disposeBag)
+    }
+    
+    // MARK: - Objc Functions
+    @objc
+    func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
     }
 }
