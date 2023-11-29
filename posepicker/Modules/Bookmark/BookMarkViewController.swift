@@ -44,6 +44,8 @@ class BookMarkViewController: BaseViewController {
     override func configUI() {
         self.navigationController?.isNavigationBarHidden = false
         self.navigationItem.title = "북마크"
+        let backButton = UIBarButtonItem(image: ImageLiteral.imgArrowBack24.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(backButtonTapped))
+        self.navigationItem.leftBarButtonItem = backButton
         view.backgroundColor = .bgWhite
     }
     
@@ -53,5 +55,11 @@ class BookMarkViewController: BaseViewController {
                 self.coordinator.moveWithPage(page: .posefeed, direction: .reverse)
             })
             .disposed(by: disposeBag)
+    }
+    
+    // MARK: - Objc Functions
+    @objc
+    func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
     }
 }
