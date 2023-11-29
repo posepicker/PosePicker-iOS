@@ -41,8 +41,8 @@ class PoseDetailViewController: BaseViewController {
     
     let navigationBar = UINavigationBar()
         .then {
-            let closeButton = UIBarButtonItem(image: ImageLiteral.imgClose24, style: .plain, target: self, action: #selector(closeButtonTapped))
-            let bookmarkButton = UIBarButtonItem(image: ImageLiteral.imgBookmarkOff24, style: .plain, target: self, action: #selector(bookmarkButtonTapped))
+            let closeButton = UIBarButtonItem(image: ImageLiteral.imgClose24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault), style: .plain, target: self, action: #selector(closeButtonTapped))
+            let bookmarkButton = UIBarButtonItem(image: ImageLiteral.imgBookmarkOff24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault), style: .plain, target: self, action: #selector(bookmarkButtonTapped))
 
               let navigationItem = UINavigationItem(title: "")
               navigationItem.leftBarButtonItem = closeButton
