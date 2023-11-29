@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import AuthenticationServices
+import RxCocoa
 import RxSwift
 import KakaoSDKUser
 import RxKakaoSDKUser
@@ -18,7 +20,8 @@ class PopUpViewController: BaseViewController {
     // MARK: - Properties
     var isLoginPopUp: Bool
     var isChoice: Bool
-    
+    let appleIdentityToken = BehaviorRelay<String?>(value: nil)
+
     // MARK: - Initialization
     init(isLoginPopUp: Bool, isChoice: Bool) {
         self.isLoginPopUp = isLoginPopUp
@@ -69,6 +72,7 @@ class PopUpViewController: BaseViewController {
         
         /// 로그인 팝업일때
         if let popUpView = popUpView as? LoginPopUpView {
+            // 카카오 로그인
             popUpView.kakaoLoginButton.rx.tap.asDriver()
                 .drive(onNext: {[unowned self] in
                     if (UserApi.isKakaoTalkLoginAvailable()) {
@@ -87,12 +91,65 @@ class PopUpViewController: BaseViewController {
                     }
                 })
                 .disposed(by: disposeBag)
+            
+            // 애플로그인
+            popUpView.appleLoginButton.rx.tap
+                .subscribe(onNext: { [weak self] in
+                    self?.performExistingAccountSetupFlows()
+                })
+                .disposed(by: disposeBag)
         }
+        
         UserApi.shared.rx.me()
             .asObservable()
             .subscribe(onNext: {
                 print("USER: \($0.kakaoAccount)")
             })
             .disposed(by: disposeBag)
+    }
+    
+    func performExistingAccountSetupFlows() {
+        // Prepare requests for both Apple ID and password providers.
+        let request = ASAuthorizationAppleIDProvider().createRequest()
+        
+        // Create an authorization controller with the given requests.
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+    
+    func handleAppleLogin() {
+        let appleIDProvider = ASAuthorizationAppleIDProvider()
+        let request = appleIDProvider.createRequest()
+        request.requestedScopes = [.fullName, .email]
+
+        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
+        authorizationController.delegate = self
+        authorizationController.presentationContextProvider = self
+        authorizationController.performRequests()
+    }
+}
+
+extension PopUpViewController: ASAuthorizationControllerDelegate {
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
+        switch authorization.credential {
+        case let appleIDCredential as ASAuthorizationAppleIDCredential:
+            guard let tokenData = appleIDCredential.identityToken,
+                  let tokenString = String(data: tokenData, encoding: .utf8) else { return }
+            self.appleIdentityToken.accept(tokenString)
+        case let passwordCredential as ASPasswordCredential:
+            print(passwordCredential)
+            // Sign in using an existing iCloud Keychain credential.
+            print("password credential .. ")
+        default:
+            break
+        }
+    }
+}
+
+extension PopUpViewController: ASAuthorizationControllerPresentationContextProviding {
+    func presentationAnchor(for controller: ASAuthorizationController) -> ASPresentationAnchor {
+        return self.view.window!
     }
 }
