@@ -233,6 +233,7 @@
 		C9DC2FA52AEB6E1800D5170D /* FilterTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTags.swift; sourceTree = "<group>"; };
 		C9DC2FA72AECAD1A00D5170D /* RegisteredFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredFilterCell.swift; sourceTree = "<group>"; };
 		C9DC2FA92AECAD4500D5170D /* RegisteredFilterCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredFilterCellViewModel.swift; sourceTree = "<group>"; };
+		C9E6025A2B16DA270098BC96 /* posepicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = posepicker.entitlements; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -582,6 +583,7 @@
 		C9C890502AE103A10010240A /* posepicker */ = {
 			isa = PBXGroup;
 			children = (
+				C9E6025A2B16DA270098BC96 /* posepicker.entitlements */,
 				C9C890812AE103C10010240A /* Application */,
 				C9C890842AE106EF0010240A /* Common */,
 				C9C890822AE105EC0010240A /* Configs */,
@@ -1250,6 +1252,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = posepicker/posepicker.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -1284,6 +1287,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_ENTITLEMENTS = posepicker/posepicker.entitlements;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5JQS3FU5R6;
