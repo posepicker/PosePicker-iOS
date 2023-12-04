@@ -11,8 +11,12 @@ import RxSwift
 
 class MyPageViewModel: ViewModelType {
     
-    var apiSession: APIService = APISession()
+    var apiSession: APIService
     var disposeBag = DisposeBag()
+    
+    init(apiSession: APISession = APISession()) {
+        self.apiSession = apiSession
+    }
     
     struct Input {
         var appleIdToken: Observable<String>
