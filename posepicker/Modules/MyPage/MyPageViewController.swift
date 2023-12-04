@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 
 class MyPageViewController: BaseViewController {
     
@@ -42,6 +44,8 @@ class MyPageViewController: BaseViewController {
     // MARK: - Properties
     var viewModel: MyPageViewModel
     var coordinator: RootCoordinator
+    
+    var appleIdTokenSubject = PublishSubject<String>()
     
     // MARK: - Life Cycles
     
@@ -98,6 +102,9 @@ class MyPageViewController: BaseViewController {
     
     override func bindViewModel() {
         
+        let input = MyPageViewModel.Input(appleIdToken: appleIdTokenSubject)
+        let output = viewModel.transform(input: input)
+        
         loginButton.rx.tap.asDriver()
             .drive(onNext: { [unowned self] in
                 let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
@@ -106,9 +113,9 @@ class MyPageViewController: BaseViewController {
                 self.present(popUpVC, animated: true)
                 
                 popUpVC.appleIdentityToken
-                    .subscribe(onNext: {
+                    .subscribe(onNext: { [unowned self] in
                         guard let token = $0 else { return }
-                        print("TOKEN SET! \(token)")
+                        self.appleIdTokenSubject.onNext(token)
                         popUpVC.dismiss(animated: true)
                     })
                     .disposed(by: self.disposeBag)
