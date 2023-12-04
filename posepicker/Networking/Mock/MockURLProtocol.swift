@@ -14,8 +14,6 @@ final class MockURLProtocol: URLProtocol {
         return URLSession(configuration: configuration)
     }()
     
-    private(set) var activeTask: URLSessionTask?
-    
     enum ResponseType {
         case error(APIError)
         case success(HTTPURLResponse)
@@ -75,24 +73,15 @@ extension MockURLProtocol {
         return request
     }
     
-    override class func requestIsCacheEquivalent(_ a: URLRequest, to b: URLRequest) -> Bool {
-        return false
-    }
-    
     override func startLoading() {
         let response = setUpMockResponse()
         let data = setUpMockData()
         
-        // 가짜 리스폰스 내보내기
         client?.urlProtocol(self, didReceive: response!, cacheStoragePolicy: .notAllowed)
         
-        // 가짜 데이터 내보내기
         client?.urlProtocol(self, didLoad: data!)
         
-        // 로드 끝났어!!!!
         self.client?.urlProtocolDidFinishLoading(self)
-        activeTask = session.dataTask(with: request.urlRequest!)
-        activeTask?.cancel()
     }
     
     private func setUpMockResponse() -> HTTPURLResponse? {
@@ -119,6 +108,5 @@ extension MockURLProtocol {
     }
     
     override func stopLoading() {
-        activeTask?.cancel()
     }
 }
