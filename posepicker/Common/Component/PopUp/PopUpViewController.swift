@@ -21,6 +21,7 @@ class PopUpViewController: BaseViewController {
     var isLoginPopUp: Bool
     var isChoice: Bool
     let appleIdentityToken = BehaviorRelay<String?>(value: nil)
+    let email = BehaviorRelay<String?>(value: nil)
 
     // MARK: - Initialization
     init(isLoginPopUp: Bool, isChoice: Bool) {
@@ -95,29 +96,12 @@ class PopUpViewController: BaseViewController {
             // 애플로그인
             popUpView.appleLoginButton.rx.tap
                 .subscribe(onNext: { [weak self] in
-                    self?.performExistingAccountSetupFlows()
+                    self?.handleAppleLogin()
                 })
                 .disposed(by: disposeBag)
         }
-        
-        UserApi.shared.rx.me()
-            .asObservable()
-            .subscribe(onNext: {
-                print("USER: \($0.kakaoAccount)")
-            })
-            .disposed(by: disposeBag)
     }
     
-    func performExistingAccountSetupFlows() {
-        // Prepare requests for both Apple ID and password providers.
-        let request = ASAuthorizationAppleIDProvider().createRequest()
-        
-        // Create an authorization controller with the given requests.
-        let authorizationController = ASAuthorizationController(authorizationRequests: [request])
-        authorizationController.delegate = self
-        authorizationController.presentationContextProvider = self
-        authorizationController.performRequests()
-    }
     
     func handleAppleLogin() {
         let appleIDProvider = ASAuthorizationAppleIDProvider()
@@ -135,9 +119,12 @@ extension PopUpViewController: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         switch authorization.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
+            print("CREDENTIAL: \(appleIDCredential)")
+            print("EMAIL !!!:\(appleIDCredential.email)")
             guard let tokenData = appleIDCredential.identityToken,
                   let tokenString = String(data: tokenData, encoding: .utf8) else { return }
             self.appleIdentityToken.accept(tokenString)
+            self.email.accept(appleIDCredential.email)
         case let passwordCredential as ASPasswordCredential:
             print(passwordCredential)
             // Sign in using an existing iCloud Keychain credential.
