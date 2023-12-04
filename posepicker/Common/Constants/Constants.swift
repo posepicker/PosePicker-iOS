@@ -29,6 +29,12 @@ struct K {
         static let idToken = "idToken"
     }
     
+    /// 키체인 키값 리스트
+    struct KeychainKeyParameters {
+        static let accessToken = "accesstoken"
+        static let refreshToken = "refreshToken"
+    }
+    
     /// 헤더 필드
     enum HttpHeaderField: String {
         case authentication = "Authorization"
