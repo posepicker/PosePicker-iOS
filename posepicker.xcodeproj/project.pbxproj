@@ -34,6 +34,9 @@
 		88D5C47D2B0277BE0045C081 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 88D5C47C2B0277BE0045C081 /* RxDataSources */; };
 		88D5C4812B027B0A0045C081 /* PoseFeedSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D5C4802B027B0A0045C081 /* PoseFeedSection.swift */; };
 		88D5C4852B0318040045C081 /* PoseFeedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D5C4842B0318040045C081 /* PoseFeedHeader.swift */; };
+		88E1D6B22B1E09C400DB8BF6 /* posepickerAuthenticate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E1D6B12B1E09C400DB8BF6 /* posepickerAuthenticate.swift */; };
+		88E1D6B62B1E0B9E00DB8BF6 /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 88E1D6B52B1E0B9E00DB8BF6 /* User.json */; };
+		88E1D6B82B1E11A100DB8BF6 /* RxTest in Frameworks */ = {isa = PBXBuildFile; productRef = 88E1D6B72B1E11A100DB8BF6 /* RxTest */; };
 		88EA81F12AF69BD700020DEA /* PoseFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F02AF69BD700020DEA /* PoseFeed.swift */; };
 		88EA81F62AF6A17A00020DEA /* PoseFeedPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F52AF6A17A00020DEA /* PoseFeedPhotoCell.swift */; };
 		88EA81F82AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F72AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift */; };
@@ -165,6 +168,8 @@
 		8851477E2AF9490C00DCDD4E /* PinterestLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestLayout.swift; sourceTree = "<group>"; };
 		88D5C4802B027B0A0045C081 /* PoseFeedSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedSection.swift; sourceTree = "<group>"; };
 		88D5C4842B0318040045C081 /* PoseFeedHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedHeader.swift; sourceTree = "<group>"; };
+		88E1D6B12B1E09C400DB8BF6 /* posepickerAuthenticate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posepickerAuthenticate.swift; sourceTree = "<group>"; };
+		88E1D6B52B1E0B9E00DB8BF6 /* User.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = User.json; sourceTree = "<group>"; };
 		88EA81F02AF69BD700020DEA /* PoseFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeed.swift; sourceTree = "<group>"; };
 		88EA81F52AF6A17A00020DEA /* PoseFeedPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedPhotoCell.swift; sourceTree = "<group>"; };
 		88EA81F72AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedPhotoCellViewModel.swift; sourceTree = "<group>"; };
@@ -275,6 +280,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				88E1D6B82B1E11A100DB8BF6 /* RxTest in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -411,6 +417,14 @@
 			path = PinterestLayout;
 			sourceTree = "<group>";
 		};
+		88E1D6AE2B1E098B00DB8BF6 /* MyPage */ = {
+			isa = PBXGroup;
+			children = (
+				88E1D6B12B1E09C400DB8BF6 /* posepickerAuthenticate.swift */,
+			);
+			path = MyPage;
+			sourceTree = "<group>";
+		};
 		88EA81EE2AF69BB900020DEA /* User */ = {
 			isa = PBXGroup;
 			children = (
@@ -483,6 +497,7 @@
 			isa = PBXGroup;
 			children = (
 				C91CE92C2B1B1CA300048FF7 /* PosePick.json */,
+				88E1D6B52B1E0B9E00DB8BF6 /* User.json */,
 			);
 			path = MockData;
 			sourceTree = "<group>";
@@ -631,6 +646,7 @@
 		C9C890672AE103A30010240A /* posepickerTests */ = {
 			isa = PBXGroup;
 			children = (
+				88E1D6AE2B1E098B00DB8BF6 /* MyPage */,
 				C91CE92F2B1D9FF500048FF7 /* PoseFeed */,
 				C9C890682AE103A30010240A /* posepickerTests.swift */,
 			);
@@ -899,6 +915,9 @@
 				C9C890662AE103A30010240A /* PBXTargetDependency */,
 			);
 			name = posepickerTests;
+			packageProductDependencies = (
+				88E1D6B72B1E11A100DB8BF6 /* RxTest */,
+			);
 			productName = posepickerTests;
 			productReference = C9C890642AE103A30010240A /* posepickerTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -991,6 +1010,7 @@
 				C94FD2A62AE3B282003777EB /* Pretendard-Regular.otf in Resources */,
 				C91CE92D2B1B1CA300048FF7 /* PosePick.json in Resources */,
 				C94FD2A72AE3B282003777EB /* Pretendard-SemiBold.otf in Resources */,
+				88E1D6B62B1E0B9E00DB8BF6 /* User.json in Resources */,
 				C94FD2A82AE3B282003777EB /* Pretendard-Thin.otf in Resources */,
 				C9C8905E2AE103A30010240A /* LaunchScreen.storyboard in Resources */,
 				C9C8905B2AE103A30010240A /* Assets.xcassets in Resources */,
@@ -1126,6 +1146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C91CE9342B1DA15700048FF7 /* posefeedTests.swift in Sources */,
+				88E1D6B22B1E09C400DB8BF6 /* posepickerAuthenticate.swift in Sources */,
 				C9C890692AE103A30010240A /* posepickerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1570,6 +1591,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 88D5C4792B0277BE0045C081 /* XCRemoteSwiftPackageReference "RxDataSources" */;
 			productName = RxDataSources;
+		};
+		88E1D6B72B1E11A100DB8BF6 /* RxTest */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C9C8908F2AE107730010240A /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxTest;
 		};
 		C9042E7F2B0DD78400BB4182 /* RxKakaoSDK */ = {
 			isa = XCSwiftPackageProductDependency;
