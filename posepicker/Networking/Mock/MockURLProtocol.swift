@@ -43,24 +43,14 @@ extension MockURLProtocol {
     
     enum MockDTOType {
         case posepick
-        case starred
         case user
         case empty
-        case oauth
-        case oauthBadRequest
-        case oauthRedirectURLMismatch
-        case oauthIncorrectClientCredentials
         
         var fileName: String {
             switch self {
             case .posepick: return "PosePick.json"
-            case .starred: return "GithubAPI_Response_Starred.json"
-            case .user: return "GithubAPI_Response_User.json"
+            case .user: return "User.json"
             case .empty: return ""
-            case .oauth: return  "GithubOAuth_Response.json"
-            case .oauthBadRequest: return "GithubOAuth_BedVerificationCode.json"
-            case .oauthRedirectURLMismatch: return "GithubOAuth_RedirectURIMismatch.json"
-            case .oauthIncorrectClientCredentials: return "GithubOAuth_IncorrectClientCredentials.json"
             }
         }
     }
