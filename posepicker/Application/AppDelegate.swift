@@ -28,13 +28,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         /// SmartLook 셋업
-        if let smartlookProjectKey = Bundle.main.object(forInfoDictionaryKey: "SMARTLOOK_PROJECT_KEY") as? String {
-            Smartlook.instance.preferences.projectKey = smartlookProjectKey
-            Smartlook.instance.start()
-        }
+//        if let smartlookProjectKey = Bundle.main.object(forInfoDictionaryKey: "SMARTLOOK_PROJECT_KEY") as? String {
+//            Smartlook.instance.preferences.projectKey = smartlookProjectKey
+//            Smartlook.instance.start()
+//        }
         
         /// Firebase 셋업
-        FirebaseApp.configure()
+//        FirebaseApp.configure()
         
         window = UIWindow(frame: UIScreen.main.bounds)
         guard let window = window else { return false }
