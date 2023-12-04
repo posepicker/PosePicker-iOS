@@ -11,12 +11,19 @@ import Alamofire
 
 enum APIRouter: URLRequestConvertible {
     
+    // 포즈 API
     case retrievePosePick(peopleCount: Int)
     case retrievePoseTalk
     case retrieveAllPoseFeed(pageNumber: Int, pageSize: Int)
     case retrieveFilteringPoseFeed(peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int)
     case retrievePoseDetail(poseId: Int)
+    
+    // 유저 API
     case appleLogin(idToken: String)
+    
+    // 북마크 API
+    case registerBookmark(poseId: Int, userId: Int)
+    case retrieveBookmarkFeed(userId: Int, pageNumber: Int, pageSize: Int)
     
     // MARK: - HttpMethod
     
@@ -35,6 +42,10 @@ enum APIRouter: URLRequestConvertible {
             return .get
         case .appleLogin:
             return .post
+        case .registerBookmark:
+            return .post
+        case .retrieveBookmarkFeed:
+            return .get
         }
     }
     
@@ -55,6 +66,10 @@ enum APIRouter: URLRequestConvertible {
             return "/api/pose/\(poseId)"
         case .appleLogin:
             return "/api/users/login/apple/"
+        case .registerBookmark:
+            return "/api/bookmark"
+        case .retrieveBookmarkFeed:
+            return "/api/bookmark/feed"
         }
     }
     
@@ -87,6 +102,17 @@ enum APIRouter: URLRequestConvertible {
         case .appleLogin(let idToken):
             return [
                 K.Parameters.idToken: idToken
+            ]
+        case .registerBookmark(let poseId, let userId):
+            return [
+                K.Parameters.poseId: poseId,
+                K.Parameters.userId: userId
+            ]
+        case .retrieveBookmarkFeed(let userId, let pageNumber, let pageSize):
+            return [
+                K.Parameters.userId: userId,
+                K.Parameters.pageNumber: pageNumber,
+                K.Parameters.pageSize: pageSize
             ]
         }
     }
