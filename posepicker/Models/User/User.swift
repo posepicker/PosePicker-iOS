@@ -11,5 +11,5 @@ struct User: Codable {
     let email: String
     let id: Int
     let nickname: String
-    
+    let token: Token
 }
