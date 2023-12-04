@@ -27,6 +27,7 @@ struct K {
         static let pageSize = "pageSize"
         static let tags = "tags"
         static let idToken = "idToken"
+        static let userId = "uid"
     }
     
     /// 키체인 키값 리스트
