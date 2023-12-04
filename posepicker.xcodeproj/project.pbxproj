@@ -54,6 +54,9 @@
 		C9042E882B0DD78400BB4182 /* RxKakaoSDKShare in Frameworks */ = {isa = PBXBuildFile; productRef = C9042E872B0DD78400BB4182 /* RxKakaoSDKShare */; };
 		C9042E8A2B0DD78400BB4182 /* RxKakaoSDKTalk in Frameworks */ = {isa = PBXBuildFile; productRef = C9042E892B0DD78400BB4182 /* RxKakaoSDKTalk */; };
 		C9042E8C2B0DD78400BB4182 /* RxKakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = C9042E8B2B0DD78400BB4182 /* RxKakaoSDKUser */; };
+		C91CE9262B1B0DDC00048FF7 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91CE9252B1B0DDC00048FF7 /* MockURLProtocol.swift */; };
+		C91CE92D2B1B1CA300048FF7 /* PosePick.json in Resources */ = {isa = PBXBuildFile; fileRef = C91CE92C2B1B1CA300048FF7 /* PosePick.json */; };
+		C91CE9342B1DA15700048FF7 /* posefeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91CE9322B1DA15700048FF7 /* posefeedTests.swift */; };
 		C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2742AE38E26003777EB /* RootViewController.swift */; };
 		C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2762AE38E82003777EB /* AppCoordinator.swift */; };
 		C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2782AE38EBD003777EB /* RootCoordinator.swift */; };
@@ -175,6 +178,9 @@
 		C9042E572B0AFB8500BB4182 /* PeopleCountTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleCountTags.swift; sourceTree = "<group>"; };
 		C9042E5B2B0B043400BB4182 /* FrameCountTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameCountTags.swift; sourceTree = "<group>"; };
 		C9042E6A2B0D7CB000BB4182 /* LoginPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPopUpView.swift; sourceTree = "<group>"; };
+		C91CE9252B1B0DDC00048FF7 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
+		C91CE92C2B1B1CA300048FF7 /* PosePick.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PosePick.json; sourceTree = "<group>"; };
+		C91CE9322B1DA15700048FF7 /* posefeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posefeedTests.swift; sourceTree = "<group>"; };
 		C94FD2742AE38E26003777EB /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		C94FD2762AE38E82003777EB /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2782AE38EBD003777EB /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -464,6 +470,31 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C91CE9242B1B0DC600048FF7 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				C91CE9292B1B195900048FF7 /* MockData */,
+				C91CE9252B1B0DDC00048FF7 /* MockURLProtocol.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		C91CE9292B1B195900048FF7 /* MockData */ = {
+			isa = PBXGroup;
+			children = (
+				C91CE92C2B1B1CA300048FF7 /* PosePick.json */,
+			);
+			path = MockData;
+			sourceTree = "<group>";
+		};
+		C91CE92F2B1D9FF500048FF7 /* PoseFeed */ = {
+			isa = PBXGroup;
+			children = (
+				C91CE9322B1DA15700048FF7 /* posefeedTests.swift */,
+			);
+			path = PoseFeed;
+			sourceTree = "<group>";
+		};
 		C94FD27A2AE39505003777EB /* PosePick */ = {
 			isa = PBXGroup;
 			children = (
@@ -600,6 +631,7 @@
 		C9C890672AE103A30010240A /* posepickerTests */ = {
 			isa = PBXGroup;
 			children = (
+				C91CE92F2B1D9FF500048FF7 /* PoseFeed */,
 				C9C890682AE103A30010240A /* posepickerTests.swift */,
 			);
 			path = posepickerTests;
@@ -711,6 +743,7 @@
 				880E75382AE6BDFB007FAD5A /* API */,
 				880E75392AE6BE05007FAD5A /* Services */,
 				880E753A2AE6BE2B007FAD5A /* Foundation */,
+				C91CE9242B1B0DC600048FF7 /* Mock */,
 			);
 			path = Networking;
 			sourceTree = "<group>";
@@ -956,6 +989,7 @@
 				C99A8A702B10A4970072B361 /* GoogleService-Info.plist in Resources */,
 				C94FD2A52AE3B282003777EB /* Pretendard-Medium.otf in Resources */,
 				C94FD2A62AE3B282003777EB /* Pretendard-Regular.otf in Resources */,
+				C91CE92D2B1B1CA300048FF7 /* PosePick.json in Resources */,
 				C94FD2A72AE3B282003777EB /* Pretendard-SemiBold.otf in Resources */,
 				C94FD2A82AE3B282003777EB /* Pretendard-Thin.otf in Resources */,
 				C9C8905E2AE103A30010240A /* LaunchScreen.storyboard in Resources */,
@@ -1035,6 +1069,7 @@
 				88EA81F62AF6A17A00020DEA /* PoseFeedPhotoCell.swift in Sources */,
 				C9DC2FA82AECAD1A00D5170D /* RegisteredFilterCell.swift in Sources */,
 				C94FD2AB2AE8CEEB003777EB /* Button.swift in Sources */,
+				C91CE9262B1B0DDC00048FF7 /* MockURLProtocol.swift in Sources */,
 				C903E5442AFCC62600BD004F /* RecommendedContents.swift in Sources */,
 				C94FD2922AE398D6003777EB /* MyPageViewModel.swift in Sources */,
 				C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */,
@@ -1090,6 +1125,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C91CE9342B1DA15700048FF7 /* posefeedTests.swift in Sources */,
 				C9C890692AE103A30010240A /* posepickerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1325,7 +1361,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5JQS3FU5R6;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.parkjju.posepickerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -1346,7 +1382,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5JQS3FU5R6;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = com.parkjju.posepickerTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
