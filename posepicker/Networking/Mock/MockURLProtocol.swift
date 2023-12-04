@@ -10,7 +10,7 @@ import Foundation
 final class MockURLProtocol: URLProtocol {
     
     private lazy var session: URLSession = {
-        let configuration: URLSessionConfiguration = URLSessionConfiguration.ephemeral
+        let configuration: URLSessionConfiguration = URLSessionConfiguration.default
         return URLSession(configuration: configuration)
     }()
     
@@ -32,7 +32,7 @@ extension MockURLProtocol {
     }
     
     static func responseWithStatusCode(code: Int) {
-        MockURLProtocol.responseType = MockURLProtocol.ResponseType.success(HTTPURLResponse(url: URL(string: "http://any.com")!, statusCode: code, httpVersion: nil, headerFields: nil)!)
+        MockURLProtocol.responseType = MockURLProtocol.ResponseType.success(HTTPURLResponse(url: URL(string: K.baseUrl)!, statusCode: code, httpVersion: nil, headerFields: nil)!)
     }
     
     static func responseWithDTO(type: MockDTOType) {
