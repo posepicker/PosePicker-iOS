@@ -6,8 +6,18 @@
 //
 
 import Foundation
+import RxCocoa
+import RxSwift
 
 class BookMarkViewModel {
+    
+    var apiSession: APISession
+    var disposeBag = DisposeBag()
+    
+    init(apiSession: APISession = APISession()) {
+        self.apiSession = apiSession
+    }
+    
     struct Input {
         
     }
