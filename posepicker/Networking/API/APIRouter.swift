@@ -16,7 +16,7 @@ enum APIRouter: URLRequestConvertible {
     case retrieveAllPoseFeed(pageNumber: Int, pageSize: Int)
     case retrieveFilteringPoseFeed(peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int)
     case retrievePoseDetail(poseId: Int)
-//    case kakaoLogin(clientId: String, redirectUri: String, responseType: String)
+    case appleLogin(idToken: String)
     
     // MARK: - HttpMethod
     
@@ -33,8 +33,8 @@ enum APIRouter: URLRequestConvertible {
             return .get
         case .retrievePoseDetail:
             return .get
-//        case .kakaoLogin:
-//            return .get
+        case .appleLogin:
+            return .post
         }
     }
     
@@ -53,8 +53,8 @@ enum APIRouter: URLRequestConvertible {
             return "/api/pose"
         case .retrievePoseDetail(let poseId):
             return "/api/pose/\(poseId)"
-//        case .kakaoLogin(let clientId, let redirectUri, let responseType):
-//            return "/api/users/login/oauth/kakao/"
+        case .appleLogin:
+            return "/api/users/login/apple/"
         }
     }
     
@@ -84,6 +84,10 @@ enum APIRouter: URLRequestConvertible {
             ]
         case .retrievePoseDetail:
             return nil
+        case .appleLogin(let idToken):
+            return [
+                K.Parameters.idToken: idToken
+            ]
         }
     }
     
