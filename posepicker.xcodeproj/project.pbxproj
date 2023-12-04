@@ -38,6 +38,7 @@
 		88E1D6B62B1E0B9E00DB8BF6 /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 88E1D6B52B1E0B9E00DB8BF6 /* User.json */; };
 		88E1D6B82B1E11A100DB8BF6 /* RxTest in Frameworks */ = {isa = PBXBuildFile; productRef = 88E1D6B72B1E11A100DB8BF6 /* RxTest */; };
 		88E1D6BC2B1E234A00DB8BF6 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E1D6BB2B1E234A00DB8BF6 /* KeychainManager.swift */; };
+		88E1D6BF2B1E34FC00DB8BF6 /* bookmarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E1D6BE2B1E34FC00DB8BF6 /* bookmarkTests.swift */; };
 		88EA81F12AF69BD700020DEA /* PoseFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F02AF69BD700020DEA /* PoseFeed.swift */; };
 		88EA81F62AF6A17A00020DEA /* PoseFeedPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F52AF6A17A00020DEA /* PoseFeedPhotoCell.swift */; };
 		88EA81F82AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F72AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift */; };
@@ -172,6 +173,7 @@
 		88E1D6B12B1E09C400DB8BF6 /* mypageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mypageTests.swift; sourceTree = "<group>"; };
 		88E1D6B52B1E0B9E00DB8BF6 /* User.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = User.json; sourceTree = "<group>"; };
 		88E1D6BB2B1E234A00DB8BF6 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
+		88E1D6BE2B1E34FC00DB8BF6 /* bookmarkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bookmarkTests.swift; sourceTree = "<group>"; };
 		88EA81F02AF69BD700020DEA /* PoseFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeed.swift; sourceTree = "<group>"; };
 		88EA81F52AF6A17A00020DEA /* PoseFeedPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedPhotoCell.swift; sourceTree = "<group>"; };
 		88EA81F72AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedPhotoCellViewModel.swift; sourceTree = "<group>"; };
@@ -443,6 +445,14 @@
 			path = KeychainManager;
 			sourceTree = "<group>";
 		};
+		88E1D6BD2B1E34E900DB8BF6 /* Bookmark */ = {
+			isa = PBXGroup;
+			children = (
+				88E1D6BE2B1E34FC00DB8BF6 /* bookmarkTests.swift */,
+			);
+			path = Bookmark;
+			sourceTree = "<group>";
+		};
 		88EA81EE2AF69BB900020DEA /* User */ = {
 			isa = PBXGroup;
 			children = (
@@ -664,6 +674,7 @@
 		C9C890672AE103A30010240A /* posepickerTests */ = {
 			isa = PBXGroup;
 			children = (
+				88E1D6BD2B1E34E900DB8BF6 /* Bookmark */,
 				88E1D6AE2B1E098B00DB8BF6 /* MyPage */,
 				C91CE92F2B1D9FF500048FF7 /* PoseFeed */,
 				C9C890682AE103A30010240A /* posepickerTests.swift */,
@@ -1168,6 +1179,7 @@
 				C91CE9342B1DA15700048FF7 /* posefeedTests.swift in Sources */,
 				88E1D6B22B1E09C400DB8BF6 /* mypageTests.swift in Sources */,
 				C9C890692AE103A30010240A /* posepickerTests.swift in Sources */,
+				88E1D6BF2B1E34FC00DB8BF6 /* bookmarkTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
