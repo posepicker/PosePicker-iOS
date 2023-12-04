@@ -1,0 +1,11 @@
+{
+    "email": "rudwns3927@gmail.com",
+    "id": 0,
+    "nickname": "parkjju",
+    "token": {
+        "accessToken": "string",
+        "expiresIn": 0,
+        "grantType": "string",
+        "refreshToken": "string"
+    }
+}
