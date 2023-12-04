@@ -228,6 +228,13 @@ class PoseFeedViewController: BaseViewController {
                     })
                     .disposed(by: self.disposeBag)
                 
+                popUpVC.email
+                    .compactMap { $0 }
+                    .subscribe(onNext: {
+                        print("EMAIL?: \($0)")
+                    })
+                    .disposed(by: disposeBag)
+                
             })
             .disposed(by: disposeBag)
     }
