@@ -14,15 +14,24 @@ class API {
     static let session: Session = {
         let configuration = URLSessionConfiguration.af.default
         let apiLogger = APIEventLogger()
-        return Session(configuration: configuration, eventMonitors: [])
+        
+        return Session(configuration: configuration, eventMonitors: [apiLogger])
     }()
 }
 
+// 세션 의존성 주입
 struct APISession: APIService {
+    
+    private let session: Session
+    
+    init(session: Session = Session(configuration: URLSessionConfiguration.af.default, eventMonitors: [APIEventLogger()])) {
+        self.session = session
+    }
+    
     /// Single Trait으로 데이터 요청
     func requestSingle<T: Codable>(_ request: APIRouter) -> Single<T> {
         return Single<T>.create { observer -> Disposable in
-                let request = API.session.request(request, interceptor: APIInterceptor()).responseDecodable { (response: DataResponse<T, AFError>) in
+                let request = session.request(request, interceptor: APIInterceptor()).responseDecodable { (response: DataResponse<T, AFError>) in
                     guard let statusCode = response.response?.statusCode else {
                         observer(.failure(APIError.unknown))
                         return
