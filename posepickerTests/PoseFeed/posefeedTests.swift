@@ -42,6 +42,7 @@ final class posefeedTests: XCTestCase {
             .subscribe(onNext: {
                 XCTAssertEqual($0.poseInfo.poseId, 460)
                 print($0)
+                expectation.fulfill()
             })
             .disposed(by: disposeBag)
         
