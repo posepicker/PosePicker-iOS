@@ -12,7 +12,7 @@ import RxSwift
 import RxTest
 @testable import posepicker
 
-final class posepickerAuthenticate: XCTestCase {
+final class MyPageTests: XCTestCase {
     var disposeBag: DisposeBag!
     var sut: APISession!
     var scheduler: TestScheduler!

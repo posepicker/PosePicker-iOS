@@ -34,7 +34,7 @@
 		88D5C47D2B0277BE0045C081 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 88D5C47C2B0277BE0045C081 /* RxDataSources */; };
 		88D5C4812B027B0A0045C081 /* PoseFeedSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D5C4802B027B0A0045C081 /* PoseFeedSection.swift */; };
 		88D5C4852B0318040045C081 /* PoseFeedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D5C4842B0318040045C081 /* PoseFeedHeader.swift */; };
-		88E1D6B22B1E09C400DB8BF6 /* posepickerAuthenticate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E1D6B12B1E09C400DB8BF6 /* posepickerAuthenticate.swift */; };
+		88E1D6B22B1E09C400DB8BF6 /* mypageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E1D6B12B1E09C400DB8BF6 /* mypageTests.swift */; };
 		88E1D6B62B1E0B9E00DB8BF6 /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 88E1D6B52B1E0B9E00DB8BF6 /* User.json */; };
 		88E1D6B82B1E11A100DB8BF6 /* RxTest in Frameworks */ = {isa = PBXBuildFile; productRef = 88E1D6B72B1E11A100DB8BF6 /* RxTest */; };
 		88EA81F12AF69BD700020DEA /* PoseFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F02AF69BD700020DEA /* PoseFeed.swift */; };
@@ -168,7 +168,7 @@
 		8851477E2AF9490C00DCDD4E /* PinterestLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PinterestLayout.swift; sourceTree = "<group>"; };
 		88D5C4802B027B0A0045C081 /* PoseFeedSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedSection.swift; sourceTree = "<group>"; };
 		88D5C4842B0318040045C081 /* PoseFeedHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedHeader.swift; sourceTree = "<group>"; };
-		88E1D6B12B1E09C400DB8BF6 /* posepickerAuthenticate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posepickerAuthenticate.swift; sourceTree = "<group>"; };
+		88E1D6B12B1E09C400DB8BF6 /* mypageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mypageTests.swift; sourceTree = "<group>"; };
 		88E1D6B52B1E0B9E00DB8BF6 /* User.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = User.json; sourceTree = "<group>"; };
 		88EA81F02AF69BD700020DEA /* PoseFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeed.swift; sourceTree = "<group>"; };
 		88EA81F52AF6A17A00020DEA /* PoseFeedPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedPhotoCell.swift; sourceTree = "<group>"; };
@@ -420,7 +420,7 @@
 		88E1D6AE2B1E098B00DB8BF6 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
-				88E1D6B12B1E09C400DB8BF6 /* posepickerAuthenticate.swift */,
+				88E1D6B12B1E09C400DB8BF6 /* mypageTests.swift */,
 			);
 			path = MyPage;
 			sourceTree = "<group>";
@@ -1146,7 +1146,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C91CE9342B1DA15700048FF7 /* posefeedTests.swift in Sources */,
-				88E1D6B22B1E09C400DB8BF6 /* posepickerAuthenticate.swift in Sources */,
+				88E1D6B22B1E09C400DB8BF6 /* mypageTests.swift in Sources */,
 				C9C890692AE103A30010240A /* posepickerTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
