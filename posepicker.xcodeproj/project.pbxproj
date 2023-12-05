@@ -93,6 +93,12 @@
 		C99A8A702B10A4970072B361 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */; };
 		C99A8A732B10A54E0072B361 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A722B10A54E0072B361 /* FirebaseAnalytics */; };
 		C99A8A752B10A54E0072B361 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A742B10A54E0072B361 /* FirebaseCrashlytics */; };
+		C99D53B32B1EDA22007DEE9B /* BookmarkFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D53B22B1EDA22007DEE9B /* BookmarkFeedCell.swift */; };
+		C99D53B52B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D53B42B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift */; };
+		C99D53B72B1EDCB8007DEE9B /* BookmarkHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D53B62B1EDCB8007DEE9B /* BookmarkHeader.swift */; };
+		C99D53B92B1EEA58007DEE9B /* Bookmark_Feed.json in Resources */ = {isa = PBXBuildFile; fileRef = C99D53B82B1EEA58007DEE9B /* Bookmark_Feed.json */; };
+		C99D53BB2B1F16B8007DEE9B /* MockImageDownloaderIURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D53BA2B1F16B8007DEE9B /* MockImageDownloaderIURLProtocol.swift */; };
+		C99D53BF2B1F175B007DEE9B /* image.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = C99D53BE2B1F175B007DEE9B /* image.jpeg */; };
 		C9C0CDC82AF1D9160041E423 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = C9C0CDC72AF1D9160041E423 /* Kingfisher */; };
 		C9C0CDCE2AF353AB0041E423 /* ToolTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */; };
 		C9C890522AE103A10010240A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890512AE103A10010240A /* AppDelegate.swift */; };
@@ -207,6 +213,12 @@
 		C94FD29E2AE3AF4F003777EB /* UnderlineSegmentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentControl.swift; sourceTree = "<group>"; };
 		C94FD2AA2AE8CEEB003777EB /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C99D53B22B1EDA22007DEE9B /* BookmarkFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFeedCell.swift; sourceTree = "<group>"; };
+		C99D53B42B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFeedCellViewModel.swift; sourceTree = "<group>"; };
+		C99D53B62B1EDCB8007DEE9B /* BookmarkHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkHeader.swift; sourceTree = "<group>"; };
+		C99D53B82B1EEA58007DEE9B /* Bookmark_Feed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Bookmark_Feed.json; sourceTree = "<group>"; };
+		C99D53BA2B1F16B8007DEE9B /* MockImageDownloaderIURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockImageDownloaderIURLProtocol.swift; sourceTree = "<group>"; };
+		C99D53BE2B1F175B007DEE9B /* image.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.jpeg; sourceTree = "<group>"; };
 		C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolTip.swift; sourceTree = "<group>"; };
 		C9C8904E2AE103A10010240A /* posepicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = posepicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9C890512AE103A10010240A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -517,6 +529,7 @@
 			children = (
 				C91CE9292B1B195900048FF7 /* MockData */,
 				C91CE9252B1B0DDC00048FF7 /* MockURLProtocol.swift */,
+				C99D53BA2B1F16B8007DEE9B /* MockImageDownloaderIURLProtocol.swift */,
 			);
 			path = Mock;
 			sourceTree = "<group>";
@@ -524,8 +537,8 @@
 		C91CE9292B1B195900048FF7 /* MockData */ = {
 			isa = PBXGroup;
 			children = (
-				C91CE92C2B1B1CA300048FF7 /* PosePick.json */,
-				88E1D6B52B1E0B9E00DB8BF6 /* User.json */,
+				C99D53BD2B1F171A007DEE9B /* ImageFromURL */,
+				C99D53BC2B1F1714007DEE9B /* JSON */,
 			);
 			path = MockData;
 			sourceTree = "<group>";
@@ -572,6 +585,7 @@
 		C94FD27D2AE39517003777EB /* Bookmark */ = {
 			isa = PBXGroup;
 			children = (
+				C99D53B12B1ED9FB007DEE9B /* Cell */,
 				880E75572AEA8BC0007FAD5A /* BookmarkSubviews */,
 				C94FD28C2AE39646003777EB /* BookmarkViewModel.swift */,
 				C94FD2842AE39612003777EB /* BookMarkViewController.swift */,
@@ -623,6 +637,34 @@
 				C94FD2AA2AE8CEEB003777EB /* Button.swift */,
 			);
 			path = Button;
+			sourceTree = "<group>";
+		};
+		C99D53B12B1ED9FB007DEE9B /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				C99D53B42B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift */,
+				C99D53B22B1EDA22007DEE9B /* BookmarkFeedCell.swift */,
+				C99D53B62B1EDCB8007DEE9B /* BookmarkHeader.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
+		C99D53BC2B1F1714007DEE9B /* JSON */ = {
+			isa = PBXGroup;
+			children = (
+				C99D53B82B1EEA58007DEE9B /* Bookmark_Feed.json */,
+				C91CE92C2B1B1CA300048FF7 /* PosePick.json */,
+				88E1D6B52B1E0B9E00DB8BF6 /* User.json */,
+			);
+			path = JSON;
+			sourceTree = "<group>";
+		};
+		C99D53BD2B1F171A007DEE9B /* ImageFromURL */ = {
+			isa = PBXGroup;
+			children = (
+				C99D53BE2B1F175B007DEE9B /* image.jpeg */,
+			);
+			path = ImageFromURL;
 			sourceTree = "<group>";
 		};
 		C9C0CDCA2AF3538C0041E423 /* ToolTip */ = {
@@ -1031,6 +1073,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C94FD2A02AE3B282003777EB /* Pretendard-Black.otf in Resources */,
+				C99D53BF2B1F175B007DEE9B /* image.jpeg in Resources */,
 				C94FD2A12AE3B282003777EB /* Pretendard-Bold.otf in Resources */,
 				C94FD2A22AE3B282003777EB /* Pretendard-ExtraBold.otf in Resources */,
 				C94FD2A32AE3B282003777EB /* Pretendard-ExtraLight.otf in Resources */,
@@ -1038,6 +1081,7 @@
 				C99A8A702B10A4970072B361 /* GoogleService-Info.plist in Resources */,
 				C94FD2A52AE3B282003777EB /* Pretendard-Medium.otf in Resources */,
 				C94FD2A62AE3B282003777EB /* Pretendard-Regular.otf in Resources */,
+				C99D53B92B1EEA58007DEE9B /* Bookmark_Feed.json in Resources */,
 				C91CE92D2B1B1CA300048FF7 /* PosePick.json in Resources */,
 				C94FD2A72AE3B282003777EB /* Pretendard-SemiBold.otf in Resources */,
 				88E1D6B62B1E0B9E00DB8BF6 /* User.json in Resources */,
@@ -1093,6 +1137,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C9042E5C2B0B043400BB4182 /* FrameCountTags.swift in Sources */,
+				C99D53B32B1EDA22007DEE9B /* BookmarkFeedCell.swift in Sources */,
 				8851477F2AF9490C00DCDD4E /* PinterestLayout.swift in Sources */,
 				C9C8908E2AE1073F0010240A /* BaseCollectionViewCell.swift in Sources */,
 				880E75472AE6BFBC007FAD5A /* APISession.swift in Sources */,
@@ -1112,12 +1157,14 @@
 				C9DC2F9B2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift in Sources */,
 				880E75302AE60937007FAD5A /* UIImage+.swift in Sources */,
 				C94FD2832AE3960B003777EB /* PoseFeedViewController.swift in Sources */,
+				C99D53B52B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift in Sources */,
 				C9DC2F992AEA28E300D5170D /* PoseFeedFilterCell.swift in Sources */,
 				C903E54A2B05BCA300BD004F /* PopUpViewController.swift in Sources */,
 				C9C8908A2AE107180010240A /* ViewModelType.swift in Sources */,
 				C9C890BF2AE1107B0010240A /* ImageLiteral.swift in Sources */,
 				88EA81F62AF6A17A00020DEA /* PoseFeedPhotoCell.swift in Sources */,
 				C9DC2FA82AECAD1A00D5170D /* RegisteredFilterCell.swift in Sources */,
+				C99D53BB2B1F16B8007DEE9B /* MockImageDownloaderIURLProtocol.swift in Sources */,
 				C94FD2AB2AE8CEEB003777EB /* Button.swift in Sources */,
 				C91CE9262B1B0DDC00048FF7 /* MockURLProtocol.swift in Sources */,
 				C903E5442AFCC62600BD004F /* RecommendedContents.swift in Sources */,
@@ -1136,6 +1183,7 @@
 				C9DC2F902AEA1D5F00D5170D /* PoseFeedFilterViewController.swift in Sources */,
 				88D5C4812B027B0A0045C081 /* PoseFeedSection.swift in Sources */,
 				880E752D2AE60499007FAD5A /* Header.swift in Sources */,
+				C99D53B72B1EDCB8007DEE9B /* BookmarkHeader.swift in Sources */,
 				C94FD2812AE39603003777EB /* PoseTalkViewController.swift in Sources */,
 				883132972B08EF9100DAA5A7 /* PoseDetailTagCell.swift in Sources */,
 				C9C890522AE103A10010240A /* AppDelegate.swift in Sources */,
