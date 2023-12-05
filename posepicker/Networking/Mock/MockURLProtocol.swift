@@ -42,15 +42,17 @@ extension MockURLProtocol {
 extension MockURLProtocol {
     
     enum MockDTOType {
+        case empty
         case posepick
         case user
-        case empty
+        case bookmarkFeed
         
         var fileName: String {
             switch self {
+            case .empty: return ""
             case .posepick: return "PosePick.json"
             case .user: return "User.json"
-            case .empty: return ""
+            case .bookmarkFeed: return "Bookmark_Feed.json"
             }
         }
     }
@@ -66,7 +68,7 @@ extension MockURLProtocol {
     override func startLoading() {
         let response = setUpMockResponse()
         let data = setUpMockData()
-        
+
         client?.urlProtocol(self, didReceive: response!, cacheStoragePolicy: .notAllowed)
         
         client?.urlProtocol(self, didLoad: data!)
