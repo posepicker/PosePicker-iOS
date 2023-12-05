@@ -87,12 +87,10 @@ extension MockImageDownloaderIURLProtocol {
     
     private func setUpMockData() -> Data? {
         let fileName: String = MockImageDownloaderIURLProtocol.dtoType.fileName
-        print("HI~~~ \(fileName)")
        // 번들에 있는 json 파일로 Data 객체를 뽑아내는 과정.
         guard let file = Bundle.main.url(forResource: fileName, withExtension: nil) else {
             return Data()
         }
-        print("setupmockdata! \(file)")
         return try? Data(contentsOf: file)
     }
     
