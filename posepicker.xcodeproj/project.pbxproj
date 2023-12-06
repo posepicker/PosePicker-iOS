@@ -89,6 +89,7 @@
 		C94FD2A72AE3B282003777EB /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890BA2AE110660010240A /* Pretendard-SemiBold.otf */; };
 		C94FD2A82AE3B282003777EB /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890BD2AE110660010240A /* Pretendard-Thin.otf */; };
 		C94FD2AB2AE8CEEB003777EB /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2AA2AE8CEEB003777EB /* Button.swift */; };
+		C971A67C2B2036850078EF2B /* Bookmark_Next.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A67B2B2036850078EF2B /* Bookmark_Next.json */; };
 		C99A8A6E2B109AA60072B361 /* SmartlookAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A6D2B109AA60072B361 /* SmartlookAnalytics */; };
 		C99A8A702B10A4970072B361 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */; };
 		C99A8A732B10A54E0072B361 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A722B10A54E0072B361 /* FirebaseAnalytics */; };
@@ -215,6 +216,7 @@
 		C94FD29E2AE3AF4F003777EB /* UnderlineSegmentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentControl.swift; sourceTree = "<group>"; };
 		C94FD2AA2AE8CEEB003777EB /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		C971A67A2B2008920078EF2B /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
+		C971A67B2B2036850078EF2B /* Bookmark_Next.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Bookmark_Next.json; sourceTree = "<group>"; };
 		C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C99D53B22B1EDA22007DEE9B /* BookmarkFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFeedCell.swift; sourceTree = "<group>"; };
 		C99D53B42B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFeedCellViewModel.swift; sourceTree = "<group>"; };
@@ -685,6 +687,7 @@
 			children = (
 				C99D53B82B1EEA58007DEE9B /* Bookmark_Feed.json */,
 				C99D53C32B1FF878007DEE9B /* Bookmark_Empty.json */,
+				C971A67B2B2036850078EF2B /* Bookmark_Next.json */,
 			);
 			path = Bookmark;
 			sourceTree = "<group>";
@@ -1086,6 +1089,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C971A67C2B2036850078EF2B /* Bookmark_Next.json in Resources */,
 				C94FD2A02AE3B282003777EB /* Pretendard-Black.otf in Resources */,
 				C99D53BF2B1F175B007DEE9B /* image.jpeg in Resources */,
 				C94FD2A12AE3B282003777EB /* Pretendard-Bold.otf in Resources */,
