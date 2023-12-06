@@ -86,6 +86,9 @@ final class bookmarkTests: XCTestCase {
         MockURLProtocol.responseWithDTO(type: .bookmarkFeed)
         MockURLProtocol.responseWithStatusCode(code: 200)
         
+        MockImageDownloaderIURLProtocol.responseWithDTO(type: .cacheImage) // XCTAssertEqual false일때
+        MockImageDownloaderIURLProtocol.responseWithStatusCode(code: 200)
+        
         var input = retrieveDefaultInputObservable()
         input.viewDidLoadTrigger = scheduler.createColdObservable([
             .next(10, ())
@@ -106,6 +109,10 @@ final class bookmarkTests: XCTestCase {
             .disposed(by: disposeBag)
         
         wait(for: [expectation], timeout: 5)
+    }
+    
+    func test_다음페이지_데이터_요청() {
+        
     }
     
     override func tearDown() {
