@@ -48,7 +48,7 @@ extension MockImageDownloaderIURLProtocol {
         var fileName: String {
             switch self {
             case .empty: return ""
-            case .cacheImage: return "image.jpeg"
+            case .cacheImage: return "image.png"
             }
         }
     }
