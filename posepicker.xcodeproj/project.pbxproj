@@ -214,6 +214,7 @@
 		C94FD29A2AE3AC3E003777EB /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		C94FD29E2AE3AF4F003777EB /* UnderlineSegmentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentControl.swift; sourceTree = "<group>"; };
 		C94FD2AA2AE8CEEB003777EB /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		C971A67A2B2008920078EF2B /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
 		C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C99D53B22B1EDA22007DEE9B /* BookmarkFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFeedCell.swift; sourceTree = "<group>"; };
 		C99D53B42B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFeedCellViewModel.swift; sourceTree = "<group>"; };
@@ -234,7 +235,6 @@
 		C9C8906E2AE103A30010240A /* posepickerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = posepickerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9C890722AE103A30010240A /* posepickerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posepickerUITests.swift; sourceTree = "<group>"; };
 		C9C890742AE103A30010240A /* posepickerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posepickerUITestsLaunchTests.swift; sourceTree = "<group>"; };
-		C9C890832AE105F80010240A /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
 		C9C890872AE107090010240A /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		C9C890892AE107180010240A /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		C9C8908D2AE1073F0010240A /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -643,6 +643,14 @@
 			path = Button;
 			sourceTree = "<group>";
 		};
+		C971A6792B2008870078EF2B /* Configs */ = {
+			isa = PBXGroup;
+			children = (
+				C971A67A2B2008920078EF2B /* posepicker.xcconfig */,
+			);
+			path = Configs;
+			sourceTree = "<group>";
+		};
 		C99D53B12B1ED9FB007DEE9B /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -716,7 +724,7 @@
 				C9E6025A2B16DA270098BC96 /* posepicker.entitlements */,
 				C9C890812AE103C10010240A /* Application */,
 				C9C890842AE106EF0010240A /* Common */,
-				C9C890822AE105EC0010240A /* Configs */,
+				C971A6792B2008870078EF2B /* Configs */,
 				C9C8909A2AE107A40010240A /* Extensions */,
 				C9C8909E2AE107CA0010240A /* Models */,
 				C9C890A32AE109D80010240A /* Modules */,
@@ -754,14 +762,6 @@
 				C94FD2762AE38E82003777EB /* AppCoordinator.swift */,
 			);
 			path = Application;
-			sourceTree = "<group>";
-		};
-		C9C890822AE105EC0010240A /* Configs */ = {
-			isa = PBXGroup;
-			children = (
-				C9C890832AE105F80010240A /* posepicker.xcconfig */,
-			);
-			path = Configs;
 			sourceTree = "<group>";
 		};
 		C9C890842AE106EF0010240A /* Common */ = {
@@ -1285,7 +1285,6 @@
 /* Begin XCBuildConfiguration section */
 		C9C890762AE103A30010240A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1346,7 +1345,6 @@
 		};
 		C9C890772AE103A30010240A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1401,7 +1399,6 @@
 		};
 		C9C890792AE103A30010240A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1436,7 +1433,6 @@
 		};
 		C9C8907A2AE103A30010240A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -1470,7 +1466,6 @@
 		};
 		C9C8907C2AE103A30010240A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1491,7 +1486,6 @@
 		};
 		C9C8907D2AE103A30010240A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -1512,7 +1506,6 @@
 		};
 		C9C8907F2AE103A30010240A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
@@ -1531,7 +1524,6 @@
 		};
 		C9C890802AE103A30010240A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9C890832AE105F80010240A /* posepicker.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				CODE_SIGN_STYLE = Automatic;
