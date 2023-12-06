@@ -30,11 +30,12 @@ class BookMarkViewModel {
     
     struct Output {
         let bookmarkItems: Driver<[BookmarkFeedCellViewModel]?>
+        let isEmpty: Driver<Bool?>
     }
     
     func transform(input: Input) -> Output {
-        
         let bookmarkItems = BehaviorRelay<[BookmarkFeedCellViewModel]?>(value: nil)
+        let isEmpty = BehaviorRelay<Bool?>(value: nil)
         
         /// 1. 뷰 로드 이후 컬렉션뷰 셀 아이템 API 요청
         input.viewDidLoadTrigger
@@ -47,10 +48,11 @@ class BookMarkViewModel {
             }
             .subscribe(onNext: {
                 bookmarkItems.accept($0)
+                isEmpty.accept($0.isEmpty ? true : false)
             })
             .disposed(by: disposeBag)
         
-        return Output(bookmarkItems: bookmarkItems.asDriver())
+        return Output(bookmarkItems: bookmarkItems.asDriver(), isEmpty: isEmpty.asDriver())
     }
     
     // MARK: - 킹피셔 이미지 캐싱 관련 함수들
