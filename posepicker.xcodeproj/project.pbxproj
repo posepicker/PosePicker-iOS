@@ -99,6 +99,8 @@
 		C99D53B92B1EEA58007DEE9B /* Bookmark_Feed.json in Resources */ = {isa = PBXBuildFile; fileRef = C99D53B82B1EEA58007DEE9B /* Bookmark_Feed.json */; };
 		C99D53BB2B1F16B8007DEE9B /* MockImageDownloaderIURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D53BA2B1F16B8007DEE9B /* MockImageDownloaderIURLProtocol.swift */; };
 		C99D53BF2B1F175B007DEE9B /* image.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = C99D53BE2B1F175B007DEE9B /* image.jpeg */; };
+		C99D53C12B1FA43A007DEE9B /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = C99D53C02B1FA43A007DEE9B /* image.png */; };
+		C99D53C42B1FF878007DEE9B /* Bookmark_Empty.json in Resources */ = {isa = PBXBuildFile; fileRef = C99D53C32B1FF878007DEE9B /* Bookmark_Empty.json */; };
 		C9C0CDC82AF1D9160041E423 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = C9C0CDC72AF1D9160041E423 /* Kingfisher */; };
 		C9C0CDCE2AF353AB0041E423 /* ToolTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */; };
 		C9C890522AE103A10010240A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890512AE103A10010240A /* AppDelegate.swift */; };
@@ -219,6 +221,8 @@
 		C99D53B82B1EEA58007DEE9B /* Bookmark_Feed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Bookmark_Feed.json; sourceTree = "<group>"; };
 		C99D53BA2B1F16B8007DEE9B /* MockImageDownloaderIURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockImageDownloaderIURLProtocol.swift; sourceTree = "<group>"; };
 		C99D53BE2B1F175B007DEE9B /* image.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.jpeg; sourceTree = "<group>"; };
+		C99D53C02B1FA43A007DEE9B /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
+		C99D53C32B1FF878007DEE9B /* Bookmark_Empty.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Bookmark_Empty.json; sourceTree = "<group>"; };
 		C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolTip.swift; sourceTree = "<group>"; };
 		C9C8904E2AE103A10010240A /* posepicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = posepicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9C890512AE103A10010240A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -652,7 +656,7 @@
 		C99D53BC2B1F1714007DEE9B /* JSON */ = {
 			isa = PBXGroup;
 			children = (
-				C99D53B82B1EEA58007DEE9B /* Bookmark_Feed.json */,
+				C99D53C22B1FF836007DEE9B /* Bookmark */,
 				C91CE92C2B1B1CA300048FF7 /* PosePick.json */,
 				88E1D6B52B1E0B9E00DB8BF6 /* User.json */,
 			);
@@ -662,9 +666,19 @@
 		C99D53BD2B1F171A007DEE9B /* ImageFromURL */ = {
 			isa = PBXGroup;
 			children = (
+				C99D53C02B1FA43A007DEE9B /* image.png */,
 				C99D53BE2B1F175B007DEE9B /* image.jpeg */,
 			);
 			path = ImageFromURL;
+			sourceTree = "<group>";
+		};
+		C99D53C22B1FF836007DEE9B /* Bookmark */ = {
+			isa = PBXGroup;
+			children = (
+				C99D53B82B1EEA58007DEE9B /* Bookmark_Feed.json */,
+				C99D53C32B1FF878007DEE9B /* Bookmark_Empty.json */,
+			);
+			path = Bookmark;
 			sourceTree = "<group>";
 		};
 		C9C0CDCA2AF3538C0041E423 /* ToolTip */ = {
@@ -1081,6 +1095,7 @@
 				C99A8A702B10A4970072B361 /* GoogleService-Info.plist in Resources */,
 				C94FD2A52AE3B282003777EB /* Pretendard-Medium.otf in Resources */,
 				C94FD2A62AE3B282003777EB /* Pretendard-Regular.otf in Resources */,
+				C99D53C12B1FA43A007DEE9B /* image.png in Resources */,
 				C99D53B92B1EEA58007DEE9B /* Bookmark_Feed.json in Resources */,
 				C91CE92D2B1B1CA300048FF7 /* PosePick.json in Resources */,
 				C94FD2A72AE3B282003777EB /* Pretendard-SemiBold.otf in Resources */,
@@ -1088,6 +1103,7 @@
 				C94FD2A82AE3B282003777EB /* Pretendard-Thin.otf in Resources */,
 				C9C8905E2AE103A30010240A /* LaunchScreen.storyboard in Resources */,
 				C9C8905B2AE103A30010240A /* Assets.xcassets in Resources */,
+				C99D53C42B1FF878007DEE9B /* Bookmark_Empty.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
