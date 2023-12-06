@@ -46,6 +46,7 @@ extension MockURLProtocol {
         case posepick
         case user
         case bookmarkFeed
+        case bookmarkFeedEmpty
         
         var fileName: String {
             switch self {
@@ -53,6 +54,7 @@ extension MockURLProtocol {
             case .posepick: return "PosePick.json"
             case .user: return "User.json"
             case .bookmarkFeed: return "Bookmark_Feed.json"
+            case .bookmarkFeedEmpty: return "Bookmark_Empty.json"
             }
         }
     }
