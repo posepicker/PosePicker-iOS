@@ -35,7 +35,6 @@ final class bookmarkTests: XCTestCase {
             let configuration = URLSessionConfiguration.default
             configuration.protocolClasses = [MockImageDownloaderIURLProtocol.self]
             downloader.sessionConfiguration = configuration
-//            downloader.sessionConfiguration.protocolClasses = [MockImageDownloaderIURLProtocol.self]
             return downloader
         }()
         
@@ -49,7 +48,7 @@ final class bookmarkTests: XCTestCase {
     /// Given - viewDidLoad
     /// When - transform
     /// Then - items
-    func test_데이터가_없을때_empty뷰를_띄워주는지() {
+    func test_이미지_캐싱_목업테스트() {
         
         MockURLProtocol.responseWithStatusCode(code: 200)
         MockURLProtocol.responseWithDTO(type: .bookmarkFeed)
@@ -68,15 +67,40 @@ final class bookmarkTests: XCTestCase {
         
         scheduler.start()
         
-        // 네트워크에 의존중..
         output.bookmarkItems
             .compactMap { $0 }
             .drive(onNext: {
-                // 캐시처리가 오래걸리나?
                 $0.forEach { element in
                     print(element.image.value)
                     print(element.poseId.value)
                 }
+                expectation.fulfill()
+            })
+            .disposed(by: disposeBag)
+        
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func test_북마크_피드_컨텐츠가_비어있을때() {
+        
+        MockURLProtocol.responseWithDTO(type: .bookmarkFeed)
+        MockURLProtocol.responseWithStatusCode(code: 200)
+        
+        var input = retrieveDefaultInputObservable()
+        input.viewDidLoadTrigger = scheduler.createColdObservable([
+            .next(10, ())
+        ]).asObservable()
+        
+        let output = viewModel.transform(input: input)
+        
+        let expectation = XCTestExpectation(description: "북마크 피드 빈 데이터일때 불리언값 검증")
+        
+        scheduler.start()
+        
+        output.isEmpty
+            .compactMap { $0 }
+            .drive(onNext: {
+                XCTAssertEqual($0, false)
                 expectation.fulfill()
             })
             .disposed(by: disposeBag)
@@ -90,6 +114,7 @@ final class bookmarkTests: XCTestCase {
         sut = nil
         scheduler = nil
         viewModel = nil
+        ImageDownloader.default.sessionConfiguration = .default
     }
     
     func retrieveDefaultInputObservable() -> BookMarkViewModel.Input {
