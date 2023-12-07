@@ -26,6 +26,7 @@ class BookMarkViewModel {
     
     struct Input {
         var viewDidLoadTrigger: Observable<Void>
+        var nextPageTrigger: Observable<Void>
     }
     
     struct Output {
@@ -44,11 +45,27 @@ class BookMarkViewModel {
             }
             .map { $0.content }
             .flatMapLatest { [unowned self] posefeed -> Observable<[BookmarkFeedCellViewModel]> in
-                return retrieveCacheObservable(posefeed: posefeed)
+                return self.retrieveCacheObservable(posefeed: posefeed)
             }
             .subscribe(onNext: {
                 bookmarkItems.accept($0)
                 isEmpty.accept($0.isEmpty ? true : false)
+            })
+            .disposed(by: disposeBag)
+        
+        /// 2. 무한스크롤 다음 페이지 트리거
+        input.nextPageTrigger
+            .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
+                return apiSession.requestSingle(.retrieveBookmarkFeed(userId: 0, pageNumber: 0, pageSize: 8)).asObservable()
+            }
+            .map { $0.content }
+            .flatMapLatest { [unowned self] posefeed -> Observable<[BookmarkFeedCellViewModel]> in
+                return self.retrieveCacheObservable(posefeed: posefeed)
+            }
+            .subscribe(onNext: {
+                guard let bookmarkValue = bookmarkItems.value else { return }
+                bookmarkItems.accept(bookmarkValue + $0)
+                isEmpty.accept(true)
             })
             .disposed(by: disposeBag)
         
