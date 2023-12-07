@@ -7,7 +7,7 @@
 
 import Foundation
 
-final class MockImageDownloaderIURLProtocol: URLProtocol {
+final class MockImageDownloaderURLProtocol: URLProtocol {
     
     private lazy var session: URLSession = {
         let configuration: URLSessionConfiguration = URLSessionConfiguration.default
@@ -23,23 +23,23 @@ final class MockImageDownloaderIURLProtocol: URLProtocol {
     static var dtoType: MockDTOType!
 }
 
-extension MockImageDownloaderIURLProtocol {
+extension MockImageDownloaderURLProtocol {
     
     static func responseWithFailure() {
-        MockImageDownloaderIURLProtocol.responseType = MockImageDownloaderIURLProtocol.ResponseType.error(APIError.unknown)
+        MockImageDownloaderURLProtocol.responseType = MockImageDownloaderURLProtocol.ResponseType.error(APIError.unknown)
     }
     
     static func responseWithStatusCode(code: Int) {
-        MockImageDownloaderIURLProtocol.responseType = MockImageDownloaderIURLProtocol.ResponseType.success(HTTPURLResponse(url: URL(string: K.baseUrl)!, statusCode: code, httpVersion: nil, headerFields: nil)!)
+        MockImageDownloaderURLProtocol.responseType = MockImageDownloaderURLProtocol.ResponseType.success(HTTPURLResponse(url: URL(string: K.baseUrl)!, statusCode: code, httpVersion: nil, headerFields: nil)!)
     }
     
     static func responseWithDTO(type: MockDTOType) {
-        MockImageDownloaderIURLProtocol.dtoType = type
+        MockImageDownloaderURLProtocol.dtoType = type
     }
 }
 
 
-extension MockImageDownloaderIURLProtocol {
+extension MockImageDownloaderURLProtocol {
     
     enum MockDTOType {
         case empty
@@ -74,7 +74,7 @@ extension MockImageDownloaderIURLProtocol {
     
     private func setUpMockResponse() -> HTTPURLResponse? {
         var response: HTTPURLResponse?
-        switch MockImageDownloaderIURLProtocol.responseType {
+        switch MockImageDownloaderURLProtocol.responseType {
         case .error(let error)?:
             client?.urlProtocol(self, didFailWithError: error)
         case .success(let newResponse)?:
@@ -86,7 +86,7 @@ extension MockImageDownloaderIURLProtocol {
     }
     
     private func setUpMockData() -> Data? {
-        let fileName: String = MockImageDownloaderIURLProtocol.dtoType.fileName
+        let fileName: String = MockImageDownloaderURLProtocol.dtoType.fileName
        // 번들에 있는 json 파일로 Data 객체를 뽑아내는 과정.
         guard let file = Bundle.main.url(forResource: fileName, withExtension: nil) else {
             return Data()
