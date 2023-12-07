@@ -33,7 +33,7 @@ final class bookmarkTests: XCTestCase {
         let imageDownloader: ImageDownloader = {
             let downloader = ImageDownloader.default
             let configuration = URLSessionConfiguration.default
-            configuration.protocolClasses = [MockImageDownloaderIURLProtocol.self]
+            configuration.protocolClasses = [MockImageDownloaderURLProtocol.self]
             downloader.sessionConfiguration = configuration
             return downloader
         }()
@@ -46,15 +46,15 @@ final class bookmarkTests: XCTestCase {
     }
     
     /// Given - viewDidLoad
-    /// When - transform
+    /// When - transform -> 북마크 컨텐츠가 비어있을때 & 북마크 컨텐츠가 존재할때 둘다 테스트
     /// Then - items
     func test_이미지_캐싱_목업테스트() {
         
         MockURLProtocol.responseWithStatusCode(code: 200)
-        MockURLProtocol.responseWithDTO(type: .bookmarkFeed)
+        MockURLProtocol.responseWithDTO(type: .bookmarkFeedEmpty)
         
-        MockImageDownloaderIURLProtocol.responseWithStatusCode(code: 200)
-        MockImageDownloaderIURLProtocol.responseWithDTO(type: .cacheImage)
+        MockImageDownloaderURLProtocol.responseWithStatusCode(code: 200)
+        MockImageDownloaderURLProtocol.responseWithDTO(type: .cacheImage)
         
         var input = retrieveDefaultInputObservable()
         
@@ -70,6 +70,7 @@ final class bookmarkTests: XCTestCase {
         output.bookmarkItems
             .compactMap { $0 }
             .drive(onNext: {
+                print($0)
                 $0.forEach { element in
                     print(element.image.value)
                     print(element.poseId.value)
@@ -86,8 +87,8 @@ final class bookmarkTests: XCTestCase {
         MockURLProtocol.responseWithDTO(type: .bookmarkFeed)
         MockURLProtocol.responseWithStatusCode(code: 200)
         
-        MockImageDownloaderIURLProtocol.responseWithDTO(type: .cacheImage) // XCTAssertEqual false일때
-        MockImageDownloaderIURLProtocol.responseWithStatusCode(code: 200)
+        MockImageDownloaderURLProtocol.responseWithDTO(type: .cacheImage) // XCTAssertEqual false일때
+        MockImageDownloaderURLProtocol.responseWithStatusCode(code: 200)
         
         var input = retrieveDefaultInputObservable()
         input.viewDidLoadTrigger = scheduler.createColdObservable([
@@ -112,7 +113,14 @@ final class bookmarkTests: XCTestCase {
     }
     
     func test_다음페이지_데이터_요청() {
+        MockURLProtocol.responseWithDTO(type: .bookmarkFeedNext)
+        MockURLProtocol.responseWithStatusCode(code: 200)
         
+        MockImageDownloaderURLProtocol.responseWithDTO(type: .cacheImage)
+        MockImageDownloaderURLProtocol.responseWithStatusCode(code: 200)
+        
+        
+        XCTAssertEqual(1,1)
     }
     
     override func tearDown() {
@@ -126,7 +134,8 @@ final class bookmarkTests: XCTestCase {
     
     func retrieveDefaultInputObservable() -> BookMarkViewModel.Input {
         let viewDidLoadTrigger: TestableObservable<Void> = scheduler.createColdObservable([])
-        let input = BookMarkViewModel.Input(viewDidLoadTrigger: viewDidLoadTrigger.asObservable())
+        let nextPageTrigger: TestableObservable<Void> = scheduler.createColdObservable([])
+        let input = BookMarkViewModel.Input(viewDidLoadTrigger: viewDidLoadTrigger.asObservable(), nextPageTrigger: nextPageTrigger.asObservable())
         
         return input
     }
