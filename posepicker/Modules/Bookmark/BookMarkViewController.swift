@@ -20,6 +20,7 @@ class BookMarkViewController: BaseViewController {
     var coordinator: RootCoordinator
     
     let viewDidLoadTrigger = PublishSubject<Void>()
+    let nextPageTrigger = PublishSubject<Void>()
     
     // MARK: - Initialization
     
@@ -67,7 +68,7 @@ class BookMarkViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = BookMarkViewModel.Input(viewDidLoadTrigger: viewDidLoadTrigger)
+        let input = BookMarkViewModel.Input(viewDidLoadTrigger: viewDidLoadTrigger, nextPageTrigger: nextPageTrigger)
         let output = viewModel.transform(input: input)
     }
     
