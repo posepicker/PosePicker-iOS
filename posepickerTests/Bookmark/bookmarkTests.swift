@@ -112,15 +112,47 @@ final class bookmarkTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
     
+    /// Given - viewDidLoad로 초기 데이터 세팅 (bookItems output은 retrieveCache까지 처리 완료)
+    /// Given - nextPageTrigger로 다음 페이지 데이터 요청
+    /// When - transform (output.bookmarkItems)
+    /// Then - 바인딩할 데이터가 8개에서 추가되어 nextPage에서는 16개로 되는지
     func test_다음페이지_데이터_요청() {
-        MockURLProtocol.responseWithDTO(type: .bookmarkFeedNext)
+        MockURLProtocol.responseWithDTO(type: .bookmarkFeed)
         MockURLProtocol.responseWithStatusCode(code: 200)
         
         MockImageDownloaderURLProtocol.responseWithDTO(type: .cacheImage)
         MockImageDownloaderURLProtocol.responseWithStatusCode(code: 200)
         
+        let expectation = XCTestExpectation(description: "output.bookItems 테스트")
         
-        XCTAssertEqual(1,1)
+        var input = retrieveDefaultInputObservable()
+        
+        input.viewDidLoadTrigger = scheduler.createColdObservable([
+            .next(1, ())
+        ]).asObservable()
+        
+        input.nextPageTrigger = scheduler.createColdObservable([
+            .next(2, ())
+        ]).asObservable()
+        
+        let output = viewModel.transform(input: input)
+
+        output.bookmarkItems
+            .compactMap { $0 }
+            .drive(onNext: {
+                if $0.count == 16 {
+                    XCTAssertEqual($0.count, 16)
+                    expectation.fulfill()
+                    return
+                }
+                XCTAssertEqual($0.count, 8)
+                MockURLProtocol.responseWithDTO(type: .bookmarkFeedNext)
+            })
+            .disposed(by: disposeBag)
+        
+        scheduler.start()
+        
+        wait(for: [expectation], timeout: 5)
     }
     
     override func tearDown() {
