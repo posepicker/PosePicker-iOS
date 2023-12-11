@@ -31,6 +31,8 @@ struct K {
         static let email = "email"
         static let token = "token"
         static let uid = "uid"
+        static let accessToken = "accessToken"
+        static let refreshToken = "refreshToken"
     }
     
     /// 키체인 키값 리스트
