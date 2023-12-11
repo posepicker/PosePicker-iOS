@@ -62,6 +62,7 @@ final class authenticateTests: XCTestCase {
                 return Observable.combineLatest(accessTokenObservable, refreshTokenObservable)
             }
             .subscribe(onNext: { _ in
+                print("NEXT")
                 jwtExpectation.fulfill()
                 kakaoExpectation.fulfill()
             })
@@ -96,11 +97,14 @@ final class authenticateTests: XCTestCase {
                 return Observable.combineLatest(accessTokenObservable, refreshTokenObservable)
             }
             .subscribe(onNext: { _ in
+                print("NEXT!") // NEXT 두번 방출?
                 expectation.fulfill()
             })
             .disposed(by: disposeBag)
         
         scheduler.start()
+        
+        wait(for: [expectation], timeout: 5)
     }
     
     override func tearDown() {
