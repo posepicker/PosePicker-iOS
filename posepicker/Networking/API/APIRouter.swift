@@ -20,6 +20,8 @@ enum APIRouter: URLRequestConvertible {
     
     // 유저 API
     case appleLogin(idToken: String)
+    case kakaoLogin(authCode: String, email: String, kakaoId: String)
+    case retrieveAuthoirzationCode
     
     // 북마크 API
     case registerBookmark(poseId: Int, userId: Int)
@@ -41,7 +43,11 @@ enum APIRouter: URLRequestConvertible {
         case .retrievePoseDetail:
             return .get
         case .appleLogin:
+            return .get
+        case .kakaoLogin:
             return .post
+        case .retrieveAuthoirzationCode:
+            return .get
         case .registerBookmark:
             return .post
         case .retrieveBookmarkFeed:
@@ -65,7 +71,11 @@ enum APIRouter: URLRequestConvertible {
         case .retrievePoseDetail(let poseId):
             return "/api/pose/\(poseId)"
         case .appleLogin:
-            return "/api/users/login/apple/"
+            return "/api/users/login/ios/apple"
+        case .kakaoLogin:
+            return "​/api​/users​/login​/ios​/kakao"
+        case .retrieveAuthoirzationCode:
+            return "/api/users/posepicker/token"
         case .registerBookmark:
             return "/api/bookmark"
         case .retrieveBookmarkFeed:
@@ -103,6 +113,14 @@ enum APIRouter: URLRequestConvertible {
             return [
                 K.Parameters.idToken: idToken
             ]
+        case .kakaoLogin(let authCode, let email, let kakaoId):
+            return [
+                K.Parameters.email: email,
+                K.Parameters.token: authCode,
+                K.Parameters.uid: kakaoId
+            ]
+        case .retrieveAuthoirzationCode:
+            return nil
         case .registerBookmark(let poseId, let userId):
             return [
                 K.Parameters.poseId: poseId,
@@ -115,6 +133,7 @@ enum APIRouter: URLRequestConvertible {
                 K.Parameters.pageSize: pageSize
             ]
         }
+        
     }
     
     // MARK: - URLRequestConvertible
