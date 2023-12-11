@@ -119,8 +119,6 @@ extension PopUpViewController: ASAuthorizationControllerDelegate {
     func authorizationController(controller: ASAuthorizationController, didCompleteWithAuthorization authorization: ASAuthorization) {
         switch authorization.credential {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
-            print("CREDENTIAL: \(appleIDCredential)")
-            print("EMAIL !!!:\(appleIDCredential.email)")
             guard let tokenData = appleIDCredential.identityToken,
                   let tokenString = String(data: tokenData, encoding: .utf8) else { return }
             self.appleIdentityToken.accept(tokenString)
