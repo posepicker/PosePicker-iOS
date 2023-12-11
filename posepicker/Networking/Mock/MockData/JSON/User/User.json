@@ -1,0 +1,11 @@
+{
+  "id": 1,
+  "nickname": "nickname",
+  "email": "rudwns3927@gmail.com",
+  "token": {
+    "accessToken": "eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIxIiwiZXhwIjoxNzAyMjgzOTgwfQ.XZyK-wLV41cVfLWTDiJy7vK4qhQHpS-BmvCsCElAYb1R7hbg6AftSrk6SCjRdwdQ5He67Lb3OEL03SpWoZC_IQ",
+    "refreshToken": "eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE3MDM0OTE3ODB9.zDVOgamL8dy0oENerajkHN_OYWT-mUZZ1vR6LGmK8Fkk_BwFckK4gOLPOYxrTeymH5HfvtDGS3GfEWqpk7-Eyw",
+    "grantType": "Bearer",
+    "expiresIn": 1800
+  }
+}
