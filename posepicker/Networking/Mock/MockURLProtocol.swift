@@ -45,6 +45,7 @@ extension MockURLProtocol {
         case empty
         case posepick
         case user
+        case authorizationCode
         case bookmarkFeed
         case bookmarkFeedEmpty
         case bookmarkFeedNext
@@ -54,6 +55,7 @@ extension MockURLProtocol {
             case .empty: return ""
             case .posepick: return "PosePick.json"
             case .user: return "User.json"
+            case .authorizationCode: return "AuthorizationCode.json"
             case .bookmarkFeed: return "Bookmark_Feed.json"
             case .bookmarkFeedEmpty: return "Bookmark_Empty.json"
             case .bookmarkFeedNext: return "Bookmark_Next.json"
