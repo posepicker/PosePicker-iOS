@@ -234,11 +234,13 @@ extension Reactive where Base: KeychainManager {
         return Observable.create({ observer -> Disposable in
             do {
                 try self.base.saveItem(item, itemClass: itemClass, key: key)
+                observer.onNext(())
                 observer.onCompleted()
             } catch {
                 if let error = error as? KeychainError,
                    error.localizedDescription == "Duplicate Item" {
                     try! self.base.updateItem(with: item, ofClass: itemClass, key: key)
+                    observer.onNext(())
                     observer.onCompleted()
                 } else {
                     observer.onError(error)
@@ -267,6 +269,7 @@ extension Reactive where Base: KeychainManager {
         return Observable.create({ observer -> Disposable in
             do {
                 try self.base.updateItem(with: item, ofClass: itemClass, key: key)
+                observer.onNext(())
                 observer.onCompleted()
             } catch {
                 observer.onError(error)
@@ -280,6 +283,7 @@ extension Reactive where Base: KeychainManager {
         return Observable.create({ observer -> Disposable in
             do {
                 try self.base.deleteItem(ofClass: itemClass, key: key)
+                observer.onNext(())
                 observer.onCompleted()
             } catch {
                 observer.onError(error)
