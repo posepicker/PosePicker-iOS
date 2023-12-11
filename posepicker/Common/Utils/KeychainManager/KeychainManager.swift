@@ -80,6 +80,7 @@ typealias KeychainDictionary = [String: Any]
 class KeychainManager {
     
     static let shared = KeychainManager() // 릴리즈용 매니저 객체
+    static let mock = KeychainManager() // 목업 객체
     
     private init() {}
     
