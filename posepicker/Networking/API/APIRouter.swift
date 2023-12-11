@@ -20,7 +20,7 @@ enum APIRouter: URLRequestConvertible {
     
     // 유저 API
     case appleLogin(idToken: String)
-    case kakaoLogin(authCode: String, email: String, kakaoId: String)
+    case kakaoLogin(authCode: String, email: String, kakaoId: Int)
     case retrieveAuthoirzationCode
     
     // 북마크 API
