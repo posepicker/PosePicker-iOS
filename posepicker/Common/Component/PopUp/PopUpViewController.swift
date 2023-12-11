@@ -9,7 +9,9 @@ import UIKit
 import AuthenticationServices
 import RxCocoa
 import RxSwift
+import KakaoSDKAuth
 import KakaoSDKUser
+import KakaoSDKCommon
 import RxKakaoSDKUser
 
 class PopUpViewController: BaseViewController {
@@ -20,7 +22,10 @@ class PopUpViewController: BaseViewController {
     // MARK: - Properties
     var isLoginPopUp: Bool
     var isChoice: Bool
+    
+    /// Optional 타입이 아니면 초기에 next로 값이 방출되어버림
     let appleIdentityToken = BehaviorRelay<String?>(value: nil)
+    let kakaoId = BehaviorRelay<Int64?>(value: nil)
     let email = BehaviorRelay<String?>(value: nil)
 
     // MARK: - Initialization
@@ -73,22 +78,51 @@ class PopUpViewController: BaseViewController {
         
         /// 로그인 팝업일때
         if let popUpView = popUpView as? LoginPopUpView {
-            // 카카오 로그인
+            
+            /// 카카오 로그인
+            /// 이메일 동의항목을 초기에 체크하기 때문에 사실상 이메일을 받지 못하는 경우는 없음
+            /// 그럼에도 체크를 해제하는 유저를 고려하여 추후 에러처리가 필요할듯 함
             popUpView.kakaoLoginButton.rx.tap.asDriver()
                 .drive(onNext: {[unowned self] in
-                    if (UserApi.isKakaoTalkLoginAvailable()) {
-                        UserApi.shared.rx.loginWithKakaoTalk()
-                            .subscribe(onNext:{ (oauthToken) in
-                                print("loginWithKakaoTalk() success.")
-                            
-                                //do something
-                                let tokens = oauthToken
-                                print("IDTOKEN: \(tokens.idToken)")
-                                print(tokens)
-                            }, onError: {error in
-                                print(error)
+                    if (AuthApi.hasToken()) {
+                        UserApi.shared.rx.accessTokenInfo()
+                            .subscribe(onSuccess: { _ in
+                                UserApi.shared.rx.me()
+                                    .subscribe(onSuccess: { [unowned self] in
+                                        self.email.accept($0.kakaoAccount?.email)
+                                        self.kakaoId.accept($0.id)
+                                    })
+                                    .disposed(by: self.disposeBag)
+                            }, onFailure: { error in
+                                if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true {
+                                    if (UserApi.isKakaoTalkLoginAvailable()) {
+                                        UserApi.shared.rx.loginWithKakaoTalk()
+                                            .flatMapLatest { _ in
+                                                UserApi.shared.rx.me()
+                                            }
+                                            .subscribe(onNext: { [unowned self] in
+                                                self.email.accept($0.kakaoAccount?.email)
+                                                self.kakaoId.accept($0.id)
+                                            })
+                                            .disposed(by: self.disposeBag)
+                                    }
+                                } else {
+                                    print("이상한 에러")
+                                }
                             })
                             .disposed(by: self.disposeBag)
+                    } else {
+                        if (UserApi.isKakaoTalkLoginAvailable()) {
+                            UserApi.shared.rx.loginWithKakaoTalk()
+                                .flatMapLatest { _ in
+                                    UserApi.shared.rx.me()
+                                }
+                                .subscribe(onNext: { [unowned self] in
+                                    self.email.accept($0.kakaoAccount?.email)
+                                    self.kakaoId.accept($0.id)
+                                })
+                                .disposed(by: self.disposeBag)
+                        }
                     }
                 })
                 .disposed(by: disposeBag)
@@ -122,7 +156,6 @@ extension PopUpViewController: ASAuthorizationControllerDelegate {
             guard let tokenData = appleIDCredential.identityToken,
                   let tokenString = String(data: tokenData, encoding: .utf8) else { return }
             self.appleIdentityToken.accept(tokenString)
-            self.email.accept(appleIDCredential.email)
         case let passwordCredential as ASPasswordCredential:
             print(passwordCredential)
             // Sign in using an existing iCloud Keychain credential.
