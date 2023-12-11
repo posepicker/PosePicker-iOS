@@ -28,6 +28,9 @@ struct K {
         static let tags = "tags"
         static let idToken = "idToken"
         static let userId = "uid"
+        static let email = "email"
+        static let token = "token"
+        static let uid = "uid"
     }
     
     /// 키체인 키값 리스트
