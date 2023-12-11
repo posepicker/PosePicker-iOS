@@ -20,7 +20,7 @@ enum APIRouter: URLRequestConvertible {
     
     // 유저 API
     case appleLogin(idToken: String)
-    case kakaoLogin(authCode: String, email: String, kakaoId: Int)
+    case kakaoLogin(authCode: String, email: String, kakaoId: Int64)
     case retrieveAuthoirzationCode
     
     // 북마크 API
@@ -71,9 +71,9 @@ enum APIRouter: URLRequestConvertible {
         case .retrievePoseDetail(let poseId):
             return "/api/pose/\(poseId)"
         case .appleLogin:
-            return "/api/users/login/ios/apple"
+            return "/api/users/login/ios/apple/"
         case .kakaoLogin:
-            return "​/api​/users​/login​/ios​/kakao"
+            return "/api/users/login/ios/kakao"
         case .retrieveAuthoirzationCode:
             return "/api/users/posepicker/token"
         case .registerBookmark:
