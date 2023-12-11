@@ -28,7 +28,7 @@ class RootViewController: BaseViewController {
     
     lazy var pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
         .then {
-            let pages: [RootPage] = [.posepick, .posetalk, .posefeed, .bookmark].sorted(by: { $0.pageOrderNumber() < $1.pageOrderNumber() })
+            let pages: [RootPage] = [.posepick, .posetalk, .posefeed].sorted(by: { $0.pageOrderNumber() < $1.pageOrderNumber() })
             viewControllers = pages.map { getNavigationController($0) }
             $0.dataSource = self
             $0.delegate = self
