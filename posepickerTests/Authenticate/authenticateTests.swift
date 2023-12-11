@@ -57,24 +57,17 @@ final class authenticateTests: XCTestCase {
                 return self.sut.requestSingle(.retrieveAuthoirzationCode).asObservable()
             }
             .flatMapLatest { authCode -> Observable<User> in
-                print("AUTHCODE: \(authCode)")
-                jwtExpectation.fulfill()
                 MockURLProtocol.responseWithDTO(type: .user)
                 return self.sut.requestSingle(.kakaoLogin(authCode: authCode.code, email: "rudwns3927@gmail.com", kakaoId: 1)).asObservable()
             }
             .flatMapLatest { [unowned self] user -> Observable<(Void, Void)> in
                 let accessTokenObservable = self.keychainManager.rx.saveItem(user.token.accessToken, itemClass: .password, key: K.Parameters.accessToken)
-                
                 let refreshTokenObservable = self.keychainManager.rx.saveItem(user.token.refreshToken, itemClass: .password, key: K.Parameters.refreshToken)
-                
-                return Observable.zip(accessTokenObservable, refreshTokenObservable)
+                return Observable.combineLatest(accessTokenObservable, refreshTokenObservable)
             }
             .subscribe(onNext: { _ in
+                jwtExpectation.fulfill()
                 kakaoExpectation.fulfill()
-                print("SAVE COMPLETED")
-            }, onCompleted: {
-                kakaoExpectation.fulfill()
-                print("SAVE COMPLETED in onCompleted")
             })
             .disposed(by: disposeBag)
         
