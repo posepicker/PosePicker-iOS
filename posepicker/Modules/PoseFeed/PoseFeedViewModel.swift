@@ -29,6 +29,9 @@ class PoseFeedViewModel: ViewModelType {
     lazy var dataSource = RxCollectionViewSectionedReloadDataSource<PoseSection>(configureCell: { dataSource, collectionView, indexPath, item in
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PoseFeedPhotoCell.identifier, for: indexPath) as? PoseFeedPhotoCell else { return UICollectionViewCell() }
         cell.bind(to: item)
+        
+        /// 북마크 버튼 눌렸을때 로그인 여부 체크
+        /// 키체인 토큰 조회해서 존재하면 북마크 API 요청
         cell.bookmarkButton.rx.tap
             .subscribe(onNext: { [unowned self] in
                 self.presentLoginPopUp.onNext(())
@@ -62,6 +65,8 @@ class PoseFeedViewModel: ViewModelType {
         let poseFeedSelection: ControlEvent<PoseFeedPhotoCellViewModel>
         let nextPageRequestTrigger: Observable<Void>
         let modalDismissWithTag: Observable<String>
+        let appleIdentityTokenTrigger: Observable<String>
+        let kakaoLoginTrigger: Observable<(String, Int64)>
     }
     
     struct Output {
@@ -73,6 +78,7 @@ class PoseFeedViewModel: ViewModelType {
         let sectionItems: Observable<[PoseSection]>
         let poseDetailViewPush: Driver<PoseDetailViewModel?>
         let isLoading: Observable<Bool>
+        let dismissLoginView: Observable<Void>
     }
     
     // MARK: - 이미지 하나씩 바인딩하지 말고 모두 다 받고 진행
@@ -92,6 +98,9 @@ class PoseFeedViewModel: ViewModelType {
         let queryParameters = BehaviorRelay<[String]>(value: [])
         
         let loadable = BehaviorRelay<Bool>(value: false)
+        let dismissLoginView = PublishSubject<Void>()
+        let kakaoAccountObservable = BehaviorRelay<(String, Int64)>(value: ("", -1))
+        let authCodeObservable = BehaviorRelay<String>(value: "")
         
         /// 필터 등록 완료 + 필터 모달이 Present 상태일때
         /// 인원 수 & 프레임 수 셀렉션으로부터 데이터 추출
@@ -342,7 +351,44 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), deleteSubTag: deleteSubTag.asDriver(onErrorJustReturn: ()), sectionItems: sectionItems.asObservable(), poseDetailViewPush: poseDetailViewModel.asDriver(), isLoading: loadable.asObservable())
+        /// 6. 애플 아이덴티티 토큰 세팅 후 로그인처리
+        input.appleIdentityTokenTrigger
+            .flatMapLatest { [unowned self] token -> Observable<User> in
+                return self.apiSession.requestSingle(.appleLogin(idToken: token)).asObservable()
+            }
+            .flatMapLatest { user -> Observable<(Void, Void)> in
+                let accessTokenObservable = KeychainManager.shared.rx.saveItem(user.token.accessToken, itemClass: .password, key: K.Parameters.accessToken)
+                let refreshTokenObservable = KeychainManager.shared.rx.saveItem(user.token.refreshToken, itemClass: .password, key: K.Parameters.refreshToken)
+                return Observable.zip(accessTokenObservable, refreshTokenObservable)
+            }
+            .subscribe(onNext: { _ in
+                dismissLoginView.onNext(())
+            })
+            .disposed(by: disposeBag)
+        
+        /// 7. 카카오 이메일 추출 후 로그인처리
+        input.kakaoLoginTrigger
+            .flatMapLatest { [unowned self] kakaoAccount -> Observable<AuthCode> in
+                kakaoAccountObservable.accept(kakaoAccount)
+                return self.apiSession.requestSingle(.retrieveAuthoirzationCode).asObservable()
+            }
+            .flatMapLatest {
+                authCodeObservable.accept($0.token)
+                return Observable.combineLatest(kakaoAccountObservable.asObservable(), authCodeObservable.asObservable())
+            }
+            .flatMapLatest { [unowned self] (params: ((String, Int64), String)) -> Observable<User> in
+                let (email, kakaoId) = params.0
+                let authCode = params.1
+                return self.apiSession.requestSingle(.kakaoLogin(authCode: authCode, email: email, kakaoId: kakaoId)).asObservable()
+            }
+            .subscribe(onNext: {
+                print("USER!: \($0)")
+                dismissLoginView.onNext(())
+            })
+            .disposed(by: disposeBag)
+            
+        
+        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), deleteSubTag: deleteSubTag.asDriver(onErrorJustReturn: ()), sectionItems: sectionItems.asObservable(), poseDetailViewPush: poseDetailViewModel.asDriver(), isLoading: loadable.asObservable(), dismissLoginView: dismissLoginView)
     }
     
     /// 디자인 수치 기준으로 이미지 리사이징
