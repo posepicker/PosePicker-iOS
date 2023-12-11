@@ -84,6 +84,10 @@ class PoseFeedViewController: BaseViewController {
 
     let nextPageRequestTrigger = PublishSubject<Void>()
     let modalDismissWithTag = PublishSubject<String>() // 상세 페이지에서 태그 tap과 함께 dismiss 트리거
+    
+    let appleIdentityTokenTrigger = PublishSubject<String>()
+    let kakaoEmailTrigger = PublishSubject<String>()
+    let kakaoIdTrigger = PublishSubject<Int64>()
 
     // MARK: - Initialization
     
@@ -149,10 +153,40 @@ class PoseFeedViewController: BaseViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        viewModel.presentLoginPopUp
+            .subscribe(onNext: { [unowned self] in
+                let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
+                popUpVC.modalTransitionStyle = .crossDissolve
+                popUpVC.modalPresentationStyle = .overFullScreen
+                self.present(popUpVC, animated: true)
+                
+                popUpVC.appleIdentityToken
+                    .compactMap { $0 }
+                    .subscribe(onNext: { [unowned self] in
+                        self.appleIdentityTokenTrigger.onNext($0)
+                    })
+                    .disposed(by: self.disposeBag)
+                
+                popUpVC.email
+                    .compactMap { $0 }
+                    .subscribe(onNext: { [unowned self] in
+                        self.kakaoEmailTrigger.onNext($0)
+                    })
+                    .disposed(by: disposeBag)
+                
+                popUpVC.kakaoId
+                    .compactMap { $0 }
+                    .subscribe(onNext: { [unowned self] in
+                        self.kakaoIdTrigger.onNext($0)
+                    })
+                    .disposed(by: disposeBag)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags, coordinator.poseFeedFilterViewController.registeredSubTag), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), requestAllPoseTrigger: requestAllPoseTrigger, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), nextPageRequestTrigger: nextPageRequestTrigger, modalDismissWithTag: modalDismissWithTag)
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags, coordinator.poseFeedFilterViewController.registeredSubTag), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: coordinator.poseFeedFilterViewController.submitButton.rx.controlEvent(.touchUpInside), poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), requestAllPoseTrigger: requestAllPoseTrigger, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), nextPageRequestTrigger: nextPageRequestTrigger, modalDismissWithTag: modalDismissWithTag, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger))
     
         let output = viewModel.transform(input: input)
         
@@ -213,28 +247,11 @@ class PoseFeedViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        viewModel.presentLoginPopUp
+        output.dismissLoginView
             .subscribe(onNext: { [unowned self] in
-                let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
-                popUpVC.modalTransitionStyle = .crossDissolve
-                popUpVC.modalPresentationStyle = .overFullScreen
-                self.present(popUpVC, animated: true)
-                
-                popUpVC.appleIdentityToken
-                    .subscribe(onNext: {
-                        guard let token = $0 else { return }
-                        print("TOKEN SET! \(token)")
-                        popUpVC.dismiss(animated: true)
-                    })
-                    .disposed(by: self.disposeBag)
-                
-                popUpVC.email
-                    .compactMap { $0 }
-                    .subscribe(onNext: {
-                        print("EMAIL?: \($0)")
-                    })
-                    .disposed(by: disposeBag)
-                
+                guard let popupVC = self.presentedViewController as? PopUpViewController,
+                      let _ = popupVC.popUpView as? LoginPopUpView else { return }
+                self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
     }
