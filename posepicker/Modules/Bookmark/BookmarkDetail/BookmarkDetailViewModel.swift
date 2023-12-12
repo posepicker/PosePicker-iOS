@@ -17,6 +17,8 @@ import KakaoSDKCommon
 
 class BookmarkDetailViewModel: ViewModelType {
     
+    var apiSession: APIService = APISession()
+    
     var disposeBag = DisposeBag()
     var poseDetailData: PosePick
     
@@ -28,6 +30,7 @@ class BookmarkDetailViewModel: ViewModelType {
         let imageSourceButtonTapped: ControlEvent<Void>
         let linkShareButtonTapped: ControlEvent<Void>
         let kakaoShareButtonTapped: ControlEvent<Void>
+        let bookmarkBarButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
@@ -35,6 +38,7 @@ class BookmarkDetailViewModel: ViewModelType {
         let image: Observable<UIImage?>
         let popupPresent: Driver<Void>
         let tagItems: Driver<[BookmarkDetailTagCellViewModel]>
+        let dismissDetailView: Observable<Void>
     }
     
     func transform(input: Input) -> Output {
@@ -42,6 +46,7 @@ class BookmarkDetailViewModel: ViewModelType {
         let cacheImage = BehaviorRelay<UIImage?>(value: nil)
         let popupPresent = PublishSubject<Void>()
         let tagItems = BehaviorRelay<[BookmarkDetailTagCellViewModel]>(value: [])
+        let dismissDetailView = PublishSubject<Void>()
         
         /// 1. 이미지 출처 - URL 전달
         input.imageSourceButtonTapped
@@ -125,7 +130,23 @@ class BookmarkDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        return Output(imageSourceLink: imageSource.asObservable(), image: cacheImage.asObservable(), popupPresent: popupPresent.asDriver(onErrorJustReturn: ()), tagItems: tagItems.asDriver())
+        /// 6. 북마크 버튼 탭
+        /// 북마크 디테일 뷰에서는 삭제만 이루어진다
+        input.bookmarkBarButtonTapped
+            .flatMapLatest { [unowned self] _ -> Observable<BookmarkResponse> in
+                if let userIdString = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId),
+                   let userId = Int64(userIdString) {
+                    return self.apiSession.requestSingle(.deleteBookmark(userId: Int64(userId), poseId: self.poseDetailData.poseInfo.poseId)).asObservable()
+                } else {
+                    return Observable<BookmarkResponse>.empty()
+                }
+            }
+            .subscribe(onNext: { _ in
+                dismissDetailView.onNext(())
+            })
+            .disposed(by: disposeBag)
+        
+        return Output(imageSourceLink: imageSource.asObservable(), image: cacheImage.asObservable(), popupPresent: popupPresent.asDriver(onErrorJustReturn: ()), tagItems: tagItems.asDriver(), dismissDetailView: dismissDetailView)
     }
     
     /// 디자인 수치 기준으로 이미지 리사이징
