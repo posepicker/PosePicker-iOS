@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import Alamofire
 import RxCocoa
 import RxDataSources
 import RxSwift
@@ -24,17 +25,23 @@ class PoseFeedViewModel: ViewModelType {
     var isLast = false
     
     let presentLoginPopUp = PublishSubject<Void>() // 셀 내의 북마크 버튼 탭 이벤트를 데이터소스 내에서 방출 가능하여 뷰모델 내에 옵저버블을 추가해두고, 포즈피드 뷰 컨트롤러에서 구독
+    let bookmarkButtonTapped = PublishSubject<Int>() // 데이터소스 객체의 북마크 버튼 탭 이후 북마크 등록요청
     
     /// 포즈피드 컬렉션뷰 datasource 정의
     lazy var dataSource = RxCollectionViewSectionedReloadDataSource<PoseSection>(configureCell: { dataSource, collectionView, indexPath, item in
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PoseFeedPhotoCell.identifier, for: indexPath) as? PoseFeedPhotoCell else { return UICollectionViewCell() }
         cell.bind(to: item)
         
-        /// 북마크 버튼 눌렸을때 로그인 여부 체크
+        /// 북마크 버튼 눌렸을때 로그인 여부 체크 -> 로그인 여부를 뭘로 체크할 것인가?
         /// 키체인 토큰 조회해서 존재하면 북마크 API 요청
         cell.bookmarkButton.rx.tap
             .subscribe(onNext: { [unowned self] in
-                self.presentLoginPopUp.onNext(())
+                if let _ = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId) {
+                    // API요청 보내기
+                    self.bookmarkButtonTapped.onNext(item.poseId.value)
+                } else {
+                    self.presentLoginPopUp.onNext(())
+                }
             })
             .disposed(by: self.disposeBag)
         return cell
@@ -80,6 +87,8 @@ class PoseFeedViewModel: ViewModelType {
         let isLoading: Observable<Bool>
         let dismissLoginView: Observable<Void>
     }
+    
+    struct EmptyType: Codable { }
     
     // MARK: - 이미지 하나씩 바인딩하지 말고 모두 다 받고 진행
     func transform(input: Input) -> Output {
@@ -356,10 +365,11 @@ class PoseFeedViewModel: ViewModelType {
             .flatMapLatest { [unowned self] token -> Observable<User> in
                 return self.apiSession.requestSingle(.appleLogin(idToken: token)).asObservable()
             }
-            .flatMapLatest { user -> Observable<(Void, Void)> in
+            .flatMapLatest { user -> Observable<(Void, Void, Void)> in
                 let accessTokenObservable = KeychainManager.shared.rx.saveItem(user.token.accessToken, itemClass: .password, key: K.Parameters.accessToken)
                 let refreshTokenObservable = KeychainManager.shared.rx.saveItem(user.token.refreshToken, itemClass: .password, key: K.Parameters.refreshToken)
-                return Observable.zip(accessTokenObservable, refreshTokenObservable)
+                let userIdObservable = KeychainManager.shared.rx.saveItem("\(user.id)", itemClass: .password, key: K.Parameters.userId)
+                return Observable.zip(accessTokenObservable, refreshTokenObservable, userIdObservable)
             }
             .subscribe(onNext: { _ in
                 dismissLoginView.onNext(())
@@ -381,9 +391,25 @@ class PoseFeedViewModel: ViewModelType {
                 let authCode = params.1
                 return self.apiSession.requestSingle(.kakaoLogin(authCode: authCode, email: email, kakaoId: kakaoId)).asObservable()
             }
-            .subscribe(onNext: {
-                print("USER!: \($0)")
+            .flatMapLatest { user -> Observable<(Void, Void, Void)> in
+                let accessTokenObservable = KeychainManager.shared.rx.saveItem(user.token.accessToken, itemClass: .password, key: K.Parameters.accessToken)
+                let refreshTokenObservable = KeychainManager.shared.rx.saveItem(user.token.refreshToken, itemClass: .password, key: K.Parameters.refreshToken)
+                let userIdObservable = KeychainManager.shared.rx.saveItem("\(user.id)", itemClass: .password, key: K.Parameters.userId)
+                return Observable.zip(accessTokenObservable, refreshTokenObservable, userIdObservable)
+            }
+            .subscribe(onNext: { _ in
                 dismissLoginView.onNext(())
+            })
+            .disposed(by: disposeBag)
+        
+        /// 8. 북마크 등록 API 요청
+        self.bookmarkButtonTapped
+            .flatMapLatest { [unowned self] poseId -> Observable<EmptyType> in
+                guard let userId = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId) else { return Observable<EmptyType>.empty() }
+                return self.apiSession.requestSingle(.registerBookmark(poseId: poseId, userId: Int64(userId)!)).asObservable()
+            }
+            .subscribe(onNext: { _ in
+                print("등록 완료!")
             })
             .disposed(by: disposeBag)
             
