@@ -7,10 +7,11 @@
 
 import UIKit
 import RxCocoa
+import RxDataSources
 import RxSwift
 import Kingfisher
 
-class BookMarkViewModel {
+class BookMarkViewModel: ViewModelType {
     
     var apiSession: APISession
     var disposeBag = DisposeBag()
@@ -18,6 +19,22 @@ class BookMarkViewModel {
     
     var filteredContentSizes = BehaviorRelay<[CGSize]>(value: [])
     var recommendedContentsSizes = BehaviorRelay<[CGSize]>(value: [])
+    
+    var currentPage = 0
+    var isLast = false
+    var isLoading = false
+    
+    /// 포즈피드 컬렉션뷰 datasource 정의
+    lazy var dataSource = RxCollectionViewSectionedReloadDataSource<BookmarkSection>(configureCell: { dataSource, collectionView, indexPath, item in
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookmarkFeedCell.identifier, for: indexPath) as? BookmarkFeedCell else { return UICollectionViewCell() }
+        
+        return cell
+    }, configureSupplementaryView: { dataSource, collectionView, kind, indexPath -> UICollectionReusableView in
+        if indexPath.section == 0 {
+            let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: BookmarkEmptyView.identifier, for: indexPath) as! BookmarkEmptyView
+            return header
+        } else { return UICollectionReusableView() }
+    })
     
     init(apiSession: APISession = APISession(), imageDownloader: ImageDownloader = ImageDownloader.default) {
         self.apiSession = apiSession
@@ -30,13 +47,13 @@ class BookMarkViewModel {
     }
     
     struct Output {
-        let bookmarkItems: Driver<[BookmarkFeedCellViewModel]?>
+        let sectionItems: Observable<[BookmarkSection]>
         let isEmpty: Driver<Bool?>
     }
     
     func transform(input: Input) -> Output {
-        let bookmarkItems = BehaviorRelay<[BookmarkFeedCellViewModel]?>(value: nil)
         let isEmpty = BehaviorRelay<Bool?>(value: nil)
+        let sectionItems = BehaviorRelay<[BookmarkSection]>(value: [BookmarkSection(header: "", items: [])])
         
         /// 1. 뷰 로드 이후 컬렉션뷰 셀 아이템 API 요청
         input.viewDidLoadTrigger
@@ -48,7 +65,11 @@ class BookMarkViewModel {
                 return self.retrieveCacheObservable(posefeed: posefeed)
             }
             .subscribe(onNext: {
-                bookmarkItems.accept($0)
+                var items = sectionItems.value.first?.items ?? []
+                items.append(contentsOf: $0)
+                let newSection = BookmarkSection(header: "", items: items)
+                
+                sectionItems.accept([newSection])
                 isEmpty.accept($0.isEmpty ? true : false)
             })
             .disposed(by: disposeBag)
@@ -56,20 +77,29 @@ class BookMarkViewModel {
         /// 2. 무한스크롤 다음 페이지 트리거
         input.nextPageTrigger
             .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
+                self.isLoading = true
                 return apiSession.requestSingle(.retrieveBookmarkFeed(userId: 0, pageNumber: 0, pageSize: 8)).asObservable()
             }
-            .map { $0.content }
+            .map { [unowned self] in
+                self.currentPage = $0.pageable.pageNumber
+                self.isLast = $0.last
+                self.isLoading = false
+                return $0.content
+            }
             .flatMapLatest { [unowned self] posefeed -> Observable<[BookmarkFeedCellViewModel]> in
                 return self.retrieveCacheObservable(posefeed: posefeed)
             }
             .subscribe(onNext: {
-                guard let bookmarkValue = bookmarkItems.value else { return }
-                bookmarkItems.accept(bookmarkValue + $0)
+                var items = sectionItems.value.first?.items ?? []
+                items.append(contentsOf: $0)
+                let newSection = BookmarkSection(header: "", items: items)
+                
+                sectionItems.accept([newSection])
                 isEmpty.accept(true)
             })
             .disposed(by: disposeBag)
         
-        return Output(bookmarkItems: bookmarkItems.asDriver(), isEmpty: isEmpty.asDriver())
+        return Output(sectionItems: sectionItems.asObservable(), isEmpty: isEmpty.asDriver())
     }
     
     // MARK: - 킹피셔 이미지 캐싱 관련 함수들
