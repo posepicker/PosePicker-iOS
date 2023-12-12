@@ -195,7 +195,7 @@ class RootViewController: BaseViewController {
             let poseFeedVC = PoseFeedViewController(viewModel: PoseFeedViewModel(), coordinator: PoseFeedCoordinator(navigationController: navController))
             navController.pushViewController(poseFeedVC, animated: true)
         case .bookmark:
-            let bookmarkVC = BookMarkViewController(viewModel: BookMarkViewModel(), coordinator: self.coordinator)
+            let bookmarkVC = BookMarkViewController(viewModel: BookMarkViewModel(), coordinator: PoseFeedCoordinator(navigationController: navController))
             navController.pushViewController(bookmarkVC, animated: true)
         case .myPage:
             let myPageVC = MyPageViewController(viewModel: MyPageViewModel(), coordinator: self.coordinator)
