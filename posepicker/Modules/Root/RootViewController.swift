@@ -37,6 +37,7 @@ class RootViewController: BaseViewController {
     // MARK: - Properties
     var viewControllers: [UIViewController] = []
     var coordinator: RootCoordinator
+    var viewModel: RootViewModel
     
     var currentPage: Int = 0 {
         didSet {
@@ -44,6 +45,10 @@ class RootViewController: BaseViewController {
             coordinator.moveWithViewController(viewController: [viewControllers[self.currentPage]], direction: direction, pageNumber: currentPage)
         }
     }
+    
+    let appleIdentityTokenTrigger = PublishSubject<String>()
+    let kakaoEmailTrigger = PublishSubject<String>()
+    let kakaoIdTrigger = PublishSubject<Int64>()
     
     // MARK: - Life Cycles
     override func viewWillAppear(_ animated: Bool) {
@@ -53,7 +58,8 @@ class RootViewController: BaseViewController {
     
     // MARK: - Initialization
     
-    init(coordinator: RootCoordinator) {
+    init(viewModel: RootViewModel, coordinator: RootCoordinator) {
+        self.viewModel = viewModel
         self.coordinator = coordinator
         super.init()
     }
@@ -123,7 +129,53 @@ class RootViewController: BaseViewController {
         
         header.bookMarkButton.rx.tap.asDriver()
             .drive(onNext: { [unowned self] in
-                self.coordinator.push(page: .bookmark)
+                /// 로그인 되어 있으면 coordinator.push
+                /// 로그인 되어 있지 않으면 로그인뷰 팝업
+                if let _ = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId) {
+                    self.coordinator.push(page: .bookmark)
+                } else {
+                    let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
+                    popUpVC.modalTransitionStyle = .crossDissolve
+                    popUpVC.modalPresentationStyle = .overFullScreen
+                    self.present(popUpVC, animated: true)
+                    
+                    // 토큰 세팅
+                    popUpVC.appleIdentityToken
+                        .compactMap { $0 }
+                        .subscribe(onNext: { [unowned self] in
+                            self.appleIdentityTokenTrigger.onNext($0)
+                        })
+                        .disposed(by: self.disposeBag)
+                    
+                    popUpVC.email
+                        .compactMap { $0 }
+                        .subscribe(onNext: { [unowned self] in
+                            self.kakaoEmailTrigger.onNext($0)
+                        })
+                        .disposed(by: disposeBag)
+                    
+                    popUpVC.kakaoId
+                        .compactMap { $0 }
+                        .subscribe(onNext: { [unowned self] in
+                            self.kakaoIdTrigger.onNext($0)
+                        })
+                        .disposed(by: disposeBag)
+                }
+                
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    override func bindViewModel() {
+        let input = RootViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger))
+        
+        let output = viewModel.transform(input: input)
+        
+        output.dismissLoginView
+            .subscribe(onNext: { [unowned self] in
+                guard let popupVC = self.presentedViewController as? PopUpViewController,
+                      let _ = popupVC.popUpView as? LoginPopUpView else { return }
+                self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
     }
