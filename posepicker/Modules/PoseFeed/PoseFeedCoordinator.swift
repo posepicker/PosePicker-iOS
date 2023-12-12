@@ -65,7 +65,7 @@ class PoseFeedCoordinator: NSObject, Coordinator {
             // 3. 서브태그인 경우
             self.poseFeedFilterViewController.registeredSubTag.accept(tag)
         }
-        
         posefeedViewController.modalDismissWithTag.onNext(tag)
+        posefeedViewController.registerButtonTapped.onNext(())
     }
 }

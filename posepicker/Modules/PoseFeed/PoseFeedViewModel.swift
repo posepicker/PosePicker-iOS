@@ -66,7 +66,7 @@ class PoseFeedViewModel: ViewModelType {
         let filterButtonTapped: ControlEvent<Void> // O
         let tagItems: Observable<(PeopleCountTags, FrameCountTags, [FilterTags], String?)> // 이 외에도 일반 스트링값이 있을 수 있다
         let filterTagSelection: Observable<RegisteredFilterCellViewModel> // O
-        let filterRegisterCompleted: ControlEvent<Void> // O
+        let filterRegisterCompleted: Observable<Void> // O
         let poseFeedFilterViewIsPresenting: Observable<Bool> // O
         let requestAllPoseTrigger: Observable<Void>
         let poseFeedSelection: ControlEvent<PoseFeedPhotoCellViewModel>
