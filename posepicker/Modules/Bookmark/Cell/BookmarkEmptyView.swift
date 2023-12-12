@@ -36,6 +36,7 @@ class BookmarkEmptyView: UICollectionReusableView {
     
     let subLabel = UILabel()
         .then {
+            $0.textColor = .textTertiary
             $0.font = .pretendard(.regular, ofSize: 16)
             $0.numberOfLines = 0
             $0.text = "북마크 버튼으로 포즈를 보관할 수 있어요.\n포즈피드에서 멋진 포즈를 찾아 보관해 보세요."
@@ -62,7 +63,7 @@ class BookmarkEmptyView: UICollectionReusableView {
         self.addSubViews([mainLabel, subLabel, transitionButton])
         
         mainLabel.snp.makeConstraints { make in
-            make.top.equalToSuperview()
+            make.top.equalToSuperview().offset(80)
             make.centerX.equalToSuperview()
         }
         
@@ -72,12 +73,13 @@ class BookmarkEmptyView: UICollectionReusableView {
         }
         
         transitionButton.snp.makeConstraints { make in
-            make.bottom.equalToSuperview()
+            make.top.equalTo(subLabel.snp.bottom).offset(32)
             make.centerX.equalToSuperview()
+            make.width.equalTo(160)
+            make.height.equalTo(52)
         }
     }
     
     func configUI() {
-        
     }
 }
