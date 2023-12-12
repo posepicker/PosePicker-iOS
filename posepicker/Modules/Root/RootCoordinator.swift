@@ -53,7 +53,7 @@ class RootCoordinator: Coordinator {
     // MARK: - Properties
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
-    lazy var rootViewController = RootViewController(coordinator: self)
+    lazy var rootViewController = RootViewController(viewModel: RootViewModel() ,coordinator: self)
     
     // MARK: - Initialization
     
