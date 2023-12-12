@@ -63,6 +63,7 @@ class BookMarkViewModel: ViewModelType {
     struct Input {
         var viewDidLoadTrigger: Observable<Void>
         var nextPageTrigger: Observable<Void>
+        var bookmarkSelection: ControlEvent<BookmarkFeedCellViewModel>
     }
     
     struct Output {
@@ -70,12 +71,14 @@ class BookMarkViewModel: ViewModelType {
         let isEmpty: Driver<Bool?>
         let isLoading: Observable<Bool>
         let transitionToPoseFeed: Observable<Void>
+        let bookmarkDetailViewPush: Driver<BookmarkDetailViewModel?>
     }
     
     func transform(input: Input) -> Output {
         let isEmpty = BehaviorRelay<Bool?>(value: nil)
         let sectionItems = BehaviorRelay<[BookmarkSection]>(value: [BookmarkSection(header: "", items: [])])
         let loadable = BehaviorRelay<Bool>(value: false)
+        let bookmarkDetailViewModel = BehaviorRelay<BookmarkDetailViewModel?>(value: nil)
         
         /// 1. 뷰 로드 이후 컬렉션뷰 셀 아이템 API 요청
         input.viewDidLoadTrigger
@@ -147,7 +150,18 @@ class BookMarkViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        return Output(sectionItems: sectionItems.asObservable(), isEmpty: isEmpty.asDriver(), isLoading: loadable.asObservable(), transitionToPoseFeed: self.bookmarkToPosefeedButtonTrigger)
+        /// 3. 셀 탭 이후 디테일 뷰 표시를 위한 PoseDetailViewModel 뷰모델 바인딩
+        input.bookmarkSelection
+            .flatMapLatest { [unowned self] viewModel -> Observable<PosePick> in
+                return self.apiSession.requestSingle(.retrievePoseDetail(poseId: viewModel.poseId.value)).asObservable()
+            }
+            .subscribe(onNext: {
+                let viewModel = BookmarkDetailViewModel(poseDetailData: $0)
+                bookmarkDetailViewModel.accept(viewModel)
+            })
+            .disposed(by: disposeBag)
+        
+        return Output(sectionItems: sectionItems.asObservable(), isEmpty: isEmpty.asDriver(), isLoading: loadable.asObservable(), transitionToPoseFeed: self.bookmarkToPosefeedButtonTrigger, bookmarkDetailViewPush: bookmarkDetailViewModel.asDriver())
     }
     
     // MARK: - 킹피셔 이미지 캐싱 관련 함수들
