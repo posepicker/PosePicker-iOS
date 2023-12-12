@@ -26,6 +26,7 @@ enum APIRouter: URLRequestConvertible {
     // 북마크 API
     case registerBookmark(poseId: Int, userId: Int64)
     case retrieveBookmarkFeed(userId: Int64, pageNumber: Int, pageSize: Int)
+    case deleteBookmark(userId: Int64, poseId: Int)
     
     // MARK: - HttpMethod
     
@@ -52,6 +53,8 @@ enum APIRouter: URLRequestConvertible {
             return .post
         case .retrieveBookmarkFeed:
             return .get
+        case .deleteBookmark:
+            return .delete
         }
     }
     
@@ -80,6 +83,8 @@ enum APIRouter: URLRequestConvertible {
             return "/api/bookmark/"
         case .retrieveBookmarkFeed:
             return "/api/bookmark/feed"
+        case .deleteBookmark:
+            return "/api/bookmark"
         }
     }
     
@@ -131,6 +136,11 @@ enum APIRouter: URLRequestConvertible {
                 K.Parameters.userId: userId,
                 K.Parameters.pageNumber: pageNumber,
                 K.Parameters.pageSize: pageSize
+            ]
+        case .deleteBookmark(let userId, let poseId):
+            return [
+                K.Parameters.userId: userId,
+                K.Parameters.poseId: poseId
             ]
         }
         
