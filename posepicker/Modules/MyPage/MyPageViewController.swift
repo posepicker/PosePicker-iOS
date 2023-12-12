@@ -45,7 +45,9 @@ class MyPageViewController: BaseViewController {
     var viewModel: MyPageViewModel
     var coordinator: RootCoordinator
     
-    var appleIdTokenSubject = PublishSubject<String>()
+    let appleIdentityTokenTrigger = PublishSubject<String>()
+    let kakaoEmailTrigger = PublishSubject<String>()
+    let kakaoIdTrigger = PublishSubject<Int64>()
     
     // MARK: - Life Cycles
     
@@ -66,6 +68,79 @@ class MyPageViewController: BaseViewController {
         let backButton = UIBarButtonItem(image: ImageLiteral.imgArrowBack24.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(backButtonTapped))
         self.navigationItem.leftBarButtonItem = backButton
         view.backgroundColor = .bgWhite
+        
+        
+        if let email = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
+            loginButton.isEnabled = false
+            loginTitle.text = email
+        }
+        
+        
+        loginButton.rx.tap.asDriver()
+            .drive(onNext: { [unowned self] in
+                
+                let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
+                popUpVC.modalTransitionStyle = .crossDissolve
+                popUpVC.modalPresentationStyle = .overFullScreen
+                self.present(popUpVC, animated: true)
+                
+                popUpVC.appleIdentityToken
+                    .compactMap { $0 }
+                    .subscribe(onNext: { [unowned self] in
+                        self.appleIdentityTokenTrigger.onNext($0)
+                    })
+                    .disposed(by: self.disposeBag)
+                
+                popUpVC.email
+                    .compactMap { $0 }
+                    .subscribe(onNext: { [unowned self] in
+                        self.kakaoEmailTrigger.onNext($0)
+                    })
+                    .disposed(by: disposeBag)
+                
+                popUpVC.kakaoId
+                    .compactMap { $0 }
+                    .subscribe(onNext: { [unowned self] in
+                        self.kakaoIdTrigger.onNext($0)
+                    })
+                    .disposed(by: disposeBag)
+                
+            })
+            .disposed(by: disposeBag)
+        
+        serviceUsageInquiryButton.rx.tap.asDriver()
+            .drive(onNext: { [unowned self] in
+                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: true)
+                popupViewController.modalTransitionStyle = .crossDissolve
+                popupViewController.modalPresentationStyle = .overFullScreen
+                let popupView = popupViewController.popUpView as! PopUpView
+                popupView.alertText.accept("문의사항을 남기시겠습니까?")
+                
+                popupView.confirmButton.rx.tap.asDriver()
+                    .drive(onNext: {
+                        if let url = URL(string: "https://litt.ly/posepicker") {
+                            UIApplication.shared.open(url)
+                        }
+                    })
+                    .disposed(by: self.disposeBag)
+                
+                popupView.cancelButton.rx.tap.asDriver()
+                    .drive(onNext: {
+                        popupViewController.dismiss(animated: true)
+                    })
+                    .disposed(by: self.disposeBag)
+                
+                self.present(popupViewController, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        serviceInformationButton.rx.tap.asDriver()
+            .drive(onNext: {
+                if let url = URL(string: "https://shineshine.notion.site/a668d9eba61f48e584df2ad3a946c313") {
+                    UIApplication.shared.open(url)
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     override func render() {
@@ -101,57 +176,18 @@ class MyPageViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        
-        let input = MyPageViewModel.Input(appleIdToken: appleIdTokenSubject)
+        let input = MyPageViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger))
         let output = viewModel.transform(input: input)
         
-        loginButton.rx.tap.asDriver()
-            .drive(onNext: { [unowned self] in
-                let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
-                popUpVC.modalTransitionStyle = .crossDissolve
-                popUpVC.modalPresentationStyle = .overFullScreen
-                self.present(popUpVC, animated: true)
+        output.dismissLoginView
+            .subscribe(onNext: { [unowned self] in
+                guard let popupVC = self.presentedViewController as? PopUpViewController,
+                      let _ = popupVC.popUpView as? LoginPopUpView else { return }
+                self.dismiss(animated: true)
                 
-                popUpVC.appleIdentityToken
-                    .subscribe(onNext: { [unowned self] in
-                        guard let token = $0 else { return }
-                        self.appleIdTokenSubject.onNext(token)
-                        popUpVC.dismiss(animated: true)
-                    })
-                    .disposed(by: self.disposeBag)
-            })
-            .disposed(by: disposeBag)
-        
-        serviceUsageInquiryButton.rx.tap.asDriver()
-            .drive(onNext: { [unowned self] in
-                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: true)
-                popupViewController.modalTransitionStyle = .crossDissolve
-                popupViewController.modalPresentationStyle = .overFullScreen
-                let popupView = popupViewController.popUpView as! PopUpView
-                popupView.alertText.accept("문의사항을 남기시겠습니까?")
-                
-                popupView.confirmButton.rx.tap.asDriver()
-                    .drive(onNext: {
-                        if let url = URL(string: "https://litt.ly/posepicker") {
-                            UIApplication.shared.open(url)
-                        }
-                    })
-                    .disposed(by: self.disposeBag)
-                
-                popupView.cancelButton.rx.tap.asDriver()
-                    .drive(onNext: {
-                        popupViewController.dismiss(animated: true)
-                    })
-                    .disposed(by: self.disposeBag)
-                
-                self.present(popupViewController, animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        serviceInformationButton.rx.tap.asDriver()
-            .drive(onNext: {
-                if let url = URL(string: "https://shineshine.notion.site/a668d9eba61f48e584df2ad3a946c313") {
-                    UIApplication.shared.open(url)
+                if let email = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
+                    self.loginButton.isEnabled = false
+                    self.loginTitle.text = email
                 }
             })
             .disposed(by: disposeBag)
