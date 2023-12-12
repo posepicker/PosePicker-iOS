@@ -54,6 +54,7 @@ class RootCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
     lazy var rootViewController = RootViewController(viewModel: RootViewModel() ,coordinator: self)
+    lazy var posefeedCoordinator = PoseFeedCoordinator(navigationController: self.navigationController)
     
     // MARK: - Initialization
     
@@ -96,7 +97,7 @@ class RootCoordinator: Coordinator {
         case .myPage:
             self.navigationController.pushViewController(MyPageViewController(viewModel: MyPageViewModel(), coordinator: self), animated: true)
         case .bookmark:
-            self.navigationController.pushViewController(BookMarkViewController(viewModel: BookMarkViewModel(), coordinator: PoseFeedCoordinator(navigationController: self.navigationController)), animated: true)
+            self.navigationController.pushViewController(BookMarkViewController(viewModel: BookMarkViewModel(), coordinator: self), animated: true)
         default:
             break
         }
