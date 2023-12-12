@@ -17,28 +17,65 @@ class MyPageViewModel: ViewModelType {
     init(apiSession: APISession = APISession()) {
         self.apiSession = apiSession
     }
-    
+
     struct Input {
-        var appleIdToken: Observable<String>
+        let appleIdentityTokenTrigger: Observable<String>
+        let kakaoLoginTrigger: Observable<(String, Int64)>
     }
     
     struct Output { 
-        let user: Driver<User?>
+        let dismissLoginView: Observable<Void>
     }
     
     func transform(input: Input) -> Output {
-        let user = BehaviorRelay<User?>(value: nil)
+        let dismissLoginView = PublishSubject<Void>()
+        let kakaoAccountObservable = BehaviorRelay<(String, Int64)>(value: ("", -1))
+        let authCodeObservable = BehaviorRelay<String>(value: "")
         
-        /// 1. 애플 아이디토큰 세팅 후 로그인
-        input.appleIdToken
+        /// 1.  애플 아이덴티티 토큰 세팅 후 로그인처리
+        input.appleIdentityTokenTrigger
             .flatMapLatest { [unowned self] token -> Observable<User> in
                 return self.apiSession.requestSingle(.appleLogin(idToken: token)).asObservable()
             }
-            .subscribe(onNext: {
-                user.accept($0)
+            .flatMapLatest { user -> Observable<(Void, Void, Void, Void)> in
+                let accessTokenObservable = KeychainManager.shared.rx.saveItem(user.token.accessToken, itemClass: .password, key: K.Parameters.accessToken)
+                let refreshTokenObservable = KeychainManager.shared.rx.saveItem(user.token.refreshToken, itemClass: .password, key: K.Parameters.refreshToken)
+                let userIdObservable = KeychainManager.shared.rx.saveItem("\(user.id)", itemClass: .password, key: K.Parameters.userId)
+                let emailObservable = KeychainManager.shared.rx.saveItem(user.email, itemClass: .password, key: K.Parameters.email)
+                return Observable.zip(accessTokenObservable, refreshTokenObservable, userIdObservable, emailObservable)
+            }
+            .subscribe(onNext: { _ in
+                dismissLoginView.onNext(())
             })
             .disposed(by: disposeBag)
         
-        return Output(user: user.asDriver())
+        /// 2. 카카오 이메일 추출 후 로그인처리
+        input.kakaoLoginTrigger
+            .flatMapLatest { [unowned self] kakaoAccount -> Observable<AuthCode> in
+                kakaoAccountObservable.accept(kakaoAccount)
+                return self.apiSession.requestSingle(.retrieveAuthoirzationCode).asObservable()
+            }
+            .flatMapLatest {
+                authCodeObservable.accept($0.token)
+                return Observable.combineLatest(kakaoAccountObservable.asObservable(), authCodeObservable.asObservable())
+            }
+            .flatMapLatest { [unowned self] (params: ((String, Int64), String)) -> Observable<User> in
+                let (email, kakaoId) = params.0
+                let authCode = params.1
+                return self.apiSession.requestSingle(.kakaoLogin(authCode: authCode, email: email, kakaoId: kakaoId)).asObservable()
+            }
+            .flatMapLatest { user -> Observable<(Void, Void, Void, Void)> in
+                let accessTokenObservable = KeychainManager.shared.rx.saveItem(user.token.accessToken, itemClass: .password, key: K.Parameters.accessToken)
+                let refreshTokenObservable = KeychainManager.shared.rx.saveItem(user.token.refreshToken, itemClass: .password, key: K.Parameters.refreshToken)
+                let userIdObservable = KeychainManager.shared.rx.saveItem("\(user.id)", itemClass: .password, key: K.Parameters.userId)
+                let emailObservable = KeychainManager.shared.rx.saveItem(user.email, itemClass: .password, key: K.Parameters.email)
+                return Observable.zip(accessTokenObservable, refreshTokenObservable, userIdObservable, emailObservable)
+            }
+            .subscribe(onNext: { _ in
+                dismissLoginView.onNext(())
+            })
+            .disposed(by: disposeBag)
+        
+        return Output(dismissLoginView: dismissLoginView)
     }
 }
