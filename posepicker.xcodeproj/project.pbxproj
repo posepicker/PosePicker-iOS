@@ -99,7 +99,7 @@
 		C99A8A752B10A54E0072B361 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A742B10A54E0072B361 /* FirebaseCrashlytics */; };
 		C99D53B32B1EDA22007DEE9B /* BookmarkFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D53B22B1EDA22007DEE9B /* BookmarkFeedCell.swift */; };
 		C99D53B52B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D53B42B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift */; };
-		C99D53B72B1EDCB8007DEE9B /* BookmarkHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D53B62B1EDCB8007DEE9B /* BookmarkHeader.swift */; };
+		C99D53B72B1EDCB8007DEE9B /* BookmarkEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D53B62B1EDCB8007DEE9B /* BookmarkEmptyView.swift */; };
 		C99D53B92B1EEA58007DEE9B /* Bookmark_Feed.json in Resources */ = {isa = PBXBuildFile; fileRef = C99D53B82B1EEA58007DEE9B /* Bookmark_Feed.json */; };
 		C99D53BB2B1F16B8007DEE9B /* MockImageDownloaderIURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D53BA2B1F16B8007DEE9B /* MockImageDownloaderIURLProtocol.swift */; };
 		C99D53BF2B1F175B007DEE9B /* image.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = C99D53BE2B1F175B007DEE9B /* image.jpeg */; };
@@ -119,7 +119,6 @@
 		C9C890912AE107730010240A /* RxBlocking in Frameworks */ = {isa = PBXBuildFile; productRef = C9C890902AE107730010240A /* RxBlocking */; };
 		C9C890932AE107730010240A /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = C9C890922AE107730010240A /* RxCocoa */; };
 		C9C890952AE107730010240A /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = C9C890942AE107730010240A /* RxRelay */; };
-		C9C890972AE107730010240A /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9C890962AE107730010240A /* RxSwift */; };
 		C9C8909D2AE107BC0010240A /* UIColor+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C8909C2AE107BC0010240A /* UIColor+.swift */; };
 		C9C890A02AE109610010240A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C8909F2AE109610010240A /* User.swift */; };
 		C9C890A22AE1098B0010240A /* Token.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890A12AE1098B0010240A /* Token.swift */; };
@@ -138,6 +137,8 @@
 		C9DC2FA62AEB6E1800D5170D /* FilterTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2FA52AEB6E1800D5170D /* FilterTags.swift */; };
 		C9DC2FA82AECAD1A00D5170D /* RegisteredFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2FA72AECAD1A00D5170D /* RegisteredFilterCell.swift */; };
 		C9DC2FAA2AECAD4500D5170D /* RegisteredFilterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2FA92AECAD4500D5170D /* RegisteredFilterCellViewModel.swift */; };
+		C9FDBDEC2B2835E10045AA54 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9FDBDEB2B2835E10045AA54 /* RxSwift */; };
+		C9FDBDEE2B28487E0045AA54 /* BookmarkSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDED2B28487E0045AA54 /* BookmarkSection.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -226,7 +227,7 @@
 		C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C99D53B22B1EDA22007DEE9B /* BookmarkFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFeedCell.swift; sourceTree = "<group>"; };
 		C99D53B42B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFeedCellViewModel.swift; sourceTree = "<group>"; };
-		C99D53B62B1EDCB8007DEE9B /* BookmarkHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkHeader.swift; sourceTree = "<group>"; };
+		C99D53B62B1EDCB8007DEE9B /* BookmarkEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkEmptyView.swift; sourceTree = "<group>"; };
 		C99D53B82B1EEA58007DEE9B /* Bookmark_Feed.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Bookmark_Feed.json; sourceTree = "<group>"; };
 		C99D53BA2B1F16B8007DEE9B /* MockImageDownloaderIURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockImageDownloaderIURLProtocol.swift; sourceTree = "<group>"; };
 		C99D53BE2B1F175B007DEE9B /* image.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = image.jpeg; sourceTree = "<group>"; };
@@ -273,6 +274,7 @@
 		C9DC2FA72AECAD1A00D5170D /* RegisteredFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredFilterCell.swift; sourceTree = "<group>"; };
 		C9DC2FA92AECAD4500D5170D /* RegisteredFilterCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredFilterCellViewModel.swift; sourceTree = "<group>"; };
 		C9E6025A2B16DA270098BC96 /* posepicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = posepicker.entitlements; sourceTree = "<group>"; };
+		C9FDBDED2B28487E0045AA54 /* BookmarkSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkSection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -286,6 +288,7 @@
 				C99A8A752B10A54E0072B361 /* FirebaseCrashlytics in Frameworks */,
 				C9C0CDC82AF1D9160041E423 /* Kingfisher in Frameworks */,
 				C99A8A6E2B109AA60072B361 /* SmartlookAnalytics in Frameworks */,
+				C9FDBDEC2B2835E10045AA54 /* RxSwift in Frameworks */,
 				C9042E862B0DD78400BB4182 /* RxKakaoSDKFriend in Frameworks */,
 				C9042E882B0DD78400BB4182 /* RxKakaoSDKShare in Frameworks */,
 				C9042E8C2B0DD78400BB4182 /* RxKakaoSDKUser in Frameworks */,
@@ -297,7 +300,6 @@
 				88D5C47B2B0277BE0045C081 /* Differentiator in Frameworks */,
 				C9042E842B0DD78400BB4182 /* RxKakaoSDKCommon in Frameworks */,
 				C94FD2952AE39E5C003777EB /* SnapKit in Frameworks */,
-				C9C890972AE107730010240A /* RxSwift in Frameworks */,
 				C9C890912AE107730010240A /* RxBlocking in Frameworks */,
 				C99A8A732B10A54E0072B361 /* FirebaseAnalytics in Frameworks */,
 				C9042E8A2B0DD78400BB4182 /* RxKakaoSDKTalk in Frameworks */,
@@ -497,6 +499,7 @@
 				C903E5412AFCC60D00BD004F /* Page.swift */,
 				C903E5432AFCC62600BD004F /* RecommendedContents.swift */,
 				88D5C4802B027B0A0045C081 /* PoseFeedSection.swift */,
+				C9FDBDED2B28487E0045AA54 /* BookmarkSection.swift */,
 			);
 			path = Pose;
 			sourceTree = "<group>";
@@ -682,7 +685,7 @@
 			children = (
 				C99D53B42B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift */,
 				C99D53B22B1EDA22007DEE9B /* BookmarkFeedCell.swift */,
-				C99D53B62B1EDCB8007DEE9B /* BookmarkHeader.swift */,
+				C99D53B62B1EDCB8007DEE9B /* BookmarkEmptyView.swift */,
 			);
 			path = Cell;
 			sourceTree = "<group>";
@@ -992,7 +995,6 @@
 				C9C890902AE107730010240A /* RxBlocking */,
 				C9C890922AE107730010240A /* RxCocoa */,
 				C9C890942AE107730010240A /* RxRelay */,
-				C9C890962AE107730010240A /* RxSwift */,
 				C9C890C12AE113590010240A /* Lottie */,
 				C94FD2942AE39E5C003777EB /* SnapKit */,
 				C94FD2972AE39E6B003777EB /* Then */,
@@ -1010,6 +1012,7 @@
 				C99A8A6D2B109AA60072B361 /* SmartlookAnalytics */,
 				C99A8A722B10A54E0072B361 /* FirebaseAnalytics */,
 				C99A8A742B10A54E0072B361 /* FirebaseCrashlytics */,
+				C9FDBDEB2B2835E10045AA54 /* RxSwift */,
 			);
 			productName = posepicker;
 			productReference = C9C8904E2AE103A10010240A /* posepicker.app */;
@@ -1230,7 +1233,7 @@
 				C9DC2F902AEA1D5F00D5170D /* PoseFeedFilterViewController.swift in Sources */,
 				88D5C4812B027B0A0045C081 /* PoseFeedSection.swift in Sources */,
 				880E752D2AE60499007FAD5A /* Header.swift in Sources */,
-				C99D53B72B1EDCB8007DEE9B /* BookmarkHeader.swift in Sources */,
+				C99D53B72B1EDCB8007DEE9B /* BookmarkEmptyView.swift in Sources */,
 				C94FD2812AE39603003777EB /* PoseTalkViewController.swift in Sources */,
 				883132972B08EF9100DAA5A7 /* PoseDetailTagCell.swift in Sources */,
 				C9C890522AE103A10010240A /* AppDelegate.swift in Sources */,
@@ -1246,6 +1249,7 @@
 				8803ADBB2B04FB4100185933 /* PoseDetailViewModel.swift in Sources */,
 				88D5C4852B0318040045C081 /* PoseFeedHeader.swift in Sources */,
 				C94FD2902AE398CF003777EB /* MyPageViewController.swift in Sources */,
+				C9FDBDEE2B28487E0045AA54 /* BookmarkSection.swift in Sources */,
 				880E75492AE6BFE3007FAD5A /* APIEventLogger.swift in Sources */,
 				880E75522AE6C275007FAD5A /* Data+.swift in Sources */,
 				C9DC2F942AEA282700D5170D /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
@@ -1799,15 +1803,15 @@
 			package = C9C8908F2AE107730010240A /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxRelay;
 		};
-		C9C890962AE107730010240A /* RxSwift */ = {
-			isa = XCSwiftPackageProductDependency;
-			package = C9C8908F2AE107730010240A /* XCRemoteSwiftPackageReference "RxSwift" */;
-			productName = RxSwift;
-		};
 		C9C890C12AE113590010240A /* Lottie */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C9C890C02AE113590010240A /* XCRemoteSwiftPackageReference "lottie-ios" */;
 			productName = Lottie;
+		};
+		C9FDBDEB2B2835E10045AA54 /* RxSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C9C8908F2AE107730010240A /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxSwift;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
