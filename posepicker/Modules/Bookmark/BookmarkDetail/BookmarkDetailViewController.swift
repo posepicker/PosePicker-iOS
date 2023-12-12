@@ -201,7 +201,7 @@ class BookmarkDetailViewController: BaseViewController {
         tagCollectionView.rx.modelSelected(BookmarkDetailTagCellViewModel.self)
             .flatMapLatest { $0.title }
             .subscribe(onNext: { [unowned self] in
-                self.coordinator.dismissPoseDetailWithTagSelection(tag: $0)
+                self.coordinator.dismissBookmarkDetailWithTagSelection(tag: $0)
                 self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
