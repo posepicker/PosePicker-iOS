@@ -88,8 +88,6 @@ class PoseFeedViewModel: ViewModelType {
         let dismissLoginView: Observable<Void>
     }
     
-    struct EmptyType: Codable { }
-    
     // MARK: - 이미지 하나씩 바인딩하지 말고 모두 다 받고 진행
     func transform(input: Input) -> Output {
         
@@ -365,11 +363,12 @@ class PoseFeedViewModel: ViewModelType {
             .flatMapLatest { [unowned self] token -> Observable<User> in
                 return self.apiSession.requestSingle(.appleLogin(idToken: token)).asObservable()
             }
-            .flatMapLatest { user -> Observable<(Void, Void, Void)> in
+            .flatMapLatest { user -> Observable<(Void, Void, Void, Void)> in
                 let accessTokenObservable = KeychainManager.shared.rx.saveItem(user.token.accessToken, itemClass: .password, key: K.Parameters.accessToken)
                 let refreshTokenObservable = KeychainManager.shared.rx.saveItem(user.token.refreshToken, itemClass: .password, key: K.Parameters.refreshToken)
                 let userIdObservable = KeychainManager.shared.rx.saveItem("\(user.id)", itemClass: .password, key: K.Parameters.userId)
-                return Observable.zip(accessTokenObservable, refreshTokenObservable, userIdObservable)
+                let emailObservable = KeychainManager.shared.rx.saveItem(user.email, itemClass: .password, key: K.Parameters.email)
+                return Observable.zip(accessTokenObservable, refreshTokenObservable, userIdObservable, emailObservable)
             }
             .subscribe(onNext: { _ in
                 dismissLoginView.onNext(())
@@ -391,11 +390,12 @@ class PoseFeedViewModel: ViewModelType {
                 let authCode = params.1
                 return self.apiSession.requestSingle(.kakaoLogin(authCode: authCode, email: email, kakaoId: kakaoId)).asObservable()
             }
-            .flatMapLatest { user -> Observable<(Void, Void, Void)> in
+            .flatMapLatest { user -> Observable<(Void, Void, Void, Void)> in
                 let accessTokenObservable = KeychainManager.shared.rx.saveItem(user.token.accessToken, itemClass: .password, key: K.Parameters.accessToken)
                 let refreshTokenObservable = KeychainManager.shared.rx.saveItem(user.token.refreshToken, itemClass: .password, key: K.Parameters.refreshToken)
                 let userIdObservable = KeychainManager.shared.rx.saveItem("\(user.id)", itemClass: .password, key: K.Parameters.userId)
-                return Observable.zip(accessTokenObservable, refreshTokenObservable, userIdObservable)
+                let emailObservable = KeychainManager.shared.rx.saveItem(user.email, itemClass: .password, key: K.Parameters.email)
+                return Observable.zip(accessTokenObservable, refreshTokenObservable, userIdObservable, emailObservable)
             }
             .subscribe(onNext: { _ in
                 dismissLoginView.onNext(())
@@ -404,8 +404,8 @@ class PoseFeedViewModel: ViewModelType {
         
         /// 8. 북마크 등록 API 요청
         self.bookmarkButtonTapped
-            .flatMapLatest { [unowned self] poseId -> Observable<EmptyType> in
-                guard let userId = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId) else { return Observable<EmptyType>.empty() }
+            .flatMapLatest { [unowned self] poseId -> Observable<BookmarkResponse> in
+                guard let userId = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId) else { return Observable<BookmarkResponse>.empty() }
                 return self.apiSession.requestSingle(.registerBookmark(poseId: poseId, userId: Int64(userId)!)).asObservable()
             }
             .subscribe(onNext: { _ in
