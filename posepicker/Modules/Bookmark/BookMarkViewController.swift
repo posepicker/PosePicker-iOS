@@ -82,21 +82,14 @@ class BookMarkViewController: BaseViewController {
         self.navigationItem.leftBarButtonItem = backButton
         view.backgroundColor = .bgWhite
         
-        /// 뒤로가기 버튼 탭
-//        emptyView.toPoseFeedButton.rx.tap.asDriver()
-//            .drive(onNext: { [unowned self] in
-//                self.coordinator.moveWithPage(page: .posefeed, direction: .reverse)
-//            })
-//            .disposed(by: disposeBag)
-        
         /// 북마크 무한스크롤
-//        poseFeedCollectionView.rx.contentOffset
-//            .subscribe(onNext: { [unowned self] in
-//                if $0.y > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height && !self.viewModel.isLoading && !self.viewModel.isLast {
-//                    self.nextPageRequestTrigger.onNext(())
-//                }
-//            })
-//            .disposed(by: disposeBag)
+        bookmarkCollectionView.rx.contentOffset
+            .subscribe(onNext: { [unowned self] in
+                if $0.y > self.bookmarkCollectionView.contentSize.height - self.bookmarkCollectionView.bounds.size.height && !self.viewModel.isLoading && !self.viewModel.isLast {
+                    self.nextPageTrigger.onNext(())
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     override func bindViewModel() {
@@ -141,7 +134,6 @@ extension BookMarkViewController: UICollectionViewDelegateFlowLayout {
 
 extension BookMarkViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-        print("SIZE: \(viewModel.bookmarkContentSizes.value[indexPath.item])")
         return viewModel.bookmarkContentSizes.value[indexPath.item].height
     }
 }
