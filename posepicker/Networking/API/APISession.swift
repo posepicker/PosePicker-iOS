@@ -10,21 +10,12 @@ import Foundation
 import Alamofire
 import RxSwift
 
-class API {
-    static let session: Session = {
-        let configuration = URLSessionConfiguration.af.default
-        let apiLogger = APIEventLogger()
-        
-        return Session(configuration: configuration, eventMonitors: [apiLogger])
-    }()
-}
-
 // 세션 의존성 주입
 struct APISession: APIService {
     
     private let session: Session
     
-    init(session: Session = Session(configuration: URLSessionConfiguration.af.default, eventMonitors: [APIEventLogger()])) {
+    init(session: Session = Session(configuration: URLSessionConfiguration.af.default, eventMonitors: [])) {
         self.session = session
     }
     
