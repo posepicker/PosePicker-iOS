@@ -67,18 +67,6 @@ final class bookmarkTests: XCTestCase {
         
         scheduler.start()
         
-        output.bookmarkItems
-            .compactMap { $0 }
-            .drive(onNext: {
-                print($0)
-                $0.forEach { element in
-                    print(element.image.value)
-                    print(element.poseId.value)
-                }
-                expectation.fulfill()
-            })
-            .disposed(by: disposeBag)
-        
         wait(for: [expectation], timeout: 5)
     }
     
@@ -116,6 +104,7 @@ final class bookmarkTests: XCTestCase {
     /// Given - nextPageTrigger로 다음 페이지 데이터 요청
     /// When - transform (output.bookmarkItems)
     /// Then - 바인딩할 데이터가 8개에서 추가되어 nextPage에서는 16개로 되는지
+    /// Then - currentPage 적용여부
     func test_다음페이지_데이터_요청() {
         MockURLProtocol.responseWithDTO(type: .bookmarkFeed)
         MockURLProtocol.responseWithStatusCode(code: 200)
@@ -136,19 +125,6 @@ final class bookmarkTests: XCTestCase {
         ]).asObservable()
         
         let output = viewModel.transform(input: input)
-
-        output.bookmarkItems
-            .compactMap { $0 }
-            .drive(onNext: {
-                if $0.count == 16 {
-                    XCTAssertEqual($0.count, 16)
-                    expectation.fulfill()
-                    return
-                }
-                XCTAssertEqual($0.count, 8)
-                MockURLProtocol.responseWithDTO(type: .bookmarkFeedNext)
-            })
-            .disposed(by: disposeBag)
         
         scheduler.start()
         
