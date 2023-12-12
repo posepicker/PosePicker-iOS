@@ -53,7 +53,7 @@ class BookmarkFeedCell: BaseCollectionViewCell {
         self.layer.cornerRadius = 8
     }
     
-    func bind(to viewModel: PoseFeedPhotoCellViewModel) {
+    func bind(to viewModel: BookmarkFeedCellViewModel) {
         viewModel.image.bind(to: imageView.rx.image).disposed(by: disposeBag)
     }
 }
