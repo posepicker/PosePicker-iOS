@@ -37,6 +37,10 @@ class PoseFeedCoordinator: NSObject, Coordinator {
         self.navigationController.present(viewController, animated: true)
     }
     
+    func pushBookmarkDetailView(viewController: BookmarkDetailViewController) {
+        self.navigationController.present(viewController, animated: true)
+    }
+    
     func dismissPoseDetailWithTagSelection(tag: String) {
         guard let posefeedViewController = self.navigationController.viewControllers.first as? PoseFeedViewController else { return }
         
