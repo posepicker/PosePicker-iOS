@@ -139,6 +139,8 @@
 		C9DC2FAA2AECAD4500D5170D /* RegisteredFilterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2FA92AECAD4500D5170D /* RegisteredFilterCellViewModel.swift */; };
 		C9FDBDEC2B2835E10045AA54 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9FDBDEB2B2835E10045AA54 /* RxSwift */; };
 		C9FDBDEE2B28487E0045AA54 /* BookmarkSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDED2B28487E0045AA54 /* BookmarkSection.swift */; };
+		C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */; };
+		C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -275,6 +277,8 @@
 		C9DC2FA92AECAD4500D5170D /* RegisteredFilterCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredFilterCellViewModel.swift; sourceTree = "<group>"; };
 		C9E6025A2B16DA270098BC96 /* posepicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = posepicker.entitlements; sourceTree = "<group>"; };
 		C9FDBDED2B28487E0045AA54 /* BookmarkSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkSection.swift; sourceTree = "<group>"; };
+		C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
+		C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkResponse.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -500,6 +504,7 @@
 				C903E5432AFCC62600BD004F /* RecommendedContents.swift */,
 				88D5C4802B027B0A0045C081 /* PoseFeedSection.swift */,
 				C9FDBDED2B28487E0045AA54 /* BookmarkSection.swift */,
+				C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */,
 			);
 			path = Pose;
 			sourceTree = "<group>";
@@ -864,6 +869,7 @@
 		C9C890A62AE10A010010240A /* Root */ = {
 			isa = PBXGroup;
 			children = (
+				C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */,
 				C94FD2782AE38EBD003777EB /* RootCoordinator.swift */,
 				C94FD2742AE38E26003777EB /* RootViewController.swift */,
 			);
@@ -1202,11 +1208,13 @@
 				C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */,
 				88EA81F82AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift in Sources */,
 				C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */,
+				C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */,
 				C94FD27F2AE395E3003777EB /* PosePickViewController.swift in Sources */,
 				C9DC2F9B2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift in Sources */,
 				880E75302AE60937007FAD5A /* UIImage+.swift in Sources */,
 				C94FD2832AE3960B003777EB /* PoseFeedViewController.swift in Sources */,
 				C99D53B52B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift in Sources */,
+				C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */,
 				C9DC2F992AEA28E300D5170D /* PoseFeedFilterCell.swift in Sources */,
 				C903E54A2B05BCA300BD004F /* PopUpViewController.swift in Sources */,
 				C9C8908A2AE107180010240A /* ViewModelType.swift in Sources */,
