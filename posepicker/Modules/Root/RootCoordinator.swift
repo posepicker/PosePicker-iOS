@@ -96,7 +96,7 @@ class RootCoordinator: Coordinator {
         case .myPage:
             self.navigationController.pushViewController(MyPageViewController(viewModel: MyPageViewModel(), coordinator: self), animated: true)
         case .bookmark:
-            self.navigationController.pushViewController(BookMarkViewController(viewModel: BookMarkViewModel(), coordinator: self), animated: true)
+            self.navigationController.pushViewController(BookMarkViewController(viewModel: BookMarkViewModel(), coordinator: PoseFeedCoordinator(navigationController: self.navigationController)), animated: true)
         default:
             break
         }
