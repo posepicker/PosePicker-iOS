@@ -225,6 +225,18 @@ class KeychainManager {
                 throw convertError(result)
             }
         }
+    
+    func removeAll() {
+        let secItemClasses = [kSecClassGenericPassword,
+            kSecClassInternetPassword,
+            kSecClassCertificate,
+            kSecClassKey,
+            kSecClassIdentity]
+        for secItemClass in secItemClasses {
+            let dictionary = [kSecClass as String:secItemClass]
+            SecItemDelete(dictionary as CFDictionary)
+        }
+    }
 }
 
 extension KeychainManager: ReactiveCompatible {}
