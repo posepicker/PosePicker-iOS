@@ -95,7 +95,12 @@ class PinterestLayout: UICollectionViewFlowLayout {
         }
         
         // 추천컨텐츠 섹션 관련 레이아웃
+        if collectionView.numberOfSections < 2 {
+            return
+        }
+        
         let sectionIndex = IndexPath(item: 0, section: 1)
+        
         let headerAttribute = UICollectionViewLayoutAttributes(forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, with: sectionIndex)
         headerAttribute.isHidden = collectionView.numberOfItems(inSection: 1) == 0 ? true : false
         headerAttribute.frame = CGRect(x: 0, y: collectionView.numberOfItems(inSection: 0) > 0 ? max(yOffSet[0], yOffSet[1]) : 300, width: UIScreen.main.bounds.width, height: 40)
