@@ -92,7 +92,7 @@ class BookMarkViewModel: ViewModelType {
                 
             }
             .map { [unowned self] in
-                self.currentPage = $0.pageable.pageNumber
+                self.currentPage += 1
                 self.isLast = $0.last
                 self.endLoading()
                 loadable.accept(false)
@@ -102,6 +102,9 @@ class BookMarkViewModel: ViewModelType {
                 return self.retrieveCacheObservable(posefeed: posefeed)
             }
             .subscribe(onNext: {
+                self.endLoading()
+                loadable.accept(false)
+                
                 var items = sectionItems.value.first?.items ?? []
                 items.append(contentsOf: $0)
                 let newSection = BookmarkSection(header: "", items: items)
@@ -115,19 +118,27 @@ class BookMarkViewModel: ViewModelType {
             .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
                 self.beginLoading()
                 loadable.accept(true)
-                return apiSession.requestSingle(.retrieveBookmarkFeed(userId: 0, pageNumber: 0, pageSize: 8)).asObservable()
+                
+                if let userIdString = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId),
+                   let userId = Int64(userIdString)
+                {
+                    return apiSession.requestSingle(.retrieveBookmarkFeed(userId: userId, pageNumber: self.currentPage, pageSize: 8)).asObservable()
+                } else {
+                    return Observable<PoseFeed>.empty()
+                }
             }
             .map { [unowned self] in
-                self.currentPage = $0.pageable.pageNumber
+                self.currentPage += 1
                 self.isLast = $0.last
-                self.endLoading()
-                loadable.accept(false)
                 return $0.content
             }
             .flatMapLatest { [unowned self] posefeed -> Observable<[BookmarkFeedCellViewModel]> in
                 return self.retrieveCacheObservable(posefeed: posefeed)
             }
             .subscribe(onNext: {
+                self.endLoading()
+                loadable.accept(false)
+                
                 var items = sectionItems.value.first?.items ?? []
                 items.append(contentsOf: $0)
                 let newSection = BookmarkSection(header: "", items: items)
