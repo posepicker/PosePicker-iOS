@@ -25,7 +25,7 @@ enum APIRouter: URLRequestConvertible {
     
     // 북마크 API
     case registerBookmark(poseId: Int, userId: Int64)
-    case retrieveBookmarkFeed(userId: Int, pageNumber: Int, pageSize: Int)
+    case retrieveBookmarkFeed(userId: Int64, pageNumber: Int, pageSize: Int)
     
     // MARK: - HttpMethod
     
