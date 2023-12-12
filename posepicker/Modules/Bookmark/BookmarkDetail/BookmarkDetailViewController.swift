@@ -39,16 +39,18 @@ class BookmarkDetailViewController: BaseViewController {
             $0.layer.cornerRadius = 8
         }
     
-    let navigationBar = UINavigationBar()
+    let bookmarkBarButton = UIBarButtonItem(image: ImageLiteral.imgBookmarkOff24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault))
+    
+    lazy var navigationBar = UINavigationBar()
         .then {
             let closeButton = UIBarButtonItem(image: ImageLiteral.imgClose24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault), style: .plain, target: self, action: #selector(closeButtonTapped))
-            let bookmarkButton = UIBarButtonItem(image: ImageLiteral.imgBookmarkOff24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault), style: .plain, target: self, action: #selector(bookmarkButtonTapped))
+            let bookmarkButton = self.bookmarkBarButton
+            
+            let navigationItem = UINavigationItem(title: "")
+            navigationItem.leftBarButtonItem = closeButton
+            navigationItem.rightBarButtonItem = bookmarkButton
 
-              let navigationItem = UINavigationItem(title: "")
-              navigationItem.leftBarButtonItem = closeButton
-              navigationItem.rightBarButtonItem = bookmarkButton
-
-              $0.items = [navigationItem]
+            $0.items = [navigationItem]
         }
     
     let imageView = UIImageView()
@@ -168,7 +170,7 @@ class BookmarkDetailViewController: BaseViewController {
         
     }
     override func bindViewModel() {
-        let input = BookmarkDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap)
+        let input = BookmarkDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap, bookmarkBarButtonTapped: bookmarkBarButton.rx.tap)
         
         let output = viewModel.transform(input: input)
         
@@ -197,6 +199,12 @@ class BookmarkDetailViewController: BaseViewController {
                 cell.bind(to: viewModel)
             }
             .disposed(by: disposeBag)
+        
+        output.dismissDetailView
+            .subscribe(onNext: { [unowned self] in
+                self.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
 
         tagCollectionView.rx.modelSelected(BookmarkDetailTagCellViewModel.self)
             .flatMapLatest { $0.title }
@@ -213,11 +221,5 @@ class BookmarkDetailViewController: BaseViewController {
     @objc
     func closeButtonTapped() {
         self.dismiss(animated: true)
-    }
-    
-    /// 북마크 API 연동
-    @objc
-    func bookmarkButtonTapped() {
-        
     }
 }
