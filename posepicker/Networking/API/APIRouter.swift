@@ -24,7 +24,7 @@ enum APIRouter: URLRequestConvertible {
     case retrieveAuthoirzationCode
     
     // 북마크 API
-    case registerBookmark(poseId: Int, userId: Int)
+    case registerBookmark(poseId: Int, userId: Int64)
     case retrieveBookmarkFeed(userId: Int, pageNumber: Int, pageSize: Int)
     
     // MARK: - HttpMethod
@@ -71,13 +71,13 @@ enum APIRouter: URLRequestConvertible {
         case .retrievePoseDetail(let poseId):
             return "/api/pose/\(poseId)"
         case .appleLogin:
-            return "/api/users/login/ios/apple/"
+            return "/api/users/login/ios/apple"
         case .kakaoLogin:
             return "/api/users/login/ios/kakao"
         case .retrieveAuthoirzationCode:
             return "/api/users/posepicker/token"
         case .registerBookmark:
-            return "/api/bookmark"
+            return "/api/bookmark/"
         case .retrieveBookmarkFeed:
             return "/api/bookmark/feed"
         }
