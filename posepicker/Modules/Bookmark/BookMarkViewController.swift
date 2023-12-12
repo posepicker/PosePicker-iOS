@@ -13,8 +13,6 @@ class BookMarkViewController: BaseViewController {
     
     // MARK: - Subviews
     
-    let emptyView = EmptyBookmarkView()
-    
     lazy var bookmarkCollectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: self.pinterestLayout)
         cv.register(BookmarkFeedCell.self, forCellWithReuseIdentifier: BookmarkFeedCell.identifier)
@@ -28,6 +26,12 @@ class BookMarkViewController: BaseViewController {
             $0.headerReferenceSize = .init(width: UIScreen.main.bounds.width, height: 50)
             $0.delegate = self
             $0.scrollDirection = .vertical
+        }
+    
+    let loadingIndicator = UIActivityIndicatorView(style: .large)
+        .then {
+            $0.startAnimating()
+            $0.color = .mainViolet
         }
     
     // MARK: - Properties
@@ -58,12 +62,16 @@ class BookMarkViewController: BaseViewController {
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([emptyView])
+        view.addSubViews([bookmarkCollectionView, loadingIndicator])
         
-        emptyView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(52)
-            make.height.equalTo(170)
-            make.top.equalTo(self.view.safeAreaLayoutGuide.snp.top).offset(80)
+        bookmarkCollectionView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.top.bottom.equalTo(view.safeAreaLayoutGuide)
+        }
+        
+        loadingIndicator.snp.makeConstraints { make in
+            make.centerY.equalTo(view).offset(-50)
+            make.centerX.equalToSuperview()
         }
     }
     
@@ -75,11 +83,11 @@ class BookMarkViewController: BaseViewController {
         view.backgroundColor = .bgWhite
         
         /// 뒤로가기 버튼 탭
-        emptyView.toPoseFeedButton.rx.tap.asDriver()
-            .drive(onNext: { [unowned self] in
-                self.coordinator.moveWithPage(page: .posefeed, direction: .reverse)
-            })
-            .disposed(by: disposeBag)
+//        emptyView.toPoseFeedButton.rx.tap.asDriver()
+//            .drive(onNext: { [unowned self] in
+//                self.coordinator.moveWithPage(page: .posefeed, direction: .reverse)
+//            })
+//            .disposed(by: disposeBag)
         
         /// 북마크 무한스크롤
 //        poseFeedCollectionView.rx.contentOffset
@@ -98,6 +106,20 @@ class BookMarkViewController: BaseViewController {
         output.sectionItems
             .bind(to: bookmarkCollectionView.rx.items(dataSource: viewModel.dataSource))
             .disposed(by: disposeBag)
+        
+        output.isLoading.asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [unowned self] in
+                guard let flowLayout = self.bookmarkCollectionView.collectionViewLayout as? PinterestLayout else { return }
+                flowLayout.isLoading.accept($0)
+                self.loadingIndicator.isHidden = !$0
+            })
+            .disposed(by: disposeBag)
+        
+        output.transitionToPoseFeed
+            .subscribe(onNext: { [unowned self] in
+                self.navigationController?.popViewController(animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Objc Functions
@@ -110,7 +132,7 @@ class BookMarkViewController: BaseViewController {
 extension BookMarkViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         if collectionView == bookmarkCollectionView {
-            return viewModel.filteredContentSizes.value[indexPath.item]
+            return viewModel.bookmarkContentSizes.value[indexPath.item]
         }
         return CGSize(width: 60, height: 30)
     }
@@ -119,10 +141,7 @@ extension BookMarkViewController: UICollectionViewDelegateFlowLayout {
 
 extension BookMarkViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-        if indexPath.section == 0 {
-            return viewModel.filteredContentSizes.value[indexPath.item].height
-        } else {
-            return viewModel.recommendedContentsSizes.value[indexPath.item].height
-        }
+        print("SIZE: \(viewModel.bookmarkContentSizes.value[indexPath.item])")
+        return viewModel.bookmarkContentSizes.value[indexPath.item].height
     }
 }
