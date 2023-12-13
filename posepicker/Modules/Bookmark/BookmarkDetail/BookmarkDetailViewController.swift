@@ -79,12 +79,16 @@ class BookmarkDetailViewController: BaseViewController {
     let linkShareButton = PosePickButton(status: .defaultStatus, isFill: false, position: .none, buttonTitle: "링크 공유", image: nil)
     
     let kakaoShareButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "카카오 공유", image: nil)
+        .then {
+            $0.setTitle("카카오 공유", for: .normal)
+            $0.setTitle("", for: .disabled)
+        }
     
     let loadingIndicator = UIActivityIndicatorView(style: .large)
         .then {
             $0.isHidden = true
             $0.startAnimating()
-            $0.color = .mainViolet
+            $0.color = .iconWhite
         }
     // MARK: - Properties
     
@@ -227,13 +231,16 @@ class BookmarkDetailViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        output.isLoading
-            .map { !$0 }
-            .bind(to: loadingIndicator.rx.isHidden)
-            .disposed(by: disposeBag)
-        
-        output.isLoading
-            .bind(to: kakaoShareButton.rx.isHidden)
+        output.isLoading.asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [unowned self] in
+                if $0 {
+                    self.kakaoShareButton.isEnabled = false
+                    self.loadingIndicator.isHidden = false
+                } else {
+                    self.kakaoShareButton.isEnabled = true
+                    self.loadingIndicator.isHidden = true
+                }
+            })
             .disposed(by: disposeBag)
         
         tagCollectionView.updateCollectionViewHeight()
