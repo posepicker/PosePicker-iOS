@@ -45,10 +45,14 @@
 
 https://github.com/pose-picker/PosePicker-iOS/assets/75518683/fce63dec-4182-4cae-bc47-911deaaedd0c
 
+<br/>
+
 ### 2. 포즈톡
 **제시어를 뽑아 재미있는 포즈를 함께 취해보세요!**
 
 https://github.com/pose-picker/PosePicker-iOS/assets/75518683/f02a019e-8b7b-44ec-828e-3e3550dfa7e5
+
+<br/>
 
 ### 3. 포즈피드
 **요즘에는 어떤 포즈가 유행이지 🤔 포즈피드에서 찾아보세요!**
@@ -62,6 +66,8 @@ https://github.com/pose-picker/PosePicker-iOS/assets/75518683/c3336558-209a-40c1
 1. 필터를 설정하여 원하는 테마의 포즈들을 추천받아보세요!
 2. 포즈별 추천 태그를 탭하여 비슷한 포즈들을 쉽게 검색해보세요!
 3. 클립보드와 카카오톡을 통해 친구에게 포즈를 공유해보세요!
+
+<br/>
 
 ### 4. 북마크
 **원하는 포즈를 찾으셨나요? 북마크에 등록해두고 포즈들을 모아보세요!**
