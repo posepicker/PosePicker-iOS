@@ -38,6 +38,7 @@
 <br/>
 
 ## 📱 Feature
+#### iOS MVP 개발 기간: 2023.10.19 - 2023.12.14
 
 ### 1. 포즈픽
 **인원수를 선택하고 무작위 포즈를 포즈피커에게 추천받아 보세요!**
@@ -71,6 +72,39 @@ https://github.com/pose-picker/PosePicker-iOS/assets/75518683/62d2d616-b68e-480f
 
 <br/>
 
+## 📚 Tech Stack
+
+<img width="77" alt="스크린샷 2021-11-19 오후 3 52 02" src="https://img.shields.io/badge/iOS-16.0+-silver"> <img width="95" alt="스크린샷 2021-11-19 오후 3 52 02" src="https://img.shields.io/badge/Xcode-13.2.1-blue">
+
+### 🎁 Library
+
+| 라이브러리        | Version     |       |
+| ----------------- | :-----:  | ----- |
+| Then              | `3.0.0`  | `SPM` |
+| SnapKit           | `5.6.0`  | `SPM` |
+| RxSwift           | `6.6.0`  | `SPM` |
+| RxCocoa           | `6.6.0`  | `SPM` |
+| RxDataSources     | `5.0.2`  | `SPM` |
+| RxKakaoOpenSDK    | `2.19.0` | `SPM` |
+| Kingfisher        | `7.10.0` | `SPM` |
+| Alamofire         | `5.8.0`  | `SPM` |
+| Lottie            | `4.3.3`  | `SPM` |
+
+<br/>
+
+### 🤔 Development Issues
+개발 과정에서 있었던 이슈들입니다. 개발 블로그에 정리해두었어요!
+
+1. [RxSwift - MVVM 뷰모델 Input & Output 디자인](https://parkjju.github.io/vue-TIL/trash/230918-31.html)
+2. [RxSwift - 유닛 테스트 환경 구축](https://parkjju.github.io/vue-TIL/trash/230918-32.html)
+3. [핀터레스트 레이아웃 구현하기](https://parkjju.github.io/vue-TIL/trash/231123-34.html)
+4. [RxDataSources 컬렉션뷰 헤더 SupplementaryView 적용기](https://parkjju.github.io/vue-TIL/trash/231125-35.html)
+5. [RxSwift와 loadViewIfNeeded의 활용](https://parkjju.github.io/vue-TIL/trash/231128-36.html)
+6. [RxBlocking & RxTest에 대한 정리](https://parkjju.github.io/vue-TIL/trash/231129-37.html)
+7. [유닛 테스트 네트워크 목업](https://parkjju.github.io/vue-TIL/trash/231202-38.html)
+8. [킹피셔 라이브러리 유닛 테스트 환경 구축](https://parkjju.github.io/vue-TIL/trash/231205-39.html)
+<br/>
+
 ## 🙌 Team
 
 | Design | Web & iOS | BackEnd |
@@ -81,6 +115,3 @@ https://github.com/pose-picker/PosePicker-iOS/assets/75518683/62d2d616-b68e-480f
 | 김수빈 |[Parkjju](https://github.com/Parkjju) | [leejw-lu](https://github.com/leejw-lu) |
 
 <br/>
-
-## 📚 Tech Stack
-
