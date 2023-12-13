@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class BookmarkDetailViewController: BaseViewController {
     
@@ -202,6 +203,9 @@ class BookmarkDetailViewController: BaseViewController {
         
         output.dismissDetailView
             .subscribe(onNext: { [unowned self] in
+                guard let navigationVC = self.presentingViewController as? UINavigationController,
+                      let bookmarkVC = navigationVC.viewControllers.last as? BookMarkViewController else { return }
+                bookmarkVC.viewDidLoadTrigger.onNext(())
                 self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
