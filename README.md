@@ -39,11 +39,33 @@
 
 ## 📱 Feature
 
-![15](https://github.com/dnd-side-project/dnd-9th-5-frontend/assets/75469131/d9f2d92c-ffbd-452b-a00f-57d68487c2c1)
-![17](https://github.com/dnd-side-project/dnd-9th-5-frontend/assets/75469131/1d427144-023c-401d-ab3b-90190cb1cb4d)
-![18](https://github.com/dnd-side-project/dnd-9th-5-frontend/assets/75469131/7b4bfdb1-a8bf-4cde-b57c-c254fe221985)
-![19](https://github.com/dnd-side-project/dnd-9th-5-frontend/assets/75469131/a3fc9896-5fc4-4612-949e-557f3f088815)
+### 1. 포즈픽
+**인원수를 선택하고 무작위 포즈를 포즈피커에게 추천받아 보세요!**
 
+https://github.com/pose-picker/PosePicker-iOS/assets/75518683/fce63dec-4182-4cae-bc47-911deaaedd0c
+
+### 2. 포즈톡
+**제시어를 뽑아 재미있는 포즈를 함께 취해보세요!**
+
+https://github.com/pose-picker/PosePicker-iOS/assets/75518683/f02a019e-8b7b-44ec-828e-3e3550dfa7e5
+
+### 3. 포즈피드
+**요즘에는 어떤 포즈가 유행이지 🤔 포즈피드에서 찾아보세요!**
+
+https://github.com/pose-picker/PosePicker-iOS/assets/75518683/e11b6d71-63ca-49a2-bac4-aa8bf716cbf6
+
+https://github.com/pose-picker/PosePicker-iOS/assets/75518683/c3336558-209a-40c1-9f04-940b1b55db5f
+
+
+포즈피드에서는 여러 기능들을 추가로 제공해요 👀
+1. 필터를 설정하여 원하는 테마의 포즈들을 추천받아보세요!
+2. 포즈별 추천 태그를 탭하여 비슷한 포즈들을 쉽게 검색해보세요!
+3. 클립보드와 카카오톡을 통해 친구에게 포즈를 공유해보세요!
+
+### 4. 북마크
+**원하는 포즈를 찾으셨나요? 북마크에 등록해두고 포즈들을 모아보세요!**
+
+https://github.com/pose-picker/PosePicker-iOS/assets/75518683/62d2d616-b68e-480f-bfa5-2dc5b01a8e01
 
 <br/>
 
