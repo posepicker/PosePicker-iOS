@@ -36,6 +36,7 @@ class PoseDetailViewModel: ViewModelType {
         let image: Observable<UIImage?>
         let popupPresent: Driver<Void>
         let tagItems: Driver<[PoseDetailTagCellViewModel]>
+        let isLoading: Observable<Bool>
     }
     
     func transform(input: Input) -> Output {
@@ -43,7 +44,8 @@ class PoseDetailViewModel: ViewModelType {
         let cacheImage = BehaviorRelay<UIImage?>(value: nil)
         let popupPresent = PublishSubject<Void>()
         let tagItems = BehaviorRelay<[PoseDetailTagCellViewModel]>(value: [])
-        
+        let loadable = BehaviorRelay<Bool>(value: false)
+
         /// 1. 이미지 출처 - URL 전달
         input.imageSourceButtonTapped
             .subscribe(onNext: { [unowned self] in
@@ -93,7 +95,7 @@ class PoseDetailViewModel: ViewModelType {
         input.kakaoShareButtonTapped
             .subscribe(onNext: { [unowned self] in
                 let template = self.getFeedTemplateObject()
-                    
+                loadable.accept(true)
                 // 메시지 템플릿 encode
                 if let templateJsonData = (try? SdkJSONEncoder.custom.encode(template)) {
                     // 생성한 메시지 템플릿 객체를 jsonObject로 변환
@@ -101,6 +103,7 @@ class PoseDetailViewModel: ViewModelType {
                         // 카카오톡 앱이 있는지 체크합니다.
                         if ShareApi.isKakaoTalkSharingAvailable() {
                             ShareApi.shared.shareDefault(templateObject:templateJsonObject) {(linkResult, error) in
+                                loadable.accept(false)
                                 if let error = error {
                                     print("error : \(error)")
                                 }
@@ -112,6 +115,7 @@ class PoseDetailViewModel: ViewModelType {
                             }
                         } else {
                             // 없을 경우 카카오톡 앱스토어로 이동합니다. (이거 하려면 URL Scheme에 itms-apps 추가 해야함)
+                            loadable.accept(false)
                             let url = "itms-apps://itunes.apple.com/app/362057947"
                             if let url = URL(string: url), UIApplication.shared.canOpenURL(url) {
                                 if #available(iOS 10.0, *) {
@@ -126,7 +130,7 @@ class PoseDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        return Output(imageSourceLink: imageSource.asObservable(), image: cacheImage.asObservable(), popupPresent: popupPresent.asDriver(onErrorJustReturn: ()), tagItems: tagItems.asDriver())
+        return Output(imageSourceLink: imageSource.asObservable(), image: cacheImage.asObservable(), popupPresent: popupPresent.asDriver(onErrorJustReturn: ()), tagItems: tagItems.asDriver(), isLoading: loadable.asObservable())
     }
     
     /// 디자인 수치 기준으로 이미지 리사이징
