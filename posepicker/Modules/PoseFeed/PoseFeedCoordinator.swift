@@ -76,7 +76,9 @@ class PoseFeedCoordinator: NSObject, Coordinator {
     }
     
     func dismissPoseDetailWithTagSelection(tag: String) {
-        guard let posefeedViewController = self.navigationController.viewControllers.first as? PoseFeedViewController else { return }
+        guard let root = self.navigationController.viewControllers.first as? RootViewController,
+              let navigationVC = root.viewControllers.last as? UINavigationController,
+              let posefeedViewController = navigationVC.viewControllers.first as? PoseFeedViewController else { return }
         
         // 셀렉션 초기화
         self.poseFeedFilterViewController.loadViewIfNeeded()
