@@ -80,7 +80,7 @@ https://github.com/pose-picker/PosePicker-iOS/assets/75518683/62d2d616-b68e-480f
 
 ## 📚 Tech Stack
 
-<img width="77" alt="스크린샷 2021-11-19 오후 3 52 02" src="https://img.shields.io/badge/iOS-16.0+-silver"> <img width="95" alt="스크린샷 2021-11-19 오후 3 52 02" src="https://img.shields.io/badge/Xcode-13.2.1-blue">
+<img width="77" alt="스크린샷 2021-11-19 오후 3 52 02" src="https://img.shields.io/badge/iOS-16.0+-silver"> <img width="95" alt="스크린샷 2021-11-19 오후 3 52 02" src="https://img.shields.io/badge/Xcode-15.0.0-blue">
 
 ### 🎁 Library
 
