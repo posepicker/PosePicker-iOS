@@ -80,7 +80,12 @@ class BookmarkDetailViewController: BaseViewController {
     
     let kakaoShareButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "카카오 공유", image: nil)
     
-    
+    let loadingIndicator = UIActivityIndicatorView(style: .large)
+        .then {
+            $0.isHidden = true
+            $0.startAnimating()
+            $0.color = .mainViolet
+        }
     // MARK: - Properties
     
     var viewModel: BookmarkDetailViewModel
@@ -100,7 +105,7 @@ class BookmarkDetailViewController: BaseViewController {
     
     // MARK: - Functions
     override func render() {
-        self.view.addSubViews([navigationBar, scrollView, shareButtonGroup])
+        self.view.addSubViews([navigationBar, scrollView, shareButtonGroup, loadingIndicator])
         
         scrollView.subviews.first!.addSubViews([imageSourceButton, imageView, tagCollectionView])
         shareButtonGroup.addSubViews([linkShareButton, kakaoShareButton])
@@ -152,6 +157,10 @@ class BookmarkDetailViewController: BaseViewController {
             make.width.equalTo((UIScreen.main.bounds.width - 48) * 0.7)
             make.trailing.equalTo(shareButtonGroup).offset(-20)
             make.centerY.equalTo(shareButtonGroup)
+        }
+        
+        loadingIndicator.snp.makeConstraints { make in
+            make.center.equalTo(kakaoShareButton)
         }
     }
     
@@ -216,6 +225,15 @@ class BookmarkDetailViewController: BaseViewController {
                 self.coordinator.dismissBookmarkDetailWithTagSelection(tag: $0)
                 self.dismiss(animated: true)
             })
+            .disposed(by: disposeBag)
+        
+        output.isLoading
+            .map { !$0 }
+            .bind(to: loadingIndicator.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        output.isLoading
+            .bind(to: kakaoShareButton.rx.isHidden)
             .disposed(by: disposeBag)
         
         tagCollectionView.updateCollectionViewHeight()
