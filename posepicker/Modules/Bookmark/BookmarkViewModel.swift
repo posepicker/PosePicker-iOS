@@ -81,14 +81,20 @@ class BookMarkViewModel: ViewModelType {
         let bookmarkDetailViewModel = BehaviorRelay<BookmarkDetailViewModel?>(value: nil)
         
         /// 1. 뷰 로드 이후 컬렉션뷰 셀 아이템 API 요청
+        /// 2. 뷰 초기 로드 외에도 북마크 삭제 이후 리프레시를 위해 사용됨
         input.viewDidLoadTrigger
             .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
                 self.beginLoading()
                 loadable.accept(true)
+                sectionItems.accept([BookmarkSection(header: "", items: [])]) // 섹션 아이템 초기화
+                
+                self.currentPage = 0
+                self.isLast = false
+                
                 if let userIdString = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId),
                    let userId = Int64(userIdString)
                 {
-                    return apiSession.requestSingle(.retrieveBookmarkFeed(userId: userId, pageNumber: 0, pageSize: 8)).asObservable()
+                    return apiSession.requestSingle(.retrieveBookmarkFeed(userId: userId, pageNumber: self.currentPage, pageSize: 8)).asObservable()
                 } else {
                     return Observable<PoseFeed>.empty()
                 }
