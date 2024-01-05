@@ -27,17 +27,44 @@ class MyPageViewController: BaseViewController {
             $0.text = "로그인하기"
         }
     
+    let menuButton = UIButton(type: .system)
+        .then {
+            $0.setTitleColor(.textPrimary, for: .normal)
+            $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
+        }
+    
+    let noticeButton = UIButton(type: .system)
+        .then {
+            $0.setTitleColor(.textPrimary, for: .normal)
+            $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
+            $0.setTitle("공지사항", for: .normal)
+        }
+    
+    let faqButton = UIButton(type: .system)
+        .then {
+            $0.setTitleColor(.textPrimary, for: .normal)
+            $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
+            $0.setTitle("자주 묻는 질문", for: .normal)
+        }
+    
     let serviceUsageInquiryButton = UIButton(type: .system)
         .then {
             $0.setTitleColor(.textPrimary, for: .normal)
             $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
-            $0.setTitle("서비스 이용문의", for: .normal)
+            $0.setTitle("문의하기", for: .normal)
         }
     
     let serviceInformationButton = UIButton(type: .system)
         .then {
             $0.setTitleColor(.textPrimary, for: .normal)
-            $0.setTitle("서비스 정보", for: .normal)
+            $0.setTitle("이용약관", for: .normal)
+            $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
+        }
+    
+    let privacyInforationButton = UIButton(type: .system)
+        .then {
+            $0.setTitleColor(.textPrimary, for: .normal)
+            $0.setTitle("개인정보 처리방침", for: .normal)
             $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
         }
     
@@ -134,9 +161,33 @@ class MyPageViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        noticeButton.rx.tap.asDriver()
+            .drive(onNext: {
+                if let url = URL(string: "https://shineshine.notion.site/fde248040bed45f68fbfa3004e2c4856") {
+                    UIApplication.shared.open(url)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        faqButton.rx.tap.asDriver()
+            .drive(onNext: {
+                if let url = URL(string: "https://shineshine.notion.site/cc71decc2e534ae6abb195bb10a501c0") {
+                    UIApplication.shared.open(url)
+                }
+            })
+            .disposed(by: disposeBag)
+        
         serviceInformationButton.rx.tap.asDriver()
             .drive(onNext: {
-                if let url = URL(string: "https://shineshine.notion.site/a668d9eba61f48e584df2ad3a946c313") {
+                if let url = URL(string: "https://shineshine.notion.site/3113eb146abb4b5c809070c3f01380da") {
+                    UIApplication.shared.open(url)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        privacyInforationButton.rx.tap.asDriver()
+            .drive(onNext: {
+                if let url = URL(string: "https://shineshine.notion.site/75e98a2462824b839a9c37473a6afbd5") {
                     UIApplication.shared.open(url)
                 }
             })
@@ -144,7 +195,7 @@ class MyPageViewController: BaseViewController {
     }
     
     override func render() {
-        view.addSubViews([loginButton, loginLogo, loginTitle, serviceUsageInquiryButton, serviceInformationButton])
+        view.addSubViews([loginButton, loginLogo, loginTitle, noticeButton, faqButton, serviceUsageInquiryButton, serviceInformationButton, privacyInforationButton])
         
         loginButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12)
@@ -162,15 +213,33 @@ class MyPageViewController: BaseViewController {
             make.centerY.equalTo(loginButton)
         }
         
-        serviceUsageInquiryButton.snp.makeConstraints { make in
+        noticeButton.snp.makeConstraints { make in
             make.leading.equalTo(loginButton)
             make.top.equalTo(loginButton.snp.bottom).offset(24)
             make.height.equalTo(24)
         }
         
-        serviceInformationButton.snp.makeConstraints { make in
+        faqButton.snp.makeConstraints { make in
             make.leading.equalTo(loginButton)
-            make.top.equalTo(serviceUsageInquiryButton.snp.bottom).offset(24)
+            make.top.equalTo(noticeButton.snp.bottom).offset(24)
+            make.height.equalTo(24)
+        }
+        
+        serviceUsageInquiryButton.snp.makeConstraints { make in
+            make.leading.equalTo(faqButton)
+            make.top.equalTo(faqButton.snp.bottom).offset(24)
+            make.height.equalTo(24)
+        }
+        
+        serviceInformationButton.snp.makeConstraints { make in
+            make.leading.equalTo(serviceUsageInquiryButton)
+            make.top.equalTo(serviceUsageInquiryButton.snp.bottom).offset(36)
+            make.height.equalTo(24)
+        }
+        
+        privacyInforationButton.snp.makeConstraints { make in
+            make.leading.equalTo(serviceInformationButton)
+            make.top.equalTo(serviceInformationButton.snp.bottom).offset(24)
             make.height.equalTo(24)
         }
     }
