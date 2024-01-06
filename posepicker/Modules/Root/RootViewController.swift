@@ -131,7 +131,7 @@ class RootViewController: BaseViewController {
             .drive(onNext: { [unowned self] in
                 /// 로그인 되어 있으면 coordinator.push
                 /// 로그인 되어 있지 않으면 로그인뷰 팝업
-                if let _ = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId) {
+                if AppCoordinator.loginState {
                     self.coordinator.push(page: .bookmark)
                 } else {
                     let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
@@ -161,7 +161,6 @@ class RootViewController: BaseViewController {
                         })
                         .disposed(by: disposeBag)
                 }
-                
             })
             .disposed(by: disposeBag)
     }
