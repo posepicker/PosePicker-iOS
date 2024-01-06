@@ -36,7 +36,7 @@ class PoseFeedViewModel: ViewModelType {
         /// 키체인 토큰 조회해서 존재하면 북마크 API 요청
         cell.bookmarkButton.rx.tap
             .subscribe(onNext: { [unowned self] in
-                if let _ = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId) {
+                if AppCoordinator.loginState {
                     // API요청 보내기
                     self.bookmarkButtonTapped.onNext(item.poseId.value)
                 } else {
@@ -238,9 +238,9 @@ class PoseFeedViewModel: ViewModelType {
                 return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: tags[0], frameCount: tags[1], filterTags: filterTags, pageNumber: self.currentPage)).asObservable()
             }
             .flatMapLatest { [unowned self] filteredPose -> Observable<[PoseFeedPhotoCellViewModel]> in
-                self.isLast = filteredPose.filteredContents.last // 추천섹션 데이터 accept처리
+                self.isLast = filteredPose.filteredContents?.last ?? true // 추천섹션 데이터 accept처리
                 recommendContents.accept(filteredPose.recommendedContents)
-                return self.retrieveCacheObservable(posefeed: filteredPose.filteredContents.content)
+                return self.retrieveCacheObservable(posefeed: filteredPose.filteredContents?.content ?? [])
             }
             .subscribe(onNext: {
                 loadable.accept(false)
@@ -330,9 +330,9 @@ class PoseFeedViewModel: ViewModelType {
                 }
             }
             .flatMapLatest { [unowned self] filteredPose -> Observable<[PoseFeedPhotoCellViewModel]> in
-                self.isLast = filteredPose.filteredContents.last
+                self.isLast = filteredPose.filteredContents?.last ?? true
                 recommendContents.accept(filteredPose.recommendedContents) // 2-2로 이동
-                return retrieveCacheObservable(posefeed: filteredPose.filteredContents.content)
+                return retrieveCacheObservable(posefeed: filteredPose.filteredContents?.content ?? [])
             }
             .subscribe(onNext: {
                 self.endLoading()
