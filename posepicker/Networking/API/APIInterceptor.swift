@@ -14,6 +14,18 @@ class APIInterceptor: RequestInterceptor {
     var disposeBag = DisposeBag()
     
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
+        
+        if let url = urlRequest.url,
+           let accessToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.accessToken) {
+            
+            if url.absoluteString.contains("/api/pose") || url.absoluteString.contains("/api/pose/all") {
+                var urlRequest = urlRequest
+                urlRequest.headers.add(.authorization(bearerToken: accessToken))
+                completion(.success(urlRequest))
+                return
+            }
+        }
+        
         completion(.success(urlRequest))
     }
     
