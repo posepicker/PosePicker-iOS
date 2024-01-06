@@ -144,10 +144,9 @@ class MyPageViewController: BaseViewController {
                 popupView.alertText.accept("문의사항을 남기시겠습니까?")
                 
                 popupView.confirmButton.rx.tap.asDriver()
-                    .drive(onNext: {
-                        if let url = URL(string: "https://litt.ly/posepicker") {
-                            UIApplication.shared.open(url)
-                        }
+                    .drive(onNext: { [weak self] in
+                        self?.coordinator.pushWebView(urlString: "https://litt.ly/posepicker", pageTitle: "문의하기")
+                        popupViewController.dismiss(animated: true)
                     })
                     .disposed(by: self.disposeBag)
                 
@@ -162,34 +161,26 @@ class MyPageViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         noticeButton.rx.tap.asDriver()
-            .drive(onNext: {
-                if let url = URL(string: "https://shineshine.notion.site/fde248040bed45f68fbfa3004e2c4856") {
-                    UIApplication.shared.open(url)
-                }
+            .drive(onNext: { [weak self] in
+                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/fde248040bed45f68fbfa3004e2c4856", pageTitle: "공지사항")
             })
             .disposed(by: disposeBag)
         
         faqButton.rx.tap.asDriver()
-            .drive(onNext: {
-                if let url = URL(string: "https://shineshine.notion.site/cc71decc2e534ae6abb195bb10a501c0") {
-                    UIApplication.shared.open(url)
-                }
+            .drive(onNext: { [weak self] in
+                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/cc71decc2e534ae6abb195bb10a501c0", pageTitle: "자주 묻는 질문")
             })
             .disposed(by: disposeBag)
         
         serviceInformationButton.rx.tap.asDriver()
-            .drive(onNext: {
-                if let url = URL(string: "https://shineshine.notion.site/3113eb146abb4b5c809070c3f01380da") {
-                    UIApplication.shared.open(url)
-                }
+            .drive(onNext: { [weak self] in
+                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/3113eb146abb4b5c809070c3f01380da", pageTitle: "이용약관")
             })
             .disposed(by: disposeBag)
         
         privacyInforationButton.rx.tap.asDriver()
-            .drive(onNext: {
-                if let url = URL(string: "https://shineshine.notion.site/75e98a2462824b839a9c37473a6afbd5") {
-                    UIApplication.shared.open(url)
-                }
+            .drive(onNext: { [weak self] in
+                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/75e98a2462824b839a9c37473a6afbd5", pageTitle: "개인정보 처리방침")
             })
             .disposed(by: disposeBag)
     }
