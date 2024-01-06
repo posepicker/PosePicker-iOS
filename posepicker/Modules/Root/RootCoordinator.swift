@@ -102,4 +102,8 @@ class RootCoordinator: Coordinator {
             break
         }
     }
+    
+    func pushWebView(urlString: String, pageTitle: String) {
+        navigationController.pushViewController(MypageWebViewController(urlString: urlString, pageTitle: pageTitle), animated: true)
+    }
 }
