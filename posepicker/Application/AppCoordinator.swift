@@ -16,6 +16,13 @@ protocol Coordinator {
 class AppCoordinator: Coordinator {
     var childCoordinators: [Coordinator] = []
     
+    static var loginState: Bool {
+        if let _ = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.KeychainKeyParameters.refreshToken) {
+            return true
+        }
+        return false
+    }
+    
     private var navigationController: UINavigationController
     
     init(navigationController: UINavigationController) {
