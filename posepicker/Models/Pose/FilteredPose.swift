@@ -8,7 +8,7 @@
 import Foundation
 
 struct FilteredPose: Codable {
-    let filteredContents: FilteredContents
+    let filteredContents: FilteredContents?
     let recommendation: Bool
     let recommendedContents: RecommendedContents?
 }
