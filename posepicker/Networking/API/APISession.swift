@@ -15,7 +15,7 @@ struct APISession: APIService {
     
     private let session: Session
     
-    init(session: Session = Session(configuration: URLSessionConfiguration.af.default, eventMonitors: [])) {
+    init(session: Session = Session(configuration: URLSessionConfiguration.af.default, eventMonitors: [APIEventLogger()])) {
         self.session = session
     }
     
