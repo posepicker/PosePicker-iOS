@@ -21,4 +21,5 @@ struct Pose: Codable {
     let sourceUrl: String
     let tagAttributes: String?
     let updatedAt: String?
+    let bookmarkCheck: Bool
 }
