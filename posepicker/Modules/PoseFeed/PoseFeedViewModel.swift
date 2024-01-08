@@ -30,6 +30,7 @@ class PoseFeedViewModel: ViewModelType {
     /// 포즈피드 컬렉션뷰 datasource 정의
     lazy var dataSource = RxCollectionViewSectionedReloadDataSource<PoseSection>(configureCell: { dataSource, collectionView, indexPath, item in
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PoseFeedPhotoCell.identifier, for: indexPath) as? PoseFeedPhotoCell else { return UICollectionViewCell() }
+        cell.disposeBag = DisposeBag()
         cell.bind(to: item)
         
         /// 북마크 버튼 눌렸을때 로그인 여부 체크 -> 로그인 여부를 뭘로 체크할 것인가?
@@ -43,7 +44,7 @@ class PoseFeedViewModel: ViewModelType {
                     self.presentLoginPopUp.onNext(())
                 }
             })
-            .disposed(by: self.disposeBag)
+            .disposed(by: cell.disposeBag)
         return cell
     }, configureSupplementaryView: { dataSource, collectionView, kind, indexPath -> UICollectionReusableView in
         if indexPath.section == 0 {
@@ -406,7 +407,7 @@ class PoseFeedViewModel: ViewModelType {
         self.bookmarkButtonTapped
             .flatMapLatest { [unowned self] poseId -> Observable<BookmarkResponse> in
                 guard let userId = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId) else { return Observable<BookmarkResponse>.empty() }
-                return self.apiSession.requestSingle(.registerBookmark(poseId: poseId, userId: Int64(userId)!)).asObservable()
+                return self.apiSession.requestSingle(.registerBookmark(poseId: poseId)).asObservable()
             }
             .subscribe(onNext: { _ in
                 print("등록 완료!")
@@ -445,7 +446,7 @@ class PoseFeedViewModel: ViewModelType {
                         let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
                         isFilterSection ? self.filteredContentSizes.accept(self.filteredContentSizes.value + [newSizeImage.size]) : self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size])
                         
-                        let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId)
+                        let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck)
                         viewModelObservable.accept(viewModelObservable.value + [viewModel])
                     } else {
                         guard let url = URL(string: posepick.poseInfo.imageKey) else { return }
@@ -455,7 +456,7 @@ class PoseFeedViewModel: ViewModelType {
                                 let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadImage.image)
                                 isFilterSection ? self.filteredContentSizes.accept(self.filteredContentSizes.value + [newSizeImage.size]) : self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size])
                                 
-                                let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId)
+                                let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck)
                                 viewModelObservable.accept(viewModelObservable.value + [viewModel])
                             case .failure:
                                 return
