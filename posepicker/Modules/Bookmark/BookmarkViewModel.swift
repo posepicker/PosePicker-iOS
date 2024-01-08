@@ -27,6 +27,7 @@ class BookMarkViewModel: ViewModelType {
     /// 포즈피드 컬렉션뷰 datasource 정의
     lazy var dataSource = RxCollectionViewSectionedReloadDataSource<BookmarkSection>(configureCell: { dataSource, collectionView, indexPath, item in
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookmarkFeedCell.identifier, for: indexPath) as? BookmarkFeedCell else { return UICollectionViewCell() }
+        cell.disposeBag = DisposeBag()
         cell.bind(to: item)
         
 //        cell.bookmarkButton.rx.tap
@@ -192,7 +193,7 @@ class BookMarkViewModel: ViewModelType {
                         let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
                          self.bookmarkContentSizes.accept(self.bookmarkContentSizes.value + [newSizeImage.size])
                         
-                        let viewModel = BookmarkFeedCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId)
+                        let viewModel = BookmarkFeedCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck)
                         viewModelObservable.accept(viewModelObservable.value + [viewModel])
                     } else {
                         guard let url = URL(string: posepick.poseInfo.imageKey) else { return }
@@ -202,7 +203,7 @@ class BookMarkViewModel: ViewModelType {
                                 let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadImage.image)
                                  self.bookmarkContentSizes.accept(self.bookmarkContentSizes.value + [newSizeImage.size])
                                 
-                                let viewModel = BookmarkFeedCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId)
+                                let viewModel = BookmarkFeedCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck)
                                 viewModelObservable.accept(viewModelObservable.value + [viewModel])
                             case .failure:
                                 return
