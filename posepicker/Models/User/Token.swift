@@ -13,3 +13,7 @@ struct Token: Codable {
     let grantType: String
     let refreshToken: String
 }
+
+struct RefreshedToken: Codable {
+    let token: String
+}
