@@ -13,9 +13,11 @@ import RxSwift
 class PoseFeedPhotoCellViewModel {
     let image = BehaviorRelay<UIImage?>(value: nil)
     let poseId = BehaviorRelay<Int>(value: -1)
+    let bookmarkCheck = BehaviorRelay<Bool>(value: false)
     
-    init(image: UIImage?, poseId: Int) {
+    init(image: UIImage?, poseId: Int, bookmarkCheck: Bool) {
         self.image.accept(image)
         self.poseId.accept(poseId)
+        self.bookmarkCheck.accept(bookmarkCheck)
     }
 }
