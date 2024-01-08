@@ -210,6 +210,7 @@ class BookmarkDetailViewController: BaseViewController {
         
         output.tagItems
             .drive(tagCollectionView.rx.items(cellIdentifier: BookmarkDetailTagCell.identifier, cellType: BookmarkDetailTagCell.self)) { _, viewModel, cell in
+                cell.disposeBag = DisposeBag()
                 cell.bind(to: viewModel)
             }
             .disposed(by: disposeBag)
