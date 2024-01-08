@@ -206,6 +206,7 @@ class PoseFeedViewController: BaseViewController {
         
         output.filterTagItems
             .drive(filterCollectionView.rx.items(cellIdentifier: RegisteredFilterCell.identifier, cellType: RegisteredFilterCell.self)) {  _, viewModel, cell in
+                cell.disposeBag = DisposeBag()
                 cell.bind(to: viewModel)
             }
             .disposed(by: disposeBag)

@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class PoseDetailViewController: BaseViewController {
 
@@ -208,6 +209,7 @@ class PoseDetailViewController: BaseViewController {
         
         output.tagItems
             .drive(tagCollectionView.rx.items(cellIdentifier: PoseDetailTagCell.identifier, cellType: PoseDetailTagCell.self)) { _, viewModel, cell in
+                cell.disposeBag = DisposeBag()
                 cell.bind(to: viewModel)
             }
             .disposed(by: disposeBag)
