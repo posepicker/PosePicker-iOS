@@ -21,7 +21,7 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
     
     let bookmarkButton = UIButton()
         .then {
-            $0.setImage(ImageLiteral.imgBookmarkOff24.withTintColor(.iconWhite, renderingMode: .alwaysOriginal), for: .normal)
+            $0.setImage(ImageLiteral.imgBookmarkOff24.withTintColor(.iconWhite, renderingMode: .alwaysTemplate), for: .normal)
             $0.layer.cornerRadius = 18
             $0.clipsToBounds = true
             $0.backgroundColor = .bgWhite.withAlphaComponent(0.38)
@@ -35,6 +35,8 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
+        bookmarkButton.setImage(nil, for: .normal)
+        disposeBag = DisposeBag()
     }
     
     // MARK: - Functions
@@ -58,6 +60,21 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
     }
     
     func bind(to viewModel: PoseFeedPhotoCellViewModel) {
-        viewModel.image.bind(to: imageView.rx.image).disposed(by: disposeBag)
+        viewModel.image.asDriver()
+            .drive(onNext: { [weak self] in
+                self?.imageView.image = $0
+            })
+            .disposed(by: disposeBag)
+//        viewModel.image.bind(to: self.imageView.rx.image).disposed(by: disposeBag)
+        
+        viewModel.bookmarkCheck.asDriver()
+            .drive(onNext: { [weak self] bookmarkCheck in
+                if bookmarkCheck {
+                    self?.bookmarkButton.setImage(ImageLiteral.imgBookmarkFill24, for: .normal)
+                } else {
+                    self?.bookmarkButton.setImage(ImageLiteral.imgBookmarkOff24, for: .normal)
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }

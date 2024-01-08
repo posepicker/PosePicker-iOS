@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 /// 필터링 모달 뷰에서 등록된 필터 컬렉션뷰 셀
 class RegisteredFilterCell: BaseCollectionViewCell {
@@ -22,6 +23,12 @@ class RegisteredFilterCell: BaseCollectionViewCell {
     // MARK: - Properties
     static let identifier = "RegisteredFilterCell"
     
+    // MARK: - Life Cycles
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+    }
     
     // MARK: - Functions
     

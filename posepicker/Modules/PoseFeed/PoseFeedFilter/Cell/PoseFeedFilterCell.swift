@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class PoseFeedFilterCell: BaseCollectionViewCell {
     
@@ -18,6 +19,13 @@ class PoseFeedFilterCell: BaseCollectionViewCell {
     
     // MARK: - Properties
     static let identifier = "PoseFeedFilterCell"
+    
+    // MARK: - Life Cycles
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
+    }
     
     // MARK: - Functions
     

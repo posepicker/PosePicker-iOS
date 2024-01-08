@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class BookmarkFeedCell: BaseCollectionViewCell {
     
@@ -31,6 +32,7 @@ class BookmarkFeedCell: BaseCollectionViewCell {
     override func prepareForReuse() {
         super.prepareForReuse()
         imageView.image = nil
+        disposeBag = DisposeBag()
     }
     
     // MARK: - Functions
@@ -55,5 +57,15 @@ class BookmarkFeedCell: BaseCollectionViewCell {
     
     func bind(to viewModel: BookmarkFeedCellViewModel) {
         viewModel.image.bind(to: imageView.rx.image).disposed(by: disposeBag)
+        
+        viewModel.bookmarkCheck.asDriver()
+            .drive(onNext: { [weak self] bookmarkCheck in
+                if bookmarkCheck {
+                    self?.bookmarkButton.setImage(ImageLiteral.imgBookmarkFill24, for: .normal)
+                } else {
+                    self?.bookmarkButton.setImage(ImageLiteral.imgBookmarkOff24.withRenderingMode(.alwaysOriginal).withTintColor(.iconWhite), for: .normal)
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }
