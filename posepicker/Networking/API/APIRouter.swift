@@ -22,9 +22,10 @@ enum APIRouter: URLRequestConvertible {
     case appleLogin(idToken: String)
     case kakaoLogin(authCode: String, email: String, kakaoId: Int64)
     case retrieveAuthoirzationCode
+    case refreshToken
     
     // 북마크 API
-    case registerBookmark(poseId: Int, userId: Int64)
+    case registerBookmark(poseId: Int)
     case retrieveBookmarkFeed(userId: Int64, pageNumber: Int, pageSize: Int)
     case deleteBookmark(userId: Int64, poseId: Int)
     
@@ -48,6 +49,8 @@ enum APIRouter: URLRequestConvertible {
         case .kakaoLogin:
             return .post
         case .retrieveAuthoirzationCode:
+            return .get
+        case .refreshToken:
             return .get
         case .registerBookmark:
             return .post
@@ -79,8 +82,10 @@ enum APIRouter: URLRequestConvertible {
             return "/api/users/login/ios/kakao"
         case .retrieveAuthoirzationCode:
             return "/api/users/posepicker/token"
+        case .refreshToken:
+            return "/api/users/posepicker/token"
         case .registerBookmark:
-            return "/api/bookmark/"
+            return "/api/bookmark"
         case .retrieveBookmarkFeed:
             return "/api/bookmark/feed"
         case .deleteBookmark:
@@ -126,10 +131,11 @@ enum APIRouter: URLRequestConvertible {
             ]
         case .retrieveAuthoirzationCode:
             return nil
-        case .registerBookmark(let poseId, let userId):
+        case .refreshToken:
+            return nil
+        case .registerBookmark(let poseId):
             return [
-                K.Parameters.poseId: poseId,
-                K.Parameters.userId: userId
+                K.Parameters.poseId: poseId
             ]
         case .retrieveBookmarkFeed(let userId, let pageNumber, let pageSize):
             return [
@@ -166,6 +172,11 @@ enum APIRouter: URLRequestConvertible {
             case .get:
                 return URLEncoding.default
             default:
+                // MARK: - POST요청에 쿼리 파라미터로 들어가는 API 예외처리
+                if let urlString = urlRequest.url?.absoluteString,
+                   urlString.contains("/api/bookmark") {
+                    return URLEncoding(destination: .queryString)
+                }
                 return JSONEncoding.default
             }
         }()
