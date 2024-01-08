@@ -46,8 +46,6 @@ class PoseFeedFilterViewModel: ViewModelType {
     }
     
     func transform(input: Input) -> Output {
-        
-        let tags = FilterTags.getAllFilterTags()
         let headCountTagIndex = BehaviorRelay<Int>(value: 0)
         let frameCountTagIndex = BehaviorRelay<Int>(value: 0)
         let subTag = BehaviorRelay<String?>(value: nil)
@@ -57,7 +55,7 @@ class PoseFeedFilterViewModel: ViewModelType {
         let initialValue = BehaviorRelay<(Int, Int, [FilterTags], String?)>(value: (0, 0, [], nil))
         
         /// 초기 태그 아이템 세팅
-        tagItems.accept(tags.map {
+        tagItems.accept(FilterTags.getAllFilterTags().map {
             PoseFeedFilterCellViewModel(title: $0.rawValue)
         })
         
@@ -120,6 +118,8 @@ class PoseFeedFilterViewModel: ViewModelType {
         /// 취소버튼 탭 이후 초기값으로 재초기화
         input.tagSelectCanceled
             .subscribe(onNext: {
+                let tags = FilterTags.getAllFilterTags()
+                
                 headCountTagIndex.accept(initialValue.value.0)
                 frameCountTagIndex.accept(initialValue.value.1)
                 registeredTags.accept(initialValue.value.2) // 포즈피드 루트뷰 태그 리스트
@@ -142,6 +142,8 @@ class PoseFeedFilterViewModel: ViewModelType {
         input.filteredTagAfterDismiss
             .compactMap { $0 }
             .subscribe(onNext: { tag in
+                let tags = FilterTags.getAllFilterTags()
+                
                 subTag.accept(nil) // 서브태그는 삭제
                 registeredTags.accept([tag])
                 
@@ -156,6 +158,8 @@ class PoseFeedFilterViewModel: ViewModelType {
         /// 필터 초기화
         input.resetButtonTapped
             .subscribe(onNext: {
+                let tags = FilterTags.getAllFilterTags()
+                
                 headCountTagIndex.accept(0)
                 frameCountTagIndex.accept(0)
                 registeredTags.accept([])
@@ -171,6 +175,8 @@ class PoseFeedFilterViewModel: ViewModelType {
         /// 데이터 저장하지 않고 dismiss하면 모달 올라올때 세팅되어 있던 초기값으로 다시 수정하는 로직
         Observable.combineLatest(input.dismissState, input.viewWillDisappearTrigger)
             .subscribe(onNext: { (dismissState, _) in
+                let tags = FilterTags.getAllFilterTags()
+                
                 switch dismissState {
                 case .normal:
                     headCountTagIndex.accept(initialValue.value.0)
@@ -230,6 +236,8 @@ class PoseFeedFilterViewModel: ViewModelType {
         /// 디테일 뷰 dismiss시 셀렉션 태그 제외하고 모든 태그정보 초기화
         input.detailViewDismissTrigger
             .subscribe(onNext: {
+                let tags = FilterTags.getAllFilterTags()
+                
                 headCountTagIndex.accept(0)
                 frameCountTagIndex.accept(0)
                 registeredTags.accept([])
