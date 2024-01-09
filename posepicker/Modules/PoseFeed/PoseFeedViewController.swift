@@ -89,6 +89,7 @@ class PoseFeedViewController: BaseViewController {
     let appleIdentityTokenTrigger = PublishSubject<String>()
     let kakaoEmailTrigger = PublishSubject<String>()
     let kakaoIdTrigger = PublishSubject<Int64>()
+    let loginCompleteTrigger = PublishSubject<Void>()
 
     // MARK: - Initialization
     
@@ -144,6 +145,19 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func configUI() {
+        if !AppCoordinator.loginState,
+           let root = self.coordinator.navigationController.viewControllers.first as? RootViewController {
+            root.loginCompletedTrigger
+                .subscribe(onNext: { [unowned self] in
+                    self.coordinator.poseFeedFilterViewController.selectedTags.accept([])
+                    self.coordinator.poseFeedFilterViewController.selectedHeadCount.accept(.all)
+                    self.coordinator.poseFeedFilterViewController.selectedFrameCount.accept(.allCut)
+                    self.poseFeedCollectionView.scrollToItem(at: IndexPath(item: -1, section: 0), at: .top, animated: true)
+                    self.loginCompleteTrigger.onNext(())
+                })
+                .disposed(by: disposeBag)
+        }
+        
         self.navigationController?.isNavigationBarHidden = true
         view.backgroundColor = .bgWhite
         
@@ -193,7 +207,7 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags, coordinator.poseFeedFilterViewController.registeredSubTag), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: registerButtonTapped, poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), requestAllPoseTrigger: requestAllPoseTrigger, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), nextPageRequestTrigger: nextPageRequestTrigger, modalDismissWithTag: modalDismissWithTag, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger))
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags, coordinator.poseFeedFilterViewController.registeredSubTag), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: registerButtonTapped, poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), requestAllPoseTrigger: requestAllPoseTrigger, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), nextPageRequestTrigger: nextPageRequestTrigger, modalDismissWithTag: modalDismissWithTag, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), loginCompleteTrigger: loginCompleteTrigger)
     
         let output = viewModel.transform(input: input)
         
@@ -236,8 +250,20 @@ class PoseFeedViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        weak var posefeedCollectionView: UICollectionView! = self.poseFeedCollectionView
+        weak var viewModel: PoseFeedViewModel! = self.viewModel
+        
         output.sectionItems
-            .bind(to: poseFeedCollectionView.rx.items(dataSource: viewModel.dataSource))
+            .bind(to: posefeedCollectionView.rx.items(dataSource: viewModel.dataSource))
+            .disposed(by: disposeBag)
+        
+        // 표시하지 않은 컬렉션뷰 셀에 대해 메모리 해제가 요청되면 걔네는 Transient 메모리로 전환되어 누수 발생하는듯
+        posefeedCollectionView.rx.didEndDisplayingCell
+            .subscribe(onNext: { cell, indexPath in
+                guard let cell = cell as? PoseFeedPhotoCell else { return }
+                cell.viewModel = nil
+                cell.disposeBag = DisposeBag()
+            })
             .disposed(by: disposeBag)
         
         output.poseDetailViewPush

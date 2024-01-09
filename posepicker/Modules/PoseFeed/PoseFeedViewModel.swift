@@ -26,12 +26,15 @@ class PoseFeedViewModel: ViewModelType {
     
     let presentLoginPopUp = PublishSubject<Void>() // 셀 내의 북마크 버튼 탭 이벤트를 데이터소스 내에서 방출 가능하여 뷰모델 내에 옵저버블을 추가해두고, 포즈피드 뷰 컨트롤러에서 구독
     let bookmarkButtonTapped = PublishSubject<Int>() // 데이터소스 객체의 북마크 버튼 탭 이후 북마크 등록요청
+    let bookmarkRemoveButtonTapped = PublishSubject<Int>() // 북마크 삭제 탭 트리거
     
     /// 포즈피드 컬렉션뷰 datasource 정의
     lazy var dataSource = RxCollectionViewSectionedReloadDataSource<PoseSection>(configureCell: { dataSource, collectionView, indexPath, item in
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PoseFeedPhotoCell.identifier, for: indexPath) as? PoseFeedPhotoCell else { return UICollectionViewCell() }
+        weak var item: PoseFeedPhotoCellViewModel! = item
         cell.disposeBag = DisposeBag()
-        cell.bind(to: item)
+        cell.viewModel = item
+        cell.bind()
         
         /// 북마크 버튼 눌렸을때 로그인 여부 체크 -> 로그인 여부를 뭘로 체크할 것인가?
         /// 키체인 토큰 조회해서 존재하면 북마크 API 요청
@@ -39,7 +42,12 @@ class PoseFeedViewModel: ViewModelType {
             .subscribe(onNext: { [unowned self] in
                 if AppCoordinator.loginState {
                     // API요청 보내기
-                    self.bookmarkButtonTapped.onNext(item.poseId.value)
+                    if item.bookmarkCheck.value {
+                        self.bookmarkRemoveButtonTapped.onNext(item.poseId.value)
+                    } else {
+                        self.bookmarkButtonTapped.onNext(item.poseId.value)
+                    }
+                    item.bookmarkCheck.accept(!item.bookmarkCheck.value)
                 } else {
                     self.presentLoginPopUp.onNext(())
                 }
@@ -75,6 +83,7 @@ class PoseFeedViewModel: ViewModelType {
         let modalDismissWithTag: Observable<String>
         let appleIdentityTokenTrigger: Observable<String>
         let kakaoLoginTrigger: Observable<(String, Int64)>
+        let loginCompleteTrigger: Observable<Void>
     }
     
     struct Output {
@@ -189,6 +198,23 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
+        /// 0. 로그인 후 포즈피드 전체 데이터 새로 가져오기
+        input.loginCompleteTrigger
+            .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
+                loadable.accept(true)
+                tagItems.accept([])
+                return self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: self.currentPage, pageSize: 8)).asObservable()
+            }
+            .map { $0.content }
+            .flatMapLatest { [unowned self] posefeed -> Observable<[PoseFeedPhotoCellViewModel]> in
+                return self.retrieveCacheObservable(posefeed: posefeed)
+            }
+            .subscribe(onNext: {
+                loadable.accept(false)
+                filterSection.accept($0)
+            })
+            .disposed(by: disposeBag)
+        
         /// 1. 포즈피드 초기 진입시 데이터 요청
         input.requestAllPoseTrigger
             .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
@@ -206,8 +232,10 @@ class PoseFeedViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         /// 2-1. 포즈피드 필터 세팅 이후 데이터 요청 (필터링 데이터 세팅)
+        /// 빈 배열 accept 전에 전체 순회하며 뷰모델 오브젝트 해제하기
         queryParameters
             .flatMapLatest { [unowned self] tags -> Observable<FilteredPose> in
+                // 태그 비어있을때 분기처리
                 if tags.isEmpty { return Observable<FilteredPose>.empty() }
                 
                 // MARK: - 초기화 로직
@@ -243,7 +271,7 @@ class PoseFeedViewModel: ViewModelType {
                 recommendContents.accept(filteredPose.recommendedContents)
                 return self.retrieveCacheObservable(posefeed: filteredPose.filteredContents?.content ?? [])
             }
-            .subscribe(onNext: {
+            .subscribe(onNext: { [unowned self] in
                 loadable.accept(false)
                 self.endLoading()
                 filterSection.accept($0) // 기존 필터링 섹션 데이터 전체 초기화 후 새로 가져온 데이터로 교체
@@ -335,7 +363,7 @@ class PoseFeedViewModel: ViewModelType {
                 recommendContents.accept(filteredPose.recommendedContents) // 2-2로 이동
                 return retrieveCacheObservable(posefeed: filteredPose.filteredContents?.content ?? [])
             }
-            .subscribe(onNext: {
+            .subscribe(onNext: { [unowned self] in
                 self.endLoading()
                 loadable.accept(false)
                 filterSection.accept(filterSection.value + $0)
@@ -406,11 +434,20 @@ class PoseFeedViewModel: ViewModelType {
         /// 8. 북마크 등록 API 요청
         self.bookmarkButtonTapped
             .flatMapLatest { [unowned self] poseId -> Observable<BookmarkResponse> in
-                guard let userId = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId) else { return Observable<BookmarkResponse>.empty() }
                 return self.apiSession.requestSingle(.registerBookmark(poseId: poseId)).asObservable()
             }
             .subscribe(onNext: { _ in
                 print("등록 완료!")
+            })
+            .disposed(by: disposeBag)
+        
+        /// 9. 북마크 삭제 API 요청
+        self.bookmarkRemoveButtonTapped
+            .flatMapLatest { [unowned self] poseId -> Observable<BookmarkResponse> in
+                return self.apiSession.requestSingle(.deleteBookmark(poseId: poseId)).asObservable()
+            }
+            .subscribe(onNext: { _ in
+                print("삭제 완료!")
             })
             .disposed(by: disposeBag)
             
