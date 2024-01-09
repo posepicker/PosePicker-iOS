@@ -38,6 +38,7 @@ class RootViewController: BaseViewController {
     var viewControllers: [UIViewController] = []
     var coordinator: RootCoordinator
     var viewModel: RootViewModel
+    var loginCompletedTrigger = PublishSubject<Void>()
     
     var currentPage: Int = 0 {
         didSet {
@@ -174,6 +175,7 @@ class RootViewController: BaseViewController {
             .subscribe(onNext: { [unowned self] in
                 guard let popupVC = self.presentedViewController as? PopUpViewController,
                       let _ = popupVC.popUpView as? LoginPopUpView else { return }
+                self.loginCompletedTrigger.onNext(())
                 self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
