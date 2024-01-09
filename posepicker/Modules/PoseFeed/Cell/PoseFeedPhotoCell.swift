@@ -29,6 +29,7 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
     
     // MARK: - Properties
     static let identifier = "PoseFeedPhotoCell"
+    var viewModel: PoseFeedPhotoCellViewModel!
     
     // MARK: - Life Cycles
     
@@ -36,6 +37,7 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
         super.prepareForReuse()
         imageView.image = nil
         bookmarkButton.setImage(nil, for: .normal)
+        viewModel = nil
         disposeBag = DisposeBag()
     }
     
@@ -59,13 +61,13 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
         self.layer.cornerRadius = 8
     }
     
-    func bind(to viewModel: PoseFeedPhotoCellViewModel) {
+    func bind() {
+        weak var viewModel: PoseFeedPhotoCellViewModel! = viewModel
         viewModel.image.asDriver()
             .drive(onNext: { [weak self] in
                 self?.imageView.image = $0
             })
             .disposed(by: disposeBag)
-//        viewModel.image.bind(to: self.imageView.rx.image).disposed(by: disposeBag)
         
         viewModel.bookmarkCheck.asDriver()
             .drive(onNext: { [weak self] bookmarkCheck in
