@@ -24,22 +24,29 @@ class BookMarkViewModel: ViewModelType {
     var isLast = false
     var isLoading = false
     
+    let bookmarkButtonTapped = PublishSubject<Int>() // 데이터소스 객체의 북마크 버튼 탭 이후 북마크 등록요청
+    let bookmarkRemoveButtonTapped = PublishSubject<Int>() // 북마크 삭제 탭 트리거
+    
     /// 포즈피드 컬렉션뷰 datasource 정의
     lazy var dataSource = RxCollectionViewSectionedReloadDataSource<BookmarkSection>(configureCell: { dataSource, collectionView, indexPath, item in
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookmarkFeedCell.identifier, for: indexPath) as? BookmarkFeedCell else { return UICollectionViewCell() }
         cell.disposeBag = DisposeBag()
-        cell.bind(to: item)
+        cell.viewModel = item
+        cell.bind()
         
-//        cell.bookmarkButton.rx.tap
-//            .subscribe(onNext: { [unowned self] in
-//                if let _ = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId) {
-//                    // API요청 보내기
-//                    self.bookmarkButtonTapped.onNext(item.poseId.value)
-//                } else {
-//                    self.presentLoginPopUp.onNext(())
-//                }
-//            })
-//            .disposed(by: self.disposeBag)
+        cell.bookmarkButton.rx.tap
+            .subscribe(onNext: { [unowned self] in
+                if AppCoordinator.loginState {
+                    // API요청 보내기
+                    if item.bookmarkCheck.value {
+                        self.bookmarkRemoveButtonTapped.onNext(item.poseId.value)
+                    } else {
+                        self.bookmarkButtonTapped.onNext(item.poseId.value)
+                    }
+                    item.bookmarkCheck.accept(!item.bookmarkCheck.value)
+                }
+            })
+            .disposed(by: cell.disposeBag)
         
         return cell
     }, configureSupplementaryView: { dataSource, collectionView, kind, indexPath -> UICollectionReusableView in
@@ -92,10 +99,9 @@ class BookMarkViewModel: ViewModelType {
                 self.currentPage = 0
                 self.isLast = false
                 
-                if let userIdString = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId),
-                   let userId = Int64(userIdString)
+                if let userIdString = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId)
                 {
-                    return apiSession.requestSingle(.retrieveBookmarkFeed(userId: userId, pageNumber: self.currentPage, pageSize: 8)).asObservable()
+                    return apiSession.requestSingle(.retrieveBookmarkFeed(pageNumber: self.currentPage, pageSize: 8)).asObservable()
                 } else {
                     return Observable<PoseFeed>.empty()
                 }
@@ -132,7 +138,7 @@ class BookMarkViewModel: ViewModelType {
                 if let userIdString = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId),
                    let userId = Int64(userIdString)
                 {
-                    return apiSession.requestSingle(.retrieveBookmarkFeed(userId: userId, pageNumber: self.currentPage, pageSize: 8)).asObservable()
+                    return apiSession.requestSingle(.retrieveBookmarkFeed(pageNumber: self.currentPage, pageSize: 8)).asObservable()
                 } else {
                     return Observable<PoseFeed>.empty()
                 }
@@ -165,6 +171,26 @@ class BookMarkViewModel: ViewModelType {
             .subscribe(onNext: {
                 let viewModel = BookmarkDetailViewModel(poseDetailData: $0)
                 bookmarkDetailViewModel.accept(viewModel)
+            })
+            .disposed(by: disposeBag)
+        
+        /// 4. 북마크 재등록
+        self.bookmarkButtonTapped
+            .flatMapLatest { [unowned self] poseId -> Observable<BookmarkResponse> in
+                return self.apiSession.requestSingle(.registerBookmark(poseId: poseId)).asObservable()
+            }
+            .subscribe(onNext: { _ in
+                print("등록 완료!")
+            })
+            .disposed(by: disposeBag)
+        
+        /// 5. 북마크 삭제
+        self.bookmarkRemoveButtonTapped
+            .flatMapLatest { [unowned self] poseId -> Observable<BookmarkResponse> in
+                return self.apiSession.requestSingle(.deleteBookmark(poseId: poseId)).asObservable()
+            }
+            .subscribe(onNext: { _ in
+                print("삭제 완료!")
             })
             .disposed(by: disposeBag)
         
