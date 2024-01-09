@@ -140,7 +140,7 @@ class BookmarkDetailViewModel: ViewModelType {
             .flatMapLatest { [unowned self] _ -> Observable<BookmarkResponse> in
                 if let userIdString = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId),
                    let userId = Int64(userIdString) {
-                    return self.apiSession.requestSingle(.deleteBookmark(userId: Int64(userId), poseId: self.poseDetailData.poseInfo.poseId)).asObservable()
+                    return self.apiSession.requestSingle(.deleteBookmark(poseId: self.poseDetailData.poseInfo.poseId)).asObservable()
                 } else {
                     return Observable<BookmarkResponse>.empty()
                 }
