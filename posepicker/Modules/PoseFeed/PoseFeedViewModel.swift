@@ -81,9 +81,17 @@ class PoseFeedViewModel: ViewModelType {
         let poseFeedSelection: ControlEvent<PoseFeedPhotoCellViewModel>
         let nextPageRequestTrigger: Observable<Void>
         let modalDismissWithTag: Observable<String>
+        
+        /// 토큰 세팅 관련 옵저버블
         let appleIdentityTokenTrigger: Observable<String>
         let kakaoLoginTrigger: Observable<(String, Int64)>
+        
+        /// 로그인 완료 트리거 후 포즈피드 새로고침을 위한 옵저버블
         let loginCompleteTrigger: Observable<Void>
+        
+        /// 포즈 아이디값을 받아서 bookmarkCheck 속성 바인딩을 위한 옵저버블
+        /// API 요청은 하지 않음 (북마크 뷰에서 이미 처리되고 오는 상황만 가정)
+        let bookmarkFromPoseId: Observable<(Int, Bool)>
     }
     
     struct Output {
@@ -235,7 +243,7 @@ class PoseFeedViewModel: ViewModelType {
         /// 빈 배열 accept 전에 전체 순회하며 뷰모델 오브젝트 해제하기
         queryParameters
             .flatMapLatest { [unowned self] tags -> Observable<FilteredPose> in
-                // 태그 비어있을때 분기처리
+                // 태그 비어있을때 분기처리 -> 태그속성은 빼고 요청하도록 수정
                 if tags.isEmpty { return Observable<FilteredPose>.empty() }
                 
                 // MARK: - 초기화 로직
@@ -450,6 +458,30 @@ class PoseFeedViewModel: ViewModelType {
                 print("삭제 완료!")
             })
             .disposed(by: disposeBag)
+        
+        /// 10. 북마크 뷰에서 북마크버튼 체크되었을때 섹션 아이템에 데이터 바인딩
+        /// 체크된 포즈아이디 기준으로 추천섹션과 필터링 섹션 조회해서 존재하면 북마크 체크값 바인딩 진행
+        input.bookmarkFromPoseId
+            .subscribe(onNext: { [unowned recommendSection, unowned filterSection] poseId, bookmarkCheck in
+                var filterSectionValue = filterSection.value
+                if let checkedIndexInFilter = filterSectionValue.firstIndex(where: {
+                    return $0.poseId.value == poseId
+                }) {
+                    filterSectionValue[checkedIndexInFilter].bookmarkCheck.accept(bookmarkCheck)
+                    filterSection.accept(filterSectionValue)
+                    return
+                }
+                
+                let recommendSectionValue = recommendSection.value
+                if let checkedIndexInRecommend = recommendSectionValue.firstIndex(where: {
+                    return $0.poseId.value == poseId
+                }) {
+                    recommendSectionValue[checkedIndexInRecommend].bookmarkCheck.accept(bookmarkCheck)
+                    recommendSection.accept(recommendSectionValue)
+                    return
+                }
+            })
+            .disposed(by: disposeBag)
             
         
         return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), deleteSubTag: deleteSubTag.asDriver(onErrorJustReturn: ()), sectionItems: sectionItems.asObservable(), poseDetailViewPush: poseDetailViewModel.asDriver(), isLoading: loadable.asObservable(), dismissLoginView: dismissLoginView)
@@ -473,7 +505,10 @@ class PoseFeedViewModel: ViewModelType {
     
     func retrieveCacheObservable(posefeed: [PosePick], isFilterSection: Bool = true) -> Observable<[PoseFeedPhotoCellViewModel]> {
         let viewModelObservable = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
+        let filterContentSizeObservable = BehaviorRelay<[CGSize]>(value: [])
+        let recommendContentSizeObservable = BehaviorRelay<[CGSize]>(value: [])
         
+        // 매 요소마다 accept하여 리로딩을 자주 처리하지 말고, 한번에 몰아서 진행
         posefeed.forEach { posepick in
             ImageCache.default.retrieveImage(forKey: posepick.poseInfo.imageKey, options: nil) { [weak self] result in
                 guard let self = self else { return }
@@ -481,7 +516,10 @@ class PoseFeedViewModel: ViewModelType {
                 case .success(let value):
                     if let image = value.image {
                         let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
-                        isFilterSection ? self.filteredContentSizes.accept(self.filteredContentSizes.value + [newSizeImage.size]) : self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size])
+                        
+//                        isFilterSection ? self.filteredContentSizes.accept(self.filteredContentSizes.value + [newSizeImage.size]) : self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size])
+                        
+                        isFilterSection ? filterContentSizeObservable.accept(filterContentSizeObservable.value + [newSizeImage.size]) : recommendContentSizeObservable.accept(recommendContentSizeObservable.value + [newSizeImage.size])
                         
                         let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck)
                         viewModelObservable.accept(viewModelObservable.value + [viewModel])
@@ -491,7 +529,8 @@ class PoseFeedViewModel: ViewModelType {
                             switch downloadResult {
                             case .success(let downloadImage):
                                 let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadImage.image)
-                                isFilterSection ? self.filteredContentSizes.accept(self.filteredContentSizes.value + [newSizeImage.size]) : self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size])
+                                isFilterSection ? filterContentSizeObservable.accept(filterContentSizeObservable.value + [newSizeImage.size]) : recommendContentSizeObservable.accept(recommendContentSizeObservable.value + [newSizeImage.size])
+//                                isFilterSection ? self.filteredContentSizes.accept(self.filteredContentSizes.value + [newSizeImage.size]) : self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size])
                                 
                                 let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck)
                                 viewModelObservable.accept(viewModelObservable.value + [viewModel])
@@ -505,6 +544,17 @@ class PoseFeedViewModel: ViewModelType {
                 }
             }
         }
+        
+        viewModelObservable.asObservable()
+            .skip(while: {
+                $0.count < posefeed.count
+            })
+            .subscribe(onNext: { [unowned self] _ in
+                self.filteredContentSizes.accept(self.filteredContentSizes.value +  filterContentSizeObservable.value)
+                self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + recommendContentSizeObservable.value)
+            })
+            .disposed(by: disposeBag)
+        
         return viewModelObservable.asObservable().skip(while: { $0.count < posefeed.count })
     }
 }
