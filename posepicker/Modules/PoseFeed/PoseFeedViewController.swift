@@ -82,7 +82,7 @@ class PoseFeedViewController: BaseViewController {
     var coordinator: PoseFeedCoordinator
     let requestAllPoseTrigger = PublishSubject<Void>()
 
-    let nextPageRequestTrigger = PublishSubject<Void>()
+    let nextPageRequestTrigger = PublishSubject<PoseFeedViewModel.RequestState>()
     let modalDismissWithTag = PublishSubject<String>() // 상세 페이지에서 태그 tap과 함께 dismiss 트리거
     let registerButtonTapped = PublishSubject<Void>()
     
@@ -161,10 +161,13 @@ class PoseFeedViewController: BaseViewController {
         self.navigationController?.isNavigationBarHidden = true
         view.backgroundColor = .bgWhite
         
-        poseFeedCollectionView.rx.contentOffset
-            .subscribe(onNext: { [unowned self] in
+        poseFeedCollectionView.rx.contentOffset.asDriver()
+            .drive(onNext: { [unowned self] in
+                
                 if $0.y > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height && !self.viewModel.isLoading && !self.viewModel.isLast {
-                    self.nextPageRequestTrigger.onNext(())
+                    // 초기 로딩시에도 nextPage 트리거하면 안됨
+                    self.viewModel.searchNext()
+//                    self.nextPageRequestTrigger.onNext(.request)
                 }
             })
             .disposed(by: disposeBag)
@@ -207,7 +210,7 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags, coordinator.poseFeedFilterViewController.registeredSubTag), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: registerButtonTapped, poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), requestAllPoseTrigger: requestAllPoseTrigger, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), nextPageRequestTrigger: nextPageRequestTrigger, modalDismissWithTag: modalDismissWithTag, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), loginCompleteTrigger: loginCompleteTrigger)
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags, coordinator.poseFeedFilterViewController.registeredSubTag), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: registerButtonTapped, poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), requestAllPoseTrigger: requestAllPoseTrigger, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), modalDismissWithTag: modalDismissWithTag, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), loginCompleteTrigger: loginCompleteTrigger, bookmarkFromPoseId: coordinator.bookmarkCheckObservable)
     
         let output = viewModel.transform(input: input)
         
@@ -219,10 +222,17 @@ class PoseFeedViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         output.filterTagItems
-            .drive(filterCollectionView.rx.items(cellIdentifier: RegisteredFilterCell.identifier, cellType: RegisteredFilterCell.self)) {  _, viewModel, cell in
+            .drive(filterCollectionView.rx.items(cellIdentifier: RegisteredFilterCell.identifier, cellType: RegisteredFilterCell.self)) { _, viewModel, cell in
                 cell.disposeBag = DisposeBag()
                 cell.bind(to: viewModel)
             }
+            .disposed(by: disposeBag)
+        
+        // 태그 세팅 후 스크롤 초기화
+        output.filterTagItems
+            .drive(onNext: { [unowned self] _ in
+                self.poseFeedCollectionView.scrollToItem(at: IndexPath(item: -1, section: 0), at: .top, animated: true)
+            })
             .disposed(by: disposeBag)
         
         output.deleteTargetCountTag
@@ -257,9 +267,18 @@ class PoseFeedViewController: BaseViewController {
             .bind(to: posefeedCollectionView.rx.items(dataSource: viewModel.dataSource))
             .disposed(by: disposeBag)
         
+        // 무한스크롤 요청 대기상태
+        output.sectionItems
+            .subscribe(onNext: { [unowned self] _ in
+//                print("filtered Count: \($0.first!.items.count) & filteredContentSize Count: \(self.viewModel.filteredContentSizes.value.count)")
+//                print("recommended Count: \($0.last!.items.count) & recommendedContentSize Count: \(self.viewModel.recommendedContentsSizes.value.count)")
+                self.nextPageRequestTrigger.onNext(.idle)
+            })
+            .disposed(by: disposeBag)
+        
         // 표시하지 않은 컬렉션뷰 셀에 대해 메모리 해제가 요청되면 걔네는 Transient 메모리로 전환되어 누수 발생하는듯
-        posefeedCollectionView.rx.didEndDisplayingCell
-            .subscribe(onNext: { cell, indexPath in
+        posefeedCollectionView.rx.didEndDisplayingCell.asDriver()
+            .drive(onNext: { cell, indexPath in
                 guard let cell = cell as? PoseFeedPhotoCell else { return }
                 cell.viewModel = nil
                 cell.disposeBag = DisposeBag()
