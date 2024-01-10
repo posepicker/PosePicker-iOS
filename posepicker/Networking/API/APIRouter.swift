@@ -72,6 +72,7 @@ enum APIRouter: URLRequestConvertible {
             return "/api/pose/talk"
         case .retrieveAllPoseFeed:
             return "/api/pose/all"
+            // (peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int)
         case .retrieveFilteringPoseFeed:
             return "/api/pose"
         case .retrievePoseDetail(let poseId):
@@ -111,12 +112,17 @@ enum APIRouter: URLRequestConvertible {
         case .retrieveFilteringPoseFeed(let peopleCount, let frameCount, let filterTags, let pageNumber):
             var tagString = ""
             filterTags.forEach { tagString += "\($0),"}
-            return [
+            var queryParams: Parameters = [
                 K.Parameters.peopleCount: FilterTags.getNumberFromPeopleCountString(countString: peopleCount) ?? 0,
                 K.Parameters.frameCount: FilterTags.getNumberFromFrameCountString(countString: frameCount) ?? 0,
                 K.Parameters.tags: tagString,
                 K.Parameters.pageNumber: pageNumber
             ]
+            if tagString.isEmpty {
+                queryParams.removeValue(forKey: K.Parameters.tags)
+            }
+            
+            return queryParams
         case .retrievePoseDetail:
             return nil
         case .appleLogin(let idToken):
