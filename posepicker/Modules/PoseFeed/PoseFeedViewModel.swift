@@ -27,6 +27,10 @@ class PoseFeedViewModel: ViewModelType {
     let presentLoginPopUp = PublishSubject<Void>() // 셀 내의 북마크 버튼 탭 이벤트를 데이터소스 내에서 방출 가능하여 뷰모델 내에 옵저버블을 추가해두고, 포즈피드 뷰 컨트롤러에서 구독
     let bookmarkButtonTapped = PublishSubject<Int>() // 데이터소스 객체의 북마크 버튼 탭 이후 북마크 등록요청
     let bookmarkRemoveButtonTapped = PublishSubject<Int>() // 북마크 삭제 탭 트리거
+    let nextPageRequestTrigger = PublishSubject<PoseFeedViewModel.RequestState>()
+    
+    /// 필터링 컨텐츠 먼저 로드시키기 위한 트리거 옵저버블
+//    let filterContentsLoadCompleteTrigger = PublishSubject<Bool>()
     
     /// 포즈피드 컬렉션뷰 datasource 정의
     lazy var dataSource = RxCollectionViewSectionedReloadDataSource<PoseSection>(configureCell: { dataSource, collectionView, indexPath, item in
@@ -71,6 +75,11 @@ class PoseFeedViewModel: ViewModelType {
         case frame
     }
     
+    enum RequestState {
+        case idle
+        case request
+    }
+    
     struct Input {
         let filterButtonTapped: ControlEvent<Void> // O
         let tagItems: Observable<(PeopleCountTags, FrameCountTags, [FilterTags], String?)> // 이 외에도 일반 스트링값이 있을 수 있다
@@ -79,7 +88,6 @@ class PoseFeedViewModel: ViewModelType {
         let poseFeedFilterViewIsPresenting: Observable<Bool> // O
         let requestAllPoseTrigger: Observable<Void>
         let poseFeedSelection: ControlEvent<PoseFeedPhotoCellViewModel>
-        let nextPageRequestTrigger: Observable<Void>
         let modalDismissWithTag: Observable<String>
         
         /// 토큰 세팅 관련 옵저버블
@@ -243,16 +251,16 @@ class PoseFeedViewModel: ViewModelType {
         /// 빈 배열 accept 전에 전체 순회하며 뷰모델 오브젝트 해제하기
         queryParameters
             .flatMapLatest { [unowned self] tags -> Observable<FilteredPose> in
-                // 태그 비어있을때 분기처리 -> 태그속성은 빼고 요청하도록 수정
                 if tags.isEmpty { return Observable<FilteredPose>.empty() }
-                
+
                 // MARK: - 초기화 로직
+                self.filteredContentSizes.accept([])
+                self.recommendedContentsSizes.accept([])
                 self.currentPage = 0
                 self.beginLoading()
                 filterSection.accept([])
                 recommendSection.accept([])
-                self.filteredContentSizes.accept([])
-                self.recommendedContentsSizes.accept([])
+                recommendContents.accept(nil)
                 loadable.accept(true)
                 
                 let filterTags: [String] = tags.count > 2 ? Array(tags[2..<tags.count]) : []
@@ -287,7 +295,8 @@ class PoseFeedViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         /// 2-2. 포즈피드 필터 세팅 이후 추천 컨텐츠
-        recommendContents
+        /// 추천컨텐츠는 반드시 필터링 컨텐츠가 캐시에서 모두 로드된 이후에 처리
+        recommendContents.asObservable()
             .compactMap { $0 }
             .flatMapLatest { [unowned self] recommendedContents -> Observable<[PoseFeedPhotoCellViewModel]> in
                 self.isLast = recommendedContents.last
@@ -312,8 +321,12 @@ class PoseFeedViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         /// 4-1. 다음 페이지 요청 트리거 - 쿼리 세팅 안된 상태 (포즈피드 초기 진입 이후의 무한스크롤)
-        input.nextPageRequestTrigger
-            .flatMapLatest { queryParameters }
+        self.nextPageRequestTrigger
+            .flatMapLatest { [unowned self] _ in
+                self.newNextPageTriggerObservable()
+            }
+            .filter { $0 == .request }
+            .flatMapLatest { _ in queryParameters }
             .flatMapLatest { [unowned self] querySet -> Observable<PoseFeed> in
                 if querySet.isEmpty {
                     self.beginLoading() // 로딩 시작
@@ -336,19 +349,29 @@ class PoseFeedViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         /// 4-2. 다음 페이지 요청 트리거 - 쿼리 세팅 된 상태 (포즈피드 진입 후 필터 세팅된 이후의 무한스크롤)
-        input.nextPageRequestTrigger
-            .flatMapLatest { queryParameters }
+        self.nextPageRequestTrigger
+            .debug()
+            .flatMapLatest { [unowned self] _ in
+                self.newNextPageTriggerObservable()
+            }
+            .filter { $0 == .request }
+            .filter { _ in
+                !queryParameters.value.isEmpty
+            }
+            .flatMapLatest { _ in queryParameters }
             .flatMapLatest { [unowned self] querySet -> Observable<FilteredPose> in
                 if querySet.isEmpty {
                     return Observable<FilteredPose>.empty()
                 } else {
+                    print("NEXTPAGE TRIGGERED..")
                     // 인원 수 & 프레임 수 제외한 나머지 태그들 추출하는 로직
                     let filterTags: [String] = querySet.count > 2 ? Array(querySet[2..<querySet.count]) : []
                     self.beginLoading()
                     loadable.accept(true)
                     self.currentPage += 1
-                    
+
                     // MARK: - 상세 뷰에서 셀 탭을 통해 모달로 태그 세팅되었을때의 무한스크롤
+                    // MARK: - 해당 엣지케이스는 필터태그 세팅이 한번도 이루어지지 않았을 때에만 해당
                     if querySet.count == 1 {
                         // 인원 수 태그일때
                         if let _ = FilterTags.getNumberFromPeopleCountString(countString: querySet.first!) {
@@ -463,7 +486,7 @@ class PoseFeedViewModel: ViewModelType {
         /// 체크된 포즈아이디 기준으로 추천섹션과 필터링 섹션 조회해서 존재하면 북마크 체크값 바인딩 진행
         input.bookmarkFromPoseId
             .subscribe(onNext: { [unowned recommendSection, unowned filterSection] poseId, bookmarkCheck in
-                var filterSectionValue = filterSection.value
+                let filterSectionValue = filterSection.value
                 if let checkedIndexInFilter = filterSectionValue.firstIndex(where: {
                     return $0.poseId.value == poseId
                 }) {
@@ -503,10 +526,14 @@ class PoseFeedViewModel: ViewModelType {
         self.isLoading = false
     }
     
+    /// flatMapLatest가 안먹혀서 self에 새로 정의
+    /// nextPageTrigger flatMapLatest 매번 새로운 호출을 위함
+    func newNextPageTriggerObservable() -> Observable<RequestState> {
+        return nextPageRequestTrigger
+    }
+    
     func retrieveCacheObservable(posefeed: [PosePick], isFilterSection: Bool = true) -> Observable<[PoseFeedPhotoCellViewModel]> {
         let viewModelObservable = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
-        let filterContentSizeObservable = BehaviorRelay<[CGSize]>(value: [])
-        let recommendContentSizeObservable = BehaviorRelay<[CGSize]>(value: [])
         
         // 매 요소마다 accept하여 리로딩을 자주 처리하지 말고, 한번에 몰아서 진행
         posefeed.forEach { posepick in
@@ -517,9 +544,7 @@ class PoseFeedViewModel: ViewModelType {
                     if let image = value.image {
                         let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
                         
-//                        isFilterSection ? self.filteredContentSizes.accept(self.filteredContentSizes.value + [newSizeImage.size]) : self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size])
-                        
-                        isFilterSection ? filterContentSizeObservable.accept(filterContentSizeObservable.value + [newSizeImage.size]) : recommendContentSizeObservable.accept(recommendContentSizeObservable.value + [newSizeImage.size])
+                        isFilterSection ? self.filteredContentSizes.accept(self.filteredContentSizes.value + [newSizeImage.size]) : self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size])
                         
                         let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck)
                         viewModelObservable.accept(viewModelObservable.value + [viewModel])
@@ -529,8 +554,12 @@ class PoseFeedViewModel: ViewModelType {
                             switch downloadResult {
                             case .success(let downloadImage):
                                 let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadImage.image)
-                                isFilterSection ? filterContentSizeObservable.accept(filterContentSizeObservable.value + [newSizeImage.size]) : recommendContentSizeObservable.accept(recommendContentSizeObservable.value + [newSizeImage.size])
-//                                isFilterSection ? self.filteredContentSizes.accept(self.filteredContentSizes.value + [newSizeImage.size]) : self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size])
+                                
+                                isFilterSection ? self.filteredContentSizes.accept(self.filteredContentSizes.value + [newSizeImage.size]) : self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size])
+                                
+//                                isFilterSection ? filterContentSizeObservable.accept(filterContentSizeObservable.value + [newSizeImage.size]) : recommendContentSizeObservable.accept(recommendContentSizeObservable.value + [newSizeImage.size])
+                                
+//                                isFilterSection ? self.filterContentsLoadCompleteTrigger.onNext(true) : self.filterContentsLoadCompleteTrigger.onNext(false)
                                 
                                 let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck)
                                 viewModelObservable.accept(viewModelObservable.value + [viewModel])
@@ -545,16 +574,21 @@ class PoseFeedViewModel: ViewModelType {
             }
         }
         
-        viewModelObservable.asObservable()
-            .skip(while: {
-                $0.count < posefeed.count
-            })
-            .subscribe(onNext: { [unowned self] _ in
-                self.filteredContentSizes.accept(self.filteredContentSizes.value +  filterContentSizeObservable.value)
-                self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + recommendContentSizeObservable.value)
-            })
-            .disposed(by: disposeBag)
+        // 리턴되는 순간 dispose됨?
+//        viewModelObservable.asObservable()
+//            .skip(while: {
+//                $0.count < posefeed.count
+//            })
+//            .subscribe(onNext: { [unowned self] _ in
+//                self.filteredContentSizes.accept(self.filteredContentSizes.value +  filterContentSizeObservable.value)
+//                self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + recommendContentSizeObservable.value)
+//            })
+//            .disposed(by: disposeBag)
         
         return viewModelObservable.asObservable().skip(while: { $0.count < posefeed.count })
+    }
+    
+    func searchNext() {
+        self.nextPageRequestTrigger.onNext(.request)
     }
 }
