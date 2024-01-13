@@ -35,7 +35,6 @@ class PoseFeedViewModel: ViewModelType {
     /// 포즈피드 컬렉션뷰 datasource 정의
     lazy var dataSource = RxCollectionViewSectionedReloadDataSource<PoseSection>(configureCell: { dataSource, collectionView, indexPath, item in
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PoseFeedPhotoCell.identifier, for: indexPath) as? PoseFeedPhotoCell else { return UICollectionViewCell() }
-        weak var item: PoseFeedPhotoCellViewModel! = item
         cell.disposeBag = DisposeBag()
         cell.viewModel = item
         cell.bind()
@@ -43,20 +42,37 @@ class PoseFeedViewModel: ViewModelType {
         /// 북마크 버튼 눌렸을때 로그인 여부 체크 -> 로그인 여부를 뭘로 체크할 것인가?
         /// 키체인 토큰 조회해서 존재하면 북마크 API 요청
         cell.bookmarkButton.rx.tap
-            .subscribe(onNext: { [unowned self] in
+            .withUnretained(self)
+            .subscribe { [weak item] (owner, _) in
+                guard let item = item else { return }
                 if AppCoordinator.loginState {
                     // API요청 보내기
                     if item.bookmarkCheck.value {
-                        self.bookmarkRemoveButtonTapped.onNext(item.poseId.value)
+                        owner.bookmarkRemoveButtonTapped.onNext(item.poseId.value)
                     } else {
-                        self.bookmarkButtonTapped.onNext(item.poseId.value)
+                        owner.bookmarkButtonTapped.onNext(item.poseId.value)
                     }
                     item.bookmarkCheck.accept(!item.bookmarkCheck.value)
                 } else {
-                    self.presentLoginPopUp.onNext(())
+                    owner.presentLoginPopUp.onNext(())
                 }
-            })
+            }
             .disposed(by: cell.disposeBag)
+//            .subscribe(onNext: { [unowned self, weak item] in
+//                guard let item = item else { return }
+//                if AppCoordinator.loginState {
+//                    // API요청 보내기
+//                    if item.bookmarkCheck.value {
+//                        self.bookmarkRemoveButtonTapped.onNext(item.poseId.value)
+//                    } else {
+//                        self.bookmarkButtonTapped.onNext(item.poseId.value)
+//                    }
+//                    item.bookmarkCheck.accept(!item.bookmarkCheck.value)
+//                } else {
+//                    self.presentLoginPopUp.onNext(())
+//                }
+//            })
+//            .disposed(by: cell.disposeBag)
         return cell
     }, configureSupplementaryView: { dataSource, collectionView, kind, indexPath -> UICollectionReusableView in
         if indexPath.section == 0 {
@@ -109,7 +125,7 @@ class PoseFeedViewModel: ViewModelType {
         let deleteTargetCountTag: Driver<CountTagType?>
         let deleteSubTag: Driver<Void>
         let sectionItems: Observable<[PoseSection]>
-        let poseDetailViewPush: Driver<PoseDetailViewModel?>
+        let poseDetailViewPush: Observable<PoseDetailViewModel?>
         let isLoading: Observable<Bool>
         let dismissLoginView: Observable<Void>
     }
@@ -233,12 +249,14 @@ class PoseFeedViewModel: ViewModelType {
         
         /// 1. 포즈피드 초기 진입시 데이터 요청
         input.requestAllPoseTrigger
-            .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
+            .withUnretained(self)
+            .flatMapLatest { owner, _ -> Observable<PoseFeed> in
                 loadable.accept(true)
-                return self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: self.currentPage, pageSize: 8)).asObservable()
+                return owner.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: owner.currentPage, pageSize: 8)).asObservable()
             }
             .map { $0.content }
-            .flatMapLatest { [unowned self] posefeed -> Observable<[PoseFeedPhotoCellViewModel]> in
+            .withUnretained(self)
+            .flatMapLatest { owner, posefeed -> Observable<[PoseFeedPhotoCellViewModel]> in
                 return self.retrieveCacheObservable(posefeed: posefeed)
             }
             .subscribe(onNext: {
@@ -250,14 +268,15 @@ class PoseFeedViewModel: ViewModelType {
         /// 2-1. 포즈피드 필터 세팅 이후 데이터 요청 (필터링 데이터 세팅)
         /// 빈 배열 accept 전에 전체 순회하며 뷰모델 오브젝트 해제하기
         queryParameters
-            .flatMapLatest { [unowned self] tags -> Observable<FilteredPose> in
+            .withUnretained(self)
+            .flatMapLatest { owner, tags -> Observable<FilteredPose> in
                 if tags.isEmpty { return Observable<FilteredPose>.empty() }
 
                 // MARK: - 초기화 로직
-                self.filteredContentSizes.accept([])
-                self.recommendedContentsSizes.accept([])
-                self.currentPage = 0
-                self.beginLoading()
+                owner.filteredContentSizes.accept([])
+                owner.recommendedContentsSizes.accept([])
+                owner.currentPage = 0
+                owner.beginLoading()
                 filterSection.accept([])
                 recommendSection.accept([])
                 recommendContents.accept(nil)
@@ -269,28 +288,30 @@ class PoseFeedViewModel: ViewModelType {
                 if tags.count == 1 {
                     // 인원 수 태그일때
                     if let _ = FilterTags.getNumberFromPeopleCountString(countString: tags.first!) {
-                        return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: tags.first!, frameCount: "전체", filterTags: [], pageNumber: 0)).asObservable()
+                        return owner.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: tags.first!, frameCount: "전체", filterTags: [], pageNumber: 0)).asObservable()
                     }
                     
                     // 프레임 수 태그일때
                     if let _ = FilterTags.getNumberFromFrameCountString(countString: tags.first!) {
-                        return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: "전체", frameCount: tags.first!, filterTags: [], pageNumber: 0)).asObservable()
+                        return owner.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: "전체", frameCount: tags.first!, filterTags: [], pageNumber: 0)).asObservable()
                     }
                     
-                    return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: "전체", frameCount: "전체", filterTags: tags, pageNumber: 0)).asObservable()
+                    return owner.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: "전체", frameCount: "전체", filterTags: tags, pageNumber: 0)).asObservable()
                 }
                 
                 return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: tags[0], frameCount: tags[1], filterTags: filterTags, pageNumber: self.currentPage)).asObservable()
             }
-            .flatMapLatest { [unowned self] filteredPose -> Observable<[PoseFeedPhotoCellViewModel]> in
-                self.isLast = filteredPose.filteredContents?.last ?? true // 추천섹션 데이터 accept처리
+            .withUnretained(self)
+            .flatMapLatest { owner, filteredPose -> Observable<[PoseFeedPhotoCellViewModel]> in
+                owner.isLast = filteredPose.filteredContents?.last ?? true // 추천섹션 데이터 accept처리
                 recommendContents.accept(filteredPose.recommendedContents)
-                return self.retrieveCacheObservable(posefeed: filteredPose.filteredContents?.content ?? [])
+                return owner.retrieveCacheObservable(posefeed: filteredPose.filteredContents?.content ?? [])
             }
-            .subscribe(onNext: { [unowned self] in
+            .withUnretained(self)
+            .subscribe(onNext: { owner, filterContents in
                 loadable.accept(false)
-                self.endLoading()
-                filterSection.accept($0) // 기존 필터링 섹션 데이터 전체 초기화 후 새로 가져온 데이터로 교체
+                owner.endLoading()
+                filterSection.accept(filterContents) // 기존 필터링 섹션 데이터 전체 초기화 후 새로 가져온 데이터로 교체
             })
             .disposed(by: disposeBag)
         
@@ -298,106 +319,110 @@ class PoseFeedViewModel: ViewModelType {
         /// 추천컨텐츠는 반드시 필터링 컨텐츠가 캐시에서 모두 로드된 이후에 처리
         recommendContents.asObservable()
             .compactMap { $0 }
-            .flatMapLatest { [unowned self] recommendedContents -> Observable<[PoseFeedPhotoCellViewModel]> in
-                self.isLast = recommendedContents.last
-                self.endLoading()
+            .withUnretained(self)
+            .flatMapLatest { owner, recommendedContents -> Observable<[PoseFeedPhotoCellViewModel]> in
+                owner.isLast = recommendedContents.last
+                owner.endLoading()
                 loadable.accept(false)
-                return self.retrieveCacheObservable(posefeed: recommendedContents.content, isFilterSection: false)
+                return owner.retrieveCacheObservable(posefeed: recommendedContents.content, isFilterSection: false)
             }
-            .subscribe(onNext: {
+            .subscribe(onNext: { [weak recommendSection] in
+                guard let recommendSection = recommendSection else { return }
                 recommendSection.accept(recommendSection.value + $0)
             })
             .disposed(by: disposeBag)
         
         /// 3. 셀 탭 이후 디테일 뷰 표시를 위한 PoseDetailViewModel 뷰모델 바인딩
         input.poseFeedSelection
-            .flatMapLatest { [unowned self] viewModel -> Observable<PosePick> in
-                return self.apiSession.requestSingle(.retrievePoseDetail(poseId: viewModel.poseId.value)).asObservable()
+            .withUnretained(self)
+            .flatMapLatest { owner, viewModel -> Observable<PosePick> in
+                return owner.apiSession.requestSingle(.retrievePoseDetail(poseId: viewModel.poseId.value)).asObservable()
             }
-            .subscribe(onNext: {
-                let viewModel = PoseDetailViewModel(poseDetailData: $0)
+            .subscribe(onNext: { posepick in
+                let viewModel = PoseDetailViewModel(poseDetailData: posepick)
                 poseDetailViewModel.accept(viewModel)
             })
             .disposed(by: disposeBag)
         
         /// 4-1. 다음 페이지 요청 트리거 - 쿼리 세팅 안된 상태 (포즈피드 초기 진입 이후의 무한스크롤)
         self.nextPageRequestTrigger
-            .flatMapLatest { [unowned self] _ in
-                self.newNextPageTriggerObservable()
-            }
+//            .flatMapLatest { [unowned self] _ in
+//                self.newNextPageTriggerObservable()
+//            }
             .filter { $0 == .request }
             .flatMapLatest { _ in queryParameters }
-            .flatMapLatest { [unowned self] querySet -> Observable<PoseFeed> in
+            .withUnretained(self)
+            .flatMapLatest { owner, querySet -> Observable<PoseFeed> in
                 if querySet.isEmpty {
-                    self.beginLoading() // 로딩 시작
+                    owner.beginLoading() // 로딩 시작
                     loadable.accept(true)
-                    self.currentPage += 1
-                    return self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: self.currentPage, pageSize: 8)).asObservable()
+                    owner.currentPage += 1
+                    return owner.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: owner.currentPage, pageSize: 8)).asObservable()
                 } else {
                     return Observable<PoseFeed>.empty()
                 }
             }
-            .flatMapLatest { [unowned self] posefeed -> Observable<[PoseFeedPhotoCellViewModel]> in
-                self.isLast = posefeed.last
-                return retrieveCacheObservable(posefeed: posefeed.content)
+            .withUnretained(self)
+            .flatMapLatest { owner, posefeed -> Observable<[PoseFeedPhotoCellViewModel]> in
+                owner.isLast = posefeed.last
+                return owner.retrieveCacheObservable(posefeed: posefeed.content)
             }
-            .subscribe(onNext: { [unowned self] in
-                self.endLoading() // 로딩 끝
+            .withUnretained(self)
+            .subscribe(onNext: { owner, filterContents in
+                owner.endLoading() // 로딩 끝
                 loadable.accept(false)
-                filterSection.accept(filterSection.value + $0)
+                filterSection.accept(filterSection.value + filterContents)
             })
             .disposed(by: disposeBag)
         
         /// 4-2. 다음 페이지 요청 트리거 - 쿼리 세팅 된 상태 (포즈피드 진입 후 필터 세팅된 이후의 무한스크롤)
         self.nextPageRequestTrigger
-            .debug()
-            .flatMapLatest { [unowned self] _ in
-                self.newNextPageTriggerObservable()
-            }
             .filter { $0 == .request }
             .filter { _ in
                 !queryParameters.value.isEmpty
             }
             .flatMapLatest { _ in queryParameters }
-            .flatMapLatest { [unowned self] querySet -> Observable<FilteredPose> in
+            .withUnretained(self)
+            .flatMapLatest { owner, querySet -> Observable<FilteredPose> in
                 if querySet.isEmpty {
                     return Observable<FilteredPose>.empty()
                 } else {
-                    print("NEXTPAGE TRIGGERED..")
                     // 인원 수 & 프레임 수 제외한 나머지 태그들 추출하는 로직
                     let filterTags: [String] = querySet.count > 2 ? Array(querySet[2..<querySet.count]) : []
-                    self.beginLoading()
+                    owner.beginLoading()
                     loadable.accept(true)
-                    self.currentPage += 1
+                    owner.currentPage += 1
 
                     // MARK: - 상세 뷰에서 셀 탭을 통해 모달로 태그 세팅되었을때의 무한스크롤
                     // MARK: - 해당 엣지케이스는 필터태그 세팅이 한번도 이루어지지 않았을 때에만 해당
                     if querySet.count == 1 {
                         // 인원 수 태그일때
                         if let _ = FilterTags.getNumberFromPeopleCountString(countString: querySet.first!) {
-                            return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: querySet.first!, frameCount: "전체", filterTags: [], pageNumber: self.currentPage)).asObservable()
+                            return owner.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: querySet.first!, frameCount: "전체", filterTags: [], pageNumber: owner.currentPage)).asObservable()
                         }
                         
                         // 프레임 수 태그일때
                         if let _ = FilterTags.getNumberFromFrameCountString(countString: querySet.first!) {
-                            return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: "전체", frameCount: querySet.first!, filterTags: [], pageNumber: self.currentPage)).asObservable()
+                            return owner.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: "전체", frameCount: querySet.first!, filterTags: [], pageNumber: owner.currentPage)).asObservable()
                         }
                         
-                        return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: "전체", frameCount: "전체", filterTags: querySet, pageNumber: self.currentPage)).asObservable()
+                        return owner.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: "전체", frameCount: "전체", filterTags: querySet, pageNumber: owner.currentPage)).asObservable()
                     }
                     
-                    return self.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: querySet[0], frameCount: querySet[1], filterTags: filterTags, pageNumber: self.currentPage)).asObservable()
+                    return owner.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: querySet[0], frameCount: querySet[1], filterTags: filterTags, pageNumber: owner.currentPage)).asObservable()
                 }
             }
-            .flatMapLatest { [unowned self] filteredPose -> Observable<[PoseFeedPhotoCellViewModel]> in
-                self.isLast = filteredPose.filteredContents?.last ?? true
+            .withUnretained(self)
+            .flatMapLatest { owner, filteredPose -> Observable<[PoseFeedPhotoCellViewModel]> in
+                owner.isLast = filteredPose.filteredContents?.last ?? true
                 recommendContents.accept(filteredPose.recommendedContents) // 2-2로 이동
-                return retrieveCacheObservable(posefeed: filteredPose.filteredContents?.content ?? [])
+                return owner.retrieveCacheObservable(posefeed: filteredPose.filteredContents?.content ?? [])
             }
-            .subscribe(onNext: { [unowned self] in
-                self.endLoading()
+            .withUnretained(self)
+            .subscribe(onNext: { owner, filteredContents in
+                owner.endLoading()
                 loadable.accept(false)
-                filterSection.accept(filterSection.value + $0)
+                filterSection.accept(filterSection.value + filteredContents)
             })
             .disposed(by: disposeBag)
         
@@ -507,7 +532,7 @@ class PoseFeedViewModel: ViewModelType {
             .disposed(by: disposeBag)
             
         
-        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), deleteSubTag: deleteSubTag.asDriver(onErrorJustReturn: ()), sectionItems: sectionItems.asObservable(), poseDetailViewPush: poseDetailViewModel.asDriver(), isLoading: loadable.asObservable(), dismissLoginView: dismissLoginView)
+        return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), deleteSubTag: deleteSubTag.asDriver(onErrorJustReturn: ()), sectionItems: sectionItems.asObservable(), poseDetailViewPush: poseDetailViewModel.asObservable(), isLoading: loadable.asObservable(), dismissLoginView: dismissLoginView)
     }
     
     /// 디자인 수치 기준으로 이미지 리사이징
