@@ -286,10 +286,11 @@ class PoseFeedViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         output.poseDetailViewPush
-            .drive(onNext: { [unowned self] in
-                guard let viewModel = $0 else { return }
-                self.coordinator.pushDetailView(viewController: PoseDetailViewController(viewModel: viewModel, coordinator: self.coordinator))
-            })
+            .withUnretained(self)
+            .subscribe{ owner, viewModel in
+                guard let viewModel = viewModel else { return }
+                owner.coordinator.pushDetailView(viewController: PoseDetailViewController(viewModel: viewModel, coordinator: owner.coordinator))
+            }
             .disposed(by: disposeBag)
         
         output.isLoading.asDriver(onErrorJustReturn: false)
