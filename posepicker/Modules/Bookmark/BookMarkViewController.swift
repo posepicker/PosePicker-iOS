@@ -36,7 +36,7 @@ class BookMarkViewController: BaseViewController {
     
     // MARK: - Properties
     var viewModel: BookMarkViewModel
-    var coordinator: PoseFeedCoordinator
+    weak var coordinator: PoseFeedCoordinator?
     
     let viewDidLoadTrigger = PublishSubject<Void>()
     let nextPageTrigger = PublishSubject<Void>()
@@ -117,7 +117,22 @@ class BookMarkViewController: BaseViewController {
         output.bookmarkDetailViewPush
             .drive(onNext: { [unowned self] in
                 guard let viewModel = $0 else { return }
-                self.coordinator.pushBookmarkDetailView(viewController: BookmarkDetailViewController(viewModel: viewModel, coordinator: self.coordinator))
+                guard let coordinator = self.coordinator else { return }
+                coordinator.pushBookmarkDetailView(viewController: BookmarkDetailViewController(viewModel: viewModel, coordinator: coordinator))
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.bookmarkButtonTapped
+            .subscribe(onNext: { [unowned self] in
+                guard let coordinator = self.coordinator else { return }
+                coordinator.triggerBookmarkFromPoseId(poseId: $0, bookmarkCheck: true)
+            })
+            .disposed(by: disposeBag)
+        
+        viewModel.bookmarkRemoveButtonTapped
+            .subscribe(onNext: { [unowned self] in
+                guard let coordinator = self.coordinator else { return }
+                coordinator.triggerBookmarkFromPoseId(poseId: $0, bookmarkCheck: false)
             })
             .disposed(by: disposeBag)
     }
