@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class PoseFeedCoordinator: NSObject, Coordinator {
     
@@ -13,6 +14,7 @@ class PoseFeedCoordinator: NSObject, Coordinator {
     var childCoordinators: [Coordinator] = []
     var navigationController: UINavigationController
     var poseFeedFilterViewController = PoseFeedFilterViewController(viewModel: PoseFeedFilterViewModel())
+    var bookmarkCheckObservable = PublishSubject<(Int, Bool)>()
     
     // MARK: - Initialization
     
@@ -103,5 +105,9 @@ class PoseFeedCoordinator: NSObject, Coordinator {
         }
         posefeedViewController.modalDismissWithTag.onNext(tag)
         posefeedViewController.registerButtonTapped.onNext(())
+    }
+    
+    func triggerBookmarkFromPoseId(poseId: Int, bookmarkCheck: Bool) {
+        bookmarkCheckObservable.onNext((poseId, bookmarkCheck))
     }
 }
