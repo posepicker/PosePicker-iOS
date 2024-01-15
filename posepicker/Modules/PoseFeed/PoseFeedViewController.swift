@@ -267,15 +267,6 @@ class PoseFeedViewController: BaseViewController {
             .bind(to: posefeedCollectionView.rx.items(dataSource: viewModel.dataSource))
             .disposed(by: disposeBag)
         
-        // 무한스크롤 요청 대기상태
-        output.sectionItems
-            .subscribe(onNext: { [unowned self] _ in
-//                print("filtered Count: \($0.first!.items.count) & filteredContentSize Count: \(self.viewModel.filteredContentSizes.value.count)")
-//                print("recommended Count: \($0.last!.items.count) & recommendedContentSize Count: \(self.viewModel.recommendedContentsSizes.value.count)")
-                self.nextPageRequestTrigger.onNext(.idle)
-            })
-            .disposed(by: disposeBag)
-        
         // 표시하지 않은 컬렉션뷰 셀에 대해 메모리 해제가 요청되면 걔네는 Transient 메모리로 전환되어 누수 발생하는듯
         posefeedCollectionView.rx.didEndDisplayingCell.asDriver()
             .drive(onNext: { cell, indexPath in
