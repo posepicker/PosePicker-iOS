@@ -40,16 +40,14 @@ class PoseDetailViewController: BaseViewController {
             $0.layer.cornerRadius = 8
         }
     
-    let navigationBar = UINavigationBar()
+    lazy var navigationBar = UINavigationBar()
         .then {
             let closeButton = UIBarButtonItem(image: ImageLiteral.imgClose24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault), style: .plain, target: self, action: #selector(closeButtonTapped))
-            let bookmarkButton = UIBarButtonItem(image: ImageLiteral.imgBookmarkOff24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault), style: .plain, target: self, action: #selector(bookmarkButtonTapped))
 
-              let navigationItem = UINavigationItem(title: "")
-              navigationItem.leftBarButtonItem = closeButton
-              navigationItem.rightBarButtonItem = bookmarkButton
-
-              $0.items = [navigationItem]
+            let navigationItem = UINavigationItem(title: "")
+            navigationItem.leftBarButtonItem = closeButton
+            navigationItem.rightBarButtonItem = bookmarkButton
+            $0.items = [navigationItem]
         }
     
     let imageView = UIImageView()
@@ -88,6 +86,8 @@ class PoseDetailViewController: BaseViewController {
             $0.startAnimating()
             $0.color = .iconWhite
         }
+    
+    lazy var bookmarkButton = UIBarButtonItem(image: ImageLiteral.imgBookmarkOff24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault), style: .plain, target: self, action: #selector(bookmarkButtonTapped))
     
     // MARK: - Properties
     
@@ -180,10 +180,10 @@ class PoseDetailViewController: BaseViewController {
         } else {
             imageSourceButton.isHidden = true
         }
-        
     }
+    
     override func bindViewModel() {
-        let input = PoseDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap)
+        let input = PoseDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap, bookmarkButtonTapped: bookmarkButton.rx.tap)
         
         let output = viewModel.transform(input: input)
         
@@ -230,6 +230,16 @@ class PoseDetailViewController: BaseViewController {
                 } else {
                     self.kakaoShareButton.isEnabled = true
                     self.loadingIndicator.isHidden = true
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.bookmarkCheck
+            .drive(onNext: { [weak self] in
+                if $0 {
+                    self?.bookmarkButton.image = ImageLiteral.imgBookmarkFill24.withTintColor(.iconDefault, renderingMode: .alwaysOriginal)
+                } else {
+                    self?.bookmarkButton.image = ImageLiteral.imgBookmarkOff24.withTintColor(.iconDefault, renderingMode: .alwaysOriginal)
                 }
             })
             .disposed(by: disposeBag)
