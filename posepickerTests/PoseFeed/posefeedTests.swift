@@ -49,8 +49,6 @@ final class posefeedTests: XCTestCase {
         wait(for: [expectation], timeout: 5)
     }
     
-    
-    
     override func tearDown() {
         super.tearDown()
         sut = nil
