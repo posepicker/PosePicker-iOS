@@ -89,7 +89,6 @@ class PoseFeedViewController: BaseViewController {
     let appleIdentityTokenTrigger = PublishSubject<String>()
     let kakaoEmailTrigger = PublishSubject<String>()
     let kakaoIdTrigger = PublishSubject<Int64>()
-    let loginCompleteTrigger = PublishSubject<Void>()
 
     // MARK: - Initialization
     
@@ -145,15 +144,11 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func configUI() {
-        if !AppCoordinator.loginState,
-           let root = self.coordinator.navigationController.viewControllers.first as? RootViewController {
+        if let root = self.coordinator.navigationController.viewControllers.first as? RootViewController {
             root.loginCompletedTrigger
                 .subscribe(onNext: { [unowned self] in
-                    self.coordinator.poseFeedFilterViewController.selectedTags.accept([])
-                    self.coordinator.poseFeedFilterViewController.selectedHeadCount.accept(.all)
-                    self.coordinator.poseFeedFilterViewController.selectedFrameCount.accept(.allCut)
-                    self.poseFeedCollectionView.scrollToItem(at: IndexPath(item: -1, section: 0), at: .top, animated: true)
-                    self.loginCompleteTrigger.onNext(())
+                    self.coordinator.poseFeedFilterViewController.detailViewDismissTrigger.onNext(())
+                    self.requestAllPoseTrigger.onNext(())
                 })
                 .disposed(by: disposeBag)
         }
@@ -167,7 +162,6 @@ class PoseFeedViewController: BaseViewController {
                 if $0.y > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height && !self.viewModel.isLoading && !self.viewModel.isLast {
                     // 초기 로딩시에도 nextPage 트리거하면 안됨
                     self.viewModel.searchNext()
-//                    self.nextPageRequestTrigger.onNext(.request)
                 }
             })
             .disposed(by: disposeBag)
@@ -210,7 +204,7 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags, coordinator.poseFeedFilterViewController.registeredSubTag), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: registerButtonTapped, poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), requestAllPoseTrigger: requestAllPoseTrigger, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), modalDismissWithTag: modalDismissWithTag, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), loginCompleteTrigger: loginCompleteTrigger, bookmarkFromPoseId: coordinator.bookmarkCheckObservable)
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags, coordinator.poseFeedFilterViewController.registeredSubTag), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: registerButtonTapped, poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting.asObservable(), requestAllPoseTrigger: requestAllPoseTrigger, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), modalDismissWithTag: modalDismissWithTag, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), bookmarkFromPoseId: coordinator.bookmarkCheckObservable)
     
         let output = viewModel.transform(input: input)
         
