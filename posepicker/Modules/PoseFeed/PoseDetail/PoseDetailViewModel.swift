@@ -20,6 +20,7 @@ class PoseDetailViewModel: ViewModelType {
     
     var disposeBag = DisposeBag()
     var poseDetailData: PosePick
+    var apiSession: APIService = APISession()
     
     init(poseDetailData: PosePick) {
         self.poseDetailData = poseDetailData
@@ -29,6 +30,7 @@ class PoseDetailViewModel: ViewModelType {
         let imageSourceButtonTapped: ControlEvent<Void>
         let linkShareButtonTapped: ControlEvent<Void>
         let kakaoShareButtonTapped: ControlEvent<Void>
+        let bookmarkButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
@@ -37,6 +39,7 @@ class PoseDetailViewModel: ViewModelType {
         let popupPresent: Driver<Void>
         let tagItems: Driver<[PoseDetailTagCellViewModel]>
         let isLoading: Observable<Bool>
+        let bookmarkCheck: Driver<Bool>
     }
     
     func transform(input: Input) -> Output {
@@ -45,7 +48,8 @@ class PoseDetailViewModel: ViewModelType {
         let popupPresent = PublishSubject<Void>()
         let tagItems = BehaviorRelay<[PoseDetailTagCellViewModel]>(value: [])
         let loadable = BehaviorRelay<Bool>(value: false)
-
+        let bookmarkCheck = BehaviorRelay<Bool>(value: self.poseDetailData.poseInfo.bookmarkCheck)
+        
         /// 1. 이미지 출처 - URL 전달
         input.imageSourceButtonTapped
             .subscribe(onNext: { [unowned self] in
@@ -130,7 +134,23 @@ class PoseDetailViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        return Output(imageSourceLink: imageSource.asObservable(), image: cacheImage.asObservable(), popupPresent: popupPresent.asDriver(onErrorJustReturn: ()), tagItems: tagItems.asDriver(), isLoading: loadable.asObservable())
+        /// 6. 북마크 버튼 탭
+        input.bookmarkButtonTapped
+            .withUnretained(self)
+            .flatMapLatest { owner, _ -> Observable<BookmarkResponse> in
+                if owner.poseDetailData.poseInfo.bookmarkCheck {
+                    return owner.apiSession.requestSingle(.deleteBookmark(poseId: owner.poseDetailData.poseInfo.poseId)).asObservable()
+                } else {
+                    return owner.apiSession.requestSingle(.registerBookmark(poseId: owner.poseDetailData.poseInfo.poseId)).asObservable()
+                }
+            }
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, _) in
+                bookmarkCheck.accept(!owner.poseDetailData.poseInfo.bookmarkCheck)
+            })
+            .disposed(by: disposeBag)
+        
+        return Output(imageSourceLink: imageSource.asObservable(), image: cacheImage.asObservable(), popupPresent: popupPresent.asDriver(onErrorJustReturn: ()), tagItems: tagItems.asDriver(), isLoading: loadable.asObservable(), bookmarkCheck: bookmarkCheck.asDriver())
     }
     
     /// 디자인 수치 기준으로 이미지 리사이징
