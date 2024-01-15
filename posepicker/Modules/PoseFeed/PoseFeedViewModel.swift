@@ -92,9 +92,6 @@ class PoseFeedViewModel: ViewModelType {
         let appleIdentityTokenTrigger: Observable<String>
         let kakaoLoginTrigger: Observable<(String, Int64)>
         
-        /// 로그인 완료 트리거 후 포즈피드 새로고침을 위한 옵저버블
-        let loginCompleteTrigger: Observable<Void>
-        
         /// 포즈 아이디값을 받아서 bookmarkCheck 속성 바인딩을 위한 옵저버블
         /// API 요청은 하지 않음 (북마크 뷰에서 이미 처리되고 오는 상황만 가정)
         let bookmarkFromPoseId: Observable<(Int, Bool)>
@@ -209,24 +206,6 @@ class PoseFeedViewModel: ViewModelType {
                     if queryParameterValue.isEmpty { queryParameterValue.append(contentsOf: ["전체", "전체"]) }
                     queryParameters.accept(queryParameterValue)
                 }
-            })
-            .disposed(by: disposeBag)
-        
-        /// 0. 로그인 후 포즈피드 전체 데이터 새로 가져오기
-        input.loginCompleteTrigger
-            .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
-                loadable.accept(true)
-                tagItems.accept([])
-                return self.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: self.currentPage, pageSize: 8)).asObservable()
-            }
-            .map { $0.content }
-            .flatMapLatest { [unowned self] posefeed -> Observable<[PoseFeedPhotoCellViewModel]> in
-                return self.retrieveCacheObservable(posefeed: posefeed)
-                    .skip(while: { $0.count < posefeed.count })
-            }
-            .subscribe(onNext: {
-                loadable.accept(false)
-                filterSection.accept($0)
             })
             .disposed(by: disposeBag)
         
@@ -528,7 +507,6 @@ class PoseFeedViewModel: ViewModelType {
                 }
             })
             .disposed(by: disposeBag)
-            
         
         return Output(presentModal: input.filterButtonTapped.asDriver(), filterTagItems: tagItems.asDriver(), deleteTargetFilterTag: deleteTargetFilterTag.asDriver(), deleteTargetCountTag: deleteTargetCountTag.asDriver(), deleteSubTag: deleteSubTag.asDriver(onErrorJustReturn: ()), sectionItems: sectionItems.asObservable(), poseDetailViewPush: poseDetailViewModel.asObservable(), isLoading: loadable.asObservable(), dismissLoginView: dismissLoginView)
     }
