@@ -49,6 +49,7 @@ extension MockURLProtocol {
         case bookmarkFeed
         case bookmarkFeedEmpty
         case bookmarkFeedNext
+        case posefeedWithoutFilter
         
         var fileName: String {
             switch self {
@@ -59,6 +60,7 @@ extension MockURLProtocol {
             case .bookmarkFeed: return "Bookmark_Feed.json"
             case .bookmarkFeedEmpty: return "Bookmark_Empty.json"
             case .bookmarkFeedNext: return "Bookmark_Next.json"
+            case .posefeedWithoutFilter: return "포즈피드태그_필터링데이터_없을때.json"
             }
         }
     }
