@@ -18,7 +18,7 @@ class APIInterceptor: RequestInterceptor {
         
         if let url = urlRequest.url,
            let accessToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.accessToken) {
-            print("pathExtension: ",url.pathExtension)
+            
             if url.absoluteString.contains("/api/pose") || url.absoluteString.contains("/api/pose/all") || url.absoluteString.contains("/api/bookmark") {
                 var urlRequest = urlRequest
                 urlRequest.headers.add(.authorization(bearerToken: accessToken))
@@ -35,5 +35,7 @@ class APIInterceptor: RequestInterceptor {
             completion(.doNotRetryWithError(error))
             return
         }
+        KeychainManager.shared.removeAll()
+        completion(.retry)
     }
 }
