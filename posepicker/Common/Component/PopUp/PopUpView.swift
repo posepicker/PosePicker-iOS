@@ -19,8 +19,16 @@ class PopUpView: UIView {
             $0.backgroundColor = .bgWhite
         }
     
+    let alertMainLabel = UILabel()
+        .then {
+            $0.font = .h4
+            $0.textColor = .textPrimary
+            $0.textAlignment = .center
+        }
+    
     let alertLabel = UILabel()
         .then {
+            $0.numberOfLines = 0
             $0.font = .pretendard(.regular, ofSize: 16)
         }
     
@@ -50,11 +58,13 @@ class PopUpView: UIView {
     let alertText = BehaviorRelay<String>(value: "")
     var disposeBag = DisposeBag()
     var isChoice: Bool
+    var isLabelNeeded: Bool
     
     // MARK: - Initialization
     
-    required init(isChoice: Bool) {
+    required init(isChoice: Bool, isLabelNeeded: Bool = false) {
         self.isChoice = isChoice
+        self.isLabelNeeded = isLabelNeeded
         super.init(frame: .zero)
         render()
         configUI()
@@ -69,13 +79,27 @@ class PopUpView: UIView {
     func render() {
         self.addSubViews([box, alertLabel, completeButton, cancelButton, confirmButton])
         
+        self.isLabelNeeded ? self.addSubView(alertMainLabel) : nil
+        
         box.snp.makeConstraints { make in
             make.top.leading.bottom.trailing.equalToSuperview()
         }
         
-        alertLabel.snp.makeConstraints { make in
-            make.top.equalTo(box.snp.top).offset(32)
-            make.centerX.equalToSuperview()
+        if self.isLabelNeeded {
+            alertMainLabel.snp.makeConstraints { make in
+                make.top.equalTo(box.snp.top).offset(32)
+                make.centerX.equalToSuperview()
+            }
+            
+            alertLabel.snp.makeConstraints { make in
+                make.top.equalTo(alertMainLabel.snp.bottom).offset(8)
+                make.centerX.equalToSuperview()
+            }
+        } else {
+            alertLabel.snp.makeConstraints { make in
+                make.top.equalTo(box.snp.top).offset(32)
+                make.centerX.equalToSuperview()
+            }
         }
         
         completeButton.snp.makeConstraints { make in
@@ -98,7 +122,16 @@ class PopUpView: UIView {
     }
     
     func configUI() {
-        alertText.asObservable().bind(to: alertLabel.rx.text).disposed(by: disposeBag)
+        alertText.asObservable()
+            .map {
+                let paragraphStyle = NSMutableParagraphStyle()
+                paragraphStyle.minimumLineHeight = 24
+                paragraphStyle.alignment = .center
+                let attrString = NSMutableAttributedString(string: $0)
+                attrString.addAttribute(.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
+                return attrString
+            }
+            .bind(to: alertLabel.rx.attributedText).disposed(by: disposeBag)
         
         if isChoice {
             completeButton.isHidden = true

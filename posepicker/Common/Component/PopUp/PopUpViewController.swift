@@ -17,11 +17,12 @@ import RxKakaoSDKUser
 class PopUpViewController: BaseViewController {
 
     // MARK: - Subviews
-    lazy var popUpView = self.isLoginPopUp ? LoginPopUpView() : PopUpView(isChoice: self.isChoice)
+    lazy var popUpView = self.isLoginPopUp ? LoginPopUpView() : PopUpView(isChoice: self.isChoice, isLabelNeeded: isLabelNeeded)
     
     // MARK: - Properties
     var isLoginPopUp: Bool
     var isChoice: Bool
+    var isLabelNeeded: Bool
     
     /// Optional 타입이 아니면 초기에 next로 값이 방출되어버림
     let appleIdentityToken = BehaviorRelay<String?>(value: nil)
@@ -29,9 +30,10 @@ class PopUpViewController: BaseViewController {
     let email = BehaviorRelay<String?>(value: nil)
 
     // MARK: - Initialization
-    init(isLoginPopUp: Bool, isChoice: Bool) {
+    init(isLoginPopUp: Bool, isChoice: Bool, isLabelNeeded: Bool = false) {
         self.isLoginPopUp = isLoginPopUp
         self.isChoice = isChoice
+        self.isLabelNeeded = isLabelNeeded
         super.init()
     }
     
@@ -51,7 +53,7 @@ class PopUpViewController: BaseViewController {
         if let popUpView = popUpView as? PopUpView {
             popUpView.snp.makeConstraints { make in
                 make.width.equalTo(300)
-                make.height.equalTo(158)
+                make.height.equalTo(self.isLabelNeeded ? 228 : 158)
                 make.center.equalToSuperview()
             }
         } else {
