@@ -83,7 +83,7 @@ class PoseFeedViewModel: ViewModelType {
         let tagItems: Observable<(PeopleCountTags, FrameCountTags, [FilterTags], String?)> // 이 외에도 일반 스트링값이 있을 수 있다
         let filterTagSelection: Observable<RegisteredFilterCellViewModel> // O
         let filterRegisterCompleted: Observable<Void> // O
-        let poseFeedFilterViewIsPresenting: Observable<Bool> // O
+        let poseFeedFilterViewIsPresenting: BehaviorRelay<Bool> // O
         let requestAllPoseTrigger: Observable<Void>
         let poseFeedSelection: ControlEvent<PoseFeedPhotoCellViewModel>
         let modalDismissWithTag: Observable<String>
@@ -95,6 +95,9 @@ class PoseFeedViewModel: ViewModelType {
         /// 포즈 아이디값을 받아서 bookmarkCheck 속성 바인딩을 위한 옵저버블
         /// API 요청은 하지 않음 (북마크 뷰에서 이미 처리되고 오는 상황만 가정)
         let bookmarkFromPoseId: Observable<(Int, Bool)>
+        
+        // 필터뷰 dismiss 상태값에 따라 API요청 여부 분기처리
+        let dismissState: BehaviorRelay<PoseFeedFilterViewModel.DismissState>
     }
     
     struct Output {
@@ -134,7 +137,7 @@ class PoseFeedViewModel: ViewModelType {
         /// 인원 수 & 프레임 수 셀렉션으로부터 데이터 추출
         input.filterRegisterCompleted
             .flatMapLatest { () -> Observable<Bool> in
-                return input.poseFeedFilterViewIsPresenting
+                return input.poseFeedFilterViewIsPresenting.asObservable()
             }
             .flatMapLatest { isPresenting -> Observable<(PeopleCountTags, FrameCountTags, [FilterTags], String?)> in
                 if isPresenting {
@@ -144,6 +147,7 @@ class PoseFeedViewModel: ViewModelType {
                 }
             }
             .flatMapLatest { [unowned self] (headcount, frameCount, filterTags, registeredSubTag) -> Observable<[String]> in
+                
                 self.currentPage = 0 // 태그 세팅 이후 페이지값 0으로 초기화
                 var subTag: [String] = []
                 if let tag = registeredSubTag {
@@ -152,6 +156,10 @@ class PoseFeedViewModel: ViewModelType {
                 return BehaviorRelay<[String]>(value: [headcount.rawValue, frameCount.rawValue] + filterTags.map { $0.rawValue} + subTag ).asObservable()
             }
             .subscribe(onNext: { tags in
+                if input.dismissState.value == .normal {
+                    return
+                }
+                
                 queryParameters.accept(tags)
                 tagItems.accept(tags.compactMap { tagName in
                     if tagName == "전체" { return nil }
