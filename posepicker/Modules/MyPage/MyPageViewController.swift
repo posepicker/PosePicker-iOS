@@ -108,6 +108,7 @@ class MyPageViewController: BaseViewController {
     
     // MARK: - Functions
     override func configUI() {
+        
         self.navigationController?.isNavigationBarHidden = false
         self.title = "메뉴"
         let backButton = UIBarButtonItem(image: ImageLiteral.imgArrowBack24.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(backButtonTapped))
@@ -339,18 +340,24 @@ class MyPageViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         loginStateTrigger.asDriver(onErrorJustReturn: ())
-            .drive(onNext: {
+            .drive(onNext: { [weak self] in
                 if let email = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
-                    self.loginButton.isEnabled = false
-                    self.loginTitle.text = email
-                    self.logoutButton.isHidden = false
-                    self.signoutButton.isHidden = false
+                    self?.loginButton.isEnabled = false
+                    self?.loginTitle.text = email
+                    self?.logoutButton.isHidden = false
+                    self?.signoutButton.isHidden = false
                 } else {
-                    self.loginButton.isEnabled = true
-                    self.loginTitle.text = "로그인하기"
-                    self.logoutButton.isHidden = true
-                    self.signoutButton.isHidden = true
+                    self?.loginButton.isEnabled = true
+                    self?.loginTitle.text = "로그인하기"
+                    self?.logoutButton.isHidden = true
+                    self?.signoutButton.isHidden = true
                 }
+                
+                guard let navigationVC = self?.coordinator.rootViewController.viewControllers.last as? UINavigationController,
+                      let posefeedVC = navigationVC.viewControllers.first as? PoseFeedViewController else { return }
+                self?.coordinator.posefeedCoordinator.poseFeedFilterViewController.detailViewDismissTrigger.onNext(())
+                posefeedVC.poseFeedCollectionView.scrollToItem(at: IndexPath(item: -1, section: 0), at: .top, animated: false)
+                posefeedVC.requestAllPoseTrigger.onNext(())
             })
             .disposed(by: disposeBag)
     }
