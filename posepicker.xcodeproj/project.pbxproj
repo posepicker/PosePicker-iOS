@@ -65,6 +65,7 @@
 		C91CE9342B1DA15700048FF7 /* posefeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91CE9322B1DA15700048FF7 /* posefeedTests.swift */; };
 		C9254CE32B4922B100C4C779 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9254CE22B4922B000C4C779 /* WebKit.framework */; };
 		C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */; };
+		C9254CE92B4E654000C4C779 /* 포즈피드태그_필터링데이터_없을때.json in Resources */ = {isa = PBXBuildFile; fileRef = C9254CE82B4E654000C4C779 /* 포즈피드태그_필터링데이터_없을때.json */; };
 		C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2742AE38E26003777EB /* RootViewController.swift */; };
 		C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2762AE38E82003777EB /* AppCoordinator.swift */; };
 		C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2782AE38EBD003777EB /* RootCoordinator.swift */; };
@@ -214,6 +215,7 @@
 		C91CE9322B1DA15700048FF7 /* posefeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posefeedTests.swift; sourceTree = "<group>"; };
 		C9254CE22B4922B000C4C779 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageWebViewController.swift; sourceTree = "<group>"; };
+		C9254CE82B4E654000C4C779 /* 포즈피드태그_필터링데이터_없을때.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = "포즈피드태그_필터링데이터_없을때.json"; sourceTree = "<group>"; };
 		C94FD2742AE38E26003777EB /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		C94FD2762AE38E82003777EB /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2782AE38EBD003777EB /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -594,6 +596,14 @@
 			path = MyPageSubview;
 			sourceTree = "<group>";
 		};
+		C9254CE72B4E652600C4C779 /* PoseFeed */ = {
+			isa = PBXGroup;
+			children = (
+				C9254CE82B4E654000C4C779 /* 포즈피드태그_필터링데이터_없을때.json */,
+			);
+			path = PoseFeed;
+			sourceTree = "<group>";
+		};
 		C94FD27A2AE39505003777EB /* PosePick */ = {
 			isa = PBXGroup;
 			children = (
@@ -722,6 +732,7 @@
 		C99D53BC2B1F1714007DEE9B /* JSON */ = {
 			isa = PBXGroup;
 			children = (
+				C9254CE72B4E652600C4C779 /* PoseFeed */,
 				C971A6832B26FCE20078EF2B /* User */,
 				C99D53C22B1FF836007DEE9B /* Bookmark */,
 				C91CE92C2B1B1CA300048FF7 /* PosePick.json */,
@@ -1180,6 +1191,7 @@
 				C99D53C12B1FA43A007DEE9B /* image.png in Resources */,
 				C99D53B92B1EEA58007DEE9B /* Bookmark_Feed.json in Resources */,
 				C91CE92D2B1B1CA300048FF7 /* PosePick.json in Resources */,
+				C9254CE92B4E654000C4C779 /* 포즈피드태그_필터링데이터_없을때.json in Resources */,
 				C94FD2A72AE3B282003777EB /* Pretendard-SemiBold.otf in Resources */,
 				88E1D6B62B1E0B9E00DB8BF6 /* User.json in Resources */,
 				C94FD2A82AE3B282003777EB /* Pretendard-Thin.otf in Resources */,
