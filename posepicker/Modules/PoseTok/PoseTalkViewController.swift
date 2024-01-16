@@ -172,6 +172,13 @@ class PoseTalkViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        selectButton.rx.tap
+            .subscribe(onNext: {
+                let generator = UIImpactFeedbackGenerator(style: .medium)
+                generator.prepare()
+                generator.impactOccurred()
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Objc Functions
