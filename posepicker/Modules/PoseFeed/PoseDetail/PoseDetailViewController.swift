@@ -94,6 +94,10 @@ class PoseDetailViewController: BaseViewController {
     var viewModel: PoseDetailViewModel
     var coordinator: PoseFeedCoordinator
     
+    let appleIdentityTokenTrigger = PublishSubject<String>()
+    let kakaoEmailTrigger = PublishSubject<String>()
+    let kakaoIdTrigger = PublishSubject<Int64>()
+    
     // MARK: - Initialization
     
     init(viewModel: PoseDetailViewModel, coordinator: PoseFeedCoordinator) {
@@ -183,7 +187,7 @@ class PoseDetailViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap, bookmarkButtonTapped: bookmarkButton.rx.tap)
+        let input = PoseDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap, bookmarkButtonTapped: bookmarkButton.rx.tap, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger))
         
         let output = viewModel.transform(input: input)
         
@@ -245,6 +249,46 @@ class PoseDetailViewController: BaseViewController {
                     self.bookmarkButton.image = ImageLiteral.imgBookmarkOff24.withTintColor(.iconDefault, renderingMode: .alwaysOriginal)
                     self.coordinator.triggerBookmarkFromPoseId(poseId: self.viewModel.poseDetailData.poseInfo.poseId, bookmarkCheck: false)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        output.loginPopUpPresent.asDriver(onErrorJustReturn: ())
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                
+                let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
+                popUpVC.modalTransitionStyle = .crossDissolve
+                popUpVC.modalPresentationStyle = .overFullScreen
+                self.present(popUpVC, animated: true)
+                
+                popUpVC.appleIdentityToken
+                    .compactMap { $0 }
+                    .subscribe(onNext: { [unowned self] in
+                        self.appleIdentityTokenTrigger.onNext($0)
+                    })
+                    .disposed(by: self.disposeBag)
+                
+                popUpVC.email
+                    .compactMap { $0 }
+                    .subscribe(onNext: { [unowned self] in
+                        self.kakaoEmailTrigger.onNext($0)
+                    })
+                    .disposed(by: self.disposeBag)
+                
+                popUpVC.kakaoId
+                    .compactMap { $0 }
+                    .subscribe(onNext: { [unowned self] in
+                        self.kakaoIdTrigger.onNext($0)
+                    })
+                    .disposed(by: self.disposeBag)
+            })
+            .disposed(by: disposeBag)
+        
+        output.dismissLoginView
+            .subscribe(onNext: { [unowned self] in
+                guard let popupVC = self.presentedViewController as? PopUpViewController,
+                      let _ = popupVC.popUpView as? LoginPopUpView else { return }
+                self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
         
