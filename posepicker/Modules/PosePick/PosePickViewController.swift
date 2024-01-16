@@ -102,6 +102,14 @@ class PosePickViewController: BaseViewController {
     override func configUI() {
         self.navigationController?.isNavigationBarHidden = true
         view.backgroundColor = .bgWhite
+        
+        posePickerButton.rx.tap
+            .subscribe(onNext: {
+                let generator = UIImpactFeedbackGenerator(style: .medium)
+                generator.prepare()
+                generator.impactOccurred()
+            })
+            .disposed(by: disposeBag)
     }
     
     override func bindViewModel() {
