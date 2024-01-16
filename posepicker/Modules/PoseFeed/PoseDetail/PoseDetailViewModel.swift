@@ -31,6 +31,10 @@ class PoseDetailViewModel: ViewModelType {
         let linkShareButtonTapped: ControlEvent<Void>
         let kakaoShareButtonTapped: ControlEvent<Void>
         let bookmarkButtonTapped: ControlEvent<Void>
+        
+        /// 토큰 세팅 관련 옵저버블
+        let appleIdentityTokenTrigger: Observable<String>
+        let kakaoLoginTrigger: Observable<(String, Int64)>
     }
     
     struct Output {
@@ -40,6 +44,8 @@ class PoseDetailViewModel: ViewModelType {
         let tagItems: Driver<[PoseDetailTagCellViewModel]>
         let isLoading: Observable<Bool>
         let bookmarkCheck: Driver<Bool>
+        let loginPopUpPresent: Observable<Void>
+        let dismissLoginView: Observable<Void>
     }
     
     func transform(input: Input) -> Output {
@@ -49,6 +55,10 @@ class PoseDetailViewModel: ViewModelType {
         let tagItems = BehaviorRelay<[PoseDetailTagCellViewModel]>(value: [])
         let loadable = BehaviorRelay<Bool>(value: false)
         let bookmarkCheck = BehaviorRelay<Bool>(value: self.poseDetailData.poseInfo.bookmarkCheck)
+        let loginPopUpPresent = PublishSubject<Void>()
+        let dismissLoginView = PublishSubject<Void>()
+        let authCodeObservable = BehaviorRelay<String>(value: "")
+        let kakaoAccountObservable = BehaviorRelay<(String, Int64)>(value: ("", -1))
         
         /// 1. 이미지 출처 - URL 전달
         input.imageSourceButtonTapped
@@ -137,20 +147,70 @@ class PoseDetailViewModel: ViewModelType {
         /// 6. 북마크 버튼 탭
         input.bookmarkButtonTapped
             .withUnretained(self)
-            .flatMapLatest { owner, _ -> Observable<BookmarkResponse> in
-                if owner.poseDetailData.poseInfo.bookmarkCheck {
-                    return owner.apiSession.requestSingle(.deleteBookmark(poseId: owner.poseDetailData.poseInfo.poseId)).asObservable()
+            .flatMapLatest { owner, _ -> Observable<BookmarkResponse?> in
+                if AppCoordinator.loginState {
+                    if owner.poseDetailData.poseInfo.bookmarkCheck {
+                        return owner.apiSession.requestSingle(.deleteBookmark(poseId: owner.poseDetailData.poseInfo.poseId)).asObservable()
+                    } else {
+                        return owner.apiSession.requestSingle(.registerBookmark(poseId: owner.poseDetailData.poseInfo.poseId)).asObservable()
+                    }
                 } else {
-                    return owner.apiSession.requestSingle(.registerBookmark(poseId: owner.poseDetailData.poseInfo.poseId)).asObservable()
+                    loginPopUpPresent.onNext(())
+                    return Observable<BookmarkResponse?>.empty()
                 }
             }
             .withUnretained(self)
-            .subscribe(onNext: { (owner, _) in
+            .subscribe(onNext: { (owner, response) in
+                guard let _ = response else { return }
                 bookmarkCheck.accept(!owner.poseDetailData.poseInfo.bookmarkCheck)
             })
             .disposed(by: disposeBag)
         
-        return Output(imageSourceLink: imageSource.asObservable(), image: cacheImage.asObservable(), popupPresent: popupPresent.asDriver(onErrorJustReturn: ()), tagItems: tagItems.asDriver(), isLoading: loadable.asObservable(), bookmarkCheck: bookmarkCheck.asDriver())
+        /// 6. 애플 아이덴티티 토큰 세팅 후 로그인처리
+        input.appleIdentityTokenTrigger
+            .flatMapLatest { [unowned self] token -> Observable<User> in
+                return self.apiSession.requestSingle(.appleLogin(idToken: token)).asObservable()
+            }
+            .flatMapLatest { user -> Observable<(Void, Void, Void, Void)> in
+                let accessTokenObservable = KeychainManager.shared.rx.saveItem(user.token.accessToken, itemClass: .password, key: K.Parameters.accessToken)
+                let refreshTokenObservable = KeychainManager.shared.rx.saveItem(user.token.refreshToken, itemClass: .password, key: K.Parameters.refreshToken)
+                let userIdObservable = KeychainManager.shared.rx.saveItem("\(user.id)", itemClass: .password, key: K.Parameters.userId)
+                let emailObservable = KeychainManager.shared.rx.saveItem(user.email, itemClass: .password, key: K.Parameters.email)
+                return Observable.zip(accessTokenObservable, refreshTokenObservable, userIdObservable, emailObservable)
+            }
+            .subscribe(onNext: { _ in
+                dismissLoginView.onNext(())
+            })
+            .disposed(by: disposeBag)
+        
+        /// 7. 카카오 이메일 추출 후 로그인처리
+        input.kakaoLoginTrigger
+            .flatMapLatest { [unowned self] kakaoAccount -> Observable<AuthCode> in
+                kakaoAccountObservable.accept(kakaoAccount)
+                return self.apiSession.requestSingle(.retrieveAuthoirzationCode).asObservable()
+            }
+            .flatMapLatest {
+                authCodeObservable.accept($0.token)
+                return Observable.combineLatest(kakaoAccountObservable.asObservable(), authCodeObservable.asObservable())
+            }
+            .flatMapLatest { [unowned self] (params: ((String, Int64), String)) -> Observable<User> in
+                let (email, kakaoId) = params.0
+                let authCode = params.1
+                return self.apiSession.requestSingle(.kakaoLogin(authCode: authCode, email: email, kakaoId: kakaoId)).asObservable()
+            }
+            .flatMapLatest { user -> Observable<(Void, Void, Void, Void)> in
+                let accessTokenObservable = KeychainManager.shared.rx.saveItem(user.token.accessToken, itemClass: .password, key: K.Parameters.accessToken)
+                let refreshTokenObservable = KeychainManager.shared.rx.saveItem(user.token.refreshToken, itemClass: .password, key: K.Parameters.refreshToken)
+                let userIdObservable = KeychainManager.shared.rx.saveItem("\(user.id)", itemClass: .password, key: K.Parameters.userId)
+                let emailObservable = KeychainManager.shared.rx.saveItem(user.email, itemClass: .password, key: K.Parameters.email)
+                return Observable.zip(accessTokenObservable, refreshTokenObservable, userIdObservable, emailObservable)
+            }
+            .subscribe(onNext: { _ in
+                dismissLoginView.onNext(())
+            })
+            .disposed(by: disposeBag)
+        
+        return Output(imageSourceLink: imageSource.asObservable(), image: cacheImage.asObservable(), popupPresent: popupPresent.asDriver(onErrorJustReturn: ()), tagItems: tagItems.asDriver(), isLoading: loadable.asObservable(), bookmarkCheck: bookmarkCheck.asDriver(), loginPopUpPresent: loginPopUpPresent, dismissLoginView: dismissLoginView)
     }
     
     /// 디자인 수치 기준으로 이미지 리사이징
