@@ -147,6 +147,15 @@ extension UIColor {
     static var blackCTO: UIColor {
         return .init(hex: "#141218")
     }
+    static var dimmed30: UIColor {
+        return .init(hex: "#000000", alpha: 0.3)
+    }
+    static var dimmed70: UIColor {
+        return .init(hex: "#000000", alpha: 0.7)
+    }
+    static var dimmed85: UIColor {
+        return .init(hex: "#000000", alpha: 0.85)
+    }
 }
 
 extension UIColor {
