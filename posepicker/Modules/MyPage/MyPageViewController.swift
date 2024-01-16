@@ -47,6 +47,13 @@ class MyPageViewController: BaseViewController {
             $0.setTitle("자주 묻는 질문", for: .normal)
         }
     
+    let snsButton = UIButton(type: .system)
+        .then {
+            $0.setTitleColor(.textBrand, for: .normal)
+            $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
+            $0.setTitle("포즈피커 공식 SNS", for: .normal)
+        }
+    
     let serviceUsageInquiryButton = UIButton(type: .system)
         .then {
             $0.setTitleColor(.textPrimary, for: .normal)
@@ -191,6 +198,12 @@ class MyPageViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        snsButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
+                self?.coordinator.pushWebView(urlString: "https://www.instagram.com/posepicker?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==", pageTitle: "포즈피커 공식 SNS")
+            })
+            .disposed(by: disposeBag)
+        
         serviceInformationButton.rx.tap.asDriver()
             .drive(onNext: { [weak self] in
                 self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/3113eb146abb4b5c809070c3f01380da", pageTitle: "이용약관")
@@ -265,7 +278,7 @@ class MyPageViewController: BaseViewController {
     }
     
     override func render() {
-        view.addSubViews([loginButton, loginLogo, loginTitle, noticeButton, faqButton, serviceUsageInquiryButton, serviceInformationButton, privacyInforationButton, logoutButton, signoutButton])
+        view.addSubViews([loginButton, loginLogo, loginTitle, noticeButton, faqButton, snsButton, serviceUsageInquiryButton, serviceInformationButton, privacyInforationButton, logoutButton, signoutButton])
         
         loginButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12)
@@ -295,9 +308,15 @@ class MyPageViewController: BaseViewController {
             make.height.equalTo(24)
         }
         
-        serviceUsageInquiryButton.snp.makeConstraints { make in
+        snsButton.snp.makeConstraints { make in
             make.leading.equalTo(faqButton)
             make.top.equalTo(faqButton.snp.bottom).offset(24)
+            make.height.equalTo(24)
+        }
+        
+        serviceUsageInquiryButton.snp.makeConstraints { make in
+            make.leading.equalTo(snsButton)
+            make.top.equalTo(snsButton.snp.bottom).offset(24)
             make.height.equalTo(24)
         }
         
@@ -363,9 +382,9 @@ class MyPageViewController: BaseViewController {
     }
     
     func setBottomBorder() {
-        let signoutLineView = UIView(frame: .init(x: 0, y: signoutButton.intrinsicContentSize.height - 8, width: signoutButton.intrinsicContentSize.width, height: 1))
-        signoutLineView.backgroundColor = .textTertiary
-        signoutButton.addSubview(signoutLineView)
+        let logoutLineView = UIView(frame: .init(x: 0, y: logoutButton.intrinsicContentSize.height - 8, width: logoutButton.intrinsicContentSize.width, height: 1))
+        logoutLineView.backgroundColor = .init(hex: "#A9ABB8")
+        logoutButton.addSubview(logoutLineView)
     }
     
     // MARK: - Objc Functions
