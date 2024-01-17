@@ -1646,7 +1646,7 @@
 				C9C890772AE103A30010240A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		C9C890782AE103A30010240A /* Build configuration list for PBXNativeTarget "posepicker" */ = {
 			isa = XCConfigurationList;
@@ -1655,7 +1655,7 @@
 				C9C8907A2AE103A30010240A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		C9C8907B2AE103A30010240A /* Build configuration list for PBXNativeTarget "posepickerTests" */ = {
 			isa = XCConfigurationList;
@@ -1664,7 +1664,7 @@
 				C9C8907D2AE103A30010240A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 		C9C8907E2AE103A30010240A /* Build configuration list for PBXNativeTarget "posepickerUITests" */ = {
 			isa = XCConfigurationList;
@@ -1673,7 +1673,7 @@
 				C9C890802AE103A30010240A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
+			defaultConfigurationName = Debug;
 		};
 /* End XCConfigurationList section */
 
