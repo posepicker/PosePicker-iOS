@@ -23,13 +23,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         /// 카카오 셋업
-//        if let kakaoKey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_KEY") as? String {
-//            RxKakaoSDK.initSDK(appKey: kakaoKey)
-//        }
-        
-        if let kakaoKey = ProcessInfo.processInfo.environment["KAKAO_NATIVE_KEY"] {
+        if let kakaoKey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_KEY") as? String {
             RxKakaoSDK.initSDK(appKey: kakaoKey)
         }
+        
+//        if let kakaoKey = ProcessInfo.processInfo.environment["KAKAO_NATIVE_KEY"] {
+//            RxKakaoSDK.initSDK(appKey: kakaoKey)
+//        }
         
         /// SmartLook 셋업
 //        if let smartlookProjectKey = Bundle.main.object(forInfoDictionaryKey: "SMARTLOOK_PROJECT_KEY") as? String {
@@ -37,13 +37,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //            Smartlook.instance.start()
 //        }
         
-        if let smartlookProjectKey = ProcessInfo.processInfo.environment["SMARTLOOK_PROJECT_KEY"] {
-            Smartlook.instance.preferences.projectKey = smartlookProjectKey
-            Smartlook.instance.start()
-        }
+//        if let smartlookProjectKey = ProcessInfo.processInfo.environment["SMARTLOOK_PROJECT_KEY"] {
+//            Smartlook.instance.preferences.projectKey = smartlookProjectKey
+//            Smartlook.instance.start()
+//        }
         
         /// Firebase 셋업
-        FirebaseApp.configure()
+//        FirebaseApp.configure()
         
         window = UIWindow(frame: UIScreen.main.bounds)
         guard let window = window else { return false }
