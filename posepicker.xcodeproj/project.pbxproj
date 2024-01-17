@@ -1438,6 +1438,7 @@
 		};
 		C9C890772AE103A30010240A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C971A67A2B2008920078EF2B /* posepicker.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -1527,6 +1528,7 @@
 		};
 		C9C8907A2AE103A30010240A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = C971A67A2B2008920078EF2B /* posepicker.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
