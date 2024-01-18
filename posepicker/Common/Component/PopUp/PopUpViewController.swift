@@ -80,7 +80,6 @@ class PopUpViewController: BaseViewController {
         
         /// 로그인 팝업일때
         if let popUpView = popUpView as? LoginPopUpView {
-            
             /// 카카오 로그인
             /// 이메일 동의항목을 초기에 체크하기 때문에 사실상 이메일을 받지 못하는 경우는 없음
             /// 그럼에도 체크를 해제하는 유저를 고려하여 추후 에러처리가 필요할듯 함
@@ -99,22 +98,24 @@ class PopUpViewController: BaseViewController {
                                 if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true {
                                     if (UserApi.isKakaoTalkLoginAvailable()) {
                                         UserApi.shared.rx.loginWithKakaoTalk()
-                                            .flatMapLatest { _ in
+                                            .subscribe(onNext: { [unowned self] _ in
                                                 UserApi.shared.rx.me()
-                                            }
-                                            .subscribe(onNext: { [unowned self] in
-                                                self.email.accept($0.kakaoAccount?.email)
-                                                self.kakaoId.accept($0.id)
+                                                    .subscribe(onSuccess: { [unowned self] in
+                                                        self.email.accept($0.kakaoAccount?.email)
+                                                        self.kakaoId.accept($0.id)
+                                                    })
+                                                    .disposed(by: self.disposeBag)
                                             })
                                             .disposed(by: self.disposeBag)
                                     } else {
                                         UserApi.shared.rx.loginWithKakaoAccount()
-                                            .flatMapLatest { _ in
+                                            .subscribe(onNext: { [unowned self] _ in
                                                 UserApi.shared.rx.me()
-                                            }
-                                            .subscribe(onNext: { [unowned self] in
-                                                self.email.accept($0.kakaoAccount?.email)
-                                                self.kakaoId.accept($0.id)
+                                                    .subscribe(onSuccess: { [unowned self] in
+                                                        self.email.accept($0.kakaoAccount?.email)
+                                                        self.kakaoId.accept($0.id)
+                                                    })
+                                                    .disposed(by: self.disposeBag)
                                             })
                                             .disposed(by: self.disposeBag)
                                     }
@@ -126,29 +127,30 @@ class PopUpViewController: BaseViewController {
                     } else {
                         if (UserApi.isKakaoTalkLoginAvailable()) {
                             UserApi.shared.rx.loginWithKakaoTalk()
-                                .flatMapLatest { _ in
+                                .subscribe(onNext: { [unowned self] _ in
                                     UserApi.shared.rx.me()
-                                }
-                                .subscribe(onNext: { [unowned self] in
-                                    self.email.accept($0.kakaoAccount?.email)
-                                    self.kakaoId.accept($0.id)
+                                        .subscribe(onSuccess: {[unowned self] in
+                                            self.email.accept($0.kakaoAccount?.email)
+                                            self.kakaoId.accept($0.id)
+                                        })
+                                        .disposed(by: disposeBag)
                                 })
-                                .disposed(by: self.disposeBag)
+                                .disposed(by: disposeBag)
                         } else {
                             UserApi.shared.rx.loginWithKakaoAccount()
-                                .flatMapLatest { _ in
+                                .subscribe(onNext: { [unowned self] _ in
                                     UserApi.shared.rx.me()
-                                }
-                                .subscribe(onNext: { [unowned self] in
-                                    self.email.accept($0.kakaoAccount?.email)
-                                    self.kakaoId.accept($0.id)
+                                        .subscribe(onSuccess: {[unowned self] in
+                                            self.email.accept($0.kakaoAccount?.email)
+                                            self.kakaoId.accept($0.id)
+                                        })
+                                        .disposed(by: disposeBag)
                                 })
-                                .disposed(by: self.disposeBag)
+                                .disposed(by: disposeBag)
                         }
                     }
                 })
                 .disposed(by: disposeBag)
-            
             // 애플로그인
             popUpView.appleLoginButton.rx.tap
                 .subscribe(onNext: { [weak self] in
