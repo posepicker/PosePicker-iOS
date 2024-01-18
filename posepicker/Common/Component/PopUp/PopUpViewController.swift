@@ -107,6 +107,16 @@ class PopUpViewController: BaseViewController {
                                                 self.kakaoId.accept($0.id)
                                             })
                                             .disposed(by: self.disposeBag)
+                                    } else {
+                                        UserApi.shared.rx.loginWithKakaoAccount()
+                                            .flatMapLatest { _ in
+                                                UserApi.shared.rx.me()
+                                            }
+                                            .subscribe(onNext: { [unowned self] in
+                                                self.email.accept($0.kakaoAccount?.email)
+                                                self.kakaoId.accept($0.id)
+                                            })
+                                            .disposed(by: self.disposeBag)
                                     }
                                 } else {
                                     print("이상한 에러")
@@ -116,6 +126,16 @@ class PopUpViewController: BaseViewController {
                     } else {
                         if (UserApi.isKakaoTalkLoginAvailable()) {
                             UserApi.shared.rx.loginWithKakaoTalk()
+                                .flatMapLatest { _ in
+                                    UserApi.shared.rx.me()
+                                }
+                                .subscribe(onNext: { [unowned self] in
+                                    self.email.accept($0.kakaoAccount?.email)
+                                    self.kakaoId.accept($0.id)
+                                })
+                                .disposed(by: self.disposeBag)
+                        } else {
+                            UserApi.shared.rx.loginWithKakaoAccount()
                                 .flatMapLatest { _ in
                                     UserApi.shared.rx.me()
                                 }
