@@ -8,6 +8,10 @@
 import UIKit
 import RxCocoa
 import RxSwift
+import KakaoSDKAuth
+import KakaoSDKUser
+import KakaoSDKCommon
+import RxKakaoSDKUser
 
 class MyPageViewController: BaseViewController {
     
@@ -235,9 +239,16 @@ class MyPageViewController: BaseViewController {
                 
                 popupView.cancelButton.rx.tap.asDriver()
                     .drive(onNext: { [weak self] in
+                        guard let self = self else { return }
+                        UserApi.shared.rx.logout()
+                            .subscribe(onCompleted: {
+                                print("kakao logout completed")
+                            })
+                            .disposed(by: self.disposeBag)
+                        
                         KeychainManager.shared.removeAll()
-                        self?.loginStateTrigger.onNext(())
-                        self?.dismiss(animated: true)
+                        self.loginStateTrigger.onNext(())
+                        self.dismiss(animated: true)
                     })
                     .disposed(by: disposeBag)
                 
@@ -264,9 +275,16 @@ class MyPageViewController: BaseViewController {
                 
                 popupView.cancelButton.rx.tap.asDriver()
                     .drive(onNext: { [weak self] in
+                        guard let self = self else { return }
+                        UserApi.shared.rx.unlink()
+                            .subscribe(onCompleted: {
+                                print("kakao unlink completed")
+                            })
+                            .disposed(by: self.disposeBag)
+                        
                         KeychainManager.shared.removeAll()
-                        self?.loginStateTrigger.onNext(())
-                        self?.dismiss(animated: true)
+                        self.loginStateTrigger.onNext(())
+                        self.dismiss(animated: true)
                     })
                     .disposed(by: disposeBag)
                 
