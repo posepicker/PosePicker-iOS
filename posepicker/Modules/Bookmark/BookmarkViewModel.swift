@@ -219,7 +219,7 @@ class BookMarkViewModel: ViewModelType {
                         let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
                          self.bookmarkContentSizes.accept(self.bookmarkContentSizes.value + [newSizeImage.size])
                         
-                        let viewModel = BookmarkFeedCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck)
+                        let viewModel = BookmarkFeedCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck ?? false)
                         viewModelObservable.accept(viewModelObservable.value + [viewModel])
                     } else {
                         guard let url = URL(string: posepick.poseInfo.imageKey) else { return }
@@ -229,7 +229,7 @@ class BookMarkViewModel: ViewModelType {
                                 let newSizeImage = self.newSizeImageWidthDownloadedResource(image: downloadImage.image)
                                  self.bookmarkContentSizes.accept(self.bookmarkContentSizes.value + [newSizeImage.size])
                                 
-                                let viewModel = BookmarkFeedCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck)
+                                let viewModel = BookmarkFeedCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck ?? false)
                                 viewModelObservable.accept(viewModelObservable.value + [viewModel])
                             case .failure:
                                 return
