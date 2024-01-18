@@ -239,9 +239,9 @@ class PoseDetailViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         output.bookmarkCheck
+            .compactMap { $0 }
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
-                
                 if $0 {
                     self.bookmarkButton.image = ImageLiteral.imgBookmarkFill24.withTintColor(.iconDefault, renderingMode: .alwaysOriginal)
                     self.coordinator.triggerBookmarkFromPoseId(poseId: self.viewModel.poseDetailData.poseInfo.poseId, bookmarkCheck: true)

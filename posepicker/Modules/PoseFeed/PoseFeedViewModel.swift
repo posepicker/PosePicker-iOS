@@ -220,11 +220,11 @@ class PoseFeedViewModel: ViewModelType {
         /// 1. 포즈피드 초기 진입시 데이터 요청
         input.requestAllPoseTrigger
             .withUnretained(self)
-            .flatMapLatest { owner, _ -> Observable<PoseFeed> in
+            .flatMapLatest { owner, _ -> Observable<FilteredPose> in
                 loadable.accept(true)
-                return owner.apiSession.requestSingle(.retrieveAllPoseFeed(pageNumber: owner.currentPage, pageSize: 8)).asObservable()
+                return owner.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: "전체", frameCount: "전체", filterTags: [], pageNumber: 0)).asObservable()
             }
-            .map { $0.content }
+            .map { $0.filteredContents?.content ?? [] }
             .withUnretained(self)
             .flatMapLatest { owner, posefeed -> Observable<[PoseFeedPhotoCellViewModel]> in
                 return self.retrieveCacheObservable(posefeed: posefeed)
@@ -430,7 +430,7 @@ class PoseFeedViewModel: ViewModelType {
         
         /// 6. 애플 아이덴티티 토큰 세팅 후 로그인처리
         input.appleIdentityTokenTrigger
-            .flatMapLatest { [unowned self] token -> Observable<User> in
+            .flatMapLatest { [unowned self] token -> Observable<PosePickerUser> in
                 return self.apiSession.requestSingle(.appleLogin(idToken: token)).asObservable()
             }
             .flatMapLatest { user -> Observable<(Void, Void, Void, Void)> in
@@ -455,7 +455,7 @@ class PoseFeedViewModel: ViewModelType {
                 authCodeObservable.accept($0.token)
                 return Observable.combineLatest(kakaoAccountObservable.asObservable(), authCodeObservable.asObservable())
             }
-            .flatMapLatest { [unowned self] (params: ((String, Int64), String)) -> Observable<User> in
+            .flatMapLatest { [unowned self] (params: ((String, Int64), String)) -> Observable<PosePickerUser> in
                 let (email, kakaoId) = params.0
                 let authCode = params.1
                 return self.apiSession.requestSingle(.kakaoLogin(authCode: authCode, email: email, kakaoId: kakaoId)).asObservable()
@@ -549,7 +549,7 @@ class PoseFeedViewModel: ViewModelType {
                         
                         isFilterSection ? self.filteredContentSizes.accept(self.filteredContentSizes.value + [newSizeImage.size]) : self.recommendedContentsSizes.accept(self.recommendedContentsSizes.value + [newSizeImage.size])
                         
-                        let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck)
+                        let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck ?? false)
                         viewModelObservable.accept(viewModelObservable.value + [viewModel])
                     } else {
                         guard let url = URL(string: posepick.poseInfo.imageKey) else { return }
@@ -564,7 +564,7 @@ class PoseFeedViewModel: ViewModelType {
                                 
 //                                isFilterSection ? self.filterContentsLoadCompleteTrigger.onNext(true) : self.filterContentsLoadCompleteTrigger.onNext(false)
                                 
-                                let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck)
+                                let viewModel = PoseFeedPhotoCellViewModel(image: newSizeImage, poseId: posepick.poseInfo.poseId, bookmarkCheck: posepick.poseInfo.bookmarkCheck ?? false)
                                 viewModelObservable.accept(viewModelObservable.value + [viewModel])
                             case .failure:
                                 return
