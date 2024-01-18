@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Alamofire
 
 struct PosePick: Codable {
     let poseInfo: Pose
@@ -21,5 +22,32 @@ struct Pose: Codable {
     let sourceUrl: String
     let tagAttributes: String?
     let updatedAt: String?
-    let bookmarkCheck: Bool
+    let bookmarkCheck: Bool?
+    
+    enum CodingKeys: String, CodingKey {
+        case createdAt
+        case frameCount
+        case imageKey
+        case peopleCount
+        case poseId
+        case source
+        case sourceUrl
+        case tagAttributes
+        case updatedAt
+        case bookmarkCheck
+    }
+    
+    init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        self.createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt)
+        self.frameCount = try container.decode(Int.self, forKey: .frameCount)
+        self.imageKey = try container.decode(String.self, forKey: .imageKey)
+        self.peopleCount = try container.decode(Int.self, forKey: .peopleCount)
+        self.poseId = try container.decode(Int.self, forKey: .poseId)
+        self.source = try container.decode(String.self, forKey: .source)
+        self.sourceUrl = try container.decode(String.self, forKey: .sourceUrl)
+        self.tagAttributes = try container.decodeIfPresent(String.self, forKey: .tagAttributes)
+        self.updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
+        self.bookmarkCheck = try container.decodeIfPresent(Bool.self, forKey: .bookmarkCheck)
+    }
 }
