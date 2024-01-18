@@ -43,7 +43,7 @@ class PoseDetailViewModel: ViewModelType {
         let popupPresent: Driver<Void>
         let tagItems: Driver<[PoseDetailTagCellViewModel]>
         let isLoading: Observable<Bool>
-        let bookmarkCheck: Driver<Bool>
+        let bookmarkCheck: Driver<Bool?>
         let loginPopUpPresent: Observable<Void>
         let dismissLoginView: Observable<Void>
     }
@@ -54,7 +54,7 @@ class PoseDetailViewModel: ViewModelType {
         let popupPresent = PublishSubject<Void>()
         let tagItems = BehaviorRelay<[PoseDetailTagCellViewModel]>(value: [])
         let loadable = BehaviorRelay<Bool>(value: false)
-        let bookmarkCheck = BehaviorRelay<Bool>(value: self.poseDetailData.poseInfo.bookmarkCheck)
+        let bookmarkCheck = BehaviorRelay<Bool?>(value: self.poseDetailData.poseInfo.bookmarkCheck)
         let loginPopUpPresent = PublishSubject<Void>()
         let dismissLoginView = PublishSubject<Void>()
         let authCodeObservable = BehaviorRelay<String>(value: "")
@@ -149,7 +149,7 @@ class PoseDetailViewModel: ViewModelType {
             .withUnretained(self)
             .flatMapLatest { owner, _ -> Observable<BookmarkResponse?> in
                 if AppCoordinator.loginState {
-                    if owner.poseDetailData.poseInfo.bookmarkCheck {
+                    if let _ = owner.poseDetailData.poseInfo.bookmarkCheck {
                         return owner.apiSession.requestSingle(.deleteBookmark(poseId: owner.poseDetailData.poseInfo.poseId)).asObservable()
                     } else {
                         return owner.apiSession.requestSingle(.registerBookmark(poseId: owner.poseDetailData.poseInfo.poseId)).asObservable()
@@ -162,13 +162,13 @@ class PoseDetailViewModel: ViewModelType {
             .withUnretained(self)
             .subscribe(onNext: { (owner, response) in
                 guard let _ = response else { return }
-                bookmarkCheck.accept(!owner.poseDetailData.poseInfo.bookmarkCheck)
+                bookmarkCheck.accept(!(owner.poseDetailData.poseInfo.bookmarkCheck ?? false))
             })
             .disposed(by: disposeBag)
         
         /// 6. 애플 아이덴티티 토큰 세팅 후 로그인처리
         input.appleIdentityTokenTrigger
-            .flatMapLatest { [unowned self] token -> Observable<User> in
+            .flatMapLatest { [unowned self] token -> Observable<PosePickerUser> in
                 return self.apiSession.requestSingle(.appleLogin(idToken: token)).asObservable()
             }
             .flatMapLatest { user -> Observable<(Void, Void, Void, Void)> in
@@ -193,7 +193,7 @@ class PoseDetailViewModel: ViewModelType {
                 authCodeObservable.accept($0.token)
                 return Observable.combineLatest(kakaoAccountObservable.asObservable(), authCodeObservable.asObservable())
             }
-            .flatMapLatest { [unowned self] (params: ((String, Int64), String)) -> Observable<User> in
+            .flatMapLatest { [unowned self] (params: ((String, Int64), String)) -> Observable<PosePickerUser> in
                 let (email, kakaoId) = params.0
                 let authCode = params.1
                 return self.apiSession.requestSingle(.kakaoLogin(authCode: authCode, email: email, kakaoId: kakaoId)).asObservable()

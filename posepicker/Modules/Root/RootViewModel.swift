@@ -29,7 +29,7 @@ class RootViewModel: ViewModelType {
         
         /// 6. 애플 아이덴티티 토큰 세팅 후 로그인처리
         input.appleIdentityTokenTrigger
-            .flatMapLatest { [unowned self] token -> Observable<User> in
+            .flatMapLatest { [unowned self] token -> Observable<PosePickerUser> in
                 return self.apiSession.requestSingle(.appleLogin(idToken: token)).asObservable()
             }
             .flatMapLatest { user -> Observable<(Void, Void, Void, Void)> in
@@ -54,7 +54,7 @@ class RootViewModel: ViewModelType {
                 authCodeObservable.accept($0.token)
                 return Observable.combineLatest(kakaoAccountObservable.asObservable(), authCodeObservable.asObservable())
             }
-            .flatMapLatest { [unowned self] (params: ((String, Int64), String)) -> Observable<User> in
+            .flatMapLatest { [unowned self] (params: ((String, Int64), String)) -> Observable<PosePickerUser> in
                 let (email, kakaoId) = params.0
                 let authCode = params.1
                 return self.apiSession.requestSingle(.kakaoLogin(authCode: authCode, email: email, kakaoId: kakaoId)).asObservable()
