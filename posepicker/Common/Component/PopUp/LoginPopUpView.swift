@@ -72,9 +72,23 @@ class LoginPopUpView: UIView {
             $0.clipsToBounds = true
         }
     
+    var loadingIndicator = UIActivityIndicatorView(style: .large)
+        .then {
+            $0.startAnimating()
+            $0.isHidden = true
+            $0.color = .bgSubWhite
+        }
+    
     // MARK: - Properties
     let alertText = BehaviorRelay<String>(value: "")
     var disposeBag = DisposeBag()
+    var isLoading = BehaviorRelay<Bool>(value: false)
+    var socialLogin = PublishSubject<SocialLogin>()
+    
+    enum SocialLogin {
+        case apple
+        case kakao
+    }
     
     // MARK: - Initialization
     override init(frame: CGRect) {
@@ -91,7 +105,7 @@ class LoginPopUpView: UIView {
 
     // MARK: - Functions
     func render() {
-        self.addSubViews([box, titleLabel, infoLabel, kakaoLoginButton, appleLoginButton])
+        self.addSubViews([box, titleLabel, infoLabel, kakaoLoginButton, appleLoginButton, loadingIndicator])
         
         box.snp.makeConstraints { make in
             make.top.leading.bottom.trailing.equalToSuperview()
@@ -121,5 +135,29 @@ class LoginPopUpView: UIView {
     }
     
     func configUI() {
+        socialLogin.asDriver(onErrorJustReturn: .kakao)
+            .drive(onNext: { [weak self] social in
+                guard let self = self else { return }
+                
+                switch social {
+                case .kakao:
+                    self.loadingIndicator.snp.makeConstraints { make in
+                        make.center.equalTo(self.kakaoLoginButton)
+                    }
+                    self.kakaoLoginButton.titleLabel?.isHidden = true
+                    self.kakaoLoginButton.configuration?.image = nil
+                    self.kakaoLoginButton.setImage(nil, for: .normal)
+                case .apple:
+                    self.loadingIndicator.snp.makeConstraints { make in
+                        make.center.equalTo(self.appleLoginButton)
+                    }
+                    self.appleLoginButton.titleLabel?.isHidden = true
+                    self.appleLoginButton.configuration?.image = nil
+                    self.appleLoginButton.setImage(nil, for: .normal)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        isLoading.map { !$0 }.bind(to: loadingIndicator.rx.isHidden).disposed(by: disposeBag)
     }
 }
