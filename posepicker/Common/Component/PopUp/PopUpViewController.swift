@@ -87,6 +87,8 @@ class PopUpViewController: BaseViewController {
             /// 그럼에도 체크를 해제하는 유저를 고려하여 추후 에러처리가 필요할듯 함
             popUpView.kakaoLoginButton.rx.tap.asDriver()
                 .drive(onNext: {[unowned self] in
+                    popUpView.socialLogin.onNext(.kakao)
+                    popUpView.isLoading.accept(true)
                     if (AuthApi.hasToken()) {
                         UserApi.shared.rx.accessTokenInfo()
                             .subscribe(onSuccess: { _ in
@@ -94,6 +96,7 @@ class PopUpViewController: BaseViewController {
                                     .subscribe(onSuccess: { [unowned self] in
                                         self.email.accept($0.kakaoAccount?.email)
                                         self.kakaoId.accept($0.id)
+                                        popUpView.isLoading.accept(false)
                                     })
                                     .disposed(by: self.disposeBag)
                             }, onFailure: { error in
@@ -105,6 +108,7 @@ class PopUpViewController: BaseViewController {
                                                     .subscribe(onSuccess: { [unowned self] in
                                                         self.email.accept($0.kakaoAccount?.email)
                                                         self.kakaoId.accept($0.id)
+                                                        popUpView.isLoading.accept(false)
                                                     })
                                                     .disposed(by: self.disposeBag)
                                             })
@@ -116,6 +120,7 @@ class PopUpViewController: BaseViewController {
                                                     .subscribe(onSuccess: { [unowned self] in
                                                         self.email.accept($0.kakaoAccount?.email)
                                                         self.kakaoId.accept($0.id)
+                                                        popUpView.isLoading.accept(false)
                                                     })
                                                     .disposed(by: self.disposeBag)
                                             })
@@ -123,6 +128,8 @@ class PopUpViewController: BaseViewController {
                                     }
                                 } else {
                                     print("이상한 에러")
+                                    popUpView.isLoading.accept(false)
+                                    popUpView.kakaoLoginButton.setTitle("카카오 로그인", for: .normal)
                                 }
                             })
                             .disposed(by: self.disposeBag)
@@ -134,6 +141,7 @@ class PopUpViewController: BaseViewController {
                                         .subscribe(onSuccess: {[unowned self] in
                                             self.email.accept($0.kakaoAccount?.email)
                                             self.kakaoId.accept($0.id)
+                                            popUpView.isLoading.accept(false)
                                         })
                                         .disposed(by: disposeBag)
                                 })
@@ -145,6 +153,7 @@ class PopUpViewController: BaseViewController {
                                         .subscribe(onSuccess: {[unowned self] in
                                             self.email.accept($0.kakaoAccount?.email)
                                             self.kakaoId.accept($0.id)
+                                            popUpView.isLoading.accept(false)
                                         })
                                         .disposed(by: disposeBag)
                                 })
@@ -156,6 +165,8 @@ class PopUpViewController: BaseViewController {
             // 애플로그인
             popUpView.appleLoginButton.rx.tap
                 .subscribe(onNext: { [weak self] in
+                    popUpView.socialLogin.onNext(.apple)
+                    popUpView.isLoading.accept(true)
                     self?.handleAppleLogin()
                 })
                 .disposed(by: disposeBag)
@@ -188,6 +199,14 @@ extension PopUpViewController: ASAuthorizationControllerDelegate {
             print("password credential .. ")
         default:
             break
+        }
+    }
+    
+    func authorizationController(controller: ASAuthorizationController, didCompleteWithError error: Error) {
+        if let popUpView = popUpView as? LoginPopUpView {
+            popUpView.isLoading.accept(false)
+            popUpView.appleLoginButton.titleLabel?.isHidden = false
+            popUpView.appleLoginButton.configuration?.image = ImageLiteral.imgAppleLogo.withRenderingMode(.alwaysOriginal)
         }
     }
 }
