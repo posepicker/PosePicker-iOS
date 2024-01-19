@@ -72,6 +72,7 @@ class BookMarkViewModel: ViewModelType {
         var viewDidLoadTrigger: Observable<Void>
         var nextPageTrigger: Observable<Void>
         var bookmarkSelection: ControlEvent<BookmarkFeedCellViewModel>
+        var bookmarkFromPoseId: Observable<(Int, Bool)>
     }
     
     struct Output {
@@ -191,6 +192,19 @@ class BookMarkViewModel: ViewModelType {
             }
             .subscribe(onNext: { _ in
                 print("삭제 완료!")
+            })
+            .disposed(by: disposeBag)
+        
+        input.bookmarkFromPoseId
+            .subscribe(onNext: { [unowned sectionItems] poseId, bookmarkCheck in
+                let bookmarkValue: [BookmarkFeedCellViewModel] = sectionItems.value.first?.items ?? []
+                if let checkedIndexInFilter = bookmarkValue.firstIndex(where: {
+                    return $0.poseId.value == poseId
+                }) {
+                    bookmarkValue[checkedIndexInFilter].bookmarkCheck.accept(bookmarkCheck)
+                    sectionItems.accept([BookmarkSection(header: "", items: bookmarkValue)])
+                    return
+                }
             })
             .disposed(by: disposeBag)
         
