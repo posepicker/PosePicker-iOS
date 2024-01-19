@@ -30,7 +30,7 @@ class BookmarkDetailViewModel: ViewModelType {
         let imageSourceButtonTapped: ControlEvent<Void>
         let linkShareButtonTapped: ControlEvent<Void>
         let kakaoShareButtonTapped: ControlEvent<Void>
-        let bookmarkBarButtonTapped: ControlEvent<Void>
+        let bookmarkButtonTapped: ControlEvent<Void>
     }
     
     struct Output {
@@ -40,6 +40,7 @@ class BookmarkDetailViewModel: ViewModelType {
         let tagItems: Driver<[BookmarkDetailTagCellViewModel]>
         let dismissDetailView: Observable<Void>
         let isLoading: Observable<Bool>
+        let bookmarkCheck: Driver<Bool?>
     }
     
     func transform(input: Input) -> Output {
@@ -49,6 +50,7 @@ class BookmarkDetailViewModel: ViewModelType {
         let tagItems = BehaviorRelay<[BookmarkDetailTagCellViewModel]>(value: [])
         let dismissDetailView = PublishSubject<Void>()
         let loadable = BehaviorRelay<Bool>(value: false)
+        let bookmarkCheck = BehaviorRelay<Bool?>(value: self.poseDetailData.poseInfo.bookmarkCheck)
         
         /// 1. 이미지 출처 - URL 전달
         input.imageSourceButtonTapped
@@ -135,22 +137,30 @@ class BookmarkDetailViewModel: ViewModelType {
             .disposed(by: disposeBag)
         
         /// 6. 북마크 버튼 탭
-        /// 북마크 디테일 뷰에서는 삭제만 이루어진다
-        input.bookmarkBarButtonTapped
-            .flatMapLatest { [unowned self] _ -> Observable<BookmarkResponse> in
-                if let userIdString = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId),
-                   let userId = Int64(userIdString) {
-                    return self.apiSession.requestSingle(.deleteBookmark(poseId: self.poseDetailData.poseInfo.poseId)).asObservable()
+        input.bookmarkButtonTapped
+            .withUnretained(self)
+            .flatMapLatest { owner, _ -> Observable<BookmarkResponse?> in
+                if AppCoordinator.loginState {
+                    if let check = bookmarkCheck.value, check {
+                        return owner.apiSession.requestSingle(.deleteBookmark(poseId: owner.poseDetailData.poseInfo.poseId)).asObservable()
+                    } else {
+                        return owner.apiSession.requestSingle(.registerBookmark(poseId: owner.poseDetailData.poseInfo.poseId)).asObservable()
+                    }
                 } else {
-                    return Observable<BookmarkResponse>.empty()
+                    return Observable<BookmarkResponse?>.empty()
                 }
             }
-            .subscribe(onNext: { _ in
-                dismissDetailView.onNext(())
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, response) in
+                if let response = response, response.poseId != -1 {
+                    bookmarkCheck.accept(true)
+                } else {
+                    bookmarkCheck.accept(false)
+                }
             })
             .disposed(by: disposeBag)
         
-        return Output(imageSourceLink: imageSource.asObservable(), image: cacheImage.asObservable(), popupPresent: popupPresent.asDriver(onErrorJustReturn: ()), tagItems: tagItems.asDriver(), dismissDetailView: dismissDetailView, isLoading: loadable.asObservable())
+        return Output(imageSourceLink: imageSource.asObservable(), image: cacheImage.asObservable(), popupPresent: popupPresent.asDriver(onErrorJustReturn: ()), tagItems: tagItems.asDriver(), dismissDetailView: dismissDetailView, isLoading: loadable.asObservable(), bookmarkCheck: bookmarkCheck.asDriver())
     }
     
     /// 디자인 수치 기준으로 이미지 리사이징
