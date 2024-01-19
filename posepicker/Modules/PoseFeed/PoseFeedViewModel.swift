@@ -84,7 +84,6 @@ class PoseFeedViewModel: ViewModelType {
         let filterTagSelection: Observable<RegisteredFilterCellViewModel> // O
         let filterRegisterCompleted: Observable<Void> // O
         let poseFeedFilterViewIsPresenting: BehaviorRelay<Bool> // O
-        let requestAllPoseTrigger: Observable<Void>
         let poseFeedSelection: ControlEvent<PoseFeedPhotoCellViewModel>
         let modalDismissWithTag: Observable<String>
         
@@ -98,6 +97,8 @@ class PoseFeedViewModel: ViewModelType {
         
         // 필터뷰 dismiss 상태값에 따라 API요청 여부 분기처리
         let dismissState: BehaviorRelay<PoseFeedFilterViewModel.DismissState>
+        
+        let tagResetTrigger: Observable<Void>
     }
     
     struct Output {
@@ -126,7 +127,7 @@ class PoseFeedViewModel: ViewModelType {
         
         let sectionItems = BehaviorRelay<[PoseSection]>(value: [PoseSection(header: "", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])])
         let poseDetailViewModel = BehaviorRelay<PoseDetailViewModel?>(value: nil)
-        let queryParameters = BehaviorRelay<[String]>(value: [])
+        let queryParameters = BehaviorRelay<[String]>(value: ["전체", "전체"])
         
         let loadable = BehaviorRelay<Bool>(value: false)
         let dismissLoginView = PublishSubject<Void>()
@@ -217,24 +218,7 @@ class PoseFeedViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        /// 1. 포즈피드 초기 진입시 데이터 요청
-        input.requestAllPoseTrigger
-            .withUnretained(self)
-            .flatMapLatest { owner, _ -> Observable<FilteredPose> in
-                loadable.accept(true)
-                return owner.apiSession.requestSingle(.retrieveFilteringPoseFeed(peopleCount: "전체", frameCount: "전체", filterTags: [], pageNumber: 0)).asObservable()
-            }
-            .map { $0.filteredContents?.content ?? [] }
-            .withUnretained(self)
-            .flatMapLatest { owner, posefeed -> Observable<[PoseFeedPhotoCellViewModel]> in
-                return self.retrieveCacheObservable(posefeed: posefeed)
-                    .skip(while: { $0.count < posefeed.count })
-            }
-            .subscribe(onNext: {
-                loadable.accept(false)
-                filterSection.accept($0)
-            })
-            .disposed(by: disposeBag)
+        /// 1. 초기 진입 - requestAll API를 queryParameter로 통합
         
         /// 2-1. 포즈피드 필터 세팅 이후 데이터 요청 (필터링 데이터 세팅)
         /// 빈 배열 accept 전에 전체 순회하며 뷰모델 오브젝트 해제하기
@@ -278,7 +262,6 @@ class PoseFeedViewModel: ViewModelType {
                 recommendContents.accept(filteredPose.recommendedContents)
                 
                 guard let contents = filteredPose.filteredContents?.content else { return Observable<[PoseFeedPhotoCellViewModel]>.empty() }
-                print("retrievedCacheObservable called in queryParameters ..")
                 return owner.retrieveCacheObservable(posefeed: contents)
                     .skip(while: { $0.count < contents.count })
             }
@@ -513,6 +496,14 @@ class PoseFeedViewModel: ViewModelType {
                     recommendSection.accept(recommendSectionValue)
                     return
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        input.tagResetTrigger
+            .subscribe(onNext: {
+                deleteSubTag.onNext(())
+                tagItems.accept([])
+                queryParameters.accept(["전체", "전체"])
             })
             .disposed(by: disposeBag)
         
