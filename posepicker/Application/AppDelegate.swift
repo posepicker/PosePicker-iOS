@@ -27,15 +27,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             RxKakaoSDK.initSDK(appKey: kakaoKey)
         }
         
-//        if let kakaoKey = ProcessInfo.processInfo.environment["KAKAO_NATIVE_KEY"] {
-//            RxKakaoSDK.initSDK(appKey: kakaoKey)
-//        }
-        
         /// SmartLook 셋업
-//        if let smartlookProjectKey = Bundle.main.object(forInfoDictionaryKey: "SMARTLOOK_PROJECT_KEY") as? String {
-//            Smartlook.instance.preferences.projectKey = smartlookProjectKey
-//            Smartlook.instance.start()
-//        }
+        if let smartlookProjectKey = Bundle.main.object(forInfoDictionaryKey: "SMARTLOOK_PROJECT_KEY") as? String {
+            Smartlook.instance.preferences.projectKey = smartlookProjectKey
+            Smartlook.instance.start()
+        }
         
 //        if let smartlookProjectKey = ProcessInfo.processInfo.environment["SMARTLOOK_PROJECT_KEY"] {
 //            Smartlook.instance.preferences.projectKey = smartlookProjectKey
@@ -43,7 +39,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         
         /// Firebase 셋업
-//        FirebaseApp.configure()
+        FirebaseApp.configure()
+
         
         window = UIWindow(frame: UIScreen.main.bounds)
         guard let window = window else { return false }
@@ -64,7 +61,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     }
     
     func application(_ app: UIApplication, open url: URL, options: [UIApplication.OpenURLOptionsKey : Any] = [:]) -> Bool {
-        if AuthApi.isKakaoTalkLoginUrl(url) {
+        if (AuthApi.isKakaoTalkLoginUrl(url)) {
             return AuthController.rx.handleOpenUrl(url: url)
         }
         
