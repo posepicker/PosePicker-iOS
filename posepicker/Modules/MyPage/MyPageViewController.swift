@@ -393,6 +393,7 @@ class MyPageViewController: BaseViewController {
                 guard let navigationVC = self?.coordinator.rootViewController.viewControllers.last as? UINavigationController,
                       let posefeedVC = navigationVC.viewControllers.first as? PoseFeedViewController else { return }
                 self?.coordinator.posefeedCoordinator.poseFeedFilterViewController.detailViewDismissTrigger.onNext(())
+                posefeedVC.tagResetTrigger.onNext(())
             })
             .disposed(by: disposeBag)
     }
