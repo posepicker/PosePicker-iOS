@@ -393,8 +393,6 @@ class MyPageViewController: BaseViewController {
                 guard let navigationVC = self?.coordinator.rootViewController.viewControllers.last as? UINavigationController,
                       let posefeedVC = navigationVC.viewControllers.first as? PoseFeedViewController else { return }
                 self?.coordinator.posefeedCoordinator.poseFeedFilterViewController.detailViewDismissTrigger.onNext(())
-                posefeedVC.poseFeedCollectionView.scrollToItem(at: IndexPath(item: -1, section: 0), at: .top, animated: false)
-                posefeedVC.requestAllPoseTrigger.onNext(())
             })
             .disposed(by: disposeBag)
     }
