@@ -40,6 +40,7 @@ class BookMarkViewController: BaseViewController {
     
     let viewDidLoadTrigger = PublishSubject<Void>()
     let nextPageTrigger = PublishSubject<Void>()
+    let bookmarkCheckObservable = PublishSubject<(Int, Bool)>()
     
     // MARK: - Initialization
     
@@ -93,7 +94,7 @@ class BookMarkViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = BookMarkViewModel.Input(viewDidLoadTrigger: viewDidLoadTrigger, nextPageTrigger: nextPageTrigger, bookmarkSelection: bookmarkCollectionView.rx.modelSelected(BookmarkFeedCellViewModel.self))
+        let input = BookMarkViewModel.Input(viewDidLoadTrigger: viewDidLoadTrigger, nextPageTrigger: nextPageTrigger, bookmarkSelection: bookmarkCollectionView.rx.modelSelected(BookmarkFeedCellViewModel.self), bookmarkFromPoseId: bookmarkCheckObservable)
         let output = viewModel.transform(input: input)
         
         output.sectionItems
@@ -126,6 +127,7 @@ class BookMarkViewController: BaseViewController {
             .subscribe(onNext: { [unowned self] in
                 guard let coordinator = self.coordinator else { return }
                 coordinator.triggerBookmarkFromPoseId(poseId: $0, bookmarkCheck: true)
+                self.bookmarkCheckObservable.onNext(($0, false))
             })
             .disposed(by: disposeBag)
         
@@ -133,6 +135,7 @@ class BookMarkViewController: BaseViewController {
             .subscribe(onNext: { [unowned self] in
                 guard let coordinator = self.coordinator else { return }
                 coordinator.triggerBookmarkFromPoseId(poseId: $0, bookmarkCheck: false)
+                self.bookmarkCheckObservable.onNext(($0, true))
             })
             .disposed(by: disposeBag)
     }
