@@ -40,12 +40,12 @@ class BookmarkDetailViewController: BaseViewController {
             $0.layer.cornerRadius = 8
         }
     
-    let bookmarkBarButton = UIBarButtonItem(image: ImageLiteral.imgBookmarkOff24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault))
+    let bookmarkButton = UIBarButtonItem(image: ImageLiteral.imgBookmarkOff24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault))
     
     lazy var navigationBar = UINavigationBar()
         .then {
             let closeButton = UIBarButtonItem(image: ImageLiteral.imgClose24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault), style: .plain, target: self, action: #selector(closeButtonTapped))
-            let bookmarkButton = self.bookmarkBarButton
+            let bookmarkButton = self.bookmarkButton
             
             let navigationItem = UINavigationItem(title: "")
             navigationItem.leftBarButtonItem = closeButton
@@ -184,7 +184,7 @@ class BookmarkDetailViewController: BaseViewController {
         
     }
     override func bindViewModel() {
-        let input = BookmarkDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap, bookmarkBarButtonTapped: bookmarkBarButton.rx.tap)
+        let input = BookmarkDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap, bookmarkButtonTapped: bookmarkButton.rx.tap)
         
         let output = viewModel.transform(input: input)
         
@@ -240,6 +240,25 @@ class BookmarkDetailViewController: BaseViewController {
                 } else {
                     self.kakaoShareButton.isEnabled = true
                     self.loadingIndicator.isHidden = true
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output.bookmarkCheck
+            .compactMap { $0 }
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                guard let navVC = self.presentingViewController as? UINavigationController,
+                      let bookmarkVC = navVC.viewControllers.last as? BookMarkViewController else { return }
+                
+                if $0 {
+                    self.bookmarkButton.image = ImageLiteral.imgBookmarkFill24.withTintColor(.iconDefault, renderingMode: .alwaysOriginal)
+                    self.coordinator.triggerBookmarkFromPoseId(poseId: self.viewModel.poseDetailData.poseInfo.poseId, bookmarkCheck: true)
+                    bookmarkVC.bookmarkCheckObservable.onNext((self.viewModel.poseDetailData.poseInfo.poseId, true))
+                } else {
+                    self.bookmarkButton.image = ImageLiteral.imgBookmarkOff24.withTintColor(.iconDefault, renderingMode: .alwaysOriginal)
+                    self.coordinator.triggerBookmarkFromPoseId(poseId: self.viewModel.poseDetailData.poseInfo.poseId, bookmarkCheck: false)
+                    bookmarkVC.bookmarkCheckObservable.onNext((self.viewModel.poseDetailData.poseInfo.poseId, false))
                 }
             })
             .disposed(by: disposeBag)
