@@ -119,6 +119,7 @@ class PosePickViewController: BaseViewController {
         
         output.animate
             .drive(onNext: { [unowned self] in
+                self.retrievedImage.image = nil
                 self.isAnimating.accept(true)
                 self.animationView.play() {
                     if $0 && self.isImageLoading.value { // 애니메이션은 끝났지만 이미지가 여전히 로딩중이면
