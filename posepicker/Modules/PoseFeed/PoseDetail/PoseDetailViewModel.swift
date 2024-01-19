@@ -149,7 +149,7 @@ class PoseDetailViewModel: ViewModelType {
             .withUnretained(self)
             .flatMapLatest { owner, _ -> Observable<BookmarkResponse?> in
                 if AppCoordinator.loginState {
-                    if let _ = owner.poseDetailData.poseInfo.bookmarkCheck {
+                    if let check = bookmarkCheck.value, check {
                         return owner.apiSession.requestSingle(.deleteBookmark(poseId: owner.poseDetailData.poseInfo.poseId)).asObservable()
                     } else {
                         return owner.apiSession.requestSingle(.registerBookmark(poseId: owner.poseDetailData.poseInfo.poseId)).asObservable()
@@ -161,8 +161,11 @@ class PoseDetailViewModel: ViewModelType {
             }
             .withUnretained(self)
             .subscribe(onNext: { (owner, response) in
-                guard let _ = response else { return }
-                bookmarkCheck.accept(!(owner.poseDetailData.poseInfo.bookmarkCheck ?? false))
+                if let response = response, response.poseId != -1 {
+                    bookmarkCheck.accept(true)
+                } else {
+                    bookmarkCheck.accept(false)
+                }
             })
             .disposed(by: disposeBag)
         
