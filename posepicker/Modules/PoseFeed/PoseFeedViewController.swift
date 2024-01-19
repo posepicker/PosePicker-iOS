@@ -80,11 +80,11 @@ class PoseFeedViewController: BaseViewController {
     
     var viewModel: PoseFeedViewModel
     var coordinator: PoseFeedCoordinator
-    let requestAllPoseTrigger = PublishSubject<Void>()
 
     let nextPageRequestTrigger = PublishSubject<PoseFeedViewModel.RequestState>()
     let modalDismissWithTag = PublishSubject<String>() // 상세 페이지에서 태그 tap과 함께 dismiss 트리거
     let registerButtonTapped = PublishSubject<Void>()
+    let tagResetTrigger = PublishSubject<Void>()
     
     let appleIdentityTokenTrigger = PublishSubject<String>()
     let kakaoEmailTrigger = PublishSubject<String>()
@@ -103,10 +103,6 @@ class PoseFeedViewController: BaseViewController {
     }
     
     // MARK: - Life Cycles
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        requestAllPoseTrigger.onNext(())
-    }
     
     // MARK: - Functions
     
@@ -144,11 +140,11 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func configUI() {
+        // 상단 바에 위치한 북마크에 대한 인증처리
         if let root = self.coordinator.navigationController.viewControllers.first as? RootViewController {
             root.loginCompletedTrigger
                 .subscribe(onNext: { [unowned self] in
-                    self.coordinator.poseFeedFilterViewController.detailViewDismissTrigger.onNext(())
-                    self.requestAllPoseTrigger.onNext(())
+                    self.tagResetTrigger.onNext(())
                 })
                 .disposed(by: disposeBag)
         }
@@ -201,10 +197,19 @@ class PoseFeedViewController: BaseViewController {
                 self.registerButtonTapped.onNext(())
             })
             .disposed(by: disposeBag)
+        
+        tagResetTrigger.asDriver(onErrorJustReturn: ())
+            .drive(onNext: { [weak self] in
+                if let root = self?.coordinator.navigationController.viewControllers.first as? RootViewController {
+                    root.coordinator.posefeedCoordinator.poseFeedFilterViewController.detailViewDismissTrigger.onNext(())
+                }
+                self?.poseFeedCollectionView.scrollToItem(at: IndexPath(item: -1, section: 0), at: .top, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags, coordinator.poseFeedFilterViewController.registeredSubTag), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: registerButtonTapped, poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting, requestAllPoseTrigger: requestAllPoseTrigger, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), modalDismissWithTag: modalDismissWithTag, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), bookmarkFromPoseId: coordinator.bookmarkCheckObservable, dismissState: coordinator.poseFeedFilterViewController.dismissState)
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags, coordinator.poseFeedFilterViewController.registeredSubTag), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: registerButtonTapped, poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), modalDismissWithTag: modalDismissWithTag, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), bookmarkFromPoseId: coordinator.bookmarkCheckObservable, dismissState: coordinator.poseFeedFilterViewController.dismissState, tagResetTrigger: tagResetTrigger)
     
         let output = viewModel.transform(input: input)
         
@@ -290,6 +295,7 @@ class PoseFeedViewController: BaseViewController {
             .subscribe(onNext: { [unowned self] in
                 guard let popupVC = self.presentedViewController as? PopUpViewController,
                       let _ = popupVC.popUpView as? LoginPopUpView else { return }
+                self.tagResetTrigger.onNext(())
                 self.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
