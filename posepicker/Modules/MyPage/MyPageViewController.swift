@@ -258,12 +258,12 @@ class MyPageViewController: BaseViewController {
         
         signoutButton.rx.tap.asDriver()
             .drive(onNext: { [unowned self] in
-                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: true, isLabelNeeded: true)
+                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: true, isLabelNeeded: true, isSignout: true)
                 popupViewController.modalTransitionStyle = .crossDissolve
                 popupViewController.modalPresentationStyle = .overFullScreen
                 let popupView = popupViewController.popUpView as! PopUpView
                 popupView.alertMainLabel.text = "회원탈퇴"
-                popupView.alertText.accept("정말 탈퇴하시겠어요?")
+                popupView.alertText.accept("모든 데이터는 삭제되며\n재가입하더라도 복구할 수 없어요.\n정말 탈퇴하시겠어요?")
                 popupView.confirmButton.setTitle("로그인 유지", for: .normal)
                 popupView.cancelButton.setTitle("회원탈퇴", for: .normal)
                 
