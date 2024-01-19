@@ -44,12 +44,12 @@ class PopUpView: UIView {
             $0.layer.cornerRadius = 12
         }
     
-    let confirmButton = UIButton(type: .system)
+    lazy var confirmButton = UIButton(type: .system)
         .then {
             $0.setTitle("확인", for: .normal)
             $0.setTitleColor(.textWhite, for: .normal)
             $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
-            $0.backgroundColor = .mainViolet
+            $0.backgroundColor =  self.isSignout ? .warningDark : .mainViolet
             $0.clipsToBounds = true
             $0.layer.cornerRadius = 12
         }
@@ -59,12 +59,14 @@ class PopUpView: UIView {
     var disposeBag = DisposeBag()
     var isChoice: Bool
     var isLabelNeeded: Bool
+    var isSignout: Bool
     
     // MARK: - Initialization
     
-    required init(isChoice: Bool, isLabelNeeded: Bool = false) {
+    required init(isChoice: Bool, isLabelNeeded: Bool = false, isSignout: Bool = false) {
         self.isChoice = isChoice
         self.isLabelNeeded = isLabelNeeded
+        self.isSignout = isSignout
         super.init(frame: .zero)
         render()
         configUI()
