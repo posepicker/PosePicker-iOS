@@ -156,6 +156,15 @@ extension UIColor {
     static var dimmed85: UIColor {
         return .init(hex: "#000000", alpha: 0.85)
     }
+    static var warningBg: UIColor {
+        return .init(hex: "#FEF1F1")
+    }
+    static var warning: UIColor {
+        return .init(hex: "#F7737C")
+    }
+    static var warningDark: UIColor {
+        return .init(hex: "#EC323E")
+    }
 }
 
 extension UIColor {
