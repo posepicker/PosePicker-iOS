@@ -94,6 +94,7 @@
 		C971A67C2B2036850078EF2B /* Bookmark_Next.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A67B2B2036850078EF2B /* Bookmark_Next.json */; };
 		C971A6822B26F5EA0078EF2B /* authenticateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971A6812B26F5EA0078EF2B /* authenticateTests.swift */; };
 		C971A6872B26FD290078EF2B /* AuthorizationCode.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A6862B26FD290078EF2B /* AuthorizationCode.json */; };
+		C990AB1E2B5BF52600567AA3 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C990AB1D2B5BF52600567AA3 /* String+.swift */; };
 		C99A8A6E2B109AA60072B361 /* SmartlookAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A6D2B109AA60072B361 /* SmartlookAnalytics */; };
 		C99A8A702B10A4970072B361 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */; };
 		C99A8A732B10A54E0072B361 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A722B10A54E0072B361 /* FirebaseAnalytics */; };
@@ -233,6 +234,7 @@
 		C971A67B2B2036850078EF2B /* Bookmark_Next.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Bookmark_Next.json; sourceTree = "<group>"; };
 		C971A6812B26F5EA0078EF2B /* authenticateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = authenticateTests.swift; sourceTree = "<group>"; };
 		C971A6862B26FD290078EF2B /* AuthorizationCode.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AuthorizationCode.json; sourceTree = "<group>"; };
+		C990AB1D2B5BF52600567AA3 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C99D53B22B1EDA22007DEE9B /* BookmarkFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFeedCell.swift; sourceTree = "<group>"; };
 		C99D53B42B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFeedCellViewModel.swift; sourceTree = "<group>"; };
@@ -707,6 +709,14 @@
 			path = User;
 			sourceTree = "<group>";
 		};
+		C990AB1C2B5BF51D00567AA3 /* String */ = {
+			isa = PBXGroup;
+			children = (
+				C990AB1D2B5BF52600567AA3 /* String+.swift */,
+			);
+			path = String;
+			sourceTree = "<group>";
+		};
 		C99D53B12B1ED9FB007DEE9B /* Cell */ = {
 			isa = PBXGroup;
 			children = (
@@ -846,6 +856,7 @@
 		C9C8909A2AE107A40010240A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C990AB1C2B5BF51D00567AA3 /* String */,
 				C9DC2FA12AEA563C00D5170D /* UIScreen */,
 				C9DC2F912AEA27F600D5170D /* UICollectionView */,
 				880E75502AE6C26D007FAD5A /* Data */,
@@ -1306,6 +1317,7 @@
 				880E75522AE6C275007FAD5A /* Data+.swift in Sources */,
 				C9DC2F942AEA282700D5170D /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				C903E5402AFCC46E00BD004F /* FilteredPose.swift in Sources */,
+				C990AB1E2B5BF52600567AA3 /* String+.swift in Sources */,
 				880E753C2AE6BE3A007FAD5A /* BindableViewModel.swift in Sources */,
 				C9DC2FA62AEB6E1800D5170D /* FilterTags.swift in Sources */,
 				C94FD28D2AE39646003777EB /* BookmarkViewModel.swift in Sources */,
