@@ -36,7 +36,12 @@ class UnderlineSegmentControl: UISegmentedControl {
     }
     
     // MARK: - Life Cycle
-
+    
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        moveUnderlineView()
+    }
+    
     override func didMoveToSuperview() {
         super.didMoveToSuperview()
         configUI()
