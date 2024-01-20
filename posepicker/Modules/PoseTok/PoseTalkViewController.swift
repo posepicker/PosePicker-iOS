@@ -88,20 +88,22 @@ class PoseTalkViewController: BaseViewController {
         view.addSubViews([informationStackView, toolTip, mainLabel, animationView, selectButton])
         
         informationStackView.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(UIScreen.main.isWiderThan375pt ? 64: 40)
+            make.top.equalToSuperview().offset(UIScreen.main.isWiderThan375pt ? 64: 40).priority(.high)
             make.centerX.equalToSuperview()
         }
         
         mainLabel.snp.makeConstraints { make in
-            make.top.equalTo(informationLabel.snp.bottom).offset(8)
+            make.top.equalTo(informationLabel.snp.bottom).offset(8).priority(.high)
             make.centerX.equalToSuperview()
             make.width.equalTo(UIScreen.main.bounds.width - 100)
         }
         
         animationView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.leading.trailing.equalToSuperview().inset(UIScreen.main.isWiderThan375pt ? 0 : 40)
-            make.bottom.equalTo(selectButton.snp.top).offset(UIScreen.main.isWiderThan375pt ? -84 : -20)
+            make.leading.trailing.equalToSuperview()
+            let mainLabelHeight = "제시어에 맞춰\n포즈를 취해요!".height(withConstrainedWidth: UIScreen.main.bounds.width - 100, font: .h1)
+            make.top.equalTo(mainLabel.snp.top).offset(mainLabelHeight)
+            make.bottom.lessThanOrEqualTo(selectButton.snp.top).offset(-10)
         }
         
         selectButton.snp.makeConstraints { make in
