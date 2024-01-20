@@ -28,6 +28,7 @@ class PopUpView: UIView {
     
     let alertLabel = UILabel()
         .then {
+            $0.textColor = .textPrimary
             $0.numberOfLines = 0
             $0.font = .pretendard(.regular, ofSize: 16)
         }

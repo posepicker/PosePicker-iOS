@@ -81,5 +81,6 @@ class BookmarkEmptyView: UICollectionReusableView {
     }
     
     func configUI() {
+        backgroundColor = .bgWhite
     }
 }

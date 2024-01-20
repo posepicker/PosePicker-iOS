@@ -38,6 +38,7 @@ class PoseTalkViewController: BaseViewController {
     
     let mainLabel = UILabel()
         .then {
+            $0.textColor = .textPrimary
             $0.layer.zPosition = 999
             $0.textAlignment = .center
             $0.numberOfLines = 0

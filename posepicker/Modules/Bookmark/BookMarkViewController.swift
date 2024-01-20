@@ -18,6 +18,7 @@ class BookMarkViewController: BaseViewController {
         cv.register(BookmarkFeedCell.self, forCellWithReuseIdentifier: BookmarkFeedCell.identifier)
         cv.register(BookmarkEmptyView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: BookmarkEmptyView.identifier)
         cv.rx.setDelegate(self).disposed(by: disposeBag)
+        cv.backgroundColor = .bgWhite
         return cv
     }()
     
@@ -78,6 +79,7 @@ class BookMarkViewController: BaseViewController {
     
     override func configUI() {
         self.navigationController?.isNavigationBarHidden = false
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.textPrimary]
         self.navigationItem.title = "북마크"
         let backButton = UIBarButtonItem(image: ImageLiteral.imgArrowBack24.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(backButtonTapped))
         self.navigationItem.leftBarButtonItem = backButton

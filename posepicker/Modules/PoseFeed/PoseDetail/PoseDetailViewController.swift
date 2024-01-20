@@ -63,6 +63,7 @@ class PoseDetailViewController: BaseViewController {
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = .bgWhite
         cv.register(PoseDetailTagCell.self, forCellWithReuseIdentifier: PoseDetailTagCell.identifier)
         return cv
     }()

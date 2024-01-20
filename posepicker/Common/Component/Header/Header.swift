@@ -12,6 +12,7 @@ class Header: UIView {
     // MARK: - Subviews
     let appTitleLabel = UILabel()
         .then {
+            $0.textColor = .textPrimary
             $0.font = .h4
             $0.text = "PosePicker"
         }

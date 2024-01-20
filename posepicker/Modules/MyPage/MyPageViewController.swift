@@ -119,7 +119,7 @@ class MyPageViewController: BaseViewController {
     
     // MARK: - Functions
     override func configUI() {
-        
+        self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.textPrimary]
         self.navigationController?.isNavigationBarHidden = false
         self.title = "메뉴"
         let backButton = UIBarButtonItem(image: ImageLiteral.imgArrowBack24.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(backButtonTapped))

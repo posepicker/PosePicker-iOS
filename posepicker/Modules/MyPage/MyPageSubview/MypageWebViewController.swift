@@ -38,7 +38,7 @@ class MypageWebViewController: BaseViewController {
     
     override func configUI() {
         webView.navigationDelegate = self
-        
+        webView.backgroundColor = .bgWhite
         let url = URL(string: urlString)!
         webView.load(URLRequest(url: url))
         webView.allowsBackForwardNavigationGestures = true

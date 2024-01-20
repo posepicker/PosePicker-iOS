@@ -40,6 +40,7 @@ class PoseFeedViewController: BaseViewController {
         layout.estimatedItemSize = CGSize(width: 60, height: 30)
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = .bgWhite
         cv.showsHorizontalScrollIndicator = false
         cv.register(RegisteredFilterCell.self, forCellWithReuseIdentifier: RegisteredFilterCell.identifier)
         cv.rx.setDelegate(self).disposed(by: disposeBag)
@@ -48,6 +49,7 @@ class PoseFeedViewController: BaseViewController {
     
     lazy var poseFeedCollectionView: UICollectionView = {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: self.pinterestLayout)
+        cv.backgroundColor = .bgWhite
         cv.register(PoseFeedPhotoCell.self, forCellWithReuseIdentifier: PoseFeedPhotoCell.identifier)
         cv.register(PoseFeedHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedHeader.identifier)
         cv.register(PoseFeedEmptyView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedEmptyView.identifier)
