@@ -110,6 +110,9 @@ class PosePickViewController: BaseViewController {
                 generator.impactOccurred()
             })
             .disposed(by: disposeBag)
+        
+        let imageTapGesture = UITapGestureRecognizer(target: self, action: #selector(retrievedImageTapped))
+        retrievedImage.addGestureRecognizer(imageTapGesture)
     }
     
     override func bindViewModel() {
@@ -151,4 +154,8 @@ class PosePickViewController: BaseViewController {
     }
     
     // MARK: - Objc Functions
+    @objc
+    func retrievedImageTapped() {
+        print("tapped")
+    }
 }
