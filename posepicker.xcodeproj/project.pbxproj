@@ -54,6 +54,7 @@
 		C9042E5C2B0B043400BB4182 /* FrameCountTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9042E5B2B0B043400BB4182 /* FrameCountTags.swift */; };
 		C9042E6B2B0D7CB000BB4182 /* LoginPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9042E6A2B0D7CB000BB4182 /* LoginPopUpView.swift */; };
 		C916730E2B5E526D0092661B /* ImagePopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C916730D2B5E526D0092661B /* ImagePopUpViewController.swift */; };
+		C91673112B5EA15F0092661B /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = C91673102B5EA15F0092661B /* SkeletonView */; };
 		C91CE9262B1B0DDC00048FF7 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91CE9252B1B0DDC00048FF7 /* MockURLProtocol.swift */; };
 		C91CE92D2B1B1CA300048FF7 /* PosePick.json in Resources */ = {isa = PBXBuildFile; fileRef = C91CE92C2B1B1CA300048FF7 /* PosePick.json */; };
 		C91CE9342B1DA15700048FF7 /* posefeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91CE9322B1DA15700048FF7 /* posefeedTests.swift */; };
@@ -301,6 +302,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C91673112B5EA15F0092661B /* SkeletonView in Frameworks */,
 				C9254CE32B4922B100C4C779 /* WebKit.framework in Frameworks */,
 				C9C890C22AE113590010240A /* Lottie in Frameworks */,
 				880E75452AE6BFA3007FAD5A /* Alamofire in Frameworks */,
@@ -1081,6 +1083,7 @@
 				C93EE1B82B583D47007D61EF /* RxKakaoSDKShare */,
 				C93EE1BA2B583D47007D61EF /* RxKakaoSDKTalk */,
 				C93EE1BC2B583D47007D61EF /* RxKakaoSDKUser */,
+				C91673102B5EA15F0092661B /* SkeletonView */,
 			);
 			productName = posepicker;
 			productReference = C9C8904E2AE103A10010240A /* posepicker.app */;
@@ -1168,6 +1171,7 @@
 				C99A8A6C2B109AA60072B361 /* XCRemoteSwiftPackageReference "analytics-swift-package" */,
 				C99A8A712B10A54E0072B361 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */,
 				C93EE1B12B583CD5007D61EF /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */,
+				C916730F2B5EA15F0092661B /* XCRemoteSwiftPackageReference "SkeletonView" */,
 			);
 			productRefGroup = C9C8904F2AE103A10010240A /* Products */;
 			projectDirPath = "";
@@ -1719,6 +1723,14 @@
 				minimumVersion = 5.0.0;
 			};
 		};
+		C916730F2B5EA15F0092661B /* XCRemoteSwiftPackageReference "SkeletonView" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/Juanpe/SkeletonView.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 1.30.4;
+			};
+		};
 		C93EE1B12B583CD5007D61EF /* XCRemoteSwiftPackageReference "kakao-ios-sdk-rx" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/kakao/kakao-ios-sdk-rx";
@@ -1805,6 +1817,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C9C8908F2AE107730010240A /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxTest;
+		};
+		C91673102B5EA15F0092661B /* SkeletonView */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C916730F2B5EA15F0092661B /* XCRemoteSwiftPackageReference "SkeletonView" */;
+			productName = SkeletonView;
 		};
 		C93EE1B22B583D47007D61EF /* RxKakaoSDK */ = {
 			isa = XCSwiftPackageProductDependency;
