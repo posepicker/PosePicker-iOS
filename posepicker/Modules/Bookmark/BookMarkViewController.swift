@@ -112,8 +112,8 @@ class BookMarkViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         output.transitionToPoseFeed
-            .subscribe(onNext: { [unowned self] in
-                self.navigationController?.popViewController(animated: true)
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.moveToPoseFeed()
             })
             .disposed(by: disposeBag)
         
