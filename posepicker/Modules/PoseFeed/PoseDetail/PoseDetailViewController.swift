@@ -185,6 +185,9 @@ class PoseDetailViewController: BaseViewController {
         } else {
             imageSourceButton.isHidden = true
         }
+        
+        let scrollViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
+        scrollView.addGestureRecognizer(scrollViewTapGesture)
     }
     
     override func bindViewModel() {
@@ -306,5 +309,20 @@ class PoseDetailViewController: BaseViewController {
     @objc
     func bookmarkButtonTapped() {
         
+    }
+    
+    @objc
+    func imageViewTapped(_ sender: UITapGestureRecognizer) {
+        let tapLocation = sender.location(in: imageView)
+        
+        if imageView.frame.contains(tapLocation) {
+            guard let retrievedImage = imageView.image else { return }
+            let vc = ImagePopUpViewController(mainImage: retrievedImage)
+            vc.modalTransitionStyle = .crossDissolve
+            vc.modalPresentationStyle = .overFullScreen
+            self.present(vc, animated: true)
+        } else {
+            return
+        }
     }
 }
