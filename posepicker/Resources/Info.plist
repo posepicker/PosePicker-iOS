@@ -2,15 +2,6 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
-	<key>LSApplicationQueriesSchemes</key>
-	<array>
-		<string>kakaokompassauth</string>
-		<string>kakaolink</string>
-	</array>
-	<key>KAKAO_NATIVE_KEY</key>
-	<string>${KAKAO_NATIVE_KEY}</string>
-	<key>SMARTLOOK_PROJECT_KEY</key>
-	<string>${SMARTLOOK_PROJECT_KEY}</string>
 	<key>CFBundleURLTypes</key>
 	<array>
 		<dict>
@@ -22,6 +13,15 @@
 			</array>
 		</dict>
 	</array>
+	<key>KAKAO_NATIVE_KEY</key>
+	<string>${KAKAO_NATIVE_KEY}</string>
+	<key>LSApplicationQueriesSchemes</key>
+	<array>
+		<string>kakaokompassauth</string>
+		<string>kakaolink</string>
+	</array>
+	<key>SMARTLOOK_PROJECT_KEY</key>
+	<string>${SMARTLOOK_PROJECT_KEY}</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>Pretendard-Bold.otf</string>
