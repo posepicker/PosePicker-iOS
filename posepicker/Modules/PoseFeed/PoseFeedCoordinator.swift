@@ -110,4 +110,12 @@ class PoseFeedCoordinator: NSObject, Coordinator {
     func triggerBookmarkFromPoseId(poseId: Int, bookmarkCheck: Bool) {
         bookmarkCheckObservable.onNext((poseId, bookmarkCheck))
     }
+    
+    func moveToPoseFeed() {
+        guard let rootVC = self.navigationController.viewControllers.first as? RootViewController else {
+            return
+        }
+        self.navigationController.popToRootViewController(animated: true)
+        rootVC.currentPage = 2
+    }
 }
