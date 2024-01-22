@@ -12,7 +12,7 @@ class ImagePopUpViewController: BaseViewController {
     // MARK: - Subviews
     lazy var imageView = UIImageView(image: self.mainImage)
         .then {
-            $0.contentMode = .scaleAspectFill
+            $0.contentMode = .scaleAspectFit
         }
     
     let gestureView = UIView()
