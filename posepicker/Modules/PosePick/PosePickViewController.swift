@@ -112,7 +112,7 @@ class PosePickViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         let imageTapGesture = UITapGestureRecognizer(target: self, action: #selector(retrievedImageTapped))
-        retrievedImage.addGestureRecognizer(imageTapGesture)
+        backgroundView.addGestureRecognizer(imageTapGesture)
     }
     
     override func bindViewModel() {
@@ -156,6 +156,10 @@ class PosePickViewController: BaseViewController {
     // MARK: - Objc Functions
     @objc
     func retrievedImageTapped() {
-        print("tapped")
+        guard let retrievedImage = retrievedImage.image else { return }
+        let vc = ImagePopUpViewController(mainImage: retrievedImage)
+        vc.modalTransitionStyle = .crossDissolve
+        vc.modalPresentationStyle = .overFullScreen
+        self.present(vc, animated: true)
     }
 }
