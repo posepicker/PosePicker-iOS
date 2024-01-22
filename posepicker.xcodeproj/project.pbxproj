@@ -53,6 +53,7 @@
 		C9042E582B0AFB8500BB4182 /* PeopleCountTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9042E572B0AFB8500BB4182 /* PeopleCountTags.swift */; };
 		C9042E5C2B0B043400BB4182 /* FrameCountTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9042E5B2B0B043400BB4182 /* FrameCountTags.swift */; };
 		C9042E6B2B0D7CB000BB4182 /* LoginPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9042E6A2B0D7CB000BB4182 /* LoginPopUpView.swift */; };
+		C916730E2B5E526D0092661B /* ImagePopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C916730D2B5E526D0092661B /* ImagePopUpViewController.swift */; };
 		C91CE9262B1B0DDC00048FF7 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91CE9252B1B0DDC00048FF7 /* MockURLProtocol.swift */; };
 		C91CE92D2B1B1CA300048FF7 /* PosePick.json in Resources */ = {isa = PBXBuildFile; fileRef = C91CE92C2B1B1CA300048FF7 /* PosePick.json */; };
 		C91CE9342B1DA15700048FF7 /* posefeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91CE9322B1DA15700048FF7 /* posefeedTests.swift */; };
@@ -209,6 +210,7 @@
 		C9042E572B0AFB8500BB4182 /* PeopleCountTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeopleCountTags.swift; sourceTree = "<group>"; };
 		C9042E5B2B0B043400BB4182 /* FrameCountTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameCountTags.swift; sourceTree = "<group>"; };
 		C9042E6A2B0D7CB000BB4182 /* LoginPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPopUpView.swift; sourceTree = "<group>"; };
+		C916730D2B5E526D0092661B /* ImagePopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePopUpViewController.swift; sourceTree = "<group>"; };
 		C91CE9252B1B0DDC00048FF7 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
 		C91CE92C2B1B1CA300048FF7 /* PosePick.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PosePick.json; sourceTree = "<group>"; };
 		C91CE9322B1DA15700048FF7 /* posefeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posefeedTests.swift; sourceTree = "<group>"; };
@@ -559,6 +561,14 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		C916730C2B5E52360092661B /* ImagePopUp */ = {
+			isa = PBXGroup;
+			children = (
+				C916730D2B5E526D0092661B /* ImagePopUpViewController.swift */,
+			);
+			path = ImagePopUp;
+			sourceTree = "<group>";
+		};
 		C91CE9242B1B0DC600048FF7 /* Mock */ = {
 			isa = PBXGroup;
 			children = (
@@ -658,6 +668,7 @@
 		C94FD29C2AE3AF1E003777EB /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				C916730C2B5E52360092661B /* ImagePopUp */,
 				C903E5482B05BC4D00BD004F /* PopUp */,
 				C9C0CDCA2AF3538C0041E423 /* ToolTip */,
 				C94FD2A92AE8CED2003777EB /* Button */,
@@ -1257,6 +1268,7 @@
 				C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */,
 				883132992B08EF9E00DAA5A7 /* PoseDetailTagCellViewModel.swift in Sources */,
 				880E75422AE6BF4B007FAD5A /* APIService.swift in Sources */,
+				C916730E2B5E526D0092661B /* ImagePopUpViewController.swift in Sources */,
 				C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */,
 				88EA81F82AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift in Sources */,
 				C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */,
