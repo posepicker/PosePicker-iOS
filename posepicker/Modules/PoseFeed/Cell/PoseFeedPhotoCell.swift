@@ -10,6 +10,7 @@ import Kingfisher
 
 import RxCocoa
 import RxSwift
+import SkeletonView
 
 class PoseFeedPhotoCell: BaseCollectionViewCell {
     
@@ -65,7 +66,12 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
         weak var viewModel: PoseFeedPhotoCellViewModel! = viewModel
         viewModel.image.asDriver()
             .drive(onNext: { [weak self] in
-                self?.imageView.image = $0
+                if let image = $0 {
+                    self?.imageView.image = image
+                } else {
+                    self?.imageView.backgroundColor = .gray100
+                }
+//                self?.imageView.image = $0
             })
             .disposed(by: disposeBag)
         
