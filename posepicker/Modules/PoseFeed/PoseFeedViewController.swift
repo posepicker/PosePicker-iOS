@@ -91,6 +91,8 @@ class PoseFeedViewController: BaseViewController {
     let appleIdentityTokenTrigger = PublishSubject<String>()
     let kakaoEmailTrigger = PublishSubject<String>()
     let kakaoIdTrigger = PublishSubject<Int64>()
+    
+    let tagDeleteConfirmed = PublishSubject<RegisteredFilterCellViewModel>()
 
     // MARK: - Initialization
     
@@ -216,9 +218,36 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags, coordinator.poseFeedFilterViewController.registeredSubTag), filterTagSelection: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(), filterRegisterCompleted: registerButtonTapped, poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), modalDismissWithTag: modalDismissWithTag, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), bookmarkFromPoseId: coordinator.bookmarkCheckObservable, dismissState: coordinator.poseFeedFilterViewController.dismissState, tagResetTrigger: tagResetTrigger)
+        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags, coordinator.poseFeedFilterViewController.registeredSubTag), filterTagSelection: tagDeleteConfirmed, filterRegisterCompleted: registerButtonTapped, poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), modalDismissWithTag: modalDismissWithTag, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), bookmarkFromPoseId: coordinator.bookmarkCheckObservable, dismissState: coordinator.poseFeedFilterViewController.dismissState, tagResetTrigger: tagResetTrigger)
     
         let output = viewModel.transform(input: input)
+        
+        filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable()
+            .subscribe(onNext: { [weak self] tagString in
+                guard let self = self else { return }
+                let popupVC = PopUpViewController(isLoginPopUp: false, isChoice: true)
+                guard let popupView = popupVC.popUpView as? PopUpView else { return }
+                popupView.alertText.accept("필터를 삭제하시겠습니까?")
+                popupVC.modalTransitionStyle = .crossDissolve
+                popupVC.modalPresentationStyle = .overFullScreen
+                
+                popupView.cancelButton.rx.tap.asDriver()
+                    .drive(onNext: { [weak self] in
+                        self?.dismiss(animated: true)
+                    })
+                    .disposed(by: self.disposeBag)
+                
+                popupView.confirmButton.rx.tap.asDriver()
+                    .drive(onNext: { [weak self] in
+                        self?.coordinator.poseFeedFilterViewController.dismissState.accept(.save)
+                        self?.tagDeleteConfirmed.onNext(tagString)
+                        self?.dismiss(animated: true)
+                    })
+                    .disposed(by: self.disposeBag)
+                
+                self.present(popupVC, animated: true)
+            })
+            .disposed(by: disposeBag)
         
         output.presentModal
             .drive(onNext: { [unowned self] in
