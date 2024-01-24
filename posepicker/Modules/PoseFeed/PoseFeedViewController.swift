@@ -230,8 +230,28 @@ class PoseFeedViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         // 태그 세팅 후 스크롤 초기화
+        
         output.filterTagItems
-            .drive(onNext: { [unowned self] _ in
+            .drive(onNext: { [unowned self] in
+                if $0.isEmpty {
+                    // normal
+                    var configuration = self.filterButton.configuration
+                    configuration?.attributedTitle?.foregroundColor = UIColor.textSecondary
+                    configuration?.baseBackgroundColor = .bgSubWhite
+                    self.filterButton.configuration = configuration
+                    self.filterButton.setImage(ImageLiteral.imgCaretDown.withTintColor(.textSecondary).withRenderingMode(.alwaysOriginal), for: .normal)
+                    self.filterButton.layer.borderColor = UIColor.clear.cgColor
+                } else {
+                    // pressed
+                    var configuration = self.filterButton.configuration
+                    configuration?.baseBackgroundColor = .violet050
+                    configuration?.attributedTitle?.foregroundColor = UIColor.mainVioletDark
+                    self.filterButton.setImage(ImageLiteral.imgCaretDown.withTintColor(.mainVioletDark).withRenderingMode(.alwaysOriginal), for: .normal)
+                    self.filterButton.setTitleColor(.mainVioletDark, for: .normal)
+                    self.filterButton.layer.borderColor = UIColor.mainVioletDark.cgColor
+                    self.filterButton.layer.borderWidth = 1
+                    self.filterButton.configuration = configuration
+                }
                 self.poseFeedCollectionView.scrollToItem(at: IndexPath(item: -1, section: 0), at: .top, animated: true)
             })
             .disposed(by: disposeBag)
