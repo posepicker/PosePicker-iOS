@@ -22,6 +22,7 @@ class RootViewController: BaseViewController {
     
     lazy var segmentControl = UnderlineSegmentControl(items: ["포즈픽", "포즈톡", "포즈피드"])
         .then {
+            $0.apportionsSegmentWidthsByContent = true
             $0.selectedSegmentTintColor = .mainViolet
             $0.selectedSegmentIndex = 0
         }
@@ -83,7 +84,6 @@ class RootViewController: BaseViewController {
         segmentControl.snp.makeConstraints { make in
             make.top.equalTo(header.snp.bottom)
             make.leading.equalTo(view).offset(10)
-            make.width.equalTo(220)
             make.height.equalTo(48)
         }
         
@@ -115,7 +115,7 @@ class RootViewController: BaseViewController {
             ],
             for: .normal
         )
-            
+        
         segmentControl.rx.selectedSegmentIndex.asDriver()
             .drive(onNext: { [unowned self] in
                 self.currentPage = $0
