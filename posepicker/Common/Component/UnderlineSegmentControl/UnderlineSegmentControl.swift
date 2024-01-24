@@ -17,7 +17,26 @@ class UnderlineSegmentControl: UISegmentedControl {
     
     // MARK: - Properties
     
-    private var previousXPosition = 0.0
+    private lazy var previousXPosition = 0.0
+    
+    private var firstSegmentWidth: CGFloat {
+        guard let firstSegmentTitle = titleForSegment(at: 0) else { return 0.0}
+        return firstSegmentTitle.width(withConstrainedHeight: 24, font: .pretendard(.medium, ofSize: 16))
+    }
+    
+    private var secondSegmentWidth: CGFloat {
+        guard let secondSegmentTitle = titleForSegment(at: 1) else { return 0.0}
+        return secondSegmentTitle.width(withConstrainedHeight: 24, font: .pretendard(.medium, ofSize: 16))
+    }
+    
+    private var thirdSegmentWidth: CGFloat {
+        guard let thirdSegmentTitle = titleForSegment(at: 2) else { return 0.0}
+        return thirdSegmentTitle.width(withConstrainedHeight: 24, font: .pretendard(.medium, ofSize: 16))
+    }
+    
+    private var perSegmentwidth: CGFloat {
+        return ((self.bounds.width - (self.firstSegmentWidth + self.secondSegmentWidth + self.thirdSegmentWidth)) / 6) // 텍스트가 가운데 정렬 & 세그먼트당 두조각 가짐
+    }
     
     // MARK: - Initialization
     
@@ -76,11 +95,17 @@ class UnderlineSegmentControl: UISegmentedControl {
     /// UISegment가 클릭될 때마다 호출됨
     func moveUnderlineView() {
         let fontAttributes = titleTextAttributes(for: .normal)
-        guard let title = titleForSegment(at: self.selectedSegmentIndex) else { return }
-        let size = title.size(withAttributes: fontAttributes)
         
-        let perSegmentWidth = self.bounds.width / CGFloat(self.numberOfSegments) // 세그먼트 별 길이
-        let underlineFinalXPosition = (perSegmentWidth * CGFloat(self.selectedSegmentIndex)) + (perSegmentWidth - size.width) / 2
+        var underlineFinalXPosition = CGFloat(self.selectedSegmentIndex * 2 + 1) * self.perSegmentwidth
+        
+        switch self.selectedSegmentIndex {
+        case 1:
+            underlineFinalXPosition += self.firstSegmentWidth
+        case 2:
+            underlineFinalXPosition += self.secondSegmentWidth + self.firstSegmentWidth
+        default:
+            break
+        }
         
         self.underlineView.frame.origin.x = previousXPosition
         
@@ -94,12 +119,19 @@ class UnderlineSegmentControl: UISegmentedControl {
     }
     
     func updateUnderlineViewWidth() {
-        let fontAttributes = titleTextAttributes(for: .normal)
-        guard let title = titleForSegment(at: self.selectedSegmentIndex) else { return }
-        let size = title.size(withAttributes: fontAttributes)
-
+        var width = 0.0
+        switch self.selectedSegmentIndex {
+        case 0:
+            width = self.firstSegmentWidth
+        case 1:
+            width = self.secondSegmentWidth
+        case 2:
+            width = self.thirdSegmentWidth
+        default:
+            break
+        }
         self.underlineView.snp.updateConstraints { make in
-            make.width.equalTo(size.width)
+            make.width.equalTo(width)
         }
         
         self.layoutIfNeeded()
