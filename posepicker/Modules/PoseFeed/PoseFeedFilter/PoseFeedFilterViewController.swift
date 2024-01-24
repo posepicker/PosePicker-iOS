@@ -76,6 +76,7 @@ class PoseFeedFilterViewController: BaseViewController {
     let countTagRemoveTrigger = PublishSubject<PoseFeedViewModel.CountTagType>()
     let filterTagRemoveTrigger = PublishSubject<FilterTags>()
     let subTagRemoveTrigger = PublishSubject<Void>()
+    let resetConfirmed = PublishSubject<Void>() // 팝업창 한번 거쳐서 이벤트 방출하기 위함
     
     // MARK: - Initialization
     
@@ -181,9 +182,36 @@ class PoseFeedFilterViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedFilterViewModel.Input(headCountSelection: headCountSelection.buttonTapTrigger.asObservable(), frameCountSelection: frameCountSelection.buttonTapTrigger.asObservable(), tagSelection: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable(), registeredSubTag: registeredSubTag, tagSelectCanceled: cancelTrigger.asObservable(), isPresenting: isPresenting, resetButtonTapped: resetButton.rx.tap, dismissState: dismissState.asObservable(), viewWillDisappearTrigger: viewWillDisappearTrigger.asObservable(), countTagRemoveTrigger: countTagRemoveTrigger.asObservable(), filterTagRemoveTrigger: filterTagRemoveTrigger.asObservable(), subTagRemoveTrigger: subTagRemoveTrigger, detailViewDismissTrigger: detailViewDismissTrigger, filteredTagAfterDismiss: filteredTagAfterDismiss.asObservable())
+        let input = PoseFeedFilterViewModel.Input(headCountSelection: headCountSelection.buttonTapTrigger.asObservable(), frameCountSelection: frameCountSelection.buttonTapTrigger.asObservable(), tagSelection: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable(), registeredSubTag: registeredSubTag, tagSelectCanceled: cancelTrigger.asObservable(), isPresenting: isPresenting, resetButtonTapped: resetConfirmed, dismissState: dismissState.asObservable(), viewWillDisappearTrigger: viewWillDisappearTrigger.asObservable(), countTagRemoveTrigger: countTagRemoveTrigger.asObservable(), filterTagRemoveTrigger: filterTagRemoveTrigger.asObservable(), subTagRemoveTrigger: subTagRemoveTrigger, detailViewDismissTrigger: detailViewDismissTrigger, filteredTagAfterDismiss: filteredTagAfterDismiss.asObservable())
         
         let output = viewModel.transform(input: input)
+        
+        /// 팝업 노출 로직 추가
+        resetButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                let popupVC = PopUpViewController(isLoginPopUp: false, isChoice: true)
+                guard let popupView = popupVC.popUpView as? PopUpView else { return }
+                popupView.alertText.accept("필터를 초기화하시겠습니까?")
+                popupVC.modalTransitionStyle = .crossDissolve
+                popupVC.modalPresentationStyle = .overFullScreen
+                
+                popupView.cancelButton.rx.tap.asDriver()
+                    .drive(onNext: { [weak self] in
+                        self?.dismiss(animated: true)
+                    })
+                    .disposed(by: self.disposeBag)
+                
+                popupView.confirmButton.rx.tap.asDriver()
+                    .drive(onNext: { [weak self] in
+                        self?.resetConfirmed.onNext(())
+                        self?.dismiss(animated: true)
+                    })
+                    .disposed(by: disposeBag)
+                
+                self.present(popupVC, animated: true)
+            })
+            .disposed(by: disposeBag)
 
         output.tagItems
             .drive(tagCollectionView.rx.items(cellIdentifier: PoseFeedFilterCell.identifier, cellType: PoseFeedFilterCell.self)) { _, viewModel, cell in
