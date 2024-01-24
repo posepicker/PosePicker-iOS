@@ -94,8 +94,6 @@ class UnderlineSegmentControl: UISegmentedControl {
     /// underlineView가 이동해야 할 위치를 계산하고 animate를 통해 이동
     /// UISegment가 클릭될 때마다 호출됨
     func moveUnderlineView() {
-        let fontAttributes = titleTextAttributes(for: .normal)
-        
         var underlineFinalXPosition = CGFloat(self.selectedSegmentIndex * 2 + 1) * self.perSegmentwidth
         
         switch self.selectedSegmentIndex {
