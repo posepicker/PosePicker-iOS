@@ -24,7 +24,7 @@ class ToolTip: UIView {
             $0.textColor = .textWhite
             $0.textAlignment = .left
             $0.font = UIScreen.main.isWiderThan375pt ? .subTitle2 : .subTitle3
-            $0.text = "제시어에 맞춰 포즈를 취해보세요!\n독특한 나만의 포즈가 완성된답니다."
+            $0.text = "일명 <포즈로 말해요> 챌린지!\n제시어에 맞춰 포즈를 취해 보세요."
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.minimumLineHeight = UIScreen.main.isWiderThan375pt ? 22 : 18
             paragraphStyle.alignment = .left
