@@ -48,7 +48,7 @@ class RegisteredFilterCell: BaseCollectionViewCell {
         
         title.snp.makeConstraints { make in
             make.leading.equalTo(self).offset(12)
-            make.top.bottom.equalTo(self).inset(5)
+            make.top.bottom.equalTo(self).inset(7.5)
         }
         
         deleteImageView.snp.makeConstraints { make in
