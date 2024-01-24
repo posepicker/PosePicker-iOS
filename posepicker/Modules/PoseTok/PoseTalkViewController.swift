@@ -140,6 +140,13 @@ class PoseTalkViewController: BaseViewController {
                 self.animationView.pause()
                 self.animationView.loopMode = .playOnce
                 self.animationView.animation = LottieAnimation.named("lottiePoseTalkTap")
+                self.animationView.snp.updateConstraints { make in
+                    let mainLabelHeight = "제시어에 맞춰\n포즈를 취해요!".height(withConstrainedWidth: UIScreen.main.bounds.width - 100, font: .h1)
+                    make.top.equalTo(mainLabel.snp.top).offset(mainLabelHeight + 6)
+                    make.leading.equalToSuperview().offset(-40)
+                    make.trailing.equalToSuperview().offset(44)
+                }
+        
                 self.isAnimating.accept(true)
                 self.animationView.play() {
                     if $0 {
