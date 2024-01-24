@@ -50,8 +50,9 @@ class PoseDetailViewController: BaseViewController {
             $0.items = [navigationItem]
         }
     
-    let imageView = UIImageView()
+    let imageButton = UIButton()
         .then {
+            $0.adjustsImageWhenHighlighted = false
             $0.contentMode = .scaleAspectFill
         }
     
@@ -115,7 +116,7 @@ class PoseDetailViewController: BaseViewController {
     override func render() {
         self.view.addSubViews([navigationBar, scrollView, shareButtonGroup, loadingIndicator])
         
-        scrollView.subviews.first!.addSubViews([imageSourceButton, imageView, tagCollectionView])
+        scrollView.subviews.first!.addSubViews([imageSourceButton, imageButton, tagCollectionView])
         shareButtonGroup.addSubViews([linkShareButton, kakaoShareButton])
         
         navigationBar.snp.makeConstraints { make in
@@ -128,6 +129,7 @@ class PoseDetailViewController: BaseViewController {
             make.leading.trailing.equalToSuperview()
             make.top.equalTo(navigationBar.snp.bottom)
             make.bottom.equalTo(shareButtonGroup.snp.top)
+            make.height.equalTo(scrollView.frameLayoutGuide)
         }
         
         imageSourceButton.snp.makeConstraints { make in
@@ -135,13 +137,13 @@ class PoseDetailViewController: BaseViewController {
             make.top.equalTo(scrollView).offset(14)
         }
         
-        imageView.snp.makeConstraints { make in
+        imageButton.snp.makeConstraints { make in
             make.top.equalTo(imageSourceButton.snp.bottom).offset(14)
             make.leading.trailing.equalTo(scrollView)
         }
         
         tagCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(12)
+            make.top.equalTo(/*imageView*/imageButton.snp.bottom).offset(12)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(72)
             make.bottom.equalTo(scrollView.snp.bottom).offset(-20)
@@ -185,9 +187,6 @@ class PoseDetailViewController: BaseViewController {
         } else {
             imageSourceButton.isHidden = true
         }
-        
-        let scrollViewTapGesture = UITapGestureRecognizer(target: self, action: #selector(imageViewTapped))
-        scrollView.addGestureRecognizer(scrollViewTapGesture)
     }
     
     override func bindViewModel() {
@@ -201,8 +200,22 @@ class PoseDetailViewController: BaseViewController {
                 UIApplication.shared.open($0)
             })
             .disposed(by: disposeBag)
+    
+        output.image.asDriver(onErrorJustReturn: nil)
+            .drive(onNext: { [weak self] in
+                self?.imageButton.setImage($0, for: .normal)
+            })
+            .disposed(by: disposeBag)
         
-        output.image.bind(to: imageView.rx.image).disposed(by: disposeBag)
+        imageButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
+                guard let retrievedImage = self?.imageButton.imageView?.image else { return }
+                let vc = ImagePopUpViewController(mainImage: retrievedImage)
+                vc.modalTransitionStyle = .crossDissolve
+                vc.modalPresentationStyle = .overFullScreen
+                self?.present(vc, animated: true)
+            })
+            .disposed(by: disposeBag)
         
         output.popupPresent
             .drive(onNext: { [unowned self] in
@@ -309,20 +322,5 @@ class PoseDetailViewController: BaseViewController {
     @objc
     func bookmarkButtonTapped() {
         
-    }
-    
-    @objc
-    func imageViewTapped(_ sender: UITapGestureRecognizer) {
-        let tapLocation = sender.location(in: imageView)
-        
-        if imageView.frame.contains(tapLocation) {
-            guard let retrievedImage = imageView.image else { return }
-            let vc = ImagePopUpViewController(mainImage: retrievedImage)
-            vc.modalTransitionStyle = .crossDissolve
-            vc.modalPresentationStyle = .overFullScreen
-            self.present(vc, animated: true)
-        } else {
-            return
-        }
     }
 }
