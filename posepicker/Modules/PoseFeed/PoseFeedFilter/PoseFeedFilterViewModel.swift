@@ -25,7 +25,7 @@ class PoseFeedFilterViewModel: ViewModelType {
         let registeredSubTag: BehaviorRelay<String?>
         let tagSelectCanceled: Observable<Void>
         let isPresenting: BehaviorRelay<Bool>
-        let resetButtonTapped: ControlEvent<Void>
+        let resetButtonTapped: Observable<Void>
         let dismissState: Observable<DismissState>
         let viewWillDisappearTrigger: Observable<Void>
         
