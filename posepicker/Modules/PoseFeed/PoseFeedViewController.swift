@@ -157,6 +157,11 @@ class PoseFeedViewController: BaseViewController {
         poseFeedCollectionView.rx.contentOffset.asDriver()
             .drive(onNext: { [unowned self] in
                 
+                if $0.y > 300 && $0.y + 300 > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height && !self.viewModel.isLoading && !self.viewModel.isLast {
+                    self.viewModel.searchNext()
+                    return
+                }
+                
                 if $0.y > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height && !self.viewModel.isLoading && !self.viewModel.isLast {
                     // 초기 로딩시에도 nextPage 트리거하면 안됨
                     self.viewModel.searchNext()
