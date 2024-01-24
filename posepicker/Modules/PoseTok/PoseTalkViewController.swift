@@ -118,8 +118,8 @@ class PoseTalkViewController: BaseViewController {
         let headerHeight = UIScreen.main.isWiderThan375pt ? coordinator.rootViewController.header.frame.height - 10 : coordinator.rootViewController.header.frame.height - 20
         
         toolTip.snp.makeConstraints { make in
-            make.leading.equalTo(56)
-            make.width.equalTo(UIScreen.main.isWiderThan375pt ? 250 : 220)
+            make.leading.equalTo(UIScreen.main.isWiderThan375pt ? 76 : 66)
+            make.width.equalTo(UIScreen.main.isWiderThan375pt ? 230 : 210)
             make.height.equalTo(UIScreen.main.isWiderThan375pt ? 80 : 68)
             make.top.equalTo(coordinator.rootViewController.view.safeAreaLayoutGuide.snp.top).offset(segmentHeight + headerHeight)
         }
@@ -142,7 +142,7 @@ class PoseTalkViewController: BaseViewController {
                 self.animationView.animation = LottieAnimation.named("lottiePoseTalkTap")
                 self.animationView.snp.updateConstraints { make in
                     let mainLabelHeight = "제시어에 맞춰\n포즈를 취해요!".height(withConstrainedWidth: UIScreen.main.bounds.width - 100, font: .h1)
-                    make.top.equalTo(mainLabel.snp.top).offset(mainLabelHeight + 6)
+                    make.top.equalTo(mainLabel.snp.top).offset(mainLabelHeight + 8)
                     make.leading.equalToSuperview().offset(-40)
                     make.trailing.equalToSuperview().offset(44)
                 }
