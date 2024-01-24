@@ -133,7 +133,8 @@ class PoseFeedViewController: BaseViewController {
         
         poseFeedCollectionView.snp.makeConstraints { make in
             make.top.equalTo(filterButton.snp.bottom).offset(8)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.leading.equalToSuperview().offset(12)
+            make.trailing.equalToSuperview().offset(-12)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom)
         }
         
