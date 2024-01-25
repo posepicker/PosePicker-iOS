@@ -67,7 +67,8 @@ class BookMarkViewController: BaseViewController {
         view.addSubViews([bookmarkCollectionView, loadingIndicator])
         
         bookmarkCollectionView.snp.makeConstraints { make in
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.leading.equalToSuperview().offset(12)
+            make.trailing.equalToSuperview().offset(-12)
             make.top.bottom.equalTo(view.safeAreaLayoutGuide)
         }
         
