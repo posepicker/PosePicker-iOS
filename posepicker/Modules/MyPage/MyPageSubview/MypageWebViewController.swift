@@ -76,4 +76,16 @@ extension MypageWebViewController: WKNavigationDelegate {
     func webView(_ webView: WKWebView, didFinish navigation: WKNavigation!) {
         activityView.stopAnimating()
     }
+    
+    func webView(_ webView: WKWebView, decidePolicyFor navigationAction: WKNavigationAction, decisionHandler: @escaping (WKNavigationActionPolicy) -> Void) {
+        if navigationAction.targetFrame == nil {
+            if let url = navigationAction.request.url {
+                let app = UIApplication.shared
+                if app.canOpenURL(url) {
+                    app.open(url, options: [:], completionHandler: nil)
+                }
+            }
+        }
+        decisionHandler(.allow)
+    }
 }
