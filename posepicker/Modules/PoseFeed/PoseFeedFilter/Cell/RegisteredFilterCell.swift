@@ -37,7 +37,7 @@ class RegisteredFilterCell: BaseCollectionViewCell {
     }
     
     override func configUI() {
-        self.layer.cornerRadius = 12
+        self.layer.cornerRadius = 16
         self.clipsToBounds = true
         
         self.backgroundColor = .bgSubWhite
