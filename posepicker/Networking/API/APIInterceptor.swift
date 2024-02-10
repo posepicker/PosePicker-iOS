@@ -35,7 +35,9 @@ class APIInterceptor: RequestInterceptor {
             completion(.doNotRetryWithError(error))
             return
         }
-        KeychainManager.shared.removeAll()
-        completion(.retry)
+        completion(.doNotRetry)
+        return
+//        KeychainManager.shared.removeAll()
+//        completion(.retry)
     }
 }
