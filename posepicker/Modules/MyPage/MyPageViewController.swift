@@ -102,8 +102,9 @@ class MyPageViewController: BaseViewController {
     let appleIdentityTokenTrigger = PublishSubject<String>()
     let kakaoEmailTrigger = PublishSubject<String>()
     let kakaoIdTrigger = PublishSubject<Int64>()
+    let logoutTrigger = PublishSubject<Void>()
     
-    let loginStateTrigger = PublishSubject<Void>()
+    let loginStateTrigger = PublishSubject<Void>() // 로그인 취소되면 UI 복구목적
     
     // MARK: - Life Cycles
     
@@ -180,11 +181,13 @@ class MyPageViewController: BaseViewController {
                     })
                     .disposed(by: self.disposeBag)
                 
-                popupView.cancelButton.rx.tap.asDriver()
-                    .drive(onNext: {
-                        popupViewController.dismiss(animated: true)
-                    })
-                    .disposed(by: self.disposeBag)
+//                popupView.cancelButton.rx.tap.asDriver()
+//                    .drive(onNext: { [weak self] in
+//                        // 로그아웃
+//                        self?.logoutTrigger.onNext(())
+//                        popupViewController.dismiss(animated: true)
+//                    })
+//                    .disposed(by: self.disposeBag)
                 
                 self.present(popupViewController, animated: true)
             })
@@ -237,16 +240,17 @@ class MyPageViewController: BaseViewController {
                     })
                     .disposed(by: disposeBag)
                 
+                // 현재 로그인된 계정이 카카오인지 모름
                 popupView.cancelButton.rx.tap.asDriver()
                     .drive(onNext: { [weak self] in
                         guard let self = self else { return }
-                        UserApi.shared.rx.logout()
-                            .subscribe(onCompleted: {
-                                print("kakao logout completed")
-                            })
-                            .disposed(by: self.disposeBag)
-                        
-                        KeychainManager.shared.removeAll()
+//                        UserApi.shared.rx.logout()
+//                            .subscribe(onCompleted: {
+//                                print("kakao logout completed")
+//                            })
+//                            .disposed(by: self.disposeBag)
+                        self.logoutTrigger.onNext(())
+//                        KeychainManager.shared.removeAll()
                         self.loginStateTrigger.onNext(())
                         self.dismiss(animated: true)
                     })
@@ -364,7 +368,7 @@ class MyPageViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = MyPageViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger))
+        let input = MyPageViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), logoutButtonTapped: logoutTrigger)
         let output = viewModel.transform(input: input)
         
         output.dismissLoginView
