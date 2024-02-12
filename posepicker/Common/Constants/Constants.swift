@@ -37,7 +37,7 @@ struct K {
     
     /// 키체인 키값 리스트
     struct KeychainKeyParameters {
-        static let accessToken = "accesstoken"
+        static let accessToken = "accessToken"
         static let refreshToken = "refreshToken"
     }
     
