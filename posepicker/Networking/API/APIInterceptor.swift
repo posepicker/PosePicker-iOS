@@ -17,11 +17,17 @@ class APIInterceptor: RequestInterceptor {
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         
         if let url = urlRequest.url,
-           let accessToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.accessToken) {
+           let accessToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.accessToken),
+           let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.refreshToken) {
             
             if url.absoluteString.contains("/api/pose") || url.absoluteString.contains("/api/pose/all") || url.absoluteString.contains("/api/bookmark") {
                 var urlRequest = urlRequest
                 urlRequest.headers.add(.authorization(bearerToken: accessToken))
+                completion(.success(urlRequest))
+                return
+            } else if url.absoluteString.contains("/api/auth/regenerate-token") {
+                var urlRequest = urlRequest
+                urlRequest.headers.add(.authorization(bearerToken: refreshToken))
                 completion(.success(urlRequest))
                 return
             }
@@ -35,9 +41,22 @@ class APIInterceptor: RequestInterceptor {
             completion(.doNotRetryWithError(error))
             return
         }
-        completion(.doNotRetry)
-        return
-//        KeychainManager.shared.removeAll()
-//        completion(.retry)
+        
+        guard let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.KeychainKeyParameters.refreshToken) else {
+            completion(.doNotRetry)
+            return
+        }
+        
+        let refreshTokenObservable: Single<Token> = apiSession.requestSingle(.refreshToken(refreshToken: refreshToken))
+        
+        refreshTokenObservable
+            .asObservable()
+            .subscribe(onNext: { token in
+                KeychainManager.shared.removeAll()
+                try? KeychainManager.shared.saveItem(token.accessToken, itemClass: .password, key: K.KeychainKeyParameters.accessToken)
+                try? KeychainManager.shared.saveItem(token.refreshToken, itemClass: .password, key: K.KeychainKeyParameters.refreshToken)
+                completion(.retry)
+            })
+            .disposed(by: disposeBag)
     }
 }
