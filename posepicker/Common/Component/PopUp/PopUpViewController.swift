@@ -87,6 +87,7 @@ class PopUpViewController: BaseViewController {
             /// 그럼에도 체크를 해제하는 유저를 고려하여 추후 에러처리가 필요할듯 함
             popUpView.kakaoLoginButton.rx.tap.asDriver()
                 .drive(onNext: {[unowned self] in
+                    UserDefaults.standard.setValue(K.SocialLogin.kakao, forKey: K.SocialLogin.socialLogin)
                     popUpView.socialLogin.onNext(.kakao)
                     popUpView.isLoading.accept(true)
                     if (AuthApi.hasToken()) {
@@ -165,6 +166,7 @@ class PopUpViewController: BaseViewController {
             // 애플로그인
             popUpView.appleLoginButton.rx.tap
                 .subscribe(onNext: { [weak self] in
+                    UserDefaults.standard.setValue(K.SocialLogin.apple, forKey: K.SocialLogin.socialLogin)
                     popUpView.socialLogin.onNext(.apple)
                     popUpView.isLoading.accept(true)
                     self?.handleAppleLogin()
