@@ -22,7 +22,7 @@ enum APIRouter: URLRequestConvertible {
     case appleLogin(idToken: String)
     case kakaoLogin(authCode: String, email: String, kakaoId: Int64)
     case retrieveAuthoirzationCode
-    case refreshToken
+    case refreshToken(refreshToken : String)
     case logout(accessToken: String, refreshToken: String)
     
     // 북마크 API
@@ -52,7 +52,7 @@ enum APIRouter: URLRequestConvertible {
         case .retrieveAuthoirzationCode:
             return .get
         case .refreshToken:
-            return .get
+            return .post
         case .logout:
             return .patch
         case .registerBookmark:
@@ -87,7 +87,7 @@ enum APIRouter: URLRequestConvertible {
         case .retrieveAuthoirzationCode:
             return "/api/users/posepicker/token"
         case .refreshToken:
-            return "/api/users/posepicker/token"
+            return "/api/auth/regenerate-token"
         case .logout:
             return "/api/users/logout"
         case .registerBookmark:
@@ -146,8 +146,8 @@ enum APIRouter: URLRequestConvertible {
             return nil
         case .logout(let accessToken, let refreshToken):
             return [
-                K.Parameters.accessToken: accessToken,
-                K.Parameters.refreshToken: refreshToken
+                K.Parameters.accessToken: "Bearer " + accessToken,
+                K.Parameters.refreshToken: "Bearer " + refreshToken
             ]
         case .registerBookmark(let poseId):
             return [
