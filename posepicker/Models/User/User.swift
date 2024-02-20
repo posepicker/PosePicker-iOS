@@ -17,6 +17,5 @@ struct PosePickerUser: Codable {
 struct LogoutResponse: Codable {
     let entity: String
     let message: String
-    let redirect: String
     let status: Int
 }
