@@ -41,6 +41,14 @@ struct K {
         static let refreshToken = "refreshToken"
     }
     
+    /// UserDefaults 로그인 방법 분류
+    struct SocialLogin {
+        static let socialLogin = "social-login"
+        
+        static let apple = "apple"
+        static let kakao = "kakao"
+    }
+    
     /// 헤더 필드
     enum HttpHeaderField: String {
         case authentication = "Authorization"
