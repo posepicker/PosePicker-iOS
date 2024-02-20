@@ -241,16 +241,20 @@ class MyPageViewController: BaseViewController {
                     .disposed(by: disposeBag)
                 
                 // 현재 로그인된 계정이 카카오인지 모름
+                // 토큰 삭제는 뷰모델에서 이루어짐
                 popupView.cancelButton.rx.tap.asDriver()
                     .drive(onNext: { [weak self] in
                         guard let self = self else { return }
-//                        UserApi.shared.rx.logout()
-//                            .subscribe(onCompleted: {
-//                                print("kakao logout completed")
-//                            })
-//                            .disposed(by: self.disposeBag)
+                        if let socialLogin = UserDefaults.standard.string(forKey: K.SocialLogin.socialLogin),
+                           socialLogin == K.SocialLogin.kakao {
+                            UserApi.shared.rx.logout()
+                                .subscribe(onCompleted: {
+                                    print("kakao logout completed")
+                                })
+                                .disposed(by: self.disposeBag)
+                        }
+
                         self.logoutTrigger.onNext(())
-//                        KeychainManager.shared.removeAll()
                         self.loginStateTrigger.onNext(())
                         self.dismiss(animated: true)
                     })
@@ -280,11 +284,14 @@ class MyPageViewController: BaseViewController {
                 popupView.cancelButton.rx.tap.asDriver()
                     .drive(onNext: { [weak self] in
                         guard let self = self else { return }
-                        UserApi.shared.rx.unlink()
-                            .subscribe(onCompleted: {
-                                print("kakao unlink completed")
-                            })
-                            .disposed(by: self.disposeBag)
+                        if let socialLogin = UserDefaults.standard.string(forKey: K.SocialLogin.socialLogin),
+                           socialLogin == K.SocialLogin.kakao {
+                            UserApi.shared.rx.unlink()
+                                .subscribe(onCompleted: {
+                                    print("kakao unlink completed")
+                                })
+                                .disposed(by: self.disposeBag)
+                        }
                         
                         KeychainManager.shared.removeAll()
                         self.loginStateTrigger.onNext(())
@@ -371,17 +378,29 @@ class MyPageViewController: BaseViewController {
         let input = MyPageViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), logoutButtonTapped: logoutTrigger)
         let output = viewModel.transform(input: input)
         
+        // 로그인할때
         output.dismissLoginView
             .subscribe(onNext: { [unowned self] in
-                guard let popupVC = self.presentedViewController as? PopUpViewController,
-                      let _ = popupVC.popUpView as? LoginPopUpView else { return }
-                self.dismiss(animated: true)
-                self.loginStateTrigger.onNext(())
+                if let popupVC = self.presentedViewController as? PopUpViewController {
+                    // 로그인할때
+                    if let _ = popupVC.popUpView as? LoginPopUpView {
+                        self.dismiss(animated: true)
+                        self.loginStateTrigger.onNext(())
+                    } else if let popupView = popupVC.popUpView as? PopUpView,
+                              popupView.alertMainLabel.text! == "로그아웃" {
+                        self.dismiss(animated: true)
+                        self.loginStateTrigger.onNext(())
+                    }
+                    
+                }
             })
             .disposed(by: disposeBag)
         
         loginStateTrigger.asDriver(onErrorJustReturn: ())
             .drive(onNext: { [weak self] in
+                
+                // 로그인 상태 새로고침
+                print("refreshed!")
                 if let email = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
                     self?.loginButton.isEnabled = false
                     self?.loginTitle.text = email
