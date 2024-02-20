@@ -42,6 +42,15 @@ class APIInterceptor: RequestInterceptor {
             return
         }
         
+        // 401이면서 리프레시 토큰이 만료된 상태일때
+        if let url = response.url,
+           url.absoluteString.contains("/api/auth/regenerate-token") {
+            KeychainManager.shared.removeAll()
+            // 세션만료 ALERT
+            completion(.doNotRetry)
+            return
+        }
+        
         guard let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.KeychainKeyParameters.refreshToken) else {
             completion(.doNotRetry)
             return
