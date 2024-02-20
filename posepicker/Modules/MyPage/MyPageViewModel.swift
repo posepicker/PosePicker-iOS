@@ -21,6 +21,7 @@ class MyPageViewModel: ViewModelType {
     struct Input {
         let appleIdentityTokenTrigger: Observable<String>
         let kakaoLoginTrigger: Observable<(String, Int64)>
+        let logoutButtonTapped: Observable<Void>
     }
     
     struct Output { 
@@ -73,6 +74,26 @@ class MyPageViewModel: ViewModelType {
             }
             .subscribe(onNext: { _ in
                 dismissLoginView.onNext(())
+            })
+            .disposed(by: disposeBag)
+        
+        /// 로그아웃 API
+        /// 로그아웃 이후 dismiss
+        /// 기존 토큰은 삭제
+        input.logoutButtonTapped
+            .withUnretained(self)
+            .flatMapLatest { (owner, _) -> Observable<LogoutResponse> in
+                guard let accessToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.accessToken),
+                      let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.refreshToken) else { return Observable<LogoutResponse>.empty() }
+                return owner.apiSession.requestSingle(.logout(accessToken: accessToken, refreshToken: refreshToken)).asObservable()
+            }
+            .map { $0.status }
+            .subscribe(onNext: { status in
+                // 로그아웃 성공
+                if status == 200 {
+                    KeychainManager.shared.removeAll()
+                    dismissLoginView.onNext(())
+                }
             })
             .disposed(by: disposeBag)
         
