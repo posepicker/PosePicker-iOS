@@ -1053,8 +1053,8 @@
 			buildConfigurationList = C9C890782AE103A30010240A /* Build configuration list for PBXNativeTarget "posepicker" */;
 			buildPhases = (
 				C9C8904A2AE103A10010240A /* Sources */,
-				C9C8904B2AE103A10010240A /* Frameworks */,
 				C9C8904C2AE103A10010240A /* Resources */,
+				C9C8904B2AE103A10010240A /* Frameworks */,
 				C99A8A762B10A92E0072B361 /* ShellScript */,
 			);
 			buildRules = (
