@@ -25,7 +25,7 @@ class APIInterceptor: RequestInterceptor {
                 urlRequest.headers.add(.authorization(bearerToken: accessToken))
                 completion(.success(urlRequest))
                 return
-            } else if url.absoluteString.contains("/api/auth/regenerate-token") {
+            } else if url.absoluteString.contains("/api/auth/reissue-token") {
                 var urlRequest = urlRequest
                 urlRequest.headers.add(.authorization(bearerToken: refreshToken))
                 completion(.success(urlRequest))
@@ -44,7 +44,7 @@ class APIInterceptor: RequestInterceptor {
         
         // 401이면서 리프레시 토큰이 만료된 상태일때
         if let url = response.url,
-           url.absoluteString.contains("/api/auth/regenerate-token") {
+           url.absoluteString.contains("/api/auth/reissue-token") {
             KeychainManager.shared.removeAll()
             // 세션만료 ALERT
             completion(.doNotRetry)
