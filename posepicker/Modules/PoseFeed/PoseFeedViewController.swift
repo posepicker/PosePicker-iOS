@@ -230,6 +230,15 @@ class PoseFeedViewController: BaseViewController {
             .disposed(by: disposeBag)
         
         poseUploadButton.makeShadow(alpha: 0.5, x: -4, y: -4, blur: 6.8, spread: 0)
+        
+        poseUploadButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
+                let guidelineView = MyPoseGuidelineViewController()
+                guidelineView.modalPresentationStyle = .overFullScreen
+                guidelineView.modalTransitionStyle = .crossDissolve
+                self?.present(guidelineView, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func bindViewModel() {
