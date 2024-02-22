@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import PhotosUI
 
 class MyPoseGuidelineViewController: BaseViewController {
     
@@ -112,13 +113,57 @@ class MyPoseGuidelineViewController: BaseViewController {
     
     override func configUI() {
         self.view.backgroundColor = .dimmed30
+        
+        confirmButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
+                
+                var configuration = PHPickerConfiguration()
+                configuration.selectionLimit = 1
+                configuration.filter = .images
+                configuration.preferredAssetRepresentationMode = .current
+                
+                let picker = PHPickerViewController(configuration: configuration)
+                picker.delegate = self
+                self?.present(picker, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first!
         let location = touch.location(in: self.view)
-        if !guidelineBox.bounds.contains(location) {
+        if !guidelineBox.frame.contains(location) {
             self.dismiss(animated: true)
+        }
+    }
+}
+
+extension MyPoseGuidelineViewController: PHPickerViewControllerDelegate {
+    func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
+        
+        picker.dismiss(animated: true)
+        
+        let itemProvider = results.first?.itemProvider
+        
+        if let itemProvider = itemProvider,
+           itemProvider.canLoadObject(ofClass: UIImage.self) {
+            itemProvider.loadObject(ofClass: UIImage.self) { image, error in
+                DispatchQueue.main.async { [weak self] in
+                    if let image = image {
+                        self?.thumbnail.image = image as? UIImage
+                    } else {
+                        
+                        // 이미지를 불러오는데 실패
+                        let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: false)
+                        popupViewController.modalTransitionStyle = .crossDissolve
+                        popupViewController.modalPresentationStyle = .overFullScreen
+                        let popupView = popupViewController.popUpView as! PopUpView
+                        popupView.alertText.accept("이미지를 불러오는 데 실패했습니다.")
+                        self?.present(popupViewController, animated: true)
+                    }
+                }
+            }
+            
         }
     }
 }
