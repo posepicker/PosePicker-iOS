@@ -58,9 +58,16 @@ class MyPoseGuidelineViewController: BaseViewController {
     
     let confirmButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "확인", image: nil)
     
+    let loadingIndicator = UIActivityIndicatorView(style: .large)
+        .then {
+            $0.isHidden = true
+            $0.startAnimating()
+            $0.color = .mainViolet
+        }
+    
     // MARK: - Functions
     override func render() {
-        view.addSubViews([guidelineBox, mainLabel, thumbnail, rule1, rule2, rule3, rule4, confirmButton])
+        view.addSubViews([guidelineBox, mainLabel, thumbnail, rule1, rule2, rule3, rule4, confirmButton, loadingIndicator])
         
         guidelineBox.snp.makeConstraints { make in
             make.center.equalToSuperview()
@@ -109,6 +116,10 @@ class MyPoseGuidelineViewController: BaseViewController {
             make.height.equalTo(54)
             make.bottom.equalTo(guidelineBox).offset(-16)
         }
+        
+        loadingIndicator.snp.makeConstraints { make in
+            make.center.equalToSuperview()
+        }
     }
     
     override func configUI() {
@@ -143,6 +154,8 @@ extension MyPoseGuidelineViewController: PHPickerViewControllerDelegate {
         
         picker.dismiss(animated: true)
         
+        loadingIndicator.isHidden = false
+        
         let itemProvider = results.first?.itemProvider
         
         if let itemProvider = itemProvider,
@@ -151,6 +164,7 @@ extension MyPoseGuidelineViewController: PHPickerViewControllerDelegate {
                 DispatchQueue.main.async { [weak self] in
                     if let image = image {
                         self?.thumbnail.image = image as? UIImage
+                        self?.loadingIndicator.isHidden = true
                     } else {
                         
                         // 이미지를 불러오는데 실패
@@ -159,6 +173,7 @@ extension MyPoseGuidelineViewController: PHPickerViewControllerDelegate {
                         popupViewController.modalPresentationStyle = .overFullScreen
                         let popupView = popupViewController.popUpView as! PopUpView
                         popupView.alertText.accept("이미지를 불러오는 데 실패했습니다.")
+                        self?.loadingIndicator.isHidden = true
                         self?.present(popupViewController, animated: true)
                     }
                 }
