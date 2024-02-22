@@ -100,7 +100,7 @@ class BookMarkViewModel: ViewModelType {
                 self.currentPage = 0
                 self.isLast = false
                 
-                if let userIdString = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.userId)
+                if let _ = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.KeychainKeyParameters.refreshToken)
                 {
                     return apiSession.requestSingle(.retrieveBookmarkFeed(pageNumber: self.currentPage, pageSize: 8)).asObservable()
                 } else {
