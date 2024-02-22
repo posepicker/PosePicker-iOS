@@ -26,6 +26,7 @@ class PosePickButton: UIButton {
         case none
         case left
         case right
+        case center
     }
     
     var status = BehaviorRelay<ButtonStatus>(value: .defaultStatus)
@@ -131,6 +132,8 @@ class PosePickButton: UIButton {
             configuration.imagePadding = 10
             self.configuration = configuration
             self.semanticContentAttribute = .forceRightToLeft
+        case .center:
+            self.setImage(image?.withRenderingMode(.alwaysOriginal), for: .normal)
         case .none:
             break
         }
