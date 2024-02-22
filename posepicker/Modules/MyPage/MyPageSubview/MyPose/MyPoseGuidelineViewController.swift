@@ -30,49 +30,72 @@ class MyPoseGuidelineViewController: BaseViewController {
     
     let rule1 = UILabel()
         .then {
-            $0.text = "· 포즈가 선명하게 나온 사진"
+            $0.text = " · 포즈가 선명하게 나온 사진"
             $0.font = .pretendard(.regular, ofSize: 16)
             $0.textColor = .textPrimary
         }
     
     let rule2 = UILabel()
         .then {
-            $0.text = "· QR로 다운로드 받은 사진"
+            $0.text = " · QR로 다운로드 받은 사진"
             $0.font = .pretendard(.regular, ofSize: 16)
             $0.textColor = .textPrimary
         }
     
     let rule3 = UILabel()
         .then {
-            $0.text = "· 화질이 좋은 사진"
+            $0.text = " · 화질이 좋은 사진"
             $0.font = .pretendard(.regular, ofSize: 16)
             $0.textColor = .textPrimary
         }
     
     let rule4 = UILabel()
         .then {
-            $0.text = "· 다양한 포즈와 표정 등이 담긴 사진"
+            $0.text = " · 다양한 포즈와 표정 등이 담긴 사진"
             $0.font = .pretendard(.regular, ofSize: 16)
             $0.textColor = .textPrimary
         }
     
+    let alertLabel = UILabel()
+        .then {
+            $0.text = "가이드라인을 위반한 사진은\n운영자에 의해 무통보 삭제될 수 있습니다."
+            let paragraphStyle = NSMutableParagraphStyle()
+            paragraphStyle.minimumLineHeight = 18
+            paragraphStyle.alignment = .center
+            let attrString = NSMutableAttributedString(string: $0.text ?? "")
+            attrString.addAttribute(.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
+            $0.attributedText = attrString
+            $0.numberOfLines = 0
+            $0.textColor = .textTertiary
+            $0.font = .subTitle3
+        }
+    
     let confirmButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "확인", image: nil)
+    
+    let guidelineCheckButton = UIButton(type: .system)
+        .then {
+            $0.setTitle("가이드라인 확인하기", for: .normal)
+            $0.titleLabel?.font = .pretendard(.medium, ofSize: 14)
+            $0.setTitleColor(.textSecondary, for: .normal)
+        }
     
     let loadingIndicator = UIActivityIndicatorView(style: .large)
         .then {
-            $0.isHidden = true
             $0.startAnimating()
+            $0.isHidden = true
             $0.color = .mainViolet
         }
     
     // MARK: - Functions
     override func render() {
-        view.addSubViews([guidelineBox, mainLabel, thumbnail, rule1, rule2, rule3, rule4, confirmButton, loadingIndicator])
+        let borderBottom = UIView()
+
+        view.addSubViews([guidelineBox, mainLabel, thumbnail, rule1, rule2, rule3, rule4, alertLabel, confirmButton, guidelineCheckButton, borderBottom, loadingIndicator])
         
         guidelineBox.snp.makeConstraints { make in
             make.center.equalToSuperview()
             make.width.equalTo(300)
-            make.height.equalTo(550)
+            make.height.equalTo(616)
         }
         
         mainLabel.snp.makeConstraints { make in
@@ -89,7 +112,7 @@ class MyPoseGuidelineViewController: BaseViewController {
         
         rule1.snp.makeConstraints { make in
             make.top.equalTo(thumbnail.snp.bottom).offset(24)
-            make.leading.equalTo(guidelineBox).offset(22)
+            make.leading.equalTo(guidelineBox).offset(24)
             make.height.equalTo(26)
         }
         
@@ -111,15 +134,35 @@ class MyPoseGuidelineViewController: BaseViewController {
             make.height.equalTo(26)
         }
         
+        alertLabel.snp.makeConstraints { make in
+            make.top.equalTo(rule4.snp.bottom).offset(12)
+            make.centerX.equalTo(guidelineBox)
+        }
+        
         confirmButton.snp.makeConstraints { make in
             make.leading.trailing.equalTo(guidelineBox).inset(16)
             make.height.equalTo(54)
-            make.bottom.equalTo(guidelineBox).offset(-16)
+            make.top.equalTo(alertLabel.snp.bottom).offset(16)
+        }
+        
+        guidelineCheckButton.snp.makeConstraints { make in
+            make.bottom.equalTo(guidelineBox).offset(-20)
+            make.top.equalTo(confirmButton.snp.bottom).offset(12)
+            make.centerX.equalTo(guidelineBox)
+        }
+        
+        borderBottom.backgroundColor = .textSecondary
+        borderBottom.snp.makeConstraints { make in
+            make.centerX.width.equalTo(guidelineCheckButton)
+            make.height.equalTo(1)
+            make.top.equalTo(guidelineCheckButton.snp.bottom)
         }
         
         loadingIndicator.snp.makeConstraints { make in
             make.center.equalToSuperview()
         }
+        
+        
     }
     
     override func configUI() {
@@ -163,8 +206,8 @@ extension MyPoseGuidelineViewController: PHPickerViewControllerDelegate {
             itemProvider.loadObject(ofClass: UIImage.self) { image, error in
                 DispatchQueue.main.async { [weak self] in
                     if let image = image {
-                        self?.thumbnail.image = image as? UIImage
                         self?.loadingIndicator.isHidden = true
+                        self?.navigationController?.pushViewController(MyPoseViewController(registeredImage: image as? UIImage), animated: true)
                     } else {
                         
                         // 이미지를 불러오는데 실패
