@@ -233,10 +233,11 @@ class PoseFeedViewController: BaseViewController {
         
         poseUploadButton.rx.tap.asDriver()
             .drive(onNext: { [weak self] in
-                let guidelineView = MyPoseGuidelineViewController()
-                guidelineView.modalPresentationStyle = .overFullScreen
-                guidelineView.modalTransitionStyle = .crossDissolve
-                self?.present(guidelineView, animated: true)
+                let myposeCoordinator = MyPoseCoordinator(navigationController: UINavigationController(rootViewController: MyPoseGuidelineViewController()))
+                myposeCoordinator.navigationController.modalPresentationStyle = .overFullScreen
+                myposeCoordinator.navigationController.modalTransitionStyle = .crossDissolve
+                
+                self?.present(myposeCoordinator.navigationController, animated: true)
             })
             .disposed(by: disposeBag)
     }
