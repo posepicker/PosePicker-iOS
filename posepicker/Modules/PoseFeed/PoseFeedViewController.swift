@@ -78,6 +78,8 @@ class PoseFeedViewController: BaseViewController {
             $0.color = .mainViolet
         }
     
+    let poseUploadButton = UIButton(type: .system)
+    
     // MARK: - Properties
     
     var viewModel: PoseFeedViewModel
