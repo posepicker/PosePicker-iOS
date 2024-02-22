@@ -87,7 +87,7 @@ enum APIRouter: URLRequestConvertible {
         case .retrieveAuthoirzationCode:
             return "/api/users/posepicker/token"
         case .refreshToken:
-            return "/api/auth/regenerate-token"
+            return "/api/auth/reissue-token"
         case .logout:
             return "/api/users/logout"
         case .registerBookmark:
