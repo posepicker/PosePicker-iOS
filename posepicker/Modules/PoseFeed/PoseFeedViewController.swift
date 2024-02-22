@@ -78,7 +78,11 @@ class PoseFeedViewController: BaseViewController {
             $0.color = .mainViolet
         }
     
-    let poseUploadButton = UIButton(type: .system)
+    let poseUploadButton = PosePickButton(status: .defaultStatus, isFill: true, position: .center, buttonTitle: "", image: ImageLiteral.imgAdd)
+        .then {
+            $0.layer.cornerRadius = 26
+            $0.clipsToBounds = true
+        }
     
     // MARK: - Properties
     
@@ -113,7 +117,7 @@ class PoseFeedViewController: BaseViewController {
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([filterButton, filterDivider, filterCollectionView, poseFeedCollectionView, supplementLabel, loadingIndicator])
+        view.addSubViews([filterButton, filterDivider, filterCollectionView, poseFeedCollectionView, supplementLabel, loadingIndicator, poseUploadButton])
         
         filterButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
@@ -143,6 +147,12 @@ class PoseFeedViewController: BaseViewController {
         loadingIndicator.snp.makeConstraints { make in
             make.centerY.equalToSuperview().offset(-50)
             make.centerX.equalToSuperview()
+        }
+        
+        poseUploadButton.snp.makeConstraints { make in
+            make.width.height.equalTo(52)
+            make.trailing.equalToSuperview().offset(-20)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
         }
     }
     
@@ -218,6 +228,8 @@ class PoseFeedViewController: BaseViewController {
                 self?.poseFeedCollectionView.scrollToItem(at: IndexPath(item: -1, section: 0), at: .top, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        poseUploadButton.makeShadow(alpha: 0.5, x: -4, y: -4, blur: 6.8, spread: 0)
     }
     
     override func bindViewModel() {
