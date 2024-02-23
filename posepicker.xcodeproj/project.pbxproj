@@ -61,6 +61,7 @@
 		C91A26692B88522700F1193E /* MyPoseFramecountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A26682B88522700F1193E /* MyPoseFramecountViewController.swift */; };
 		C91A266B2B88524200F1193E /* MyPoseTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A266A2B88524200F1193E /* MyPoseTagViewController.swift */; };
 		C91A266D2B88525200F1193E /* MyPoseImageSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A266C2B88525200F1193E /* MyPoseImageSourceViewController.swift */; };
+		C91A266F2B88899300F1193E /* MyPoseSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A266E2B88899300F1193E /* MyPoseSelectButton.swift */; };
 		C91CE9262B1B0DDC00048FF7 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91CE9252B1B0DDC00048FF7 /* MockURLProtocol.swift */; };
 		C91CE92D2B1B1CA300048FF7 /* PosePick.json in Resources */ = {isa = PBXBuildFile; fileRef = C91CE92C2B1B1CA300048FF7 /* PosePick.json */; };
 		C91CE9342B1DA15700048FF7 /* posefeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91CE9322B1DA15700048FF7 /* posefeedTests.swift */; };
@@ -227,6 +228,7 @@
 		C91A26682B88522700F1193E /* MyPoseFramecountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseFramecountViewController.swift; sourceTree = "<group>"; };
 		C91A266A2B88524200F1193E /* MyPoseTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseTagViewController.swift; sourceTree = "<group>"; };
 		C91A266C2B88525200F1193E /* MyPoseImageSourceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseImageSourceViewController.swift; sourceTree = "<group>"; };
+		C91A266E2B88899300F1193E /* MyPoseSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseSelectButton.swift; sourceTree = "<group>"; };
 		C91CE9252B1B0DDC00048FF7 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
 		C91CE92C2B1B1CA300048FF7 /* PosePick.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PosePick.json; sourceTree = "<group>"; };
 		C91CE9322B1DA15700048FF7 /* posefeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posefeedTests.swift; sourceTree = "<group>"; };
@@ -724,6 +726,7 @@
 			children = (
 				C94FD2AA2AE8CEEB003777EB /* Button.swift */,
 				C91A26632B87975900F1193E /* CircleSegmentButton.swift */,
+				C91A266E2B88899300F1193E /* MyPoseSelectButton.swift */,
 			);
 			path = Button;
 			sourceTree = "<group>";
@@ -1384,6 +1387,7 @@
 				C91A266B2B88524200F1193E /* MyPoseTagViewController.swift in Sources */,
 				C9DC2F942AEA282700D5170D /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				C903E5402AFCC46E00BD004F /* FilteredPose.swift in Sources */,
+				C91A266F2B88899300F1193E /* MyPoseSelectButton.swift in Sources */,
 				C990AB1E2B5BF52600567AA3 /* String+.swift in Sources */,
 				880E753C2AE6BE3A007FAD5A /* BindableViewModel.swift in Sources */,
 				C9DC2FA62AEB6E1800D5170D /* FilterTags.swift in Sources */,
