@@ -24,6 +24,8 @@ class MyPoseHeadcountViewController: BaseViewController {
             $0.contentMode = .scaleAspectFit
         }
     
+    let headcountButtons: [MyPoseSelectButton] = [MyPoseSelectButton(title: "1인", isCurrent: true), MyPoseSelectButton(title: "2인"), MyPoseSelectButton(title: "3인"), MyPoseSelectButton(title: "4인"), MyPoseSelectButton(title: "5인 이상")]
+    
     let nextButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "다음", image: nil)
     
     // MARK: - Properties
@@ -42,11 +44,41 @@ class MyPoseHeadcountViewController: BaseViewController {
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([mainLabel, registeredImageView, nextButton])
+        let firstLineButtons = UIStackView(arrangedSubviews: [headcountButtons[0], headcountButtons[1], headcountButtons[2]])
+            .then {
+                $0.axis = .horizontal
+                $0.alignment = .fill
+                $0.distribution = .fillEqually
+                $0.spacing = 12
+            }
+        
+        let secondLineButtons = UIStackView(arrangedSubviews: [headcountButtons[3], headcountButtons[4]])
+            .then {
+                $0.axis = .horizontal
+                $0.alignment = .fill
+                $0.distribution = .fillEqually
+                $0.spacing = 12
+            }
+        
+        view.addSubViews([mainLabel, firstLineButtons, secondLineButtons, registeredImageView, nextButton])
         
         mainLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.equalToSuperview().offset(20)
+        }
+        
+        firstLineButtons.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalToSuperview().offset(-20)
+            make.top.equalTo(mainLabel.snp.bottom).offset(36)
+            make.height.equalTo(108)
+        }
+        
+        secondLineButtons.snp.makeConstraints { make in
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalTo(headcountButtons[1])
+            make.top.equalTo(firstLineButtons.snp.bottom).offset(12)
+            make.height.equalTo(108)
         }
         
         registeredImageView.snp.makeConstraints { make in
@@ -64,6 +96,20 @@ class MyPoseHeadcountViewController: BaseViewController {
     }
     
     override func configUI() {
-        
+        headcountButtons.enumerated().forEach { [weak self] index, button in
+            guard let self = self else { return }
+            
+            button.rx.tap
+                .subscribe(onNext: {
+                    self.resetButtonUI()
+                    button.isCurrent = true
+                })
+                .disposed(by: self.disposeBag)
+        }
+        headcountButtons[0].isCurrent = true
+    }
+    
+    func resetButtonUI() {
+        headcountButtons.forEach { $0.isCurrent = false }
     }
 }
