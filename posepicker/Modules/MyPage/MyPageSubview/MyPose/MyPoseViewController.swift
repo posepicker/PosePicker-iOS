@@ -49,7 +49,10 @@ class MyPoseViewController: BaseViewController {
                 completion: nil
             )
             resetButtonUI()
-            buttons[currentPage].isCurrent = true
+            UIView.animate(withDuration: 0.1) { [weak self] in
+                guard let self = self else { return }
+                self.buttons[currentPage].isCurrent = true
+            }
         }
     }
 
@@ -89,9 +92,11 @@ class MyPoseViewController: BaseViewController {
             
             button.rx.tap
                 .subscribe(onNext: {
-                    self.resetButtonUI()
-                    button.isCurrent = true
-                    self.currentPage = index
+                    UIView.animate(withDuration: 0.1) {
+                        self.resetButtonUI()
+                        button.isCurrent = true
+                        self.currentPage = index
+                    }
                 })
                 .disposed(by: self.disposeBag)
         }
