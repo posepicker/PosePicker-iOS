@@ -21,7 +21,25 @@ class MyPoseHeadcountViewController: BaseViewController {
     
     lazy var registeredImageView = UIImageView(image: self.registeredImage)
         .then {
-            $0.contentMode = .scaleAspectFit
+            $0.backgroundColor = .red
+            $0.clipsToBounds = true
+            $0.layer.cornerRadius = 6
+            $0.contentMode = .scaleAspectFill
+        }
+    
+    let expandButton = UIButton(type: .system)
+        .then {
+            $0.setImage(ImageLiteral.imgExpand.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.layer.cornerRadius = 24
+            $0.clipsToBounds = true
+            $0.backgroundColor = .dimmed30
+        }
+    
+    let imageLabel = UILabel()
+        .then {
+            $0.text = "등록된 이미지"
+            $0.textColor = .textTertiary
+            $0.font = .caption
         }
     
     let headcountButtons: [MyPoseSelectButton] = [MyPoseSelectButton(title: "1인", isCurrent: true), MyPoseSelectButton(title: "2인"), MyPoseSelectButton(title: "3인"), MyPoseSelectButton(title: "4인"), MyPoseSelectButton(title: "5인 이상")]
@@ -60,7 +78,7 @@ class MyPoseHeadcountViewController: BaseViewController {
                 $0.spacing = 12
             }
         
-        view.addSubViews([mainLabel, firstLineButtons, secondLineButtons, registeredImageView, nextButton])
+        view.addSubViews([mainLabel, firstLineButtons, secondLineButtons, registeredImageView, imageLabel, expandButton, nextButton])
         
         mainLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -82,10 +100,20 @@ class MyPoseHeadcountViewController: BaseViewController {
         }
         
         registeredImageView.snp.makeConstraints { make in
-            make.width.equalTo(120)
-            make.height.equalTo(160)
+            make.width.equalTo(UIScreen.main.bounds.width / 3)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(nextButton.snp.top).offset(-27)
+            make.top.equalTo(secondLineButtons.snp.bottom).offset(27)
+            make.bottom.equalTo(nextButton.snp.top).offset(-50)
+        }
+        
+        expandButton.snp.makeConstraints { make in
+            make.width.height.equalTo(48)
+            make.center.equalTo(registeredImageView)
+        }
+        
+        imageLabel.snp.makeConstraints { make in
+            make.top.equalTo(registeredImageView.snp.bottom).offset(8)
+            make.centerX.equalToSuperview()
         }
         
         nextButton.snp.makeConstraints { make in
