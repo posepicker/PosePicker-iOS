@@ -21,10 +21,9 @@ class MyPoseHeadcountViewController: BaseViewController {
     
     lazy var registeredImageView = UIImageView(image: self.registeredImage)
         .then {
-            $0.backgroundColor = .red
             $0.clipsToBounds = true
             $0.layer.cornerRadius = 6
-            $0.contentMode = .scaleAspectFill
+            $0.contentMode = .scaleAspectFit
         }
     
     let expandButton = UIButton(type: .system)
@@ -100,12 +99,12 @@ class MyPoseHeadcountViewController: BaseViewController {
         }
         
         registeredImageView.snp.makeConstraints { make in
-            make.width.equalTo(UIScreen.main.bounds.width / 3)
             make.centerX.equalToSuperview()
             make.top.equalTo(secondLineButtons.snp.bottom).offset(27)
             make.bottom.equalTo(nextButton.snp.top).offset(-50)
+            make.width.equalTo(UIScreen.main.bounds.width / 3)
         }
-        
+
         expandButton.snp.makeConstraints { make in
             make.width.height.equalTo(48)
             make.center.equalTo(registeredImageView)
@@ -135,6 +134,15 @@ class MyPoseHeadcountViewController: BaseViewController {
                 .disposed(by: self.disposeBag)
         }
         headcountButtons[0].isCurrent = true
+        
+        expandButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
+                let vc = MyPoseImageDetailViewController(registeredImage: self?.registeredImage)
+                vc.modalTransitionStyle = .crossDissolve
+                vc.modalPresentationStyle = .overFullScreen
+                self?.present(vc, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     func resetButtonUI() {
