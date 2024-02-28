@@ -19,7 +19,7 @@ class MyPoseGuidelineViewController: BaseViewController {
     
     let mainLabel = UILabel()
         .then {
-            $0.font = .pretendard(.bold, ofSize: 16)
+            $0.font = .pretendard(.bold, ofSize: 18)
             $0.text = "📷 이런 사진을 올려주세요!"
         }
     
@@ -60,14 +60,15 @@ class MyPoseGuidelineViewController: BaseViewController {
         .then {
             $0.text = "가이드라인을 위반한 사진은\n운영자에 의해 무통보 삭제될 수 있습니다."
             let paragraphStyle = NSMutableParagraphStyle()
-            paragraphStyle.minimumLineHeight = 18
+            paragraphStyle.minimumLineHeight = 14
             paragraphStyle.alignment = .center
             let attrString = NSMutableAttributedString(string: $0.text ?? "")
             attrString.addAttribute(.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
+            attrString.addAttribute(NSAttributedString.Key.font, value: UIFont.pretendard(.medium, ofSize: 12), range: NSMakeRange(0, attrString.length))
             $0.attributedText = attrString
             $0.numberOfLines = 0
             $0.textColor = .textTertiary
-            $0.font = .subTitle3
+//            $0.font = .pretendard(.medium, ofSize: 12)
         }
     
     let confirmButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "확인", image: nil)
@@ -93,9 +94,10 @@ class MyPoseGuidelineViewController: BaseViewController {
         view.addSubViews([guidelineBox, mainLabel, thumbnail, rule1, rule2, rule3, rule4, alertLabel, confirmButton, guidelineCheckButton, borderBottom, loadingIndicator])
         
         guidelineBox.snp.makeConstraints { make in
-            make.center.equalToSuperview()
+            make.top.equalToSuperview().offset(124)
+            make.centerX.equalToSuperview()
             make.width.equalTo(300)
-            make.height.equalTo(616)
+            make.height.equalTo(580)
         }
         
         mainLabel.snp.makeConstraints { make in
@@ -104,15 +106,15 @@ class MyPoseGuidelineViewController: BaseViewController {
         }
         
         thumbnail.snp.makeConstraints { make in
-            make.top.equalTo(mainLabel.snp.bottom).offset(21.5)
+            make.top.equalTo(mainLabel.snp.bottom).offset(12)
             make.centerX.equalTo(guidelineBox)
-            make.width.equalTo(180)
-            make.height.equalTo(250)
+            make.width.equalTo(160)
+            make.height.equalTo(240)
         }
         
         rule1.snp.makeConstraints { make in
-            make.top.equalTo(thumbnail.snp.bottom).offset(24)
-            make.leading.equalTo(guidelineBox).offset(24)
+            make.top.equalTo(thumbnail.snp.bottom).offset(9)
+            make.leading.equalTo(guidelineBox).offset(36)
             make.height.equalTo(26)
         }
         
@@ -146,16 +148,16 @@ class MyPoseGuidelineViewController: BaseViewController {
         }
         
         guidelineCheckButton.snp.makeConstraints { make in
-            make.bottom.equalTo(guidelineBox).offset(-20)
             make.top.equalTo(confirmButton.snp.bottom).offset(12)
             make.centerX.equalTo(guidelineBox)
+            make.height.equalTo(22)
         }
         
         borderBottom.backgroundColor = .textSecondary
         borderBottom.snp.makeConstraints { make in
             make.centerX.width.equalTo(guidelineCheckButton)
             make.height.equalTo(1)
-            make.top.equalTo(guidelineCheckButton.snp.bottom)
+            make.top.equalTo(guidelineCheckButton.snp.bottom).offset(-2)
         }
         
         loadingIndicator.snp.makeConstraints { make in
