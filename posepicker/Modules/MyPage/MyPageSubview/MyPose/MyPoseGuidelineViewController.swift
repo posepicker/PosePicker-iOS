@@ -166,7 +166,7 @@ class MyPoseGuidelineViewController: BaseViewController {
     }
     
     override func configUI() {
-        self.view.backgroundColor = .dimmed30
+        self.view.backgroundColor = .dimmed70
         
         confirmButton.rx.tap.asDriver()
             .drive(onNext: { [weak self] in
