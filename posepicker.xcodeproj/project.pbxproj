@@ -121,6 +121,7 @@
 		C99D53C42B1FF878007DEE9B /* Bookmark_Empty.json in Resources */ = {isa = PBXBuildFile; fileRef = C99D53C32B1FF878007DEE9B /* Bookmark_Empty.json */; };
 		C9C0CDC82AF1D9160041E423 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = C9C0CDC72AF1D9160041E423 /* Kingfisher */; };
 		C9C0CDCE2AF353AB0041E423 /* ToolTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */; };
+		C9C4D2022B8F6A5D00FF9363 /* MyPoseImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C4D2012B8F6A5D00FF9363 /* MyPoseImageDetailViewController.swift */; };
 		C9C890522AE103A10010240A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890512AE103A10010240A /* AppDelegate.swift */; };
 		C9C8905B2AE103A30010240A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9C8905A2AE103A30010240A /* Assets.xcassets */; };
 		C9C8905E2AE103A30010240A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9C8905C2AE103A30010240A /* LaunchScreen.storyboard */; };
@@ -268,6 +269,7 @@
 		C99D53C02B1FA43A007DEE9B /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
 		C99D53C32B1FF878007DEE9B /* Bookmark_Empty.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Bookmark_Empty.json; sourceTree = "<group>"; };
 		C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolTip.swift; sourceTree = "<group>"; };
+		C9C4D2012B8F6A5D00FF9363 /* MyPoseImageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseImageDetailViewController.swift; sourceTree = "<group>"; };
 		C9C8904E2AE103A10010240A /* posepicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = posepicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9C890512AE103A10010240A /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		C9C8905A2AE103A30010240A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -594,6 +596,7 @@
 		C91A26652B88517700F1193E /* MyPosePages */ = {
 			isa = PBXGroup;
 			children = (
+				C9C4D2002B8F6A4100FF9363 /* Subviews */,
 				C91A26662B88521200F1193E /* MyPoseHeadcountViewController.swift */,
 				C91A26682B88522700F1193E /* MyPoseFramecountViewController.swift */,
 				C91A266A2B88524200F1193E /* MyPoseTagViewController.swift */,
@@ -821,6 +824,14 @@
 				C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */,
 			);
 			path = ToolTip;
+			sourceTree = "<group>";
+		};
+		C9C4D2002B8F6A4100FF9363 /* Subviews */ = {
+			isa = PBXGroup;
+			children = (
+				C9C4D2012B8F6A5D00FF9363 /* MyPoseImageDetailViewController.swift */,
+			);
+			path = Subviews;
 			sourceTree = "<group>";
 		};
 		C9C890452AE103A10010240A = {
@@ -1372,6 +1383,7 @@
 				880E75402AE6BF2F007FAD5A /* ServicePose.swift in Sources */,
 				880E75562AE6C2F7007FAD5A /* APIInterceptor.swift in Sources */,
 				88EA81F12AF69BD700020DEA /* PoseFeed.swift in Sources */,
+				C9C4D2022B8F6A5D00FF9363 /* MyPoseImageDetailViewController.swift in Sources */,
 				C94FD2892AE39635003777EB /* PoseTalkViewModel.swift in Sources */,
 				C91A266D2B88525200F1193E /* MyPoseImageSourceViewController.swift in Sources */,
 				C9C890882AE107090010240A /* BaseViewController.swift in Sources */,
