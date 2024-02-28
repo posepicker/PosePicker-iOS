@@ -68,7 +68,6 @@ class MyPoseGuidelineViewController: BaseViewController {
             $0.attributedText = attrString
             $0.numberOfLines = 0
             $0.textColor = .textTertiary
-//            $0.font = .pretendard(.medium, ofSize: 12)
         }
     
     let confirmButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "확인", image: nil)
@@ -94,7 +93,7 @@ class MyPoseGuidelineViewController: BaseViewController {
         view.addSubViews([guidelineBox, mainLabel, thumbnail, rule1, rule2, rule3, rule4, alertLabel, confirmButton, guidelineCheckButton, borderBottom, loadingIndicator])
         
         guidelineBox.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(124)
+            make.top.equalToSuperview().offset(UIScreen.main.isWiderThan375pt ? 124 : 60)
             make.centerX.equalToSuperview()
             make.width.equalTo(300)
             make.height.equalTo(580)
@@ -157,7 +156,7 @@ class MyPoseGuidelineViewController: BaseViewController {
         borderBottom.snp.makeConstraints { make in
             make.centerX.width.equalTo(guidelineCheckButton)
             make.height.equalTo(1)
-            make.top.equalTo(guidelineCheckButton.snp.bottom).offset(-2)
+            make.top.equalTo(guidelineCheckButton.snp.bottom).offset(-4)
         }
         
         loadingIndicator.snp.makeConstraints { make in
