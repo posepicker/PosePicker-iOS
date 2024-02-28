@@ -12,7 +12,7 @@ class MyPoseImageDetailViewController: BaseViewController {
     // MARK: - Subviews
     lazy var imageView = UIImageView(image: self.registeredImage)
         .then {
-            $0.contentMode = .scaleAspectFit
+            $0.contentMode = .scaleToFill
         }
     
     // MARK: - Properties
@@ -20,7 +20,7 @@ class MyPoseImageDetailViewController: BaseViewController {
     
     // MARK: - Initialization
     init(registeredImage: UIImage?) {
-        self.registeredImage = registeredImage
+        self.registeredImage = registeredImage?.resize(newWidth: UIScreen.main.bounds.width)
         super.init()
     }
     
@@ -34,7 +34,7 @@ class MyPoseImageDetailViewController: BaseViewController {
         
         imageView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview()
-            make.centerY.equalToSuperview()
+            make.center.equalToSuperview()
         }
     }
     
