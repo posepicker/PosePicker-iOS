@@ -55,6 +55,8 @@
 		C9042E6B2B0D7CB000BB4182 /* LoginPopUpView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9042E6A2B0D7CB000BB4182 /* LoginPopUpView.swift */; };
 		C916730E2B5E526D0092661B /* ImagePopUpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C916730D2B5E526D0092661B /* ImagePopUpViewController.swift */; };
 		C91673112B5EA15F0092661B /* SkeletonView in Frameworks */ = {isa = PBXBuildFile; productRef = C91673102B5EA15F0092661B /* SkeletonView */; };
+		C9188B252B909E6A004B9C45 /* MyPoseCustomTagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9188B242B909E6A004B9C45 /* MyPoseCustomTagCell.swift */; };
+		C9188B272B909E78004B9C45 /* MyPoseCustomTagCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9188B262B909E78004B9C45 /* MyPoseCustomTagCellViewModel.swift */; };
 		C91A265F2B8788F900F1193E /* MyPoseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A265E2B8788F900F1193E /* MyPoseCoordinator.swift */; };
 		C91A26642B87975900F1193E /* CircleSegmentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A26632B87975900F1193E /* CircleSegmentButton.swift */; };
 		C91A26672B88521200F1193E /* MyPoseHeadcountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A26662B88521200F1193E /* MyPoseHeadcountViewController.swift */; };
@@ -67,6 +69,7 @@
 		C91CE9342B1DA15700048FF7 /* posefeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91CE9322B1DA15700048FF7 /* posefeedTests.swift */; };
 		C9254CE32B4922B100C4C779 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9254CE22B4922B000C4C779 /* WebKit.framework */; };
 		C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */; };
+		C93625902B907A6F00B90810 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C936258F2B907A6F00B90810 /* UITextField+.swift */; };
 		C93EE1B32B583D47007D61EF /* RxKakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = C93EE1B22B583D47007D61EF /* RxKakaoSDK */; };
 		C93EE1B52B583D47007D61EF /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C93EE1B42B583D47007D61EF /* RxKakaoSDKAuth */; };
 		C93EE1B72B583D47007D61EF /* RxKakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = C93EE1B62B583D47007D61EF /* RxKakaoSDKCommon */; };
@@ -223,6 +226,8 @@
 		C9042E5B2B0B043400BB4182 /* FrameCountTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FrameCountTags.swift; sourceTree = "<group>"; };
 		C9042E6A2B0D7CB000BB4182 /* LoginPopUpView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginPopUpView.swift; sourceTree = "<group>"; };
 		C916730D2B5E526D0092661B /* ImagePopUpViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImagePopUpViewController.swift; sourceTree = "<group>"; };
+		C9188B242B909E6A004B9C45 /* MyPoseCustomTagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseCustomTagCell.swift; sourceTree = "<group>"; };
+		C9188B262B909E78004B9C45 /* MyPoseCustomTagCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseCustomTagCellViewModel.swift; sourceTree = "<group>"; };
 		C91A265E2B8788F900F1193E /* MyPoseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseCoordinator.swift; sourceTree = "<group>"; };
 		C91A26632B87975900F1193E /* CircleSegmentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleSegmentButton.swift; sourceTree = "<group>"; };
 		C91A26662B88521200F1193E /* MyPoseHeadcountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseHeadcountViewController.swift; sourceTree = "<group>"; };
@@ -235,6 +240,7 @@
 		C91CE9322B1DA15700048FF7 /* posefeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posefeedTests.swift; sourceTree = "<group>"; };
 		C9254CE22B4922B000C4C779 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageWebViewController.swift; sourceTree = "<group>"; };
+		C936258F2B907A6F00B90810 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
 		C94FD2742AE38E26003777EB /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		C94FD2762AE38E82003777EB /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2782AE38EBD003777EB /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -593,9 +599,19 @@
 			path = ImagePopUp;
 			sourceTree = "<group>";
 		};
+		C9188B232B909E4D004B9C45 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				C9188B242B909E6A004B9C45 /* MyPoseCustomTagCell.swift */,
+				C9188B262B909E78004B9C45 /* MyPoseCustomTagCellViewModel.swift */,
+			);
+			path = Cell;
+			sourceTree = "<group>";
+		};
 		C91A26652B88517700F1193E /* MyPosePages */ = {
 			isa = PBXGroup;
 			children = (
+				C9188B232B909E4D004B9C45 /* Cell */,
 				C9C4D2002B8F6A4100FF9363 /* Subviews */,
 				C91A26662B88521200F1193E /* MyPoseHeadcountViewController.swift */,
 				C91A26682B88522700F1193E /* MyPoseFramecountViewController.swift */,
@@ -639,6 +655,14 @@
 				C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */,
 			);
 			path = MyPageSubview;
+			sourceTree = "<group>";
+		};
+		C936258E2B907A6500B90810 /* UITextField */ = {
+			isa = PBXGroup;
+			children = (
+				C936258F2B907A6F00B90810 /* UITextField+.swift */,
+			);
+			path = UITextField;
 			sourceTree = "<group>";
 		};
 		C94FD27A2AE39505003777EB /* PosePick */ = {
@@ -926,6 +950,7 @@
 		C9C8909A2AE107A40010240A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C936258E2B907A6500B90810 /* UITextField */,
 				C990AB1C2B5BF51D00567AA3 /* String */,
 				C9DC2FA12AEA563C00D5170D /* UIScreen */,
 				C9DC2F912AEA27F600D5170D /* UICollectionView */,
@@ -1329,6 +1354,7 @@
 				880E75342AE67CC4007FAD5A /* BasicSelection.swift in Sources */,
 				C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */,
 				883132992B08EF9E00DAA5A7 /* PoseDetailTagCellViewModel.swift in Sources */,
+				C9188B272B909E78004B9C45 /* MyPoseCustomTagCellViewModel.swift in Sources */,
 				880E75422AE6BF4B007FAD5A /* APIService.swift in Sources */,
 				C916730E2B5E526D0092661B /* ImagePopUpViewController.swift in Sources */,
 				C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */,
@@ -1372,6 +1398,7 @@
 				88D5C4812B027B0A0045C081 /* PoseFeedSection.swift in Sources */,
 				880E752D2AE60499007FAD5A /* Header.swift in Sources */,
 				C99D53B72B1EDCB8007DEE9B /* BookmarkEmptyView.swift in Sources */,
+				C9188B252B909E6A004B9C45 /* MyPoseCustomTagCell.swift in Sources */,
 				C94FD2812AE39603003777EB /* PoseTalkViewController.swift in Sources */,
 				C9FDBDFA2B28AE5E0045AA54 /* BookmarkDetailViewModel.swift in Sources */,
 				883132972B08EF9100DAA5A7 /* PoseDetailTagCell.swift in Sources */,
@@ -1393,6 +1420,7 @@
 				8803ADBB2B04FB4100185933 /* PoseDetailViewModel.swift in Sources */,
 				88D5C4852B0318040045C081 /* PoseFeedHeader.swift in Sources */,
 				C94FD2902AE398CF003777EB /* MyPageViewController.swift in Sources */,
+				C93625902B907A6F00B90810 /* UITextField+.swift in Sources */,
 				C9FDBDEE2B28487E0045AA54 /* BookmarkSection.swift in Sources */,
 				880E75492AE6BFE3007FAD5A /* APIEventLogger.swift in Sources */,
 				880E75522AE6C275007FAD5A /* Data+.swift in Sources */,
