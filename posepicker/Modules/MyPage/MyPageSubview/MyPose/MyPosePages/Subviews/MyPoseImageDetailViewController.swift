@@ -54,7 +54,7 @@ class MyPoseImageDetailViewController: BaseViewController {
             .subscribe(onNext: { [weak self] dismiss in
                 if !dismiss { return }
                 guard let self = self else { return }
-                UIView.animate(withDuration: 0.2) {
+                UIView.animate(withDuration: 0.3) {
                     guard let frame = self.frame else { return }
                     self.imageView.contentMode = .scaleAspectFit
                     self.imageView.snp.removeConstraints()
