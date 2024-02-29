@@ -27,6 +27,21 @@ class MyPoseFramecountViewController: BaseViewController {
             $0.contentMode = .scaleAspectFit
         }
     
+    let imageLabel = UILabel()
+        .then {
+            $0.text = "등록된 이미지"
+            $0.textColor = .textTertiary
+            $0.font = .caption
+        }
+    
+    let expandButton = UIButton(type: .system)
+        .then {
+            $0.setImage(ImageLiteral.imgExpand.withRenderingMode(.alwaysOriginal), for: .normal)
+            $0.layer.cornerRadius = 24
+            $0.clipsToBounds = true
+            $0.backgroundColor = .dimmed30
+        }
+    
     let nextButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "다음", image: nil)
     
     // MARK: - Properties
@@ -61,7 +76,7 @@ class MyPoseFramecountViewController: BaseViewController {
                 $0.spacing = 12
             }
         
-        view.addSubViews([mainLabel, firstLineButtons, secondLineButtons, registeredImageView, nextButton])
+        view.addSubViews([mainLabel, firstLineButtons, secondLineButtons, registeredImageView, expandButton, imageLabel, nextButton])
         
         mainLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -83,13 +98,21 @@ class MyPoseFramecountViewController: BaseViewController {
         }
         
         registeredImageView.snp.makeConstraints { make in
-            make.width.equalTo(120)
-            make.height.equalTo(160)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(nextButton.snp.top).offset(-27)
+            make.top.equalTo(secondLineButtons.snp.bottom).offset(27)
+            make.bottom.equalTo(nextButton.snp.top).offset(-50)
+            make.width.equalTo(UIScreen.main.bounds.width / 3)
         }
         
+        expandButton.snp.makeConstraints { make in
+            make.width.height.equalTo(48)
+            make.center.equalTo(registeredImageView)
+        }
         
+        imageLabel.snp.makeConstraints { make in
+            make.top.equalTo(registeredImageView.snp.bottom).offset(8)
+            make.centerX.equalToSuperview()
+        }
         
         nextButton.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(18.5)
@@ -110,6 +133,18 @@ class MyPoseFramecountViewController: BaseViewController {
                 .disposed(by: self.disposeBag)
         }
         framecountButtons[0].isCurrent = true
+        
+        expandButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                let absoluteOrigin: CGPoint? = self.registeredImageView.superview?.convert(self.registeredImageView.frame.origin, to: nil) ?? CGPoint(x: 0, y: 0)
+                let frame = CGRectMake(absoluteOrigin?.x ?? 0, absoluteOrigin?.y ?? 0, self.registeredImageView.frame.width, self.registeredImageView.frame.height)
+                let vc = MyPoseImageDetailViewController(registeredImage: self.registeredImage, frame: frame)
+                vc.modalTransitionStyle = .crossDissolve
+                vc.modalPresentationStyle = .overFullScreen
+                self.present(vc, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     func resetButtonUI() {
