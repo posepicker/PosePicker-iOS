@@ -6,21 +6,25 @@
 //
 
 import UIKit
+import RxSwift
+import SnapKit
 
 class MyPoseImageDetailViewController: BaseViewController {
 
     // MARK: - Subviews
-    lazy var imageView = UIImageView(image: self.registeredImage)
+    lazy var imageView = UIImageViewWithDismissNotification(image: self.registeredImage)
         .then {
             $0.contentMode = .scaleToFill
         }
     
     // MARK: - Properties
     let registeredImage: UIImage?
+    let frame: CGRect?
     
     // MARK: - Initialization
-    init(registeredImage: UIImage?) {
+    init(registeredImage: UIImage?, frame: CGRect?) {
         self.registeredImage = registeredImage?.resize(newWidth: UIScreen.main.bounds.width)
+        self.frame = frame
         super.init()
     }
     
@@ -45,5 +49,28 @@ class MyPoseImageDetailViewController: BaseViewController {
         view.backgroundColor = .dimmed70
         imageView.enableZoom()
         imageView.enableDrag()
+        
+        imageView.dismissObservable
+            .subscribe(onNext: { [weak self] dismiss in
+                if !dismiss { return }
+                guard let self = self else { return }
+                UIView.animate(withDuration: 0.2) {
+                    guard let frame = self.frame else { return }
+                    self.imageView.contentMode = .scaleAspectFit
+                    self.imageView.snp.removeConstraints()
+                    self.imageView.frame = frame
+                    
+                    self.imageView.setNeedsLayout()
+                    self.imageView.layoutIfNeeded()
+                } completion: { [weak self] _ in
+                    self?.dismiss(animated: true)
+                }
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        disposeBag = DisposeBag()
     }
 }
