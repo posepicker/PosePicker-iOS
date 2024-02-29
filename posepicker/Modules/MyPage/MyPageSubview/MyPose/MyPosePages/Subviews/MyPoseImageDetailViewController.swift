@@ -67,6 +67,12 @@ class MyPoseImageDetailViewController: BaseViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        imageView.backgroundAlphaObservable
+            .subscribe(onNext: { [weak self] alphaRatio in
+                self?.view.backgroundColor = .init(hex: "#000000", alpha: 0.7 - 0.4 * alphaRatio)
+            })
+            .disposed(by: disposeBag)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
