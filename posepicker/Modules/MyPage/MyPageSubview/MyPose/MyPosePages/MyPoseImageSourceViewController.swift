@@ -27,30 +27,46 @@ class MyPoseImageSourceViewController: BaseViewController {
             $0.attributedText = attributedText
         }
     
-    lazy var registeredImageView = UIImageView(image: self.registeredImage)
+    let urlTextField = UITextField()
+        .then {
+            $0.layer.cornerRadius = 8
+            $0.layer.borderWidth = 1
+            $0.layer.borderColor = UIColor.borderDefault.cgColor
+            $0.textColor = .textPrimary
+            $0.font = .subTitle2
+            $0.addLeftPadding(width: 16)
+            $0.placeholder = "URL 링크를 입력해 주세요."
+        }
+    
+    let exampleLabel = UILabel()
+        .then {
+            $0.numberOfLines = 0
+            $0.font = .subTitle2
+            $0.textColor = .textBrand
+            $0.textAlignment = .center
+            $0.text = "아래 예시처럼 이미지와 함께 링크가 업로드!\n*개인 SNS도 가능해요"
+        }
+    
+    let exampleImageView = UIImageView(image: ImageLiteral.imgExample)
         .then {
             $0.contentMode = .scaleAspectFit
         }
     
-    let nextButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "다음", image: nil)
+    let caption = UILabel()
+        .then {
+            $0.text = "예시 이미지"
+            $0.font = .caption
+            $0.textColor = .textTertiary
+        }
+    
+    let nextButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "업로드", image: nil)
     
     // MARK: - Properties
-    let registeredImage: UIImage?
-    
-    // MARK: - Initialization
-    init(registeredImage: UIImage?) {
-        self.registeredImage = registeredImage
-        super.init()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([mainLabel, subLabel, registeredImageView, nextButton])
+        view.addSubViews([mainLabel, subLabel, urlTextField, exampleImageView,exampleLabel, caption, nextButton])
         
         mainLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -62,11 +78,27 @@ class MyPoseImageSourceViewController: BaseViewController {
             make.top.equalTo(mainLabel.snp.bottom).offset(2)
         }
         
-        registeredImageView.snp.makeConstraints { make in
-            make.width.equalTo(120)
-            make.height.equalTo(160)
+        urlTextField.snp.makeConstraints { make in
+            make.top.equalTo(subLabel.snp.bottom).offset(36)
+            make.height.equalTo(56)
+            make.leading.trailing.equalToSuperview().inset(20)
+        }
+        
+        exampleLabel.snp.makeConstraints { make in
+            make.top.equalTo(urlTextField.snp.bottom).offset(28)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(nextButton.snp.top).offset(-27)
+        }
+        
+        exampleImageView.snp.makeConstraints { make in
+            make.width.equalTo(170)
+            make.height.equalTo(250).priority(.low)
+            make.centerX.equalToSuperview()
+            make.top.equalTo(exampleLabel.snp.bottom).offset(16).priority(.high)
+        }
+        
+        caption.snp.makeConstraints { make in
+            make.top.equalTo(exampleImageView.snp.bottom).offset(6)
+            make.centerX.equalToSuperview()
         }
         
         nextButton.snp.makeConstraints { make in
