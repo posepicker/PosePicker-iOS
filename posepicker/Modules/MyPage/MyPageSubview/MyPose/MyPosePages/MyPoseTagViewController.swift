@@ -222,6 +222,36 @@ class MyPoseTagViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        // 3. 스페이스바 입력후 태그 생성
+        tagTextField.rx.text
+            .asDriver()
+            .drive(onNext: { [weak self] str in
+                if let str = str, str.last == " " {
+                    guard let self = self else { return }
+                    
+                    // 입력문자 값복사해야 텍스트필드 반응 안함
+                    var str = str; _ = str.popLast()
+                    
+                    // 스페이스 입력으로 인한 공백 제외하고 입력 없으면 리턴
+                    if str.isEmpty {
+                        self.tagTextField.rx.text.onNext("")
+                        return
+                    }
+                    
+                    // 커스텀태그 뷰모델 생성
+                    let vm = PoseFeedFilterCellViewModel(title: str)
+                    vm.isSelected.accept(true)
+                    
+                    // 태그 생성
+                    self.tagItemsFromTextField.accept(self.tagItemsFromTextField.value + [vm])
+                    self.tagFromTextFieldCollectionView.snp.updateConstraints { make in
+                        make.width.equalTo(self.tagFromTextFieldCollectionView.frame.width + str.width(withConstrainedHeight: 32, font: .pretendard(.medium, ofSize: 14)) + 48)
+                    }
+                    self.tagTextField.rx.text.onNext("")
+                }
+            })
+            .disposed(by: disposeBag)
+        
         /// OUTPUT: 커스텀 태그 아이템 바인딩
         tagItemsFromTextField.asDriver()
             .drive(tagFromTextFieldCollectionView.rx.items(cellIdentifier: MyPoseCustomTagCell.identifier, cellType: MyPoseCustomTagCell.self)) { _, viewModel, cell in
