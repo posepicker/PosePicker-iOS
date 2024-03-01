@@ -35,7 +35,7 @@ class MyPoseViewController: BaseViewController {
         MyPoseHeadcountViewController(registeredImage: self.registeredImage),
         MyPoseFramecountViewController(registeredImage: self.registeredImage),
         MyPoseTagViewController(registeredImage: self.registeredImage),
-        MyPoseImageSourceViewController(registeredImage: self.registeredImage),
+        MyPoseImageSourceViewController(),
     ]
     
     var currentPage: Int = 0 {
