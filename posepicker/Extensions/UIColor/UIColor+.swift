@@ -165,6 +165,47 @@ extension UIColor {
     static var warningDark: UIColor {
         return .init(hex: "#EC323E")
     }
+    
+    // red variation
+    static var red050: UIColor {
+        return .init(hex: "#FEF1F1")
+    }
+    
+    static var red100: UIColor {
+        return .init(hex: "#FDD8DB")
+    }
+    
+    static var red200: UIColor {
+        return .init(hex: "#FBB7BB")
+    }
+    
+    static var red300: UIColor {
+        return .init(hex: "#F9959C")
+    }
+    
+    static var red400: UIColor {
+        return .init(hex: "#F7737C")
+    }
+    
+    static var red500: UIColor {
+        return .init(hex: "#F5535E")
+    }
+    
+    static var red600: UIColor {
+        return .init(hex: "#EC323E")
+    }
+    
+    static var red700: UIColor {
+        return .init(hex: "#D91C29")
+    }
+    
+    static var red800: UIColor {
+        return .init(hex: "#AE1E27")
+    }
+    
+    static var red900: UIColor {
+        return .init(hex: "#8F1E26")
+    }
 }
 
 extension UIColor {
