@@ -21,8 +21,6 @@ class MyPoseHeadcountViewController: BaseViewController {
     
     lazy var registeredImageView = UIImageView(image: self.registeredImage)
         .then {
-            $0.layer.borderColor = UIColor.borderDefault.cgColor
-            $0.layer.borderWidth = 1
             $0.clipsToBounds = true
             $0.layer.cornerRadius = 6
             $0.contentMode = .scaleAspectFit
