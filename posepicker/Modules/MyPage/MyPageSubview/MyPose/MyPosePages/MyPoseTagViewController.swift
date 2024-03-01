@@ -20,6 +20,13 @@ class MyPoseTagViewController: BaseViewController {
             $0.textAlignment = .left
         }
     
+    let tagCountLabel = UILabel()
+        .then {
+            $0.text = "(0/10)"
+            $0.textColor = .textTertiary
+            $0.font = .caption
+        }
+    
     let tagCollectionView: UICollectionView = {
         let layout = LeftAlignedCollectionViewFlowLayout()
         layout.scrollDirection = .vertical
@@ -104,6 +111,7 @@ class MyPoseTagViewController: BaseViewController {
     
     let tagItems = BehaviorRelay<[PoseFeedFilterCellViewModel]>(value: [])
     let tagItemsFromTextField = BehaviorRelay<[PoseFeedFilterCellViewModel]>(value: [])
+    let selectedTagCount = BehaviorRelay<Int>(value: 0)
     
     // MARK: - Initialization
     init(registeredImage: UIImage?) {
@@ -118,11 +126,16 @@ class MyPoseTagViewController: BaseViewController {
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([mainLabel, tagCollectionView, textFieldScrollView, registeredImageView, expandButton, imageLabel, nextButton])
+        view.addSubViews([mainLabel, tagCountLabel, tagCollectionView, textFieldScrollView, registeredImageView, expandButton, imageLabel, nextButton])
         
         mainLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.equalToSuperview().offset(20)
+        }
+        
+        tagCountLabel.snp.makeConstraints { make in
+            make.leading.equalTo(mainLabel.snp.trailing).offset(10)
+            make.firstBaseline.equalTo(mainLabel.snp.lastBaseline)
         }
         
         tagCollectionView.snp.makeConstraints { make in
@@ -210,6 +223,28 @@ class MyPoseTagViewController: BaseViewController {
             .subscribe(onNext: { owner, _ in
                 if let text = owner.tagTextField.text,
                    !text.isEmpty {
+                    
+                    // 커스텀 태그 텍스트필드에서 입력된 태그가 기본태그에 포함되는 경우 체크해주고 리턴
+                    if owner.tagItems.value.contains(where: {
+                        $0.title.value == text
+                    }) {
+                        let items = owner.tagItems.value
+                        if let index = items.firstIndex(where: { $0.title.value == text }) {
+                            items[index].isSelected.accept(true)
+                            owner.tagItems.accept(items)
+                        }
+                        self.tagTextField.rx.text.onNext("")
+                        return
+                    }
+                    
+                    // 입력 태그가 이미 중복이면 리턴
+                    if owner.tagItemsFromTextField.value.contains(where: {
+                        $0.title.value == text
+                    }) {
+                        owner.tagTextField.rx.text.onNext("")
+                        return
+                    }
+                    
                     let vm = PoseFeedFilterCellViewModel(title: text)
                     vm.isSelected.accept(true)
                     owner.tagItemsFromTextField.accept(owner.tagItemsFromTextField.value + [vm])
@@ -234,6 +269,27 @@ class MyPoseTagViewController: BaseViewController {
                     
                     // 스페이스 입력으로 인한 공백 제외하고 입력 없으면 리턴
                     if str.isEmpty {
+                        self.tagTextField.rx.text.onNext("")
+                        return
+                    }
+                    
+                    // 커스텀 태그 텍스트필드에서 입력된 태그가 기본태그에 포함되는 경우 체크해주고 리턴
+                    if self.tagItems.value.contains(where: {
+                        $0.title.value == str
+                    }) {
+                        let items = self.tagItems.value
+                        if let index = items.firstIndex(where: { $0.title.value == str }) {
+                            items[index].isSelected.accept(true)
+                            self.tagItems.accept(items)
+                        }
+                        self.tagTextField.rx.text.onNext("")
+                        return
+                    }
+                    
+                    // 입력 태그가 이미 중복이면 리턴
+                    if self.tagItemsFromTextField.value.contains(where: {
+                        $0.title.value == str
+                    }) {
                         self.tagTextField.rx.text.onNext("")
                         return
                     }
@@ -271,6 +327,53 @@ class MyPoseTagViewController: BaseViewController {
                 
                 self.tagFromTextFieldCollectionView.snp.updateConstraints { make in
                     make.width.equalTo(self.tagFromTextFieldCollectionView.frame.width - removedText.title.value.width(withConstrainedHeight: 32, font: .pretendard(.medium, ofSize: 14)) - 48)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        /// INPUT: 기본태그 선택 후 셀렉팅효과 추가
+        tagCollectionView.rx.itemSelected
+            .asDriver()
+            .drive(onNext: { [weak self] indexPath in
+                guard let self = self else { return }
+                let items = tagItems.value
+                
+                // 태그가 열개 채워진 상태일때는 태그 선택 더 안되게 리턴
+                if self.selectedTagCount.value >= 10 && !items[indexPath.row].isSelected.value {
+                    return
+                }
+                
+                items[indexPath.row].isSelected.accept(!items[indexPath.row].isSelected.value)
+                self.tagItems.accept(items)
+            })
+            .disposed(by: disposeBag)
+        
+        // 태그아이템 갯수 총합 (일반 + 커스텀) 후 UI 변경
+        Observable.combineLatest(tagItems, tagItemsFromTextField)
+            .flatMapLatest { [weak self] items, itemsFromTextfield -> Observable<Bool> in
+                let combinedItems = items + itemsFromTextfield
+                var count = 0
+                combinedItems.forEach { item in
+                    if item.isSelected.value {
+                        count += 1
+                        // 카운트 10개 이상인 경우 숫자변경 X
+                        self?.selectedTagCount.accept(count)
+                    }
+                }
+                self?.tagCountLabel.text = count >= 10 ? "(10/10)" : "(\(count)/10)"
+                return BehaviorRelay<Bool>(value: count >= 10).asObservable()
+            }
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] isOver in // 태그 총합이 열개 이상인가
+                self?.tagCountLabel.textColor = isOver ? .warningDark : .textTertiary
+                
+                if isOver {
+                    // 열개인 경우 텍스트필드 비활성화
+                    self?.tagTextField.isEnabled = false
+                    self?.textFieldScrollView.layer.borderColor = UIColor.red600.cgColor
+                } else {
+                    self?.textFieldScrollView.layer.borderColor = UIColor.borderDefault.cgColor
+                    self?.tagTextField.isEnabled = true
                 }
             })
             .disposed(by: disposeBag)
