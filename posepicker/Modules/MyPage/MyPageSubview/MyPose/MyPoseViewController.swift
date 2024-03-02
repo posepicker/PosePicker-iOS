@@ -204,6 +204,7 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
                 return allSelectedItems.asObservable()
             }
         
+        /*
         imageSourceVC.nextButton.rx.tap
             .flatMapLatest { _ -> Observable<(String, String, [String], String)> in
                 return Observable.combineLatest(headcountVC.selectedHeadCount, framecountVC.selectedFrameCount, selectedTagObservable, imageSourceVC.urlTextField.rx.text.compactMap { $0 })
@@ -230,6 +231,25 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
             .subscribe(onNext: {
                 print("통신완료 ..")
                 print($0)
+            })
+            .disposed(by: disposeBag)
+        */
+        
+        imageSourceVC.nextButton.rx.tap
+            .flatMapLatest { _ -> Observable<(String, String, [String], String)> in
+                return Observable.combineLatest(headcountVC.selectedHeadCount, framecountVC.selectedFrameCount, selectedTagObservable, imageSourceVC.urlTextField.rx.text.compactMap { $0 })
+            }
+            .asDriver(onErrorJustReturn: ("","",[],""))
+            .drive(onNext: { [weak self] headCount, frameCount, selectedTags, imageSource in
+                guard let self = self else { return }
+                var tagArrayToString = ""
+                selectedTags.forEach { tagArrayToString += "\($0)," }
+                
+                let posepick = PosePick(poseInfo: .init(createdAt: "2024-03-02T07:41:04.312Z", frameCount: FilterTags.getNumberFromFrameCountString(countString: frameCount) ?? 1,imageKey: "https://posepicker-image.s3.ap-northeast-2.amazonaws.com/id_382_946026ebb2e322cd9dc0702cebae349d.jpg", peopleCount: FilterTags.getNumberFromFrameCountString(countString: headCount) ?? 1, poseId: 999, source: "@do0_nct", sourceUrl: imageSource, tagAttributes: tagArrayToString, updatedAt: nil, bookmarkCheck: false))
+                let poseDetailVM = PoseDetailViewModel(poseDetailData: posepick)
+                let poseDetailVC = PoseDetailViewController(viewModel: poseDetailVM, coordinator: PoseFeedCoordinator(navigationController: self.navigationController ?? UINavigationController(rootViewController: self)))
+                poseDetailVC.tagCollectionView.isUserInteractionEnabled = false
+                self.present(poseDetailVC, animated: true)
             })
             .disposed(by: disposeBag)
     }
