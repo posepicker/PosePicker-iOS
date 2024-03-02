@@ -182,13 +182,11 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
                     })
                     .disposed(by: self.disposeBag)
                 
-//                popupView.cancelButton.rx.tap.asDriver()
-//                    .drive(onNext: { [weak self] in
-//                        // 로그아웃
-//                        self?.logoutTrigger.onNext(())
-//                        popupViewController.dismiss(animated: true)
-//                    })
-//                    .disposed(by: self.disposeBag)
+                popupView.cancelButton.rx.tap.asDriver()
+                    .drive(onNext: {
+                        popupViewController.dismiss(animated: true)
+                    })
+                    .disposed(by: self.disposeBag)
                 
                 self.present(popupViewController, animated: true)
             })
