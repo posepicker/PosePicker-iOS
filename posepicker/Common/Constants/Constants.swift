@@ -33,6 +33,7 @@ struct K {
         static let uid = "uid"
         static let accessToken = "accessToken"
         static let refreshToken = "refreshToken"
+        static let file = "file"
     }
     
     /// 키체인 키값 리스트
