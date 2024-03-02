@@ -8,7 +8,7 @@
 import UIKit
 import WebKit
 
-class MypageWebViewController: BaseViewController {
+class MypageWebViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Subviews
     private var webView: WKWebView!
@@ -47,6 +47,7 @@ class MypageWebViewController: BaseViewController {
         
         let backButton = UIBarButtonItem(image: ImageLiteral.imgArrowBack24.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(backButtonTapped))
         self.navigationItem.leftBarButtonItem = backButton
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         self.title = pageTitle
     }
     
