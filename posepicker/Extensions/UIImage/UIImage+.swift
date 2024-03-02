@@ -34,4 +34,58 @@ extension UIImage {
         }
         return renderImage
     }
+    
+    public enum DataUnits: String {
+        case byte, kilobyte, megabyte, gigabyte
+    }
+
+    func getSizeIn(_ type: DataUnits)-> Double {
+
+        guard let data = self.pngData() else {
+            return 0
+        }
+
+        var size: Double = 0.0
+
+        switch type {
+        case .byte:
+            size = Double(data.count)
+        case .kilobyte:
+            size = Double(data.count) / 1024
+        case .megabyte:
+            size = Double(data.count) / 1024 / 1024
+        case .gigabyte:
+            size = Double(data.count) / 1024 / 1024 / 1024
+        }
+
+        return size
+    }
+    
+    // MARK: - UIImage+Resize
+    func compressTo(_ expectedSizeInMb:Int) -> UIImage? {
+        let sizeInBytes = expectedSizeInMb * 1024 * 1024
+        var needCompress:Bool = true
+        var imgData:Data?
+        var compressingValue:CGFloat = 1.0
+        while (needCompress && compressingValue > 0.0) {
+            if let data:Data = self.jpegData(compressionQuality: compressingValue) {
+                if data.count < sizeInBytes {
+                    needCompress = false
+                    imgData = data
+                } else {
+                    compressingValue -= 0.1
+                }
+            }
+        }
+        if let data = imgData {
+            if (data.count < sizeInBytes) {
+                return UIImage(data: data)
+            }
+        }
+        return nil
+    }
+    
+    func convertImageToBase64String() -> String? {
+        return self.jpegData(compressionQuality: 1)?.base64EncodedString() ?? nil
+    }
 }
