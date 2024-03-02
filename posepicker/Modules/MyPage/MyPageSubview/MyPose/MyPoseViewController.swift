@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyPoseViewController: BaseViewController {
+class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Subviews
     
@@ -87,6 +87,10 @@ class MyPoseViewController: BaseViewController {
     override func configUI() {
         view.backgroundColor = .bgWhite
         
+        let backButton = UIBarButtonItem(image: ImageLiteral.imgArrowBack24.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(backButtonTapped))
+        self.navigationItem.leftBarButtonItem = backButton
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
+        
         buttons.enumerated().forEach { [weak self] (index, button) in
             guard let self = self else { return }
             
@@ -165,6 +169,12 @@ class MyPoseViewController: BaseViewController {
     
     func resetButtonUI() {
         buttons.forEach { $0.isCurrent = false }
+    }
+    
+    // MARK: - Objc Functions
+    @objc
+    func backButtonTapped() {
+        navigationController?.popViewController(animated: true)
     }
 }
 
