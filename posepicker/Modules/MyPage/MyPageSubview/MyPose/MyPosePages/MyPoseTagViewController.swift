@@ -108,6 +108,7 @@ class MyPoseTagViewController: BaseViewController {
     
     // MARK: - Properties
     let registeredImage: UIImage?
+    let inputCompleted = BehaviorRelay<Bool>(value: false)
     
     let tagItems = BehaviorRelay<[PoseFeedFilterCellViewModel]>(value: [])
     let tagItemsFromTextField = BehaviorRelay<[PoseFeedFilterCellViewModel]>(value: [])
@@ -361,6 +362,7 @@ class MyPoseTagViewController: BaseViewController {
                     }
                 }
                 self?.tagCountLabel.text = count >= 10 ? "(10/10)" : "(\(count)/10)"
+                self?.inputCompleted.accept(count >= 3)
                 return BehaviorRelay<Bool>(value: count >= 10).asObservable()
             }
             .asDriver(onErrorJustReturn: false)
@@ -374,6 +376,17 @@ class MyPoseTagViewController: BaseViewController {
                 } else {
                     self?.textFieldScrollView.layer.borderColor = UIColor.borderDefault.cgColor
                     self?.tagTextField.isEnabled = true
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        // 전체 태그 갯수가 세개 이상인 경우 다음 페이지로 넘어갈 수 있도록
+        inputCompleted.asDriver()
+            .drive(onNext: { [weak self] in
+                if $0 {
+                    self?.nextButton.status.accept(.defaultStatus)
+                } else {
+                    self?.nextButton.status.accept(.disabled)
                 }
             })
             .disposed(by: disposeBag)
