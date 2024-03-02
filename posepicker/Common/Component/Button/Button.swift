@@ -78,8 +78,10 @@ class PosePickButton: UIButton {
                 if self.isFill {
                     switch $0 {
                     case .defaultStatus:
+                        self.isEnabled = true
                         self.backgroundColor = .mainViolet
                     case .pressed:
+                        self.isEnabled = true
                         self.backgroundColor = .mainVioletDark
                     case .disabled:
                         self.isEnabled = false
@@ -88,8 +90,10 @@ class PosePickButton: UIButton {
                 } else {
                     switch $0 {
                     case .defaultStatus:
+                        self.isEnabled = true
                         self.backgroundColor = .violet050
                     case .pressed:
+                        self.isEnabled = true
                         self.backgroundColor = .violet200
                     case .disabled:
                         self.isEnabled = false
