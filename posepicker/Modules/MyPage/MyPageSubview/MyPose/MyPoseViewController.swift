@@ -101,6 +101,23 @@ class MyPoseViewController: BaseViewController {
                 .disposed(by: self.disposeBag)
         }
         buttons[0].isCurrent = true
+        
+        if let myposeTagViewController = viewControllers[2] as? MyPoseTagViewController {
+            myposeTagViewController.inputCompleted.asDriver()
+                .drive(onNext: { [weak self] in
+                    self?.pageViewController.dataSource = nil
+                    self?.pageViewController.dataSource = self
+                    if $0 {
+                        self?.buttons[3].isEnabled = true
+//                        self?.buttons[3].backgroundColor = .gray100
+//                        self?.buttons[3].setTitleColor(.violet600, for: .normal)
+                    } else {
+                        self?.buttons[3].isEnabled = false
+//                        self?.buttons[3].setTitleColor(.textWhite, for: .disabled)
+                    }
+                })
+                .disposed(by: disposeBag)
+        }
     }
     
     func resetButtonUI() {
@@ -117,6 +134,12 @@ extension MyPoseViewController: UIPageViewControllerDelegate {
     ) {
         guard let viewController = pageViewController.viewControllers?[0],
               let index = viewControllers.firstIndex(of: viewController) else { return }
+        
+        // 마이포즈 태그 입력이 안끝났으면 이미지 출처 페이지로 슬라이드 이동하는 동작 막기
+        if let myposeTagVC = viewControllers[2] as? MyPoseTagViewController,
+           !myposeTagVC.inputCompleted.value && index == 3 {
+            return
+        }
         currentPage = index
     }
 }
@@ -132,6 +155,12 @@ extension MyPoseViewController: UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         guard let index = self.viewControllers.firstIndex(of: viewController),
               index + 1 < viewControllers.count else { return nil }
+        
+        if let myposeTagVC = viewControllers[2] as? MyPoseTagViewController,
+           !myposeTagVC.inputCompleted.value && index == 2 {
+            return nil
+        }
+        
         return self.viewControllers[index + 1]
     }
 }
