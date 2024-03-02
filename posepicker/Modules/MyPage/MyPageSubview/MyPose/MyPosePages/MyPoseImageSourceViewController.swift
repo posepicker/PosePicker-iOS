@@ -111,4 +111,8 @@ class MyPoseImageSourceViewController: BaseViewController {
     override func configUI() {
         
     }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        urlTextField.endEditing(true)
+    }
 }
