@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxCocoa
 
 class MyPoseHeadcountViewController: BaseViewController {
     
@@ -47,6 +48,7 @@ class MyPoseHeadcountViewController: BaseViewController {
     
     // MARK: - Properties
     let registeredImage: UIImage?
+    let selectedHeadCount = BehaviorRelay<String>(value: "1인")
     
     // MARK: - Initialization
     init(registeredImage: UIImage?) {
@@ -130,6 +132,8 @@ class MyPoseHeadcountViewController: BaseViewController {
                 .subscribe(onNext: {
                     self.resetButtonUI()
                     button.isCurrent = true
+                    
+                    self.selectedHeadCount.accept(button.title == "5인 이상" ? "5인" : button.title)
                 })
                 .disposed(by: self.disposeBag)
         }

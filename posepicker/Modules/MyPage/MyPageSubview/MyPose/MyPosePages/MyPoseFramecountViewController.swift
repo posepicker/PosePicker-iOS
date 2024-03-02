@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxCocoa
 
 class MyPoseFramecountViewController: BaseViewController {
 
@@ -46,6 +47,7 @@ class MyPoseFramecountViewController: BaseViewController {
     
     // MARK: - Properties
     let registeredImage: UIImage?
+    let selectedFrameCount = BehaviorRelay<String>(value: "1컷")
     
     // MARK: - Initialization
     init(registeredImage: UIImage?) {
@@ -129,6 +131,7 @@ class MyPoseFramecountViewController: BaseViewController {
                 .subscribe(onNext: {
                     self.resetButtonUI()
                     button.isCurrent = true
+                    self.selectedFrameCount.accept(button.title == "8컷 이상" ? "8컷" : button.title)
                 })
                 .disposed(by: self.disposeBag)
         }
