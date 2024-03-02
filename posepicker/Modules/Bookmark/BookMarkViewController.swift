@@ -9,7 +9,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 
-class BookMarkViewController: BaseViewController {
+class BookMarkViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Subviews
     
@@ -84,6 +84,7 @@ class BookMarkViewController: BaseViewController {
         self.navigationItem.title = "북마크"
         let backButton = UIBarButtonItem(image: ImageLiteral.imgArrowBack24.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(backButtonTapped))
         self.navigationItem.leftBarButtonItem = backButton
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         view.backgroundColor = .bgWhite
         
         /// 북마크 무한스크롤

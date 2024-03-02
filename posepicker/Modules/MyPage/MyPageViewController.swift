@@ -13,7 +13,7 @@ import KakaoSDKUser
 import KakaoSDKCommon
 import RxKakaoSDKUser
 
-class MyPageViewController: BaseViewController {
+class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Subviews
     let loginButton = UIButton(type: .system)
@@ -125,6 +125,7 @@ class MyPageViewController: BaseViewController {
         self.title = "메뉴"
         let backButton = UIBarButtonItem(image: ImageLiteral.imgArrowBack24.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(backButtonTapped))
         self.navigationItem.leftBarButtonItem = backButton
+        self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         view.backgroundColor = .bgWhite
         
         

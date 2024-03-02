@@ -102,6 +102,8 @@ class MyPoseViewController: BaseViewController {
         }
         buttons[0].isCurrent = true
         
+        /// 마이포즈 태그 입력 완료여부에 따라 마이포즈 이미지 출처 뷰로 이동시킬지 말지 판단
+        /// 세그먼트 & 페이징 관련 로직
         if let myposeTagViewController = viewControllers[2] as? MyPoseTagViewController {
             myposeTagViewController.inputCompleted.asDriver()
                 .drive(onNext: { [weak self] in
@@ -109,14 +111,55 @@ class MyPoseViewController: BaseViewController {
                     self?.pageViewController.dataSource = self
                     if $0 {
                         self?.buttons[3].isEnabled = true
-//                        self?.buttons[3].backgroundColor = .gray100
-//                        self?.buttons[3].setTitleColor(.violet600, for: .normal)
+                        // self?.buttons[3].backgroundColor = .gray100
+                        // self?.buttons[3].setTitleColor(.violet600, for: .normal)
                     } else {
                         self?.buttons[3].isEnabled = false
-//                        self?.buttons[3].setTitleColor(.textWhite, for: .disabled)
+                        // self?.buttons[3].setTitleColor(.textWhite, for: .disabled)
                     }
                 })
                 .disposed(by: disposeBag)
+        }
+        
+        viewControllers.enumerated().forEach { [weak self] index, vc in
+            guard let self = self else { return }
+            switch index {
+            case 0:
+                guard let myposeHeadVC = vc as? MyPoseHeadcountViewController else { return }
+                myposeHeadVC.nextButton.rx.tap
+                    .asDriver()
+                    .drive(onNext: { [weak self] in
+                        self?.currentPage = 1
+                    })
+                    .disposed(by: self.disposeBag)
+            case 1:
+                guard let myposeFrameVC = vc as? MyPoseFramecountViewController else { return }
+                myposeFrameVC.nextButton.rx.tap
+                    .asDriver()
+                    .drive(onNext: { [weak self] in
+                        self?.currentPage = 2
+                    })
+                    .disposed(by: self.disposeBag)
+            case 2:
+                guard let myposeTagVC = vc as? MyPoseTagViewController else { return }
+                myposeTagVC.nextButton.rx.tap
+                    .asDriver()
+                    .drive(onNext: { [weak self] in
+                        self?.currentPage = 3
+                    })
+                    .disposed(by: self.disposeBag)
+            case 3:
+                guard let myposeImageSourceVC = vc as? MyPoseImageSourceViewController else { return }
+                myposeImageSourceVC.nextButton.rx.tap
+                    .asDriver()
+                    .drive(onNext: {
+                        // 데이터 업로드 API 통신
+                        print("API 통신중..")
+                    })
+                    .disposed(by: disposeBag)
+            default:
+                return
+            }
         }
     }
     
