@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
     
@@ -165,6 +167,71 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
                 return
             }
         }
+    }
+    
+    // 입력 최종 완료 후 API통신을 위한 객체
+    override func bindViewModel() {
+        guard let headcountVC = viewControllers[0] as? MyPoseHeadcountViewController,
+              let framecountVC = viewControllers[1] as? MyPoseFramecountViewController,
+              let tagVC = viewControllers[2] as? MyPoseTagViewController,
+              let imageSourceVC = viewControllers[3] as? MyPoseImageSourceViewController else {
+            return
+        }
+        
+        let selectedTagObservable = Observable.combineLatest(tagVC.tagItems, tagVC.tagItemsFromTextField)
+            .flatMapLatest { items, itemsFromTextField -> Observable<[String]> in
+                let allSelectedItems = BehaviorRelay<[String]>(value: [])
+                
+                items.forEach { item in
+                    // 아이템 selcted면 종합 태그에 추가
+                    // 아니면 삭제
+                    if item.isSelected.value {
+                        allSelectedItems.accept(allSelectedItems.value + [item.title.value])
+                    } else {
+                        if let index = allSelectedItems.value.firstIndex(where: { tag in
+                            tag == item.title.value
+                        }) {
+                            var value = allSelectedItems.value
+                            value.remove(at: index)
+                            allSelectedItems.accept(value)
+                        }
+                    }
+                }
+                
+                itemsFromTextField.forEach { item in
+                    allSelectedItems.accept(allSelectedItems.value + [item.title.value])
+                }
+                return allSelectedItems.asObservable()
+            }
+        
+        imageSourceVC.nextButton.rx.tap
+            .flatMapLatest { _ -> Observable<(String, String, [String], String)> in
+                return Observable.combineLatest(headcountVC.selectedHeadCount, framecountVC.selectedFrameCount, selectedTagObservable, imageSourceVC.urlTextField.rx.text.compactMap { $0 })
+            }
+            .flatMapLatest { [weak self] headCount, frameCount, selectedTags, imageSource -> Observable<PosePick> in
+                
+                var compressImage: UIImage? = nil
+                
+                if let size = self?.registeredImage?.getSizeIn(.megabyte),
+                   size > 10 {
+                    compressImage = self?.registeredImage?.compressTo(9)
+                } else {
+                    compressImage = self?.registeredImage
+                }
+                
+                guard let compressImage = compressImage,
+                      let base64 = compressImage.convertImageToBase64String() else { return Observable<PosePick>.empty() }
+                
+                var tagArrayToString = ""
+                selectedTags.forEach { tagArrayToString += "\($0)," }
+                
+                return APISession().requestSingle(.uploadPose(image: compressImage.jpegData(compressionQuality: 1), frameCount: frameCount, peopleCount: headCount, source: "", sourceUrl: imageSource, tag: tagArrayToString)).asObservable()
+            }
+            .subscribe(onNext: {
+                print("통신완료 ..")
+                print($0)
+            })
+            .disposed(by: disposeBag)
     }
     
     func resetButtonUI() {
