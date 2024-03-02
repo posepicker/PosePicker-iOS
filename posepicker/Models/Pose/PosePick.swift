@@ -37,6 +37,19 @@ struct Pose: Codable {
         case bookmarkCheck
     }
     
+    init(createdAt: String?, frameCount: Int, imageKey: String, peopleCount: Int, poseId: Int, source: String, sourceUrl: String, tagAttributes: String?, updatedAt: String?, bookmarkCheck: Bool?) {
+        self.createdAt = createdAt
+        self.frameCount = frameCount
+        self.imageKey = imageKey
+        self.peopleCount = peopleCount
+        self.poseId = poseId
+        self.source = source
+        self.sourceUrl = sourceUrl
+        self.tagAttributes = tagAttributes
+        self.updatedAt = updatedAt
+        self.bookmarkCheck = bookmarkCheck
+    }
+    
     init(from decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         self.createdAt = try container.decodeIfPresent(String.self, forKey: .createdAt)
