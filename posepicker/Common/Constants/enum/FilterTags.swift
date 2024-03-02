@@ -53,6 +53,10 @@ enum FilterTags: String {
             return 4
         case "5인+":
             return 5
+        case "5인 이상":
+            return 5
+        case "5인":
+            return 5
         default:
             return nil
         }
@@ -71,6 +75,10 @@ enum FilterTags: String {
         case "6컷":
             return 6
         case "8컷+":
+            return 8
+        case "8컷 이상":
+            return 8
+        case "8컷":
             return 8
         default:
             return nil
