@@ -67,6 +67,7 @@
 		C91CE9262B1B0DDC00048FF7 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91CE9252B1B0DDC00048FF7 /* MockURLProtocol.swift */; };
 		C91CE92D2B1B1CA300048FF7 /* PosePick.json in Resources */ = {isa = PBXBuildFile; fileRef = C91CE92C2B1B1CA300048FF7 /* PosePick.json */; };
 		C91CE9342B1DA15700048FF7 /* posefeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91CE9322B1DA15700048FF7 /* posefeedTests.swift */; };
+		C91E18442B99B300009611C3 /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91E18432B99B300009611C3 /* UINavigationController+.swift */; };
 		C9254CE32B4922B100C4C779 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9254CE22B4922B000C4C779 /* WebKit.framework */; };
 		C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */; };
 		C93625902B907A6F00B90810 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C936258F2B907A6F00B90810 /* UITextField+.swift */; };
@@ -238,6 +239,7 @@
 		C91CE9252B1B0DDC00048FF7 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
 		C91CE92C2B1B1CA300048FF7 /* PosePick.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PosePick.json; sourceTree = "<group>"; };
 		C91CE9322B1DA15700048FF7 /* posefeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posefeedTests.swift; sourceTree = "<group>"; };
+		C91E18432B99B300009611C3 /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
 		C9254CE22B4922B000C4C779 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageWebViewController.swift; sourceTree = "<group>"; };
 		C936258F2B907A6F00B90810 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
@@ -648,6 +650,14 @@
 			path = PoseFeed;
 			sourceTree = "<group>";
 		};
+		C91E18422B99B2EC009611C3 /* UINavigationController */ = {
+			isa = PBXGroup;
+			children = (
+				C91E18432B99B300009611C3 /* UINavigationController+.swift */,
+			);
+			path = UINavigationController;
+			sourceTree = "<group>";
+		};
 		C9254CE42B4922D900C4C779 /* MyPageSubview */ = {
 			isa = PBXGroup;
 			children = (
@@ -950,6 +960,7 @@
 		C9C8909A2AE107A40010240A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C91E18422B99B2EC009611C3 /* UINavigationController */,
 				C936258E2B907A6500B90810 /* UITextField */,
 				C990AB1C2B5BF51D00567AA3 /* String */,
 				C9DC2FA12AEA563C00D5170D /* UIScreen */,
@@ -1369,6 +1380,7 @@
 				C99D53B52B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift in Sources */,
 				C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */,
 				C9DC2F992AEA28E300D5170D /* PoseFeedFilterCell.swift in Sources */,
+				C91E18442B99B300009611C3 /* UINavigationController+.swift in Sources */,
 				C903E54A2B05BCA300BD004F /* PopUpViewController.swift in Sources */,
 				C9C8908A2AE107180010240A /* ViewModelType.swift in Sources */,
 				C9C890BF2AE1107B0010240A /* ImageLiteral.swift in Sources */,
