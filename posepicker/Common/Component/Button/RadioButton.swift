@@ -46,6 +46,8 @@ class RadioButton: UIButton {
         self.semanticContentAttribute = .forceLeftToRight
         self.titleLabel?.font = .paragraph
         self.setTitleColor(.textPrimary, for: .normal)
+        self.setTitle(self.title, for: .normal)
+        self.contentHorizontalAlignment = .leading
     }
 
 }
