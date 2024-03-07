@@ -38,4 +38,5 @@ enum ImageLiteral {
     static var imgThumbnail: UIImage {.load(named: "imgThumbnail")}
     static var imgExpand: UIImage {.load(named: "imgExpand") }
     static var imgExample: UIImage {.load(named: "imgExample")}
+    static var imgMore: UIImage {.load(named: "imgMore24")}
 }
