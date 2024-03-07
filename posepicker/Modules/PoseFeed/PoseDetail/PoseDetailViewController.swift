@@ -329,5 +329,12 @@ class PoseDetailViewController: BaseViewController {
     @objc
     func showMoreButtonTapped() {
         print("more")
+        let modalVC = PoseDetailMoreViewController()
+        if let sheet = modalVC.sheetPresentationController {
+            sheet.detents = [.custom { _ in 180}]
+            sheet.preferredCornerRadius = 20
+        }
+        
+        self.present(modalVC, animated: true)
     }
 }
