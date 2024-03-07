@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
 
 class PoseDetailMoreViewController: BaseViewController {
 
@@ -28,6 +30,7 @@ class PoseDetailMoreViewController: BaseViewController {
             $0.contentHorizontalAlignment = .leading
             $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
         }
+    
     let blockButton = UIButton(type: .system)
         .then {
             $0.setTitle("차단하기", for: .normal)
@@ -35,6 +38,7 @@ class PoseDetailMoreViewController: BaseViewController {
             $0.contentHorizontalAlignment = .leading
             $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
         }
+    
     // MARK: - Properties
     
     // MARK: - Life Cycles
@@ -73,6 +77,18 @@ class PoseDetailMoreViewController: BaseViewController {
         self.navigationBar.setBackgroundImage(UIImage(), for:.default)
         self.navigationBar.shadowImage = UIImage()
         self.navigationBar.layoutIfNeeded()
+        
+        // 1. 신고하기 버튼 탭
+        reportButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                let reportVC = ReportViewController()
+                let navigationVC = UINavigationController(rootViewController: reportVC)
+                navigationVC.modalPresentationStyle = .overFullScreen
+                navigationVC.modalTransitionStyle = .coverVertical
+                self?.present(navigationVC, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Objc Functions
