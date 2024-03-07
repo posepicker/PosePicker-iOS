@@ -45,8 +45,8 @@ class PoseDetailViewController: BaseViewController {
             let closeButton = UIBarButtonItem(image: ImageLiteral.imgClose24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault), style: .plain, target: self, action: #selector(closeButtonTapped))
 
             let navigationItem = UINavigationItem(title: "")
-            navigationItem.leftBarButtonItem = closeButton
-            navigationItem.rightBarButtonItem = bookmarkButton
+            navigationItem.leftBarButtonItems = [closeButton]
+            navigationItem.rightBarButtonItems = [showMoreButton, bookmarkButton]
             $0.items = [navigationItem]
         }
     
@@ -90,6 +90,8 @@ class PoseDetailViewController: BaseViewController {
         }
     
     lazy var bookmarkButton = UIBarButtonItem(image: ImageLiteral.imgBookmarkOff24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault), style: .plain, target: self, action: #selector(bookmarkButtonTapped))
+    
+    lazy var showMoreButton = UIBarButtonItem(image: ImageLiteral.imgMore.withTintColor(.iconDefault, renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(showMoreButtonTapped))
     
     // MARK: - Properties
     
@@ -322,5 +324,10 @@ class PoseDetailViewController: BaseViewController {
     @objc
     func bookmarkButtonTapped() {
         
+    }
+    
+    @objc
+    func showMoreButtonTapped() {
+        print("more")
     }
 }
