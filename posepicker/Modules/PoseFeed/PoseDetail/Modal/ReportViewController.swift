@@ -38,6 +38,8 @@ class ReportViewController: BaseViewController {
             $0.alignment = .leading
         }
     
+    let completeButton = PosePickButton(status: .disabled, isFill: true, position: .none, buttonTitle: "신고하기", image: nil)
+    
     // MARK: - Properties
     
     let radioGroup: [RadioButton] = [
@@ -49,7 +51,7 @@ class ReportViewController: BaseViewController {
     
     // MARK: - Functions
     override func render() {
-        self.view.addSubViews([mainLabel, buttonGroupStackView])
+        self.view.addSubViews([mainLabel, buttonGroupStackView, completeButton])
         
         mainLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(64)
@@ -58,8 +60,21 @@ class ReportViewController: BaseViewController {
         
         buttonGroupStackView.snp.makeConstraints { make in
             make.top.equalTo(mainLabel.snp.bottom).offset(40)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.centerX.equalToSuperview()
+            make.width.equalTo(view.frame.width - 40)
             make.height.equalTo(224)
+        }
+        
+        radioGroup.forEach {
+            $0.snp.makeConstraints { make in
+                make.width.equalTo(view.frame.width - 40)
+            }
+        }
+        
+        completeButton.snp.makeConstraints { make in
+            make.height.equalTo(54)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
+            make.leading.trailing.equalToSuperview().inset(20)
         }
     }
     
@@ -72,10 +87,38 @@ class ReportViewController: BaseViewController {
             button.rx.tap.asDriver()
                 .drive(onNext: {
                     self.resetButtonUI()
+                    self.completeButton.status.accept(.defaultStatus)
                     button.isCurrent = true
                 })
                 .disposed(by: self.disposeBag)
         }
+        
+        completeButton.rx.tap
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                let popupVC = PopUpViewController(isLoginPopUp: false, isChoice: true)
+                guard let popupView = popupVC.popUpView as? PopUpView else { return }
+                popupView.alertText.accept("정말 신고하시겠어요?")
+                popupView.confirmButton.setTitle("신고하기", for: .normal)
+                popupView.confirmButton.backgroundColor = .warningDark
+                
+                popupView.cancelButton.backgroundColor = .init(hex: "#F7F7FA")
+                popupView.cancelButton.setTitleColor(.textSecondary, for: .normal)
+                popupVC.modalPresentationStyle = .overFullScreen
+                popupVC.modalTransitionStyle = .crossDissolve
+                
+                // 취소하기 버튼 탭
+                popupView.cancelButton.rx.tap
+                    .asDriver()
+                    .drive(onNext: {
+                        popupVC.dismiss(animated: true)
+                    })
+                    .disposed(by: self.disposeBag)
+                
+                self.present(popupVC, animated: true)
+            })
+            .disposed(by: disposeBag)
     }
     
     func resetButtonUI(){
