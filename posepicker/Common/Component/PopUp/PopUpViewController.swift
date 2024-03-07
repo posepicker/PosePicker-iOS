@@ -173,6 +173,15 @@ class PopUpViewController: BaseViewController {
                 })
                 .disposed(by: disposeBag)
         }
+        
+        // 팝업 내부 텍스트 높이값에 따라 흰 배경 박스 높이 동적 조정
+        if let popupView =  popUpView as? PopUpView,
+           !self.isLabelNeeded {
+            
+            popUpView.snp.updateConstraints { make in
+                make.height.equalTo(134 + popupView.alertText.value.height(withConstrainedWidth: 300, font: .pretendard(.regular, ofSize: 16)))
+            }
+        }
     }
     
     
