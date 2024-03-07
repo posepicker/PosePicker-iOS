@@ -9,6 +9,7 @@ import Foundation
 
 import Alamofire
 import RxSwift
+import UIKit
 
 class APIInterceptor: RequestInterceptor {
     var disposeBag = DisposeBag()
@@ -48,6 +49,36 @@ class APIInterceptor: RequestInterceptor {
            url.absoluteString.contains("/api/auth/reissue-token") {
             KeychainManager.shared.removeAll()
             // 세션만료 ALERT
+            DispatchQueue.main.async { [weak self] in
+                guard let self = self else { return }
+                
+                /// 1. 글로벌 객체로 루트 뷰 컨트롤러 불러오기
+                let window = UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.keyWindow }.last
+                let root = window?.rootViewController
+                
+                /// 2. 루트뷰에 팝업 뮤 present하기 위한 객체 생성 및 텍스트 세팅
+                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: false)
+                popupViewController.modalTransitionStyle = .crossDissolve
+                popupViewController.modalPresentationStyle = .overFullScreen
+                let popupView = popupViewController.popUpView as! PopUpView
+                popupView.alertText.accept("세션이 만료되었어요.\n.다시 로그인이 필요해요!")
+                
+                /// 3. 루트뷰에 present
+                root?.present(popupViewController, animated: true)
+                
+                /// 4. 루트뷰 서브뷰 first 객체 타입캐스팅 및 접근
+                let navVC = root as? UINavigationController
+                guard let rootVC = navVC?.viewControllers.first as? RootViewController else { return }
+                
+                /// 5. 루트뷰로 popToViewController
+                /// completion핸들러 익스텐션에 구현
+                /// 포즈피드 뷰 새로고침 진행하고 루트뷰 currentPage 세팅
+                navVC?.popToViewController(rootVC, animated: true) {
+                    guard let posefeedNavVC = rootVC.viewControllers.last as? UINavigationController,
+                          let posefeedVC = posefeedNavVC.viewControllers.first as? PoseFeedViewController else { return }
+                    posefeedVC.tagResetTrigger.onNext(())
+                }
+            }
             completion(.doNotRetry)
             return
         }
