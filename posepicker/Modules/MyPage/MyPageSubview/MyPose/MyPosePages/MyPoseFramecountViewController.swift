@@ -89,20 +89,20 @@ class MyPoseFramecountViewController: BaseViewController {
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
             make.top.equalTo(mainLabel.snp.bottom).offset(36)
-            make.height.equalTo(108)
+            make.height.equalTo(UIScreen.main.isLongerThan800pt ? 108 : 50)
         }
         
         secondLineButtons.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalTo(framecountButtons[1])
             make.top.equalTo(firstLineButtons.snp.bottom).offset(12)
-            make.height.equalTo(108)
+            make.height.equalTo(UIScreen.main.isLongerThan800pt ? 108 : 50)
         }
         
         registeredImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(secondLineButtons.snp.bottom).offset(27)
-            make.bottom.equalTo(nextButton.snp.top).offset(-50)
+            make.top.equalTo(secondLineButtons.snp.bottom).offset(UIScreen.main.isLongerThan800pt ? 27 : 16)
+            make.bottom.equalTo(nextButton.snp.top).offset(UIScreen.main.isLongerThan800pt ? -50 : 0)
             make.width.equalTo(UIScreen.main.bounds.width / 3)
         }
         

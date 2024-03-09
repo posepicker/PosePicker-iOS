@@ -140,15 +140,15 @@ class MyPoseTagViewController: BaseViewController {
         }
         
         tagCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(mainLabel.snp.bottom).offset(36)
+            make.top.equalTo(mainLabel.snp.bottom).offset(UIScreen.main.isLongerThan800pt ? 36 : 18)
             make.leading.equalTo(mainLabel)
             make.trailing.equalToSuperview().offset(-20)
-            make.height.equalTo(84)
+            make.height.equalTo(UIScreen.main.isLongerThan800pt ? 84 : 130)
         }
         
         textFieldScrollView.snp.makeConstraints { make in
             make.leading.trailing.equalToSuperview().inset(20)
-            make.top.equalTo(tagCollectionView.snp.bottom).offset(28)
+            make.top.equalTo(tagCollectionView.snp.bottom).offset(UIScreen.main.isLongerThan800pt ? 28 : 0)
             make.height.equalTo(56)
         }
         
@@ -162,15 +162,16 @@ class MyPoseTagViewController: BaseViewController {
         }
         
         tagTextField.snp.makeConstraints { make in
+            make.centerY.equalTo(textFieldScrollView)
             make.leading.equalTo(tagFromTextFieldCollectionView.snp.trailing)
             make.height.equalTo(56)
             make.trailing.equalTo(textFieldScrollView.snp.trailing).offset(-16)
         }
         
         registeredImageView.snp.makeConstraints { make in
-            make.top.equalTo(textFieldScrollView.snp.bottom).offset(87)
+            make.top.equalTo(textFieldScrollView.snp.bottom).offset(UIScreen.main.isLongerThan800pt ? 87 : 16)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(nextButton.snp.top).offset(-50)
+            make.bottom.equalTo(nextButton.snp.top).offset(UIScreen.main.isLongerThan800pt ? -50 : 0)
             make.width.equalTo(UIScreen.main.bounds.width / 3)
         }
         

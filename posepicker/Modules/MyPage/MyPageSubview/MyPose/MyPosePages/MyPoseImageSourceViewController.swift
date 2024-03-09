@@ -79,13 +79,13 @@ class MyPoseImageSourceViewController: BaseViewController {
         }
         
         urlTextField.snp.makeConstraints { make in
-            make.top.equalTo(subLabel.snp.bottom).offset(36)
+            make.top.equalTo(subLabel.snp.bottom).offset(UIScreen.main.isLongerThan800pt ? 36 : 18)
             make.height.equalTo(56)
             make.leading.trailing.equalToSuperview().inset(20)
         }
         
         exampleLabel.snp.makeConstraints { make in
-            make.top.equalTo(urlTextField.snp.bottom).offset(28)
+            make.top.equalTo(urlTextField.snp.bottom).offset(UIScreen.main.isLongerThan800pt ? 28 : 16)
             make.centerX.equalToSuperview()
         }
         
@@ -99,6 +99,7 @@ class MyPoseImageSourceViewController: BaseViewController {
         caption.snp.makeConstraints { make in
             make.top.equalTo(exampleImageView.snp.bottom).offset(6)
             make.centerX.equalToSuperview()
+            caption.isHidden = UIScreen.main.isLongerThan800pt ? false : true
         }
         
         nextButton.snp.makeConstraints { make in

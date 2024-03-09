@@ -73,11 +73,11 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
             make.height.equalTo(24)
             make.width.equalTo(132)
             make.leading.equalToSuperview().offset(20)
-            make.top.equalTo(view.safeAreaLayoutGuide).offset(48)
+            make.top.equalTo(view.safeAreaLayoutGuide).offset(UIScreen.main.isWiderThan375pt ? 48 : 16)
         }
         
         pageViewController.view.snp.makeConstraints { make in
-            make.top.equalTo(pageButtons.snp.bottom).offset(36)
+            make.top.equalTo(pageButtons.snp.bottom).offset(UIScreen.main.isWiderThan375pt ? 36 : 16)
             make.leading.trailing.bottom.equalToSuperview()
         }
     }
