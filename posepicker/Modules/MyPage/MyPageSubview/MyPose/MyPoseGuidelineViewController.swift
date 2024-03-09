@@ -93,7 +93,7 @@ class MyPoseGuidelineViewController: BaseViewController {
         view.addSubViews([guidelineBox, mainLabel, thumbnail, rule1, rule2, rule3, rule4, alertLabel, confirmButton, guidelineCheckButton, borderBottom, loadingIndicator])
         
         guidelineBox.snp.makeConstraints { make in
-            make.top.equalToSuperview().offset(UIScreen.main.isWiderThan375pt ? 124 : 60)
+            make.top.equalToSuperview().offset(UIScreen.main.isLongerThan800pt ? 124 : 60)
             make.centerX.equalToSuperview()
             make.width.equalTo(300)
             make.height.equalTo(580)
