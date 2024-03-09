@@ -189,6 +189,19 @@ class PoseDetailViewController: BaseViewController {
         } else {
             imageSourceButton.isHidden = true
         }
+        
+        // 캡처시 이미지 덮기
+        guard let secureView = SecureField().secureContainer else { return }
+
+        scrollView.subviews.first!.addSubView(secureView)
+        secureView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        secureView.addSubview(imageButton)
+        imageButton.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalTo(secureView)
+        }
     }
     
     override func bindViewModel() {

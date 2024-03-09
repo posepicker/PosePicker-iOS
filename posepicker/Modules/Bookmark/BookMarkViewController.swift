@@ -95,6 +95,19 @@ class BookMarkViewController: BaseViewController, UIGestureRecognizerDelegate {
                 }
             })
             .disposed(by: disposeBag)
+        
+        // 캡처시 이미지 덮기
+        guard let secureView = SecureField().secureContainer else { return }
+
+        view.addSubview(secureView)
+        secureView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        secureView.addSubview(bookmarkCollectionView)
+        bookmarkCollectionView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalTo(secureView)
+        }
     }
     
     override func bindViewModel() {

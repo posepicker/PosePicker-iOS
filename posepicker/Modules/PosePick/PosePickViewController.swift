@@ -113,6 +113,19 @@ class PosePickViewController: BaseViewController {
         
         let imageTapGesture = UITapGestureRecognizer(target: self, action: #selector(retrievedImageTapped))
         backgroundView.addGestureRecognizer(imageTapGesture)
+        
+        // 캡처시 이미지 덮기
+        guard let secureView = SecureField().secureContainer else { return }
+
+        view.addSubView(secureView)
+        secureView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        secureView.addSubview(retrievedImage)
+        retrievedImage.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalTo(secureView)
+        }
     }
     
     override func bindViewModel() {

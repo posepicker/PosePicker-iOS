@@ -182,6 +182,18 @@ class BookmarkDetailViewController: BaseViewController {
             imageSourceButton.isHidden = true
         }
         
+        // 캡처시 이미지 덮기
+        guard let secureView = SecureField().secureContainer else { return }
+
+        scrollView.subviews.first!.addSubView(secureView)
+        secureView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        secureView.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalTo(secureView)
+        }
     }
     override func bindViewModel() {
         let input = BookmarkDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap, bookmarkButtonTapped: bookmarkButton.rx.tap)

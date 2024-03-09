@@ -49,6 +49,19 @@ class ImagePopUpViewController: BaseViewController {
     
     override func configUI() {
         self.view.backgroundColor = .dimmed70
+        
+        // 캡처시 이미지 덮기
+        guard let secureView = SecureField().secureContainer else { return }
+
+        view.addSubview(secureView)
+        secureView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        secureView.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalTo(secureView)
+        }
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
