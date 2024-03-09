@@ -50,11 +50,7 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
                 animated: true,
                 completion: nil
             )
-            resetButtonUI()
-            UIView.animate(withDuration: 0.1) { [weak self] in
-                guard let self = self else { return }
-                self.buttons[currentPage].isCurrent = true
-            }
+            setButtonUI()
         }
     }
 
@@ -99,7 +95,7 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
             button.rx.tap
                 .subscribe(onNext: {
                     UIView.animate(withDuration: 0.1) {
-                        self.resetButtonUI()
+                        self.setButtonUI()
                         button.isCurrent = true
                         self.currentPage = index
                     }
@@ -254,8 +250,20 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
             .disposed(by: disposeBag)
     }
     
-    func resetButtonUI() {
-        buttons.forEach { $0.isCurrent = false }
+    func setButtonUI() {
+        buttons.enumerated().forEach { (index, button) in
+            if index <= currentPage {
+                UIView.animate(withDuration: 0.1) {
+                    button.isCurrent = true
+                }
+            }
+            
+            if index > currentPage {
+                UIView.animate(withDuration: 0.1) {
+                    button.isCurrent = false
+                }
+            }
+        }
     }
     
     // MARK: - Objc Functions
