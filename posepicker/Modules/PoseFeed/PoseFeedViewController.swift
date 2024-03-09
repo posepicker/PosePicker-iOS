@@ -240,6 +240,19 @@ class PoseFeedViewController: BaseViewController {
                 self?.present(myposeCoordinator.navigationController, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        // 컬렉션뷰 덮기
+        guard let secureView = SecureField().secureContainer else { return }
+
+        view.addSubview(secureView)
+        secureView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        secureView.addSubview(poseFeedCollectionView)
+        poseFeedCollectionView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalTo(secureView)
+        }
     }
     
     override func bindViewModel() {
@@ -381,6 +394,8 @@ class PoseFeedViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
     }
+    
+    // MARK: - Objc Functions
 }
 
 extension PoseFeedViewController: UICollectionViewDelegateFlowLayout {
