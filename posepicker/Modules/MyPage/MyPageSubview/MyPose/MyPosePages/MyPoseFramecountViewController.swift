@@ -83,12 +83,13 @@ class MyPoseFramecountViewController: BaseViewController {
         mainLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.equalToSuperview().offset(20)
+            make.height.equalTo(80)
         }
         
         firstLineButtons.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(mainLabel.snp.bottom).offset(36)
+            make.top.equalTo(mainLabel.snp.bottom).offset(UIScreen.main.isLongerThan800pt ? 36 : 18)
             make.height.equalTo(UIScreen.main.isLongerThan800pt ? 108 : 50)
         }
         

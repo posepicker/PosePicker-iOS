@@ -71,11 +71,13 @@ class MyPoseImageSourceViewController: BaseViewController {
         mainLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.equalToSuperview().offset(20)
+            make.height.equalTo(40)
         }
         
         subLabel.snp.makeConstraints { make in
             make.leading.equalTo(mainLabel)
-            make.top.equalTo(mainLabel.snp.bottom).offset(2)
+            make.top.equalTo(mainLabel.snp.bottom)
+            make.height.equalTo(40)
         }
         
         urlTextField.snp.makeConstraints { make in

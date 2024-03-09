@@ -132,6 +132,7 @@ class MyPoseTagViewController: BaseViewController {
         mainLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
             make.leading.equalToSuperview().offset(20)
+            make.height.equalTo(80)
         }
         
         tagCountLabel.snp.makeConstraints { make in
