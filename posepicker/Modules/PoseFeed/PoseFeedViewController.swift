@@ -244,13 +244,13 @@ class PoseFeedViewController: BaseViewController {
         
         // 컬렉션뷰 덮기
         guard let secureView = SecureField().secureContainer else { return }
-
+        
         view.addSubview(secureView)
         secureView.snp.makeConstraints { make in
             make.top.leading.trailing.bottom.equalToSuperview()
         }
         
-        secureView.addSubview(poseFeedCollectionView)
+        secureView.addSubViews([poseFeedCollectionView, poseUploadButton])
         poseFeedCollectionView.snp.makeConstraints { make in
             make.top.leading.trailing.bottom.equalTo(secureView)
         }
