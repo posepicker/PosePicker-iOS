@@ -80,6 +80,7 @@ class PoseFeedViewController: BaseViewController {
     
     let poseUploadButton = PosePickButton(status: .defaultStatus, isFill: true, position: .center, buttonTitle: "", image: ImageLiteral.imgAdd)
         .then {
+            $0.layer.zPosition = 999
             $0.layer.cornerRadius = 26
             $0.clipsToBounds = true
         }
