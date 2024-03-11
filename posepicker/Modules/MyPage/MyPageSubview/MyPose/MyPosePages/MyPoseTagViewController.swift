@@ -260,6 +260,27 @@ class MyPoseTagViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
+        // +) 텍스트필드 10자 이상인 경우 제한
+        tagTextField.rx.text.orEmpty.map { String($0.prefix(10)) }
+            .asDriver(onErrorJustReturn: "")
+            .drive(onNext: { [weak self] str in
+                self?.tagTextField.text = str
+                let selectedTagCount = self?.selectedTagCount.value ?? 0
+                if str.count >= 10 || selectedTagCount >= 10 {
+                    // 열개인 경우 텍스트필드 비활성화
+                    self?.textFieldScrollView.layer.borderColor = UIColor.red600.cgColor
+                } else {
+                    self?.textFieldScrollView.layer.borderColor = UIColor.borderDefault.cgColor
+                }
+                
+                if selectedTagCount >= 10 {
+                    self?.tagTextField.isEnabled = false
+                } else {
+                    self?.tagTextField.isEnabled = true
+                }
+            })
+            .disposed(by: disposeBag)
+        
         // 3. 스페이스바 입력후 태그 생성
         tagTextField.rx.text
             .asDriver()
@@ -369,15 +390,12 @@ class MyPoseTagViewController: BaseViewController {
             }
             .asDriver(onErrorJustReturn: false)
             .drive(onNext: { [weak self] isOver in // 태그 총합이 열개 이상인가
-                self?.tagCountLabel.textColor = isOver ? .warningDark : .textTertiary
+                self?.setTextFieldBorderColor(isOver: isOver)
                 
-                if isOver {
-                    // 열개인 경우 텍스트필드 비활성화
-                    self?.tagTextField.isEnabled = false
+                if !isOver && self?.tagTextField.text?.count ?? 0 >= 10 {
                     self?.textFieldScrollView.layer.borderColor = UIColor.red600.cgColor
-                } else {
+                } else if !isOver && self?.tagTextField.text?.count ?? 0 < 10 {
                     self?.textFieldScrollView.layer.borderColor = UIColor.borderDefault.cgColor
-                    self?.tagTextField.isEnabled = true
                 }
             })
             .disposed(by: disposeBag)
@@ -396,6 +414,19 @@ class MyPoseTagViewController: BaseViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         tagTextField.endEditing(true)
+    }
+    
+    func setTextFieldBorderColor(isOver: Bool, _ forOnlyUI: Bool? = nil) {
+        self.tagCountLabel.textColor = isOver ? .warningDark : .textTertiary
+        
+        if isOver {
+            // 열개인 경우 텍스트필드 비활성화
+            self.tagTextField.isEnabled = false
+            self.textFieldScrollView.layer.borderColor = UIColor.red600.cgColor
+        } else {
+            self.textFieldScrollView.layer.borderColor = UIColor.borderDefault.cgColor
+            self.tagTextField.isEnabled = true
+        }
     }
 }
 
