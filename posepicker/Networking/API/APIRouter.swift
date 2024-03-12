@@ -5,7 +5,7 @@
 //  Created by 박경준 on 2023/10/19.
 //
 
-import Foundation
+import UIKit
 
 import Alamofire
 
@@ -17,7 +17,7 @@ enum APIRouter: URLRequestConvertible {
     case retrieveAllPoseFeed(pageNumber: Int, pageSize: Int)
     case retrieveFilteringPoseFeed(peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int)
     case retrievePoseDetail(poseId: Int)
-    case uploadPose(image: Data?, frameCount: String, peopleCount: String, source: String, sourceUrl: String, tag: String)
+    case uploadPose(image: UIImage?, frameCount: String, peopleCount: String, source: String, sourceUrl: String, tag: String)
     
     // 유저 API
     case appleLogin(idToken: String)
@@ -84,7 +84,7 @@ enum APIRouter: URLRequestConvertible {
         case .retrievePoseDetail(let poseId):
             return "/api/pose/\(poseId)"
         case .uploadPose:
-            return "/api/pose"
+            return "/api/pose/"
         case .appleLogin:
             return "/api/users/login/ios/apple"
         case .kakaoLogin:
@@ -135,14 +135,8 @@ enum APIRouter: URLRequestConvertible {
             return queryParams
         case .retrievePoseDetail:
             return nil
-        case .uploadPose(_ , let frameCount, let peopleCount, let source, let sourceUrl, let tags):
-            return [
-                K.Parameters.frameCount: frameCount,
-                K.Parameters.peopleCount: peopleCount,
-                K.Parameters.source: source,
-                K.Parameters.sourceUrl: sourceUrl,
-                K.Parameters.tags: tags
-            ]
+        case .uploadPose:
+            return nil
         case .appleLogin(let idToken):
             return [
                 K.Parameters.idToken: idToken
@@ -190,8 +184,8 @@ enum APIRouter: URLRequestConvertible {
         urlRequest.httpMethod = method.rawValue
         
         /// 네트워크 통신 일반에 사용되는 헤더 기본추가
-        urlRequest.setValue(K.ContentType.json.rawValue, forHTTPHeaderField: K.HttpHeaderField.acceptType.rawValue)
         urlRequest.setValue(K.ContentType.json.rawValue, forHTTPHeaderField: K.HttpHeaderField.contentType.rawValue)
+        urlRequest.setValue(K.ContentType.json.rawValue, forHTTPHeaderField: K.HttpHeaderField.acceptType.rawValue)
         
         /// 요청 바디 인코딩
         let encoding: ParameterEncoding = {
@@ -208,8 +202,41 @@ enum APIRouter: URLRequestConvertible {
             }
         }()
         
-        
-        
         return try encoding.encode(urlRequest, with: parameters)
+    }
+    
+    // MARK: - MultipartFormData
+    var multipartFormData: MultipartFormData {
+        let multipartFormData = MultipartFormData()
+        switch self {
+        case .uploadPose(let image, let frameCount, let peopleCount, let source, let sourceUrl, let tag):
+            guard let frameCountData = frameCount.data(using: .utf8),
+                  let peopleCountData = peopleCount.data(using: .utf8),
+                  let sourceData = source.data(using: .utf8),
+                  let sourceURLData = sourceUrl.data(using: .utf8),
+                  let tagData = tag.data(using: .utf8) else {
+                break
+            }
+            multipartFormData.append(frameCountData, withName: K.Parameters.frameCount)
+            multipartFormData.append(peopleCountData, withName: K.Parameters.peopleCount)
+            multipartFormData.append(sourceData, withName: K.Parameters.source)
+            multipartFormData.append(sourceURLData, withName: K.Parameters.sourceUrl)
+            multipartFormData.append(tagData, withName: K.Parameters.tags)
+            
+            if let size = image?.getSizeIn(.megabyte),
+               size >= 10 {
+                let compressedImage = image?.compressTo(9)
+                if let imgData = compressedImage?.pngData() {
+                    multipartFormData.append(imgData, withName: "file",fileName: "\(compressedImage.hashValue).png", mimeType: "image/png")
+                }
+            } else {
+                if let imgData = image?.pngData() {
+                    multipartFormData.append(imgData, withName: "file", fileName: "\(image.hashValue).png", mimeType: "image/png")
+                }
+            }
+        default: ()
+        }
+
+        return multipartFormData
     }
 }
