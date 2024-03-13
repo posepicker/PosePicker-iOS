@@ -61,12 +61,19 @@ class MyPoseImageSourceViewController: BaseViewController {
     
     let nextButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "업로드", image: nil)
     
+    var loadingIndicator = UIActivityIndicatorView(style: .large)
+        .then {
+            $0.startAnimating()
+            $0.isHidden = true
+            $0.color = .bgSubWhite
+        }
+    
     // MARK: - Properties
     
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([mainLabel, subLabel, urlTextField, exampleImageView,exampleLabel, caption, nextButton])
+        view.addSubViews([mainLabel, subLabel, urlTextField, exampleImageView,exampleLabel, caption, nextButton, loadingIndicator])
         
         mainLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -108,6 +115,10 @@ class MyPoseImageSourceViewController: BaseViewController {
             make.leading.trailing.equalToSuperview().inset(18.5)
             make.height.equalTo(60)
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-16)
+        }
+        
+        loadingIndicator.snp.makeConstraints { make in
+            make.center.equalTo(nextButton)
         }
     }
     
