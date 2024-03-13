@@ -56,10 +56,12 @@ struct K {
         case contentType = "Content-Type"
         case acceptType = "Accept"
         case acceptEncoding = "Accept-Encoding"
+        case multipartFormData = "multipart/form-data"
     }
     
     /// 컨텐츠 타입
     enum ContentType: String {
         case json = "application/json"
+        case all = "*/*"
     }
 }
