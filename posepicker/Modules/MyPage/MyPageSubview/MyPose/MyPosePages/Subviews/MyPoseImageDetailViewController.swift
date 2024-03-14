@@ -40,6 +40,19 @@ class MyPoseImageDetailViewController: BaseViewController {
             make.leading.trailing.equalToSuperview()
             make.center.equalToSuperview()
         }
+        
+        // 캡처시 이미지 덮기
+        guard let secureView = SecureField().secureContainer else { return }
+
+        view.addSubview(secureView)
+        secureView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalToSuperview()
+        }
+        
+        secureView.addSubview(imageView)
+        imageView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalTo(secureView)
+        }
     }
     
     // MARK:  화면 dismiss 로직
