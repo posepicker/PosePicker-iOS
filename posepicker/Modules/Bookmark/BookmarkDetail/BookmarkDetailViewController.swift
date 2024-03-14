@@ -54,10 +54,16 @@ class BookmarkDetailViewController: BaseViewController {
             $0.items = [navigationItem]
         }
     
-    let imageView = UIImageView()
+    let imageButton = UIButton()
         .then {
+            $0.adjustsImageWhenHighlighted = false
             $0.contentMode = .scaleAspectFill
         }
+    
+//    let imageView = UIImageView()
+//        .then {
+//            $0.contentMode = .scaleAspectFill
+//        }
     
     let tagCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
@@ -111,7 +117,7 @@ class BookmarkDetailViewController: BaseViewController {
     override func render() {
         self.view.addSubViews([navigationBar, scrollView, shareButtonGroup, loadingIndicator])
         
-        scrollView.subviews.first!.addSubViews([imageSourceButton, imageView, tagCollectionView])
+        scrollView.subviews.first!.addSubViews([imageSourceButton, imageButton, tagCollectionView])
         shareButtonGroup.addSubViews([linkShareButton, kakaoShareButton])
         
         navigationBar.snp.makeConstraints { make in
@@ -131,13 +137,13 @@ class BookmarkDetailViewController: BaseViewController {
             make.top.equalTo(scrollView).offset(14)
         }
         
-        imageView.snp.makeConstraints { make in
+        imageButton.snp.makeConstraints { make in
             make.top.equalTo(imageSourceButton.snp.bottom).offset(14)
             make.leading.trailing.equalTo(scrollView)
         }
         
         tagCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(imageView.snp.bottom).offset(12)
+            make.top.equalTo(imageButton.snp.bottom).offset(12)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(72)
             make.bottom.equalTo(scrollView.snp.bottom).offset(-20)
@@ -190,8 +196,8 @@ class BookmarkDetailViewController: BaseViewController {
             make.top.leading.trailing.bottom.equalToSuperview()
         }
         
-        secureView.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
+        secureView.addSubview(imageButton)
+        imageButton.snp.makeConstraints { make in
             make.top.leading.trailing.bottom.equalTo(secureView)
         }
     }
@@ -207,7 +213,20 @@ class BookmarkDetailViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        output.image.bind(to: imageView.rx.image).disposed(by: disposeBag)
+        output.image.asDriver(onErrorJustReturn: nil)
+            .drive(onNext: { [weak self] in
+                self?.imageButton.setImage($0, for: .normal)
+            })
+            .disposed(by: disposeBag)
+        
+        imageButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
+                guard let retrievedImage = self?.imageButton.imageView?.image else { return }
+                let vc = ImagePopUpViewController(mainImage: retrievedImage)
+                vc.modalTransitionStyle = .crossDissolve
+                vc.modalPresentationStyle = .overFullScreen
+                self?.present(vc, animated: true)
+            })
         
         output.popupPresent
             .drive(onNext: { [unowned self] in
