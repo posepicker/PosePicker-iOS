@@ -145,7 +145,7 @@ class PoseDetailViewController: BaseViewController {
         }
         
         tagCollectionView.snp.makeConstraints { make in
-            make.top.equalTo(/*imageView*/imageButton.snp.bottom).offset(12)
+            make.top.equalTo(imageButton.snp.bottom).offset(12)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(72)
             make.bottom.equalTo(scrollView.snp.bottom).offset(-20)
