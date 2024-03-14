@@ -261,7 +261,8 @@ class PoseFeedViewModel: ViewModelType {
                 owner.isLast = filteredPose.filteredContents?.last ?? true // 추천섹션 데이터 accept처리
                 recommendContents.accept(filteredPose.recommendedContents)
                 
-                guard let contents = filteredPose.filteredContents?.content else { return Observable<[PoseFeedPhotoCellViewModel]>.empty() }
+                guard var contents = filteredPose.filteredContents?.content else { return Observable<[PoseFeedPhotoCellViewModel]>.empty() }
+                contents = owner.checkReportData(posefeed: contents)
                 return owner.retrieveCacheObservable(posefeed: contents)
                     .skip(while: { $0.count < contents.count })
             }
@@ -282,7 +283,8 @@ class PoseFeedViewModel: ViewModelType {
                 owner.isLast = recommendedContents.last
                 owner.endLoading()
                 loadable.accept(false)
-                return owner.retrieveCacheObservable(posefeed: recommendedContents.content, isFilterSection: false)
+                let contents = owner.checkReportData(posefeed: recommendedContents.content)
+                return owner.retrieveCacheObservable(posefeed: contents, isFilterSection: false)
                     .skip(while: { $0.count < recommendedContents.content.count })
             }
             .subscribe(onNext: { [weak recommendSection] in
@@ -326,6 +328,7 @@ class PoseFeedViewModel: ViewModelType {
             .withUnretained(self)
             .flatMapLatest { owner, posefeed -> Observable<[PoseFeedPhotoCellViewModel]> in
                 owner.isLast = posefeed.last
+                let contents = owner.checkReportData(posefeed: posefeed.content)
                 return owner.retrieveCacheObservable(posefeed: posefeed.content)
                     .skip(while: { $0.count < posefeed.content.count })
             }
@@ -381,8 +384,8 @@ class PoseFeedViewModel: ViewModelType {
                 owner.isLast = filteredPose.filteredContents?.last ?? true
                 recommendContents.accept(filteredPose.recommendedContents) // 2-2로 이동
                 
-                guard let contents = filteredPose.filteredContents?.content else { return Observable<[PoseFeedPhotoCellViewModel]>.empty() }
-                
+                guard var contents = filteredPose.filteredContents?.content else { return Observable<[PoseFeedPhotoCellViewModel]>.empty() }
+                contents = owner.checkReportData(posefeed: contents)
                 return owner.retrieveCacheObservable(posefeed: contents)
                     .skip(while: { $0.count < contents.count })
             }
@@ -524,6 +527,30 @@ class PoseFeedViewModel: ViewModelType {
     
     func endLoading() {
         self.isLoading = false
+    }
+    
+    func checkReportData(posefeed: [PosePick]) -> [PosePick] {
+        var newPoseFeed = posefeed
+        var allReportIds: [String] = []
+        var posefeedIndicies: [Int] = []
+        
+        let dict = UserDefaults.standard.dictionaryRepresentation()
+        
+        for key in dict.keys {
+            allReportIds.append(key)
+        }
+        
+        newPoseFeed.enumerated().forEach { index, posepick in
+            if allReportIds.contains(where: { reportId in
+                return reportId == "\(posepick.poseInfo.poseId)"
+            }) {
+                posefeedIndicies.append(index)
+            }
+        }
+
+        newPoseFeed.remove(atOffsets: IndexSet(posefeedIndicies))
+        
+        return newPoseFeed
     }
     
     func retrieveCacheObservable(posefeed: [PosePick], isFilterSection: Bool = true) -> Observable<[PoseFeedPhotoCellViewModel]> {
