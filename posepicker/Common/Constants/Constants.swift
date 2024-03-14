@@ -42,6 +42,11 @@ struct K {
         static let refreshToken = "refreshToken"
     }
     
+    /// UserDefaults 키값
+    struct UserDefaultsKey {
+        static let reportId = "reportId"
+    }
+    
     /// UserDefaults 로그인 방법 분류
     struct SocialLogin {
         static let socialLogin = "social-login"
