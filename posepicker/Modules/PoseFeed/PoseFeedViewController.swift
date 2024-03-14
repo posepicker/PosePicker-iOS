@@ -74,6 +74,7 @@ class PoseFeedViewController: BaseViewController {
     
     let loadingIndicator = UIActivityIndicatorView(style: .large)
         .then {
+            $0.layer.zPosition = 999
             $0.startAnimating()
             $0.color = .mainViolet
         }
