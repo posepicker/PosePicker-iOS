@@ -6,6 +6,8 @@
 //
 
 import UIKit
+
+import Alamofire
 import RxSwift
 import RxCocoa
 
@@ -54,6 +56,9 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
         }
     }
 
+    var isLoading = BehaviorRelay<Bool>(value: false)
+    
+    var apiSession: APIService = APISession()
     
     // MARK: - Initialization
     init(registeredImage: UIImage?) {
@@ -75,6 +80,8 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
             make.leading.equalToSuperview().offset(20)
             make.top.equalTo(view.safeAreaLayoutGuide).offset(UIScreen.main.isWiderThan375pt ? 48 : 16)
         }
+        
+        pageViewController.view.layer.zPosition = 10
         
         pageViewController.view.snp.makeConstraints { make in
             make.top.equalTo(pageButtons.snp.bottom).offset(UIScreen.main.isWiderThan375pt ? 36 : 16)
@@ -159,10 +166,31 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
                         print("API 통신중..")
                     })
                     .disposed(by: disposeBag)
+                
+                isLoading
+                    .map { !$0 }
+                    .bind(to: myposeImageSourceVC.loadingIndicator.rx.isHidden)
+                    .disposed(by: disposeBag)
+                
+                isLoading.asDriver()
+                    .drive(onNext: { loading in
+                        if loading {
+                            myposeImageSourceVC.loadingIndicator.isHidden = false
+                            myposeImageSourceVC.nextButton.setTitle("", for: .normal)
+                        } else {
+                            myposeImageSourceVC.loadingIndicator.isHidden = true
+                            myposeImageSourceVC.nextButton.setTitle("업로드", for: .normal)
+                        }
+                    })
+                    .disposed(by: disposeBag)
             default:
                 return
             }
         }
+        
+        // 로딩 인디케이터
+        
+        
     }
     
     // 입력 최종 완료 후 API통신을 위한 객체
@@ -200,52 +228,28 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
                 return allSelectedItems.asObservable()
             }
         
-        /*
+        // 포즈 업로드
         imageSourceVC.nextButton.rx.tap
             .flatMapLatest { _ -> Observable<(String, String, [String], String)> in
                 return Observable.combineLatest(headcountVC.selectedHeadCount, framecountVC.selectedFrameCount, selectedTagObservable, imageSourceVC.urlTextField.rx.text.compactMap { $0 })
             }
-            .flatMapLatest { [weak self] headCount, frameCount, selectedTags, imageSource -> Observable<PosePick> in
-                
-                var compressImage: UIImage? = nil
-                
-                if let size = self?.registeredImage?.getSizeIn(.megabyte),
-                   size > 10 {
-                    compressImage = self?.registeredImage?.compressTo(9)
-                } else {
-                    compressImage = self?.registeredImage
-                }
-                
-                guard let compressImage = compressImage,
-                      let base64 = compressImage.convertImageToBase64String() else { return Observable<PosePick>.empty() }
-                
+            .flatMapLatest { [weak self] headCount, frameCount, selectedTags, imageSource -> Single<PosePick> in
+                guard let self = self else { return Observable<PosePick>.empty().asSingle() }
                 var tagArrayToString = ""
                 selectedTags.forEach { tagArrayToString += "\($0)," }
-                
-                return APISession().requestSingle(.uploadPose(image: compressImage.jpegData(compressionQuality: 1), frameCount: frameCount, peopleCount: headCount, source: "", sourceUrl: imageSource, tag: tagArrayToString)).asObservable()
+                self.isLoading.accept(true)
+                return self.apiSession.requestMultipartSingle(.uploadPose(image: self.registeredImage, frameCount: frameCount, peopleCount: headCount, source: imageSource, sourceUrl: imageSource, tag: tagArrayToString))
             }
-            .subscribe(onNext: {
-                print("통신완료 ..")
+            .subscribe(onNext: { [weak self] posepick in
+                self?.isLoading.accept(false)
+                let poseDetailViewModel = PoseDetailViewModel(poseDetailData: posepick)
+                let coordinator = PoseFeedCoordinator(navigationController: self!.navigationController!)
+                let detailVC = PoseDetailViewController(viewModel: poseDetailViewModel, coordinator: coordinator)
+                self?.present(detailVC, animated: true)
+            }, onError: { [weak self] in
+                self?.isLoading.accept(false)
+                print("ERROR...")
                 print($0)
-            })
-            .disposed(by: disposeBag)
-        */
-        
-        imageSourceVC.nextButton.rx.tap
-            .flatMapLatest { _ -> Observable<(String, String, [String], String)> in
-                return Observable.combineLatest(headcountVC.selectedHeadCount, framecountVC.selectedFrameCount, selectedTagObservable, imageSourceVC.urlTextField.rx.text.compactMap { $0 })
-            }
-            .asDriver(onErrorJustReturn: ("","",[],""))
-            .drive(onNext: { [weak self] headCount, frameCount, selectedTags, imageSource in
-                guard let self = self else { return }
-                var tagArrayToString = ""
-                selectedTags.forEach { tagArrayToString += "\($0)," }
-                
-                let posepick = PosePick(poseInfo: .init(createdAt: "2024-03-02T07:41:04.312Z", frameCount: FilterTags.getNumberFromFrameCountString(countString: frameCount) ?? 1,imageKey: "https://posepicker-image.s3.ap-northeast-2.amazonaws.com/id_382_946026ebb2e322cd9dc0702cebae349d.jpg", peopleCount: FilterTags.getNumberFromFrameCountString(countString: headCount) ?? 1, poseId: 999, source: "@do0_nct", sourceUrl: imageSource, tagAttributes: tagArrayToString, updatedAt: nil, bookmarkCheck: false))
-                let poseDetailVM = PoseDetailViewModel(poseDetailData: posepick)
-                let poseDetailVC = PoseDetailViewController(viewModel: poseDetailVM, coordinator: PoseFeedCoordinator(navigationController: self.navigationController ?? UINavigationController(rootViewController: self)))
-                poseDetailVC.tagCollectionView.isUserInteractionEnabled = false
-                self.present(poseDetailVC, animated: true)
             })
             .disposed(by: disposeBag)
     }
