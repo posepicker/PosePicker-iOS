@@ -81,6 +81,11 @@ class APIInterceptor: RequestInterceptor {
             }
             completion(.doNotRetry)
             return
+        } else if let url = response.url,
+                  url.absoluteString.contains("/api/users/logout") {
+            KeychainManager.shared.removeAll()
+            completion(.doNotRetry)
+            return
         }
         
         guard let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.KeychainKeyParameters.refreshToken) else {
