@@ -202,6 +202,12 @@ enum APIRouter: URLRequestConvertible {
             }
         }()
         
+        if let urlString = urlRequest.url?.absoluteString,
+           urlString.contains("/api/pose/"),
+           self.method == .post {
+            return urlRequest
+        }
+        
         return try encoding.encode(urlRequest, with: parameters)
     }
     
@@ -223,15 +229,16 @@ enum APIRouter: URLRequestConvertible {
             multipartFormData.append(sourceURLData, withName: K.Parameters.sourceUrl)
             multipartFormData.append(tagData, withName: K.Parameters.tags)
             
+            // filename 지정 필요!
             if let size = image?.getSizeIn(.megabyte),
                size >= 10 {
                 let compressedImage = image?.compressTo(9)
                 if let imgData = compressedImage?.pngData() {
-                    multipartFormData.append(imgData, withName: "file",fileName: "\(compressedImage.hashValue).png", mimeType: "image/png")
+                    multipartFormData.append(imgData, withName: K.Parameters.file, fileName: "\(image.hashValue).png", mimeType: "image/png")
                 }
             } else {
                 if let imgData = image?.pngData() {
-                    multipartFormData.append(imgData, withName: "file", fileName: "\(image.hashValue).png", mimeType: "image/png")
+                    multipartFormData.append(imgData, withName: K.Parameters.file, fileName: "\(image.hashValue).png", mimeType: "image/png")
                 }
             }
         default: ()
