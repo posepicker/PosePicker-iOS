@@ -95,6 +95,9 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             $0.isHidden = !AppCoordinator.loginState
         }
     
+    let loginToast = Toast(title: "로그인 되었습니다!")
+    let logoutToast = Toast(title: "로그아웃 되었습니다!")
+    
     // MARK: - Properties
     var viewModel: MyPageViewModel
     var coordinator: RootCoordinator
@@ -116,6 +119,9 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
     }
     
     // MARK: - Functions
@@ -306,7 +312,7 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
     }
     
     override func render() {
-        view.addSubViews([loginButton, loginLogo, loginTitle, noticeButton, faqButton, snsButton, serviceUsageInquiryButton, serviceInformationButton, privacyInforationButton, logoutButton, signoutButton])
+        view.addSubViews([loginButton, loginLogo, loginTitle, noticeButton, faqButton, snsButton, serviceUsageInquiryButton, serviceInformationButton, privacyInforationButton, logoutButton, signoutButton, loginToast, logoutToast])
         
         loginButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12)
@@ -371,6 +377,20 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             make.top.equalTo(logoutButton.snp.bottom).offset(24)
             make.height.equalTo(24)
         }
+        
+        loginToast.snp.makeConstraints { make in
+            make.height.equalTo(46)
+            make.bottom.equalTo(view).offset(46)
+            make.centerX.equalTo(view)
+            make.leading.trailing.equalToSuperview().inset(24)
+        }
+        
+        logoutToast.snp.makeConstraints { make in
+            make.height.equalTo(46)
+            make.bottom.equalTo(view).offset(46)
+            make.centerX.equalTo(view)
+            make.leading.trailing.equalToSuperview().inset(24)
+        }
     }
     
     override func bindViewModel() {
@@ -383,11 +403,52 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
                 if let popupVC = self.presentedViewController as? PopUpViewController {
                     // 로그인할때
                     if let _ = popupVC.popUpView as? LoginPopUpView {
-                        self.dismiss(animated: true)
+                        self.dismiss(animated: true) {
+                            self.loginToast.snp.updateConstraints { make in
+                                make.bottom.equalTo(self.view).offset(-60)
+                            }
+                            
+                            UIView.animate(withDuration: 0.2) {
+                                self.view.layoutIfNeeded()
+                                self.loginToast.layer.opacity = 1
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                self.loginToast.snp.updateConstraints { make in
+                                    make.bottom.equalTo(self.view).offset(46)
+                                }
+                                
+                                UIView.animate(withDuration: 0.2) {
+                                    self.view.layoutIfNeeded()
+                                    self.loginToast.layer.opacity = 0
+                                }
+                            }
+                        }
                         self.loginStateTrigger.onNext(())
                     } else if let popupView = popupVC.popUpView as? PopUpView,
                               popupView.alertMainLabel.text! == "로그아웃" {
-                        self.dismiss(animated: true)
+                        self.dismiss(animated: true) {
+                            self.logoutToast.snp.updateConstraints { make in
+                                make.bottom.equalTo(self.view).offset(-60)
+                            }
+                            
+                            UIView.animate(withDuration: 0.2) {
+                                self.view.layoutIfNeeded()
+                                self.logoutToast.isHidden = false
+                                self.logoutToast.layer.opacity = 1
+                            }
+                            
+                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                                self.logoutToast.snp.updateConstraints { make in
+                                    make.bottom.equalTo(self.view).offset(46)
+                                }
+                                
+                                UIView.animate(withDuration: 0.2) {
+                                    self.view.layoutIfNeeded()
+                                    self.logoutToast.layer.opacity = 0
+                                }
+                            }
+                        }
                         self.loginStateTrigger.onNext(())
                     }
                     
@@ -399,13 +460,14 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             .drive(onNext: { [weak self] in
                 
                 // 로그인 상태 새로고침
-                print("refreshed!")
                 if let email = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
+                    print("EMAIL: \(email)")
                     self?.loginButton.isEnabled = false
                     self?.loginTitle.text = email
                     self?.logoutButton.isHidden = false
                     self?.signoutButton.isHidden = false
                 } else {
+                    print("EMAIL NOT WORK")
                     self?.loginButton.isEnabled = true
                     self?.loginTitle.text = "로그인하기"
                     self?.logoutButton.isHidden = true
