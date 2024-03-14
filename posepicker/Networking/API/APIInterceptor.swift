@@ -22,7 +22,7 @@ class APIInterceptor: RequestInterceptor {
            let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.refreshToken) {
             
             if url.absoluteString.contains("/api/pose") || url.absoluteString.contains("/api/pose/all") || url.absoluteString.contains("/api/bookmark") ||
-                (url.absoluteString.contains("/api/pose") && urlRequest.method == .post) {
+                (url.absoluteString.contains("/api/pose/") && urlRequest.method == .post) {
                 var urlRequest = urlRequest
                 urlRequest.headers.add(.authorization(bearerToken: accessToken))
                 completion(.success(urlRequest))
@@ -93,9 +93,8 @@ class APIInterceptor: RequestInterceptor {
         refreshTokenObservable
             .asObservable()
             .subscribe(onNext: { token in
-                KeychainManager.shared.removeAll()
-                try? KeychainManager.shared.saveItem(token.accessToken, itemClass: .password, key: K.KeychainKeyParameters.accessToken)
-                try? KeychainManager.shared.saveItem(token.refreshToken, itemClass: .password, key: K.KeychainKeyParameters.refreshToken)
+                try? KeychainManager.shared.updateItem(with: token.accessToken, ofClass: .password, key: K.KeychainKeyParameters.accessToken)
+                try? KeychainManager.shared.updateItem(with: token.refreshToken, ofClass: .password, key: K.KeychainKeyParameters.refreshToken)
                 completion(.retry)
             })
             .disposed(by: disposeBag)
