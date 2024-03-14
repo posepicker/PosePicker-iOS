@@ -48,5 +48,6 @@ class Toast: UIView {
         self.backgroundColor = .dimmed70
         self.layer.cornerRadius = 4
         self.clipsToBounds = true
+        self.layer.opacity = 0
     }
 }
