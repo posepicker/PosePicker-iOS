@@ -149,6 +149,7 @@
 		C9C890C22AE113590010240A /* Lottie in Frameworks */ = {isa = PBXBuildFile; productRef = C9C890C12AE113590010240A /* Lottie */; };
 		C9C890C52AE11BAB0010240A /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890C42AE11BAB0010240A /* UIFont+.swift */; };
 		C9D0C4032B9C4BFC004A3940 /* SecureField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0C4022B9C4BFC004A3940 /* SecureField.swift */; };
+		C9D0C4062BA2D228004A3940 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0C4052BA2D228004A3940 /* Toast.swift */; };
 		C9DC2F8E2AEA193300D5170D /* PoseFeedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F8D2AEA193300D5170D /* PoseFeedCoordinator.swift */; };
 		C9DC2F902AEA1D5F00D5170D /* PoseFeedFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F8F2AEA1D5F00D5170D /* PoseFeedFilterViewController.swift */; };
 		C9DC2F942AEA282700D5170D /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F932AEA282600D5170D /* LeftAlignedCollectionViewFlowLayout.swift */; };
@@ -314,6 +315,7 @@
 		C9C890BE2AE1107B0010240A /* ImageLiteral.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageLiteral.swift; sourceTree = "<group>"; };
 		C9C890C42AE11BAB0010240A /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		C9D0C4022B9C4BFC004A3940 /* SecureField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureField.swift; sourceTree = "<group>"; };
+		C9D0C4052BA2D228004A3940 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		C9DC2F8D2AEA193300D5170D /* PoseFeedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedCoordinator.swift; sourceTree = "<group>"; };
 		C9DC2F8F2AEA1D5F00D5170D /* PoseFeedFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterViewController.swift; sourceTree = "<group>"; };
 		C9DC2F932AEA282600D5170D /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
@@ -758,6 +760,7 @@
 		C94FD29C2AE3AF1E003777EB /* Component */ = {
 			isa = PBXGroup;
 			children = (
+				C9D0C4042BA2D213004A3940 /* Toast */,
 				C916730C2B5E52360092661B /* ImagePopUp */,
 				C903E5482B05BC4D00BD004F /* PopUp */,
 				C9C0CDCA2AF3538C0041E423 /* ToolTip */,
@@ -1080,6 +1083,14 @@
 				C9C890C42AE11BAB0010240A /* UIFont+.swift */,
 			);
 			path = UIFont;
+			sourceTree = "<group>";
+		};
+		C9D0C4042BA2D213004A3940 /* Toast */ = {
+			isa = PBXGroup;
+			children = (
+				C9D0C4052BA2D228004A3940 /* Toast.swift */,
+			);
+			path = Toast;
 			sourceTree = "<group>";
 		};
 		C9DC2F912AEA27F600D5170D /* UICollectionView */ = {
@@ -1467,6 +1478,7 @@
 				C990AB1E2B5BF52600567AA3 /* String+.swift in Sources */,
 				880E753C2AE6BE3A007FAD5A /* BindableViewModel.swift in Sources */,
 				C9DC2FA62AEB6E1800D5170D /* FilterTags.swift in Sources */,
+				C9D0C4062BA2D228004A3940 /* Toast.swift in Sources */,
 				C94FD28D2AE39646003777EB /* BookmarkViewModel.swift in Sources */,
 				C9DC2FAA2AECAD4500D5170D /* RegisteredFilterCellViewModel.swift in Sources */,
 				C9042E6B2B0D7CB000BB4182 /* LoginPopUpView.swift in Sources */,
