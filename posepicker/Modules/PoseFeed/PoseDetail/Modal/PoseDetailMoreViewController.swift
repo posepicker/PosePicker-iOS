@@ -40,6 +40,18 @@ class PoseDetailMoreViewController: BaseViewController {
         }
     
     // MARK: - Properties
+    let poseId: Int
+    
+    // MARK: - Initialization
+    
+    init(poseId: Int) {
+        self.poseId = poseId
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Life Cycles
     override func viewWillAppear(_ animated: Bool) {
@@ -82,11 +94,12 @@ class PoseDetailMoreViewController: BaseViewController {
         reportButton.rx.tap
             .asDriver()
             .drive(onNext: { [weak self] in
-                let reportVC = ReportViewController()
+                guard let self = self else { return }
+                let reportVC = ReportViewController(poseId: self.poseId)
                 let navigationVC = UINavigationController(rootViewController: reportVC)
                 navigationVC.modalPresentationStyle = .overFullScreen
                 navigationVC.modalTransitionStyle = .coverVertical
-                self?.present(navigationVC, animated: true)
+                self.present(navigationVC, animated: true)
             })
             .disposed(by: disposeBag)
     }
