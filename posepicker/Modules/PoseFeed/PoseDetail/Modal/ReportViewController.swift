@@ -49,6 +49,21 @@ class ReportViewController: BaseViewController {
         RadioButton(title: "기타 입력"),
     ]
     
+    let poseId: Int
+    
+    var selectedReason: String = ""
+    
+    // MARK: - Initialization
+    
+    init(poseId: Int) {
+        self.poseId = poseId
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     // MARK: - Functions
     override func render() {
         self.view.addSubViews([mainLabel, buttonGroupStackView, completeButton])
@@ -86,6 +101,7 @@ class ReportViewController: BaseViewController {
             guard let self = self else { return }
             button.rx.tap.asDriver()
                 .drive(onNext: {
+                    self.selectedReason = self.radioGroup[index].title
                     self.resetButtonUI()
                     self.completeButton.status.accept(.defaultStatus)
                     button.isCurrent = true
@@ -115,6 +131,25 @@ class ReportViewController: BaseViewController {
                         popupVC.dismiss(animated: true)
                     })
                     .disposed(by: self.disposeBag)
+                
+                popupView.confirmButton.rx.tap
+                    .asDriver()
+                    .drive(onNext: { [weak self] in
+                        guard let self = self else { return }
+                        let defaults = UserDefaults.standard
+                        defaults.set(self.selectedReason, forKey: "\(self.poseId)")
+                        popupVC.dismiss(animated: true) {
+                            // 포즈피드까지 이동
+                            // 태그 새로고침
+                            let navigation = self.view.window!.rootViewController as? UINavigationController
+                            let rootVC = navigation?.viewControllers.first as? RootViewController
+                            let rootNavigationVC = rootVC?.viewControllers[2] as? UINavigationController
+                            let posefeedVC = rootNavigationVC?.viewControllers.first as? PoseFeedViewController
+                            posefeedVC?.tagResetTrigger.onNext(())
+                            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+                        }
+                    })
+                    .disposed(by: disposeBag)
                 
                 self.present(popupVC, animated: true)
             })
