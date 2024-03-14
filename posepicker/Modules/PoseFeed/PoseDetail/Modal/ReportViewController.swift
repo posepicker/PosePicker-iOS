@@ -146,7 +146,10 @@ class ReportViewController: BaseViewController {
                             let rootNavigationVC = rootVC?.viewControllers[2] as? UINavigationController
                             let posefeedVC = rootNavigationVC?.viewControllers.first as? PoseFeedViewController
                             posefeedVC?.tagResetTrigger.onNext(())
-                            self.view.window!.rootViewController?.dismiss(animated: true, completion: nil)
+                            
+                            self.view.window!.rootViewController?.dismiss(animated: true) {
+                                posefeedVC?.reportCompletedTrigger.onNext(())
+                            }
                         }
                     })
                     .disposed(by: disposeBag)
