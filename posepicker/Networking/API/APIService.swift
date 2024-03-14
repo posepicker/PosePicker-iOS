@@ -12,4 +12,5 @@ import RxSwift
 
 protocol APIService {
     func requestSingle<T: Codable> (_ request: APIRouter) -> Single<T>
+    func requestMultipartSingle<T: Codable>(_ request: APIRouter) -> Single<T>
 }
