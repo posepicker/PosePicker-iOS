@@ -6,6 +6,12 @@
 //
 
 import UIKit
+import RxCocoa
+import RxSwift
+import KakaoSDKAuth
+import KakaoSDKUser
+import KakaoSDKCommon
+import RxKakaoSDKUser
 
 class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate {
 
@@ -33,7 +39,9 @@ class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate 
             $0.alignment = .leading
         }
     
-    let completeButton = PosePickButton(status: .disabled, isFill: true, position: .none, buttonTitle: "신고하기", image: nil)
+    let cancelButton = PosePickButton(status: .defaultStatus, isFill: false, position: .none, buttonTitle: "계속 쓸래요", image: nil)
+    
+    let revokeButton = PosePickButton(status: .disabled, isFill: true, position: .none, buttonTitle: "탈퇴할래요", image: nil)
     
     let textView = UITextView()
         .then {
@@ -61,9 +69,11 @@ class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate 
     
     var selectedReason: String = ""
     
+    let loginStateTrigger = PublishSubject<Void>() // 로그인 취소되면 UI 복구목적
+    
     // MARK: - Functions
     override func render() {
-        self.view.addSubViews([mainLabel, buttonGroupStackView, completeButton, textView])
+        self.view.addSubViews([mainLabel, buttonGroupStackView, cancelButton, revokeButton, textView])
         
         mainLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(UIScreen.main.isLongerThan800pt ? 64 : 20)
@@ -74,7 +84,7 @@ class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate 
             make.top.equalTo(mainLabel.snp.bottom).offset(40)
             make.centerX.equalToSuperview()
             make.width.equalTo(view.frame.width - 40)
-            make.height.equalTo(336).priority(.low)
+            make.height.equalTo(336).priority(UIScreen.main.isLongerThan800pt ? .low : .high)
         }
         
         radioGroup.forEach {
@@ -83,17 +93,25 @@ class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate 
             }
         }
         
-        completeButton.snp.makeConstraints { make in
+        revokeButton.snp.makeConstraints { make in
             make.height.equalTo(54)
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
-            make.leading.trailing.equalToSuperview().inset(20)
+            make.leading.equalTo(view.snp.centerX).offset(4)
+            make.trailing.equalToSuperview().offset(-20)
+        }
+        
+        cancelButton.snp.makeConstraints { make in
+            make.height.equalTo(54)
+            make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
+            make.leading.equalToSuperview().offset(20)
+            make.trailing.equalTo(view.snp.centerX).offset(-4)
         }
         
         textView.snp.makeConstraints { make in
-            make.top.equalTo(buttonGroupStackView.snp.bottom).offset(20).priority(.low)
+            make.top.equalTo(buttonGroupStackView.snp.bottom).priority(UIScreen.main.isLongerThan800pt ? .high : .low)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(76)
-            make.bottom.equalTo(completeButton.snp.top).offset(-20).priority(.high)
+            make.bottom.equalTo(revokeButton.snp.top).offset(-20).priority(UIScreen.main.isLongerThan800pt ? .low : .high)
         }
     }
     
@@ -116,7 +134,7 @@ class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate 
                     
                     self.selectedReason = self.radioGroup[index].title
                     self.resetButtonUI()
-                    self.completeButton.status.accept(.defaultStatus)
+                    self.revokeButton.status.accept(.defaultStatus)
                     button.isCurrent = true
                 })
                 .disposed(by: self.disposeBag)
@@ -158,6 +176,54 @@ class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate 
                     owner.textView.text = "어떤 점이 당신을 떠나게 만들었나요?"
                     owner.textView.textColor = .iconDisabled
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        revokeButton.rx.tap.asDriver()
+            .drive(onNext: { [unowned self] in
+                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: true, isLabelNeeded: true, isSignout: true)
+                popupViewController.modalTransitionStyle = .crossDissolve
+                popupViewController.modalPresentationStyle = .overFullScreen
+                let popupView = popupViewController.popUpView as! PopUpView
+                popupView.alertMainLabel.text = "서비스 탈퇴"
+                popupView.alertText.accept("탈퇴시 올려주신 포즈는\n자동으로 삭제되지 않습니다.\n정말 탈퇴하시겠어요?")
+                popupView.confirmButton.setTitle("탈퇴", for: .normal)
+                popupView.cancelButton.setTitle("취소", for: .normal)
+
+                popupView.confirmButton.rx.tap.asDriver()
+                    .drive(onNext: { [weak self] in
+                        guard let self = self else { return }
+                        if let socialLogin = UserDefaults.standard.string(forKey: K.SocialLogin.socialLogin),
+                           socialLogin == K.SocialLogin.kakao {
+                            UserApi.shared.rx.unlink()
+                                .subscribe(onCompleted: {
+                                    print("kakao unlink completed")
+                                })
+                                .disposed(by: self.disposeBag)
+                        }
+
+                        guard let mypageVC = self.navigationController?.viewControllers[1] as? MyPageViewController else { return }
+                        popupViewController.dismiss(animated: true)
+                        
+                        self.navigationController?.popViewController(animated: true) {
+                            mypageVC.revokeTrigger.onNext(self.selectedReason)
+                        }
+                    })
+                    .disposed(by: disposeBag)
+
+                popupView.cancelButton.rx.tap.asDriver()
+                    .drive(onNext: { [weak self] in
+                        self?.dismiss(animated: true)
+                    })
+                    .disposed(by: disposeBag)
+
+                self.present(popupViewController, animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        cancelButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
+                self?.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
     }
