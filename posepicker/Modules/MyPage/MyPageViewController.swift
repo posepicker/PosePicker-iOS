@@ -23,12 +23,26 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
         }
     
     let loginLogo = UIImageView(image: ImageLiteral.imgLoginLogo)
+    let loginLogoStar = UIImageView(image: ImageLiteral.imgLoginLogoStar)
     
     let loginTitle = UILabel()
         .then {
-            $0.font = .pretendard(.medium, ofSize: 16)
+            $0.font = .subTitle1
             $0.textColor = .textPrimary
-            $0.text = "로그인하기"
+            $0.text = "회원가입 / 로그인"
+        }
+    
+    let loginSubTitle = UILabel()
+        .then {
+            $0.font = .subTitle3
+            $0.textColor = .gray500
+            $0.text = "간편 로그인으로 3초만에 가입할 수 있어요."
+        }
+    
+    let emailLabel = UILabel()
+        .then {
+            $0.textColor = .textPrimary
+            $0.font = .pretendard(.medium, ofSize: 16)
         }
     
     let menuButton = UIButton(type: .system)
@@ -136,8 +150,11 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
         
         
         if let email = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
-            loginButton.isEnabled = false
-            loginTitle.text = email
+            emailLabel.text = email
+            adjustLoginUI(isLoggedIn: true)
+        } else {
+            emailLabel.text = ""
+            adjustLoginUI(isLoggedIn: false)
         }
         
         
@@ -312,7 +329,7 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
     }
     
     override func render() {
-        view.addSubViews([loginButton, loginLogo, loginTitle, noticeButton, faqButton, snsButton, serviceUsageInquiryButton, serviceInformationButton, privacyInforationButton, logoutButton, signoutButton, loginToast, logoutToast])
+        view.addSubViews([loginButton, loginLogo, loginLogoStar, loginTitle, loginSubTitle, emailLabel, noticeButton, faqButton, snsButton, serviceUsageInquiryButton, serviceInformationButton, privacyInforationButton, logoutButton, signoutButton, loginToast, logoutToast])
         
         loginButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12)
@@ -322,12 +339,29 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
         
         loginLogo.snp.makeConstraints { make in
             make.centerY.equalTo(loginButton)
+            make.leading.equalTo(loginButton)
+            make.width.height.equalTo(60)
+        }
+        
+        loginLogoStar.snp.makeConstraints { make in
+            make.centerY.equalTo(loginButton)
             make.leading.equalTo(loginButton).offset(20)
+            make.width.height.equalTo(40)
         }
         
         loginTitle.snp.makeConstraints { make in
             make.leading.equalTo(loginLogo.snp.trailing).offset(16)
-            make.centerY.equalTo(loginButton)
+            make.top.equalTo(loginLogo).offset(8)
+        }
+        
+        loginSubTitle.snp.makeConstraints { make in
+            make.bottom.equalTo(loginLogo).offset(-8)
+            make.leading.equalTo(loginTitle)
+        }
+        
+        emailLabel.snp.makeConstraints { make in
+            make.centerY.equalTo(loginLogoStar)
+            make.leading.equalTo(loginLogoStar.snp.trailing).offset(16)
         }
         
         noticeButton.snp.makeConstraints { make in
@@ -460,18 +494,10 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             .drive(onNext: { [weak self] in
                 
                 // 로그인 상태 새로고침
-                if let email = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
-                    print("EMAIL: \(email)")
-                    self?.loginButton.isEnabled = false
-                    self?.loginTitle.text = email
-                    self?.logoutButton.isHidden = false
-                    self?.signoutButton.isHidden = false
+                if let _ = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
+                    self?.adjustLoginUI(isLoggedIn: true)
                 } else {
-                    print("EMAIL NOT WORK")
-                    self?.loginButton.isEnabled = true
-                    self?.loginTitle.text = "로그인하기"
-                    self?.logoutButton.isHidden = true
-                    self?.signoutButton.isHidden = true
+                    self?.adjustLoginUI(isLoggedIn: false)
                 }
                 
                 guard let navigationVC = self?.coordinator.rootViewController.viewControllers.last as? UINavigationController,
@@ -486,6 +512,30 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
         let logoutLineView = UIView(frame: .init(x: 0, y: logoutButton.intrinsicContentSize.height - 8, width: logoutButton.intrinsicContentSize.width, height: 1))
         logoutLineView.backgroundColor = .init(hex: "#A9ABB8")
         logoutButton.addSubview(logoutLineView)
+    }
+    
+    func adjustLoginUI(isLoggedIn: Bool) {
+        if isLoggedIn {
+            self.loginButton.backgroundColor = .violet050
+            self.loginLogoStar.isHidden = false
+            self.loginLogo.isHidden = true
+            self.loginButton.isEnabled = false
+            self.emailLabel.isHidden = false
+            self.loginTitle.isHidden = true
+            self.loginSubTitle.isHidden = true
+            self.logoutButton.isHidden = false
+            self.signoutButton.isHidden = false
+        } else {
+            self.loginButton.backgroundColor = .clear
+            self.loginLogoStar.isHidden = true
+            self.loginLogo.isHidden = false
+            self.loginButton.isEnabled = true
+            self.emailLabel.isHidden = true
+            self.loginTitle.isHidden = false
+            self.loginSubTitle.isHidden = false
+            self.logoutButton.isHidden = true
+            self.signoutButton.isHidden = true
+        }
     }
     
     // MARK: - Objc Functions
