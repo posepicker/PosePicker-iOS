@@ -150,6 +150,7 @@
 		C9C890C52AE11BAB0010240A /* UIFont+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890C42AE11BAB0010240A /* UIFont+.swift */; };
 		C9D0C4032B9C4BFC004A3940 /* SecureField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0C4022B9C4BFC004A3940 /* SecureField.swift */; };
 		C9D0C4062BA2D228004A3940 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0C4052BA2D228004A3940 /* Toast.swift */; };
+		C9D0C4082BA4172C004A3940 /* UserRevokeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0C4072BA4172C004A3940 /* UserRevokeViewController.swift */; };
 		C9DC2F8E2AEA193300D5170D /* PoseFeedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F8D2AEA193300D5170D /* PoseFeedCoordinator.swift */; };
 		C9DC2F902AEA1D5F00D5170D /* PoseFeedFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F8F2AEA1D5F00D5170D /* PoseFeedFilterViewController.swift */; };
 		C9DC2F942AEA282700D5170D /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F932AEA282600D5170D /* LeftAlignedCollectionViewFlowLayout.swift */; };
@@ -316,6 +317,7 @@
 		C9C890C42AE11BAB0010240A /* UIFont+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIFont+.swift"; sourceTree = "<group>"; };
 		C9D0C4022B9C4BFC004A3940 /* SecureField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureField.swift; sourceTree = "<group>"; };
 		C9D0C4052BA2D228004A3940 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
+		C9D0C4072BA4172C004A3940 /* UserRevokeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRevokeViewController.swift; sourceTree = "<group>"; };
 		C9DC2F8D2AEA193300D5170D /* PoseFeedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedCoordinator.swift; sourceTree = "<group>"; };
 		C9DC2F8F2AEA1D5F00D5170D /* PoseFeedFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterViewController.swift; sourceTree = "<group>"; };
 		C9DC2F932AEA282600D5170D /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
@@ -683,6 +685,7 @@
 			children = (
 				C95DD3742B871098005ACE84 /* MyPose */,
 				C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */,
+				C9D0C4072BA4172C004A3940 /* UserRevokeViewController.swift */,
 			);
 			path = MyPageSubview;
 			sourceTree = "<group>";
@@ -1471,6 +1474,7 @@
 				C9FDBDEE2B28487E0045AA54 /* BookmarkSection.swift in Sources */,
 				880E75492AE6BFE3007FAD5A /* APIEventLogger.swift in Sources */,
 				880E75522AE6C275007FAD5A /* Data+.swift in Sources */,
+				C9D0C4082BA4172C004A3940 /* UserRevokeViewController.swift in Sources */,
 				C91A266B2B88524200F1193E /* MyPoseTagViewController.swift in Sources */,
 				C9DC2F942AEA282700D5170D /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				C903E5402AFCC46E00BD004F /* FilteredPose.swift in Sources */,
