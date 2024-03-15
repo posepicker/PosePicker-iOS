@@ -40,10 +40,10 @@ class ReportViewController: BaseViewController {
     
     let completeButton = PosePickButton(status: .disabled, isFill: true, position: .none, buttonTitle: "신고하기", image: nil)
     
-    let textField = UITextView()
+    let textView = UITextView()
         .then {
             $0.textColor = .iconDisabled
-            $0.text = "어떤 점이 당신을 떠나게 만들었나요?"
+            $0.text = "신고하는 이유가 무엇인가요?"
             $0.layer.borderColor = UIColor.borderDefault.cgColor
             $0.layer.borderWidth = 1
             $0.layer.cornerRadius = 8
@@ -79,7 +79,7 @@ class ReportViewController: BaseViewController {
     
     // MARK: - Functions
     override func render() {
-        self.view.addSubViews([mainLabel, buttonGroupStackView, completeButton, textField])
+        self.view.addSubViews([mainLabel, buttonGroupStackView, completeButton, textView])
         
         mainLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(64)
@@ -105,7 +105,7 @@ class ReportViewController: BaseViewController {
             make.leading.trailing.equalToSuperview().inset(20)
         }
         
-        textField.snp.makeConstraints { make in
+        textView.snp.makeConstraints { make in
             make.top.equalTo(buttonGroupStackView.snp.bottom).offset(20)
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(76)
@@ -121,9 +121,10 @@ class ReportViewController: BaseViewController {
             button.rx.tap.asDriver()
                 .drive(onNext: {
                     if index == 3 {
-                        self.textField.isHidden = false
+                        self.textView.isHidden = false
                     } else {
-                        self.textField.isHidden = true
+                        self.textView.endEditing(true)
+                        self.textView.isHidden = true
                     }
                     
                     self.selectedReason = self.radioGroup[index].title
@@ -189,7 +190,7 @@ class ReportViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        textField.rx.text.orEmpty
+        textView.rx.text.orEmpty
             .scan("") { [weak self] (previous, new) -> String in
                 if new.count > 40 {
                     self?.selectedReason = previous ?? String(new.prefix(40))
@@ -199,25 +200,25 @@ class ReportViewController: BaseViewController {
                     return new
                 }
             }
-            .subscribe(textField.rx.text)
+            .subscribe(textView.rx.text)
             .disposed(by: disposeBag)
         
-        textField.rx.didBeginEditing
+        textView.rx.didBeginEditing
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-                if owner.textField.text == "어떤 점이 당신을 떠나게 만들었나요?" {
-                    owner.textField.text = nil
-                    owner.textField.textColor = .textPrimary
+                if owner.textView.text == "신고하는 이유가 무엇인가요?" {
+                    owner.textView.text = nil
+                    owner.textView.textColor = .textPrimary
                 }
             })
             .disposed(by: disposeBag)
         
-        textField.rx.didEndEditing
+        textView.rx.didEndEditing
             .withUnretained(self)
             .subscribe(onNext: { owner, _ in
-                if owner.textField.text == nil || owner.textField.text == "" {
-                    owner.textField.text = "어떤 점이 당신을 떠나게 만들었나요?"
-                    owner.textField.textColor = .iconDisabled
+                if owner.textView.text == nil || owner.textView.text == "" {
+                    owner.textView.text = "신고하는 이유가 무엇인가요?"
+                    owner.textView.textColor = .iconDisabled
                 }
             })
             .disposed(by: disposeBag)
@@ -228,7 +229,7 @@ class ReportViewController: BaseViewController {
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
-        self.textField.endEditing(true)
+        self.textView.endEditing(true)
     }
     
     // MARK: - Objc Functions
@@ -240,12 +241,12 @@ class ReportViewController: BaseViewController {
     @objc
     func textViewMoveUp(_ notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
-            if textField.frame.maxY > keyboardSize.minY {
-                let layout = textField.frame.maxY - keyboardSize.minY + 20
+            if textView.frame.maxY > keyboardSize.minY {
+                let layout = textView.frame.maxY - keyboardSize.minY + 20
                     UIView.animate(withDuration: 0.3, animations: {
                         self.mainLabel.transform = CGAffineTransform(translationX: 0, y: -layout)
                         self.buttonGroupStackView.transform = CGAffineTransform(translationX: 0, y: -layout)
-                        self.textField.transform = CGAffineTransform(translationX: 0, y: -layout)
+                        self.textView.transform = CGAffineTransform(translationX: 0, y: -layout)
                     })
                 }
             }
@@ -256,7 +257,7 @@ class ReportViewController: BaseViewController {
         UIView.animate(withDuration: 0.3) {
             self.mainLabel.transform = .identity
             self.buttonGroupStackView.transform = .identity
-            self.textField.transform = .identity
+            self.textView.transform = .identity
         }
     }
 }
