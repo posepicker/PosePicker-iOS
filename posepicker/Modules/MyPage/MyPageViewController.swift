@@ -111,6 +111,7 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     let loginToast = Toast(title: "로그인 되었습니다!")
     let logoutToast = Toast(title: "로그아웃 되었습니다!")
+    let revokeToast = Toast(title: "탈퇴가 완료되었습니다.")
     
     // MARK: - Properties
     var viewModel: MyPageViewModel
@@ -120,6 +121,7 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
     let kakaoEmailTrigger = PublishSubject<String>()
     let kakaoIdTrigger = PublishSubject<Int64>()
     let logoutTrigger = PublishSubject<Void>()
+    let revokeTrigger = PublishSubject<String>()
     
     let loginStateTrigger = PublishSubject<Void>() // 로그인 취소되면 UI 복구목적
     
@@ -290,41 +292,6 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             .drive(onNext: { [unowned self] in
                 let revokeVC = UserRevokeViewController()
                 self.navigationController?.pushViewController(revokeVC, animated: true)
-                
-//                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: true, isLabelNeeded: true, isSignout: true)
-//                popupViewController.modalTransitionStyle = .crossDissolve
-//                popupViewController.modalPresentationStyle = .overFullScreen
-//                let popupView = popupViewController.popUpView as! PopUpView
-//                popupView.alertMainLabel.text = "회원탈퇴"
-//                popupView.alertText.accept("모든 데이터는 삭제되며\n재가입하더라도 복구할 수 없어요.\n정말 탈퇴하시겠어요?")
-//                popupView.confirmButton.setTitle("로그인 유지", for: .normal)
-//                popupView.cancelButton.setTitle("회원탈퇴", for: .normal)
-//                
-//                popupView.confirmButton.rx.tap.asDriver()
-//                    .drive(onNext: { [weak self] in
-//                        self?.dismiss(animated: true)
-//                    })
-//                    .disposed(by: disposeBag)
-//                
-//                popupView.cancelButton.rx.tap.asDriver()
-//                    .drive(onNext: { [weak self] in
-//                        guard let self = self else { return }
-//                        if let socialLogin = UserDefaults.standard.string(forKey: K.SocialLogin.socialLogin),
-//                           socialLogin == K.SocialLogin.kakao {
-//                            UserApi.shared.rx.unlink()
-//                                .subscribe(onCompleted: {
-//                                    print("kakao unlink completed")
-//                                })
-//                                .disposed(by: self.disposeBag)
-//                        }
-//                        
-//                        KeychainManager.shared.removeAll()
-//                        self.loginStateTrigger.onNext(())
-//                        self.dismiss(animated: true)
-//                    })
-//                    .disposed(by: disposeBag)
-//                
-//                self.present(popupViewController, animated: true)
             })
             .disposed(by: disposeBag)
         
@@ -332,7 +299,7 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
     }
     
     override func render() {
-        view.addSubViews([loginButton, loginLogo, loginLogoStar, loginTitle, loginSubTitle, emailLabel, noticeButton, faqButton, snsButton, serviceUsageInquiryButton, serviceInformationButton, privacyInforationButton, logoutButton, signoutButton, loginToast, logoutToast])
+        view.addSubViews([loginButton, loginLogo, loginLogoStar, loginTitle, loginSubTitle, emailLabel, noticeButton, faqButton, snsButton, serviceUsageInquiryButton, serviceInformationButton, privacyInforationButton, logoutButton, signoutButton, loginToast, logoutToast, revokeToast])
         
         loginButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12)
@@ -428,10 +395,17 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             make.centerX.equalTo(view)
             make.leading.trailing.equalToSuperview().inset(24)
         }
+        
+        revokeToast.snp.makeConstraints { make in
+            make.height.equalTo(46)
+            make.bottom.equalTo(view).offset(46)
+            make.centerX.equalTo(view)
+            make.leading.trailing.equalToSuperview().inset(24)
+        }
     }
     
     override func bindViewModel() {
-        let input = MyPageViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), logoutButtonTapped: logoutTrigger)
+        let input = MyPageViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), logoutButtonTapped: logoutTrigger, revokeButtonTapped: revokeTrigger)
         let output = viewModel.transform(input: input)
         
         // 로그인할때
@@ -508,6 +482,35 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
                       let posefeedVC = navigationVC.viewControllers.first as? PoseFeedViewController else { return }
                 self?.coordinator.posefeedCoordinator.poseFeedFilterViewController.detailViewDismissTrigger.onNext(())
                 posefeedVC.tagResetTrigger.onNext(())
+            })
+            .disposed(by: disposeBag)
+        
+        output.revokeToastTrigger
+            .asDriver(onErrorJustReturn: ())
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.revokeToast.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.view).offset(-60)
+                }
+                
+                UIView.animate(withDuration: 0.2) {
+                    self.view.layoutIfNeeded()
+                    self.revokeToast.isHidden = false
+                    self.revokeToast.layer.opacity = 1
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.revokeToast.snp.updateConstraints { make in
+                        make.bottom.equalTo(self.view).offset(46)
+                    }
+                    
+                    UIView.animate(withDuration: 0.2) {
+                        self.view.layoutIfNeeded()
+                        self.revokeToast.layer.opacity = 0
+                    }
+                }
+                
+                self.loginStateTrigger.onNext(())
             })
             .disposed(by: disposeBag)
     }
