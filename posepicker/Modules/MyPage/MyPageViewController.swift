@@ -288,40 +288,43 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
         
         signoutButton.rx.tap.asDriver()
             .drive(onNext: { [unowned self] in
-                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: true, isLabelNeeded: true, isSignout: true)
-                popupViewController.modalTransitionStyle = .crossDissolve
-                popupViewController.modalPresentationStyle = .overFullScreen
-                let popupView = popupViewController.popUpView as! PopUpView
-                popupView.alertMainLabel.text = "회원탈퇴"
-                popupView.alertText.accept("모든 데이터는 삭제되며\n재가입하더라도 복구할 수 없어요.\n정말 탈퇴하시겠어요?")
-                popupView.confirmButton.setTitle("로그인 유지", for: .normal)
-                popupView.cancelButton.setTitle("회원탈퇴", for: .normal)
+                let revokeVC = UserRevokeViewController()
+                self.navigationController?.pushViewController(revokeVC, animated: true)
                 
-                popupView.confirmButton.rx.tap.asDriver()
-                    .drive(onNext: { [weak self] in
-                        self?.dismiss(animated: true)
-                    })
-                    .disposed(by: disposeBag)
-                
-                popupView.cancelButton.rx.tap.asDriver()
-                    .drive(onNext: { [weak self] in
-                        guard let self = self else { return }
-                        if let socialLogin = UserDefaults.standard.string(forKey: K.SocialLogin.socialLogin),
-                           socialLogin == K.SocialLogin.kakao {
-                            UserApi.shared.rx.unlink()
-                                .subscribe(onCompleted: {
-                                    print("kakao unlink completed")
-                                })
-                                .disposed(by: self.disposeBag)
-                        }
-                        
-                        KeychainManager.shared.removeAll()
-                        self.loginStateTrigger.onNext(())
-                        self.dismiss(animated: true)
-                    })
-                    .disposed(by: disposeBag)
-                
-                self.present(popupViewController, animated: true)
+//                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: true, isLabelNeeded: true, isSignout: true)
+//                popupViewController.modalTransitionStyle = .crossDissolve
+//                popupViewController.modalPresentationStyle = .overFullScreen
+//                let popupView = popupViewController.popUpView as! PopUpView
+//                popupView.alertMainLabel.text = "회원탈퇴"
+//                popupView.alertText.accept("모든 데이터는 삭제되며\n재가입하더라도 복구할 수 없어요.\n정말 탈퇴하시겠어요?")
+//                popupView.confirmButton.setTitle("로그인 유지", for: .normal)
+//                popupView.cancelButton.setTitle("회원탈퇴", for: .normal)
+//                
+//                popupView.confirmButton.rx.tap.asDriver()
+//                    .drive(onNext: { [weak self] in
+//                        self?.dismiss(animated: true)
+//                    })
+//                    .disposed(by: disposeBag)
+//                
+//                popupView.cancelButton.rx.tap.asDriver()
+//                    .drive(onNext: { [weak self] in
+//                        guard let self = self else { return }
+//                        if let socialLogin = UserDefaults.standard.string(forKey: K.SocialLogin.socialLogin),
+//                           socialLogin == K.SocialLogin.kakao {
+//                            UserApi.shared.rx.unlink()
+//                                .subscribe(onCompleted: {
+//                                    print("kakao unlink completed")
+//                                })
+//                                .disposed(by: self.disposeBag)
+//                        }
+//                        
+//                        KeychainManager.shared.removeAll()
+//                        self.loginStateTrigger.onNext(())
+//                        self.dismiss(animated: true)
+//                    })
+//                    .disposed(by: disposeBag)
+//                
+//                self.present(popupViewController, animated: true)
             })
             .disposed(by: disposeBag)
         
@@ -494,7 +497,8 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             .drive(onNext: { [weak self] in
                 
                 // 로그인 상태 새로고침
-                if let _ = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
+                if let email = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
+                    self?.emailLabel.text = email
                     self?.adjustLoginUI(isLoggedIn: true)
                 } else {
                     self?.adjustLoginUI(isLoggedIn: false)
