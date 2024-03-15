@@ -34,6 +34,7 @@ struct K {
         static let accessToken = "accessToken"
         static let refreshToken = "refreshToken"
         static let file = "file"
+        static let withdrawalReason = "withdrawalReason"
     }
     
     /// 키체인 키값 리스트
