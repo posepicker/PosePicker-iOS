@@ -22,16 +22,19 @@ class MyPageViewModel: ViewModelType {
         let appleIdentityTokenTrigger: Observable<String>
         let kakaoLoginTrigger: Observable<(String, Int64)>
         let logoutButtonTapped: Observable<Void>
+        let revokeButtonTapped: Observable<String>
     }
     
     struct Output { 
         let dismissLoginView: Observable<Void>
+        let revokeToastTrigger: Observable<Void>
     }
     
     func transform(input: Input) -> Output {
         let dismissLoginView = PublishSubject<Void>()
         let kakaoAccountObservable = BehaviorRelay<(String, Int64)>(value: ("", -1))
         let authCodeObservable = BehaviorRelay<String>(value: "")
+        let revokeTrigger = PublishSubject<Void>()
         
         /// 1.  애플 아이덴티티 토큰 세팅 후 로그인처리
         input.appleIdentityTokenTrigger
@@ -42,7 +45,7 @@ class MyPageViewModel: ViewModelType {
                 let accessTokenObservable = KeychainManager.shared.rx.saveItem(user.token.accessToken, itemClass: .password, key: K.Parameters.accessToken)
                 let refreshTokenObservable = KeychainManager.shared.rx.saveItem(user.token.refreshToken, itemClass: .password, key: K.Parameters.refreshToken)
                 let userIdObservable = KeychainManager.shared.rx.saveItem("\(user.id)", itemClass: .password, key: K.Parameters.userId)
-                let emailObservable = KeychainManager.shared.rx.saveItem(user.email, itemClass: .password, key: K.Parameters.email)
+                let emailObservable = KeychainManager.shared.rx.saveItem(Functions.nicknameFromEmail(user.email) + "님 반가워요!", itemClass: .password, key: K.Parameters.email)
                 return Observable.zip(accessTokenObservable, refreshTokenObservable, userIdObservable, emailObservable)
             }
             .subscribe(onNext: { _ in
@@ -97,6 +100,23 @@ class MyPageViewModel: ViewModelType {
             })
             .disposed(by: disposeBag)
         
-        return Output(dismissLoginView: dismissLoginView)
+        /// 탈퇴 API
+        input.revokeButtonTapped
+            .withUnretained(self)
+            .flatMapLatest { owner, withdrawalReason -> Observable<RevokeResponse> in
+                guard let accessToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.accessToken),
+                      let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.refreshToken) else { return Observable<RevokeResponse>.empty() }
+                return owner.apiSession.requestSingle(.revoke(accessToken: accessToken, refreshToken: refreshToken, withdrawalReason: withdrawalReason)).asObservable()
+            }
+            .map { $0.status }
+            .subscribe(onNext: { status in
+                if status >= 200 && status <= 300 {
+                    KeychainManager.shared.removeAll()
+                    revokeTrigger.onNext(())
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        return Output(dismissLoginView: dismissLoginView, revokeToastTrigger: revokeTrigger)
     }
 }
