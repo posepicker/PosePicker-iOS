@@ -178,7 +178,7 @@ class PoseDetailViewModel: ViewModelType {
                 let accessTokenObservable = KeychainManager.shared.rx.saveItem(user.token.accessToken, itemClass: .password, key: K.Parameters.accessToken)
                 let refreshTokenObservable = KeychainManager.shared.rx.saveItem(user.token.refreshToken, itemClass: .password, key: K.Parameters.refreshToken)
                 let userIdObservable = KeychainManager.shared.rx.saveItem("\(user.id)", itemClass: .password, key: K.Parameters.userId)
-                let emailObservable = KeychainManager.shared.rx.saveItem(user.email, itemClass: .password, key: K.Parameters.email)
+                let emailObservable = KeychainManager.shared.rx.saveItem(Functions.nicknameFromEmail(user.email) + "님 반가워요!", itemClass: .password, key: K.Parameters.email)
                 return Observable.zip(accessTokenObservable, refreshTokenObservable, userIdObservable, emailObservable)
             }
             .subscribe(onNext: { _ in
