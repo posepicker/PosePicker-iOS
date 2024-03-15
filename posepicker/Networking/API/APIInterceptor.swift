@@ -61,7 +61,7 @@ class APIInterceptor: RequestInterceptor {
                 popupViewController.modalTransitionStyle = .crossDissolve
                 popupViewController.modalPresentationStyle = .overFullScreen
                 let popupView = popupViewController.popUpView as! PopUpView
-                popupView.alertText.accept("세션이 만료되었어요.\n.다시 로그인이 필요해요!")
+                popupView.alertText.accept("세션이 만료되었어요.\n다시 로그인이 필요해요!")
                 
                 /// 3. 루트뷰에 present
                 root?.present(popupViewController, animated: true)
