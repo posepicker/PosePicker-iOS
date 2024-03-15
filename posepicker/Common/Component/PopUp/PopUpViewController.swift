@@ -29,6 +29,9 @@ class PopUpViewController: BaseViewController {
     let appleIdentityToken = BehaviorRelay<String?>(value: nil)
     let kakaoId = BehaviorRelay<Int64?>(value: nil)
     let email = BehaviorRelay<String?>(value: nil)
+    
+    /// 인사 텍스트
+    private let greetText = "포즈피커 회원님 반가워요!"
 
     // MARK: - Initialization
     init(isLoginPopUp: Bool, isChoice: Bool, isLabelNeeded: Bool = false, isSignout: Bool = false) {
@@ -95,7 +98,13 @@ class PopUpViewController: BaseViewController {
                             .subscribe(onSuccess: { _ in
                                 UserApi.shared.rx.me()
                                     .subscribe(onSuccess: { [unowned self] in
-                                        self.email.accept($0.kakaoAccount?.email)
+                                        if let email = $0.kakaoAccount?.email {
+                                            self.email.accept(Functions.nicknameFromEmail(email) + "님 반가워요!")
+                                        } else if let nickname = $0.kakaoAccount?.profile?.nickname {
+                                            self.email.accept(nickname  + "님 반가워요!")
+                                        } else {
+                                            self.email.accept(greetText)
+                                        }
                                         self.kakaoId.accept($0.id)
                                         popUpView.isLoading.accept(false)
                                     })
@@ -107,7 +116,13 @@ class PopUpViewController: BaseViewController {
                                             .subscribe(onNext: { [unowned self] _ in
                                                 UserApi.shared.rx.me()
                                                     .subscribe(onSuccess: { [unowned self] in
-                                                        self.email.accept($0.kakaoAccount?.email)
+                                                        if let email = $0.kakaoAccount?.email {
+                                                            self.email.accept(Functions.nicknameFromEmail(email) + "님 반가워요!")
+                                                        } else if let nickname = $0.kakaoAccount?.profile?.nickname {
+                                                            self.email.accept(nickname  + "님 반가워요!")
+                                                        } else {
+                                                            self.email.accept(greetText)
+                                                        }
                                                         self.kakaoId.accept($0.id)
                                                         popUpView.isLoading.accept(false)
                                                     })
@@ -119,7 +134,13 @@ class PopUpViewController: BaseViewController {
                                             .subscribe(onNext: { [unowned self] _ in
                                                 UserApi.shared.rx.me()
                                                     .subscribe(onSuccess: { [unowned self] in
-                                                        self.email.accept($0.kakaoAccount?.email)
+                                                        if let email = $0.kakaoAccount?.email {
+                                                            self.email.accept(Functions.nicknameFromEmail(email) + "님 반가워요!")
+                                                        } else if let nickname = $0.kakaoAccount?.profile?.nickname {
+                                                            self.email.accept(nickname  + "님 반가워요!")
+                                                        } else {
+                                                            self.email.accept(greetText)
+                                                        }
                                                         self.kakaoId.accept($0.id)
                                                         popUpView.isLoading.accept(false)
                                                     })
@@ -140,7 +161,13 @@ class PopUpViewController: BaseViewController {
                                 .subscribe(onNext: { [unowned self] _ in
                                     UserApi.shared.rx.me()
                                         .subscribe(onSuccess: {[unowned self] in
-                                            self.email.accept($0.kakaoAccount?.email)
+                                            if let email = $0.kakaoAccount?.email {
+                                                self.email.accept(Functions.nicknameFromEmail(email) + "님 반가워요!")
+                                            } else if let nickname = $0.kakaoAccount?.profile?.nickname {
+                                                self.email.accept(nickname  + "님 반가워요!")
+                                            } else {
+                                                self.email.accept(greetText)
+                                            }
                                             self.kakaoId.accept($0.id)
                                             popUpView.isLoading.accept(false)
                                         })
@@ -152,7 +179,14 @@ class PopUpViewController: BaseViewController {
                                 .subscribe(onNext: { [unowned self] _ in
                                     UserApi.shared.rx.me()
                                         .subscribe(onSuccess: {[unowned self] in
-                                            self.email.accept($0.kakaoAccount?.email)
+                                            
+                                            if let email = $0.kakaoAccount?.email {
+                                                self.email.accept(Functions.nicknameFromEmail(email))
+                                            } else if let nickname = $0.kakaoAccount?.profile?.nickname {
+                                                self.email.accept(nickname  + "님 반가워요!")
+                                            } else {
+                                                self.email.accept(greetText)
+                                            }
                                             self.kakaoId.accept($0.id)
                                             popUpView.isLoading.accept(false)
                                         })
