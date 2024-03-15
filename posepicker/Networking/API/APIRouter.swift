@@ -25,6 +25,7 @@ enum APIRouter: URLRequestConvertible {
     case retrieveAuthoirzationCode
     case refreshToken(refreshToken : String)
     case logout(accessToken: String, refreshToken: String)
+    case revoke(accessToken: String, refreshToken: String, withdrawalReason: String)
     
     // 북마크 API
     case registerBookmark(poseId: Int)
@@ -57,6 +58,8 @@ enum APIRouter: URLRequestConvertible {
         case .refreshToken:
             return .post
         case .logout:
+            return .patch
+        case .revoke:
             return .patch
         case .registerBookmark:
             return .post
@@ -95,6 +98,8 @@ enum APIRouter: URLRequestConvertible {
             return "/api/auth/reissue-token"
         case .logout:
             return "/api/users/logout"
+        case .revoke:
+            return "/api/users/deleteAccount"
         case .registerBookmark:
             return "/api/bookmark"
         case .retrieveBookmarkFeed:
@@ -155,6 +160,12 @@ enum APIRouter: URLRequestConvertible {
             return [
                 K.Parameters.accessToken: "Bearer " + accessToken,
                 K.Parameters.refreshToken: "Bearer " + refreshToken
+            ]
+        case .revoke(let accessToken, let refreshToken, let withdrawalReason):
+            return [
+                K.Parameters.accessToken: "Bearer " + accessToken,
+                K.Parameters.refreshToken: "Bearer " + refreshToken,
+                K.Parameters.withdrawalReason: withdrawalReason
             ]
         case .registerBookmark(let poseId):
             return [
