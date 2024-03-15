@@ -40,6 +40,19 @@ class ReportViewController: BaseViewController {
     
     let completeButton = PosePickButton(status: .disabled, isFill: true, position: .none, buttonTitle: "신고하기", image: nil)
     
+    let textField = UITextView()
+        .then {
+            $0.textColor = .iconDisabled
+            $0.text = "어떤 점이 당신을 떠나게 만들었나요?"
+            $0.layer.borderColor = UIColor.borderDefault.cgColor
+            $0.layer.borderWidth = 1
+            $0.layer.cornerRadius = 8
+            $0.clipsToBounds = true
+            $0.contentInset = UIEdgeInsets(top: 12, left: 16, bottom: 0, right: 16)
+            $0.font = .paragraph
+            $0.isHidden = true
+        }
+    
     // MARK: - Properties
     
     let radioGroup: [RadioButton] = [
@@ -66,7 +79,7 @@ class ReportViewController: BaseViewController {
     
     // MARK: - Functions
     override func render() {
-        self.view.addSubViews([mainLabel, buttonGroupStackView, completeButton])
+        self.view.addSubViews([mainLabel, buttonGroupStackView, completeButton, textField])
         
         mainLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(64)
@@ -91,6 +104,12 @@ class ReportViewController: BaseViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide).offset(-20)
             make.leading.trailing.equalToSuperview().inset(20)
         }
+        
+        textField.snp.makeConstraints { make in
+            make.top.equalTo(buttonGroupStackView.snp.bottom).offset(20)
+            make.leading.trailing.equalToSuperview().inset(20)
+            make.height.equalTo(76)
+        }
     }
     
     override func configUI() {
@@ -101,6 +120,12 @@ class ReportViewController: BaseViewController {
             guard let self = self else { return }
             button.rx.tap.asDriver()
                 .drive(onNext: {
+                    if index == 3 {
+                        self.textField.isHidden = false
+                    } else {
+                        self.textField.isHidden = true
+                    }
+                    
                     self.selectedReason = self.radioGroup[index].title
                     self.resetButtonUI()
                     self.completeButton.status.accept(.defaultStatus)
@@ -157,10 +182,53 @@ class ReportViewController: BaseViewController {
                 self.present(popupVC, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(textViewMoveUp), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(textViewMoveDown), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    override func bindViewModel() {
+        textField.rx.text.orEmpty
+            .scan("") { [weak self] (previous, new) -> String in
+                if new.count > 40 {
+                    self?.selectedReason = previous ?? String(new.prefix(40))
+                    return previous ?? String(new.prefix(40))
+                } else {
+                    self?.selectedReason = new
+                    return new
+                }
+            }
+            .subscribe(textField.rx.text)
+            .disposed(by: disposeBag)
+        
+        textField.rx.didBeginEditing
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                if owner.textField.text == "어떤 점이 당신을 떠나게 만들었나요?" {
+                    owner.textField.text = nil
+                    owner.textField.textColor = .textPrimary
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        textField.rx.didEndEditing
+            .withUnretained(self)
+            .subscribe(onNext: { owner, _ in
+                if owner.textField.text == nil || owner.textField.text == "" {
+                    owner.textField.text = "어떤 점이 당신을 떠나게 만들었나요?"
+                    owner.textField.textColor = .iconDisabled
+                }
+            })
+            .disposed(by: disposeBag)
     }
     
     func resetButtonUI(){
         radioGroup.forEach { $0.isCurrent = false }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        self.textField.endEditing(true)
     }
     
     // MARK: - Objc Functions
@@ -168,5 +236,27 @@ class ReportViewController: BaseViewController {
     func closeButtonTapped() {
         self.dismiss(animated: true)
     }
-
+    
+    @objc
+    func textViewMoveUp(_ notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            if textField.frame.maxY > keyboardSize.minY {
+                let layout = textField.frame.maxY - keyboardSize.minY + 20
+                    UIView.animate(withDuration: 0.3, animations: {
+                        self.mainLabel.transform = CGAffineTransform(translationX: 0, y: -layout)
+                        self.buttonGroupStackView.transform = CGAffineTransform(translationX: 0, y: -layout)
+                        self.textField.transform = CGAffineTransform(translationX: 0, y: -layout)
+                    })
+                }
+            }
+    }
+    
+    @objc
+    func textViewMoveDown() {
+        UIView.animate(withDuration: 0.3) {
+            self.mainLabel.transform = .identity
+            self.buttonGroupStackView.transform = .identity
+            self.textField.transform = .identity
+        }
+    }
 }
