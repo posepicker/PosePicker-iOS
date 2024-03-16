@@ -11,6 +11,22 @@ import RxCocoa
 class MyPoseHeadcountViewController: BaseViewController {
     
     // MARK: - Subviews
+    let scrollView = UIScrollView()
+        .then { sv in
+            let view = UIView()
+            sv.addSubview(view)
+            view.snp.makeConstraints {
+                $0.top.equalTo(sv.contentLayoutGuide.snp.top)
+                $0.leading.equalTo(sv.contentLayoutGuide.snp.leading)
+                $0.trailing.equalTo(sv.contentLayoutGuide.snp.trailing)
+                $0.bottom.equalTo(sv.contentLayoutGuide.snp.bottom)
+
+                $0.leading.equalTo(sv.frameLayoutGuide.snp.leading)
+                $0.trailing.equalTo(sv.frameLayoutGuide.snp.trailing)
+                $0.height.equalTo(sv.frameLayoutGuide.snp.height).priority(.low)
+            }
+        }
+    
     let mainLabel = UILabel()
         .then {
             let attributedText = NSMutableAttributedString(string: "몇 명", attributes: [NSAttributedString.Key.font: UIFont.pretendard(.bold, ofSize: 32)])
@@ -24,7 +40,7 @@ class MyPoseHeadcountViewController: BaseViewController {
         .then {
             $0.clipsToBounds = true
             $0.layer.cornerRadius = 6
-            $0.contentMode = .scaleAspectFit
+            $0.contentMode = .scaleAspectFill
         }
     
     let expandButton = UIButton(type: .system)
@@ -63,6 +79,14 @@ class MyPoseHeadcountViewController: BaseViewController {
     // MARK: - Functions
     
     override func render() {
+        view.addSubViews([scrollView, nextButton])
+        
+        scrollView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+            make.bottom.equalTo(nextButton.snp.top)
+        }
+        
         let firstLineButtons = UIStackView(arrangedSubviews: [headcountButtons[0], headcountButtons[1], headcountButtons[2]])
             .then {
                 $0.axis = .horizontal
@@ -79,7 +103,7 @@ class MyPoseHeadcountViewController: BaseViewController {
                 $0.spacing = 12
             }
         
-        view.addSubViews([mainLabel, firstLineButtons, secondLineButtons, registeredImageView, imageLabel, expandButton, nextButton])
+        scrollView.subviews.first!.addSubViews([mainLabel, firstLineButtons, secondLineButtons, registeredImageView, imageLabel, expandButton])
         
         mainLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -90,21 +114,26 @@ class MyPoseHeadcountViewController: BaseViewController {
         firstLineButtons.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(mainLabel.snp.bottom).offset(UIScreen.main.isLongerThan800pt ? 36 : 18)
-            make.height.equalTo(UIScreen.main.isLongerThan800pt ? 108 : 50)
+            make.top.equalTo(mainLabel.snp.bottom).offset(36)
+            make.height.equalTo(108)
         }
         
         secondLineButtons.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalTo(headcountButtons[1])
-            make.top.equalTo(firstLineButtons.snp.bottom).offset(UIScreen.main.isLongerThan800pt ? 12 : 8)
-            make.height.equalTo(UIScreen.main.isLongerThan800pt ? 108 : 50)
+            make.top.equalTo(firstLineButtons.snp.bottom).offset(12)
+            make.height.equalTo(108)
         }
         
         registeredImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(secondLineButtons.snp.bottom).offset(UIScreen.main.isLongerThan800pt ? 27 : 16)
-            make.bottom.equalTo(nextButton.snp.top).offset(UIScreen.main.isLongerThan800pt ? -50 : 0)
+            make.top.equalTo(secondLineButtons.snp.bottom).offset(36)
+//            if UIScreen.main.isLongerThan800pt {
+//                make.bottom.equalTo(nextButton.snp.top).offset(-50)
+//            } else {
+//                make.height.equalTo(UIScreen.main.bounds.width * 4 / 3 / 3)
+//            }
+            make.height.equalTo(UIScreen.main.bounds.width * 4 / 3 / 3)
             make.width.equalTo(UIScreen.main.bounds.width / 3)
         }
 
@@ -116,6 +145,7 @@ class MyPoseHeadcountViewController: BaseViewController {
         imageLabel.snp.makeConstraints { make in
             make.top.equalTo(registeredImageView.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
+            make.bottom.equalTo(scrollView.snp.bottom).offset(-20)
         }
         
         nextButton.snp.makeConstraints { make in
