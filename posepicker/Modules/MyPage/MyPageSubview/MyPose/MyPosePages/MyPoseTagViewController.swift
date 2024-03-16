@@ -11,6 +11,22 @@ import RxCocoa
 
 class MyPoseTagViewController: BaseViewController {
     // MARK: - Subviews
+    let scrollView = UIScrollView()
+        .then { sv in
+            let view = UIView()
+            sv.addSubview(view)
+            view.snp.makeConstraints {
+                $0.top.equalTo(sv.contentLayoutGuide.snp.top)
+                $0.leading.equalTo(sv.contentLayoutGuide.snp.leading)
+                $0.trailing.equalTo(sv.contentLayoutGuide.snp.trailing)
+                $0.bottom.equalTo(sv.contentLayoutGuide.snp.bottom)
+
+                $0.leading.equalTo(sv.frameLayoutGuide.snp.leading)
+                $0.trailing.equalTo(sv.frameLayoutGuide.snp.trailing)
+                $0.height.equalTo(sv.frameLayoutGuide.snp.height).priority(.low)
+            }
+        }
+    
     let mainLabel = UILabel()
         .then {
             let attributedText = NSMutableAttributedString(string: "최소 3개 이상", attributes: [NSAttributedString.Key.font: UIFont.pretendard(.bold, ofSize: 32)])
@@ -86,7 +102,9 @@ class MyPoseTagViewController: BaseViewController {
     
     lazy var registeredImageView = UIImageView(image: self.registeredImage)
         .then {
-            $0.contentMode = .scaleAspectFit
+            $0.clipsToBounds = true
+            $0.layer.cornerRadius = 6
+            $0.contentMode = .scaleAspectFill
         }
     
     let imageLabel = UILabel()
@@ -127,7 +145,15 @@ class MyPoseTagViewController: BaseViewController {
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([mainLabel, tagCountLabel, tagCollectionView, textFieldScrollView, registeredImageView, expandButton, imageLabel, nextButton])
+        view.addSubViews([scrollView, nextButton])
+        
+        scrollView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+            make.bottom.equalTo(nextButton.snp.top)
+        }
+        
+        scrollView.subviews.first!.addSubViews([mainLabel, tagCountLabel, tagCollectionView, textFieldScrollView, registeredImageView, expandButton, imageLabel])
         
         mainLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -170,10 +196,10 @@ class MyPoseTagViewController: BaseViewController {
         }
         
         registeredImageView.snp.makeConstraints { make in
-            make.top.equalTo(textFieldScrollView.snp.bottom).offset(UIScreen.main.isLongerThan800pt ? 87 : 16)
+            make.top.equalTo(textFieldScrollView.snp.bottom).offset(36)
             make.centerX.equalToSuperview()
-            make.bottom.equalTo(nextButton.snp.top).offset(UIScreen.main.isLongerThan800pt ? -50 : 0)
-            make.width.equalTo(UIScreen.main.bounds.width / 3)
+            make.width.equalTo(120)
+            make.height.equalTo(160)
         }
         
         expandButton.snp.makeConstraints { make in
@@ -184,6 +210,7 @@ class MyPoseTagViewController: BaseViewController {
         imageLabel.snp.makeConstraints { make in
             make.top.equalTo(registeredImageView.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
+            make.bottom.equalTo(scrollView.snp.bottom).offset(-20)
         }
         
         nextButton.snp.makeConstraints { make in
@@ -205,6 +232,12 @@ class MyPoseTagViewController: BaseViewController {
                 self.present(vc, animated: true)
             })
             .disposed(by: disposeBag)
+        
+        let singleTapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(scrollViewTapped))
+        singleTapGestureRecognizer.numberOfTapsRequired = 1
+        singleTapGestureRecognizer.isEnabled = true
+        singleTapGestureRecognizer.cancelsTouchesInView = false
+        scrollView.addGestureRecognizer(singleTapGestureRecognizer)
     }
     
     override func bindViewModel() {
@@ -427,6 +460,12 @@ class MyPoseTagViewController: BaseViewController {
             self.textFieldScrollView.layer.borderColor = UIColor.borderDefault.cgColor
             self.tagTextField.isEnabled = true
         }
+    }
+    
+    // MARK: - Objc function
+    @objc
+    func scrollViewTapped() {
+        tagTextField.endEditing(true)
     }
 }
 
