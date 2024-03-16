@@ -11,9 +11,24 @@ import RxCocoa
 class MyPoseFramecountViewController: BaseViewController {
 
     // MARK: - Subviews
+    let scrollView = UIScrollView()
+        .then { sv in
+            let view = UIView()
+            sv.addSubview(view)
+            view.snp.makeConstraints {
+                $0.top.equalTo(sv.contentLayoutGuide.snp.top)
+                $0.leading.equalTo(sv.contentLayoutGuide.snp.leading)
+                $0.trailing.equalTo(sv.contentLayoutGuide.snp.trailing)
+                $0.bottom.equalTo(sv.contentLayoutGuide.snp.bottom)
+
+                $0.leading.equalTo(sv.frameLayoutGuide.snp.leading)
+                $0.trailing.equalTo(sv.frameLayoutGuide.snp.trailing)
+                $0.height.equalTo(sv.frameLayoutGuide.snp.height).priority(.low)
+            }
+        }
+    
     let mainLabel = UILabel()
         .then {
-            
             let attributedText = NSMutableAttributedString(string: "몇 컷 프레임", attributes: [NSAttributedString.Key.font: UIFont.pretendard(.bold, ofSize: 32)])
             attributedText.append(NSAttributedString(string: "으로\n찍으셨나요?", attributes: [NSAttributedString.Key.font: UIFont.pretendard(.medium, ofSize: 32)]))
             $0.numberOfLines = 0
@@ -25,7 +40,9 @@ class MyPoseFramecountViewController: BaseViewController {
     
     lazy var registeredImageView = UIImageView(image: self.registeredImage)
         .then {
-            $0.contentMode = .scaleAspectFit
+            $0.clipsToBounds = true
+            $0.layer.cornerRadius = 6
+            $0.contentMode = .scaleAspectFill
         }
     
     let imageLabel = UILabel()
@@ -62,6 +79,14 @@ class MyPoseFramecountViewController: BaseViewController {
     // MARK: - Functions
     
     override func render() {
+        view.addSubViews([scrollView, nextButton])
+        
+        scrollView.snp.makeConstraints { make in
+            make.leading.trailing.equalToSuperview()
+            make.top.equalToSuperview()
+            make.bottom.equalTo(nextButton.snp.top)
+        }
+        
         let firstLineButtons = UIStackView(arrangedSubviews: [framecountButtons[0], framecountButtons[1], framecountButtons[2]])
             .then {
                 $0.axis = .horizontal
@@ -78,7 +103,7 @@ class MyPoseFramecountViewController: BaseViewController {
                 $0.spacing = 12
             }
         
-        view.addSubViews([mainLabel, firstLineButtons, secondLineButtons, registeredImageView, expandButton, imageLabel, nextButton])
+        scrollView.subviews.first!.addSubViews([mainLabel, firstLineButtons, secondLineButtons, registeredImageView, expandButton, imageLabel])
         
         mainLabel.snp.makeConstraints { make in
             make.top.equalToSuperview()
@@ -89,22 +114,22 @@ class MyPoseFramecountViewController: BaseViewController {
         firstLineButtons.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalToSuperview().offset(-20)
-            make.top.equalTo(mainLabel.snp.bottom).offset(UIScreen.main.isLongerThan800pt ? 36 : 18)
-            make.height.equalTo(UIScreen.main.isLongerThan800pt ? 108 : 50)
+            make.top.equalTo(mainLabel.snp.bottom).offset(36)
+            make.height.equalTo(108)
         }
         
         secondLineButtons.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(20)
             make.trailing.equalTo(framecountButtons[1])
             make.top.equalTo(firstLineButtons.snp.bottom).offset(12)
-            make.height.equalTo(UIScreen.main.isLongerThan800pt ? 108 : 50)
+            make.height.equalTo(108)
         }
         
         registeredImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
-            make.top.equalTo(secondLineButtons.snp.bottom).offset(UIScreen.main.isLongerThan800pt ? 27 : 16)
-            make.bottom.equalTo(nextButton.snp.top).offset(UIScreen.main.isLongerThan800pt ? -50 : 0)
-            make.width.equalTo(UIScreen.main.bounds.width / 3)
+            make.top.equalTo(secondLineButtons.snp.bottom).offset(36)
+            make.height.equalTo(160)
+            make.width.equalTo(120)
         }
         
         expandButton.snp.makeConstraints { make in
@@ -115,6 +140,7 @@ class MyPoseFramecountViewController: BaseViewController {
         imageLabel.snp.makeConstraints { make in
             make.top.equalTo(registeredImageView.snp.bottom).offset(8)
             make.centerX.equalToSuperview()
+            make.bottom.equalTo(scrollView.snp.bottom).offset(-20)
         }
         
         nextButton.snp.makeConstraints { make in
@@ -142,7 +168,7 @@ class MyPoseFramecountViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
                 let absoluteOrigin: CGPoint? = self.registeredImageView.superview?.convert(self.registeredImageView.frame.origin, to: nil) ?? CGPoint(x: 0, y: 0)
-                let frame = CGRectMake(absoluteOrigin?.x ?? 0, absoluteOrigin?.y ?? 0, self.registeredImageView.frame.width, self.registeredImageView.frame.height)
+                let frame = CGRectMake(absoluteOrigin?.x ?? 0, absoluteOrigin?.y ?? 0, 120, 160)
                 let vc = MyPoseImageDetailViewController(registeredImage: self.registeredImage, frame: frame)
                 vc.modalTransitionStyle = .crossDissolve
                 vc.modalPresentationStyle = .overFullScreen
