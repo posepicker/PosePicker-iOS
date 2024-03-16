@@ -133,8 +133,8 @@ class MyPoseHeadcountViewController: BaseViewController {
 //            } else {
 //                make.height.equalTo(UIScreen.main.bounds.width * 4 / 3 / 3)
 //            }
-            make.height.equalTo(UIScreen.main.bounds.width * 4 / 3 / 3)
-            make.width.equalTo(UIScreen.main.bounds.width / 3)
+            make.height.equalTo(160)
+            make.width.equalTo(120)
         }
 
         expandButton.snp.makeConstraints { make in
@@ -174,7 +174,8 @@ class MyPoseHeadcountViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
                 let absoluteOrigin: CGPoint? = self.registeredImageView.superview?.convert(self.registeredImageView.frame.origin, to: nil) ?? CGPoint(x: 0, y: 0)
-                let frame = CGRectMake(absoluteOrigin?.x ?? 0, absoluteOrigin?.y ?? 0, self.registeredImageView.frame.width, self.registeredImageView.frame.height)
+                print(self.registeredImageView.frame.origin)
+                let frame = CGRectMake(absoluteOrigin?.x ?? 0, absoluteOrigin?.y ?? 0, 120, 160)
                 let vc = MyPoseImageDetailViewController(registeredImage: self.registeredImage, frame: frame)
                 vc.modalTransitionStyle = .crossDissolve
                 vc.modalPresentationStyle = .overFullScreen
