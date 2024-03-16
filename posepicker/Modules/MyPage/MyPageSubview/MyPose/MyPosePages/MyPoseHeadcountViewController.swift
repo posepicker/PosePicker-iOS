@@ -128,11 +128,6 @@ class MyPoseHeadcountViewController: BaseViewController {
         registeredImageView.snp.makeConstraints { make in
             make.centerX.equalToSuperview()
             make.top.equalTo(secondLineButtons.snp.bottom).offset(36)
-//            if UIScreen.main.isLongerThan800pt {
-//                make.bottom.equalTo(nextButton.snp.top).offset(-50)
-//            } else {
-//                make.height.equalTo(UIScreen.main.bounds.width * 4 / 3 / 3)
-//            }
             make.height.equalTo(160)
             make.width.equalTo(120)
         }
