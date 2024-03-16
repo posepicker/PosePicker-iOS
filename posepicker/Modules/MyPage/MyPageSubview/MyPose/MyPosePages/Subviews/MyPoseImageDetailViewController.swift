@@ -14,6 +14,8 @@ class MyPoseImageDetailViewController: BaseViewController {
     // MARK: - Subviews
     lazy var imageView = UIImageViewWithDismissNotification(image: self.registeredImage)
         .then {
+            $0.layer.cornerRadius = 6
+            $0.clipsToBounds = true
             $0.contentMode = .scaleToFill
         }
     
@@ -40,19 +42,6 @@ class MyPoseImageDetailViewController: BaseViewController {
             make.leading.trailing.equalToSuperview()
             make.center.equalToSuperview()
         }
-        
-        // 캡처시 이미지 덮기
-        guard let secureView = SecureField().secureContainer else { return }
-
-        view.addSubview(secureView)
-        secureView.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalToSuperview()
-        }
-        
-        secureView.addSubview(imageView)
-        imageView.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalTo(secureView)
-        }
     }
     
     // MARK:  화면 dismiss 로직
@@ -69,7 +58,7 @@ class MyPoseImageDetailViewController: BaseViewController {
                 guard let self = self else { return }
                 UIView.animate(withDuration: 0.3) {
                     guard let frame = self.frame else { return }
-                    self.imageView.contentMode = .scaleAspectFit
+                    self.imageView.contentMode = .scaleAspectFill
                     self.imageView.snp.removeConstraints()
                     self.imageView.frame = frame
                     
