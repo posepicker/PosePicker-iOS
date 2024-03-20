@@ -30,7 +30,7 @@ class PoseFeedViewModel: ViewModelType {
     let nextPageRequestTrigger = BehaviorRelay<PoseFeedViewModel.RequestState>(value: .idle)
     
     /// 포즈피드 컬렉션뷰 datasource 정의
-    lazy var dataSource = RxCollectionViewSectionedReloadDataSource<Section>(configureCell: { dataSource, collectionView, indexPath, item in
+    lazy var dataSource = RxCollectionViewSectionedReloadDataSource<Section<PoseFeedPhotoCellViewModel>>(configureCell: { dataSource, collectionView, indexPath, item in
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PoseFeedPhotoCell.identifier, for: indexPath) as? PoseFeedPhotoCell else { return UICollectionViewCell() }
         cell.disposeBag = DisposeBag()
         cell.viewModel = item
