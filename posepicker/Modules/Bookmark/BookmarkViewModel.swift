@@ -28,7 +28,7 @@ class BookMarkViewModel: ViewModelType {
     let bookmarkRemoveButtonTapped = PublishSubject<Int>() // 북마크 삭제 탭 트리거
     
     /// 포즈피드 컬렉션뷰 datasource 정의
-    lazy var dataSource = RxCollectionViewSectionedReloadDataSource<BookmarkSection>(configureCell: { dataSource, collectionView, indexPath, item in
+    lazy var dataSource = RxCollectionViewSectionedReloadDataSource<Section<BookmarkFeedCellViewModel>>(configureCell: { dataSource, collectionView, indexPath, item in
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: BookmarkFeedCell.identifier, for: indexPath) as? BookmarkFeedCell else { return UICollectionViewCell() }
         cell.disposeBag = DisposeBag()
         cell.viewModel = item
@@ -76,7 +76,7 @@ class BookMarkViewModel: ViewModelType {
     }
     
     struct Output {
-        let sectionItems: Observable<[BookmarkSection]>
+        let sectionItems: Observable<[Section<BookmarkFeedCellViewModel>]>
         let isEmpty: Driver<Bool?>
         let isLoading: Observable<Bool>
         let transitionToPoseFeed: Observable<Void>
@@ -85,7 +85,7 @@ class BookMarkViewModel: ViewModelType {
     
     func transform(input: Input) -> Output {
         let isEmpty = BehaviorRelay<Bool?>(value: nil)
-        let sectionItems = BehaviorRelay<[BookmarkSection]>(value: [BookmarkSection(header: "", items: [])])
+        let sectionItems = BehaviorRelay<[Section<BookmarkFeedCellViewModel>]>(value: [Section(header: "", items: [])])
         let loadable = BehaviorRelay<Bool>(value: false)
         let bookmarkDetailViewModel = BehaviorRelay<BookmarkDetailViewModel?>(value: nil)
         
@@ -95,7 +95,7 @@ class BookMarkViewModel: ViewModelType {
             .flatMapLatest { [unowned self] _ -> Observable<PoseFeed> in
                 self.beginLoading()
                 loadable.accept(true)
-                sectionItems.accept([BookmarkSection(header: "", items: [])]) // 섹션 아이템 초기화
+                sectionItems.accept([Section(header: "", items: [])]) // 섹션 아이템 초기화
                 
                 self.currentPage = 0
                 self.isLast = false
@@ -124,7 +124,7 @@ class BookMarkViewModel: ViewModelType {
                 
                 var items = sectionItems.value.first?.items ?? []
                 items.append(contentsOf: $0)
-                let newSection = BookmarkSection(header: "", items: items)
+                let newSection = Section(header: "", items: items)
                 sectionItems.accept([newSection])
                 isEmpty.accept($0.isEmpty ? true : false)
             })
@@ -158,7 +158,7 @@ class BookMarkViewModel: ViewModelType {
                 
                 var items = sectionItems.value.first?.items ?? []
                 items.append(contentsOf: $0)
-                let newSection = BookmarkSection(header: "", items: items)
+                let newSection = Section(header: "", items: items)
                 sectionItems.accept([newSection])
                 isEmpty.accept(true)
             })
@@ -166,7 +166,7 @@ class BookMarkViewModel: ViewModelType {
         
         /// 3. 셀 탭 이후 디테일 뷰 표시를 위한 PoseDetailViewModel 뷰모델 바인딩
         input.bookmarkSelection
-            .flatMapLatest { [unowned self] viewModel -> Observable<PosePick> in
+            .flatMapLatest { [unowned self] viewModel -> Observable<Pose> in
                 return self.apiSession.requestSingle(.retrievePoseDetail(poseId: viewModel.poseId.value)).asObservable()
             }
             .subscribe(onNext: {
@@ -202,7 +202,7 @@ class BookMarkViewModel: ViewModelType {
                     return $0.poseId.value == poseId
                 }) {
                     bookmarkValue[checkedIndexInFilter].bookmarkCheck.accept(bookmarkCheck)
-                    sectionItems.accept([BookmarkSection(header: "", items: bookmarkValue)])
+                    sectionItems.accept([Section(header: "", items: bookmarkValue)])
                     return
                 }
             })
@@ -220,7 +220,7 @@ class BookMarkViewModel: ViewModelType {
     }
     
     // 메인 스케줄러에서 처리
-    func retrieveCacheObservable(posefeed: [PosePick]) -> Observable<[BookmarkFeedCellViewModel]> {
+    func retrieveCacheObservable(posefeed: [Pose]) -> Observable<[BookmarkFeedCellViewModel]> {
         
         let viewModelObservable = BehaviorRelay<[BookmarkFeedCellViewModel]>(value: [])
         
