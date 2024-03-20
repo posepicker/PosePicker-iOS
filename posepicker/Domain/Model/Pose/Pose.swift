@@ -9,5 +9,5 @@ import Foundation
 import Alamofire
 
 struct Pose: Codable {
-    let poseInfo: Pose
+    let poseInfo: PoseInfo
 }
