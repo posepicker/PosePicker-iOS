@@ -15,9 +15,3 @@ struct Page: Codable {
     let sort: Sort
     let unpaged: Bool
 }
-
-struct Sort: Codable {
-    let empty: Bool
-    let sorted: Bool
-    let unsorted: Bool
-}
