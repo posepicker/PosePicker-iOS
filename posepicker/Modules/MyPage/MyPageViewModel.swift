@@ -85,9 +85,9 @@ class MyPageViewModel: ViewModelType {
         /// 기존 토큰은 삭제
         input.logoutButtonTapped
             .withUnretained(self)
-            .flatMapLatest { (owner, _) -> Observable<LogoutResponse> in
+            .flatMapLatest { (owner, _) -> Observable<MeaninglessResponse> in
                 guard let accessToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.accessToken),
-                      let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.refreshToken) else { return Observable<LogoutResponse>.empty() }
+                      let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.refreshToken) else { return Observable<MeaninglessResponse>.empty() }
                 return owner.apiSession.requestSingle(.logout(accessToken: accessToken, refreshToken: refreshToken)).asObservable()
             }
             .map { $0.status }
@@ -103,9 +103,9 @@ class MyPageViewModel: ViewModelType {
         /// 탈퇴 API
         input.revokeButtonTapped
             .withUnretained(self)
-            .flatMapLatest { owner, withdrawalReason -> Observable<RevokeResponse> in
+            .flatMapLatest { owner, withdrawalReason -> Observable<MeaninglessResponse> in
                 guard let accessToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.accessToken),
-                      let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.refreshToken) else { return Observable<RevokeResponse>.empty() }
+                      let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.refreshToken) else { return Observable<MeaninglessResponse>.empty() }
                 return owner.apiSession.requestSingle(.revoke(accessToken: accessToken, refreshToken: refreshToken, withdrawalReason: withdrawalReason)).asObservable()
             }
             .map { $0.status }
