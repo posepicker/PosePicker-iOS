@@ -233,8 +233,8 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
             .flatMapLatest { _ -> Observable<(String, String, [String], String)> in
                 return Observable.combineLatest(headcountVC.selectedHeadCount, framecountVC.selectedFrameCount, selectedTagObservable, imageSourceVC.urlTextField.rx.text.compactMap { $0 })
             }
-            .flatMapLatest { [weak self] headCount, frameCount, selectedTags, imageSource -> Single<PosePick> in
-                guard let self = self else { return Observable<PosePick>.empty().asSingle() }
+            .flatMapLatest { [weak self] headCount, frameCount, selectedTags, imageSource -> Single<Pose> in
+                guard let self = self else { return Observable<Pose>.empty().asSingle() }
                 var tagArrayToString = ""
                 selectedTags.forEach { tagArrayToString += "\($0)," }
                 self.isLoading.accept(true)
