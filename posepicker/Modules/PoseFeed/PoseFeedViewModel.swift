@@ -30,7 +30,7 @@ class PoseFeedViewModel: ViewModelType {
     let nextPageRequestTrigger = BehaviorRelay<PoseFeedViewModel.RequestState>(value: .idle)
     
     /// 포즈피드 컬렉션뷰 datasource 정의
-    lazy var dataSource = RxCollectionViewSectionedReloadDataSource<PoseSection>(configureCell: { dataSource, collectionView, indexPath, item in
+    lazy var dataSource = RxCollectionViewSectionedReloadDataSource<Section>(configureCell: { dataSource, collectionView, indexPath, item in
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PoseFeedPhotoCell.identifier, for: indexPath) as? PoseFeedPhotoCell else { return UICollectionViewCell() }
         cell.disposeBag = DisposeBag()
         cell.viewModel = item
@@ -107,7 +107,7 @@ class PoseFeedViewModel: ViewModelType {
         let deleteTargetFilterTag: Driver<FilterTags?>
         let deleteTargetCountTag: Driver<CountTagType?>
         let deleteSubTag: Driver<Void>
-        let sectionItems: Observable<[PoseSection]>
+        let sectionItems: Observable<[Section<PoseFeedPhotoCellViewModel>]>
         let poseDetailViewPush: Observable<PoseDetailViewModel?>
         let isLoading: Observable<Bool>
         let dismissLoginView: Observable<Void>
@@ -123,9 +123,9 @@ class PoseFeedViewModel: ViewModelType {
         
         let filterSection = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
         let recommendSection = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
-        let recommendContents = BehaviorRelay<RecommendedContents?>(value: nil)
+        let recommendContents = BehaviorRelay<PoseFeed?>(value: nil)
         
-        let sectionItems = BehaviorRelay<[PoseSection]>(value: [PoseSection(header: "", items: []), PoseSection(header: "이런 포즈는 어때요?", items: [])])
+        let sectionItems = BehaviorRelay<[Section<PoseFeedPhotoCellViewModel>]>(value: [Section(header: "", items: []), Section(header: "이런 포즈는 어때요?", items: [])])
         let poseDetailViewModel = BehaviorRelay<PoseDetailViewModel?>(value: nil)
         let queryParameters = BehaviorRelay<[String]>(value: ["전체", "전체"])
         
@@ -296,7 +296,7 @@ class PoseFeedViewModel: ViewModelType {
         /// 3. 셀 탭 이후 디테일 뷰 표시를 위한 PoseDetailViewModel 뷰모델 바인딩
         input.poseFeedSelection
             .withUnretained(self)
-            .flatMapLatest { owner, viewModel -> Observable<PosePick> in
+            .flatMapLatest { owner, viewModel -> Observable<Pose> in
                 return owner.apiSession.requestSingle(.retrievePoseDetail(poseId: viewModel.poseId.value)).asObservable()
             }
             .subscribe(onNext: { posepick in
@@ -409,7 +409,7 @@ class PoseFeedViewModel: ViewModelType {
         /// 필터 섹션 & 추천 섹션 결합 후 셀 아이템에 바인딩
         Observable.combineLatest(filterSection, recommendSection)
             .subscribe(onNext: { filter, recommend in
-                let newSectionItems = [PoseSection(header: "", items: filter), PoseSection(header: "이런 포즈는 어때요?", items: recommend)]
+                let newSectionItems = [Section(header: "", items: filter), Section(header: "이런 포즈는 어때요?", items: recommend)]
                 sectionItems.accept(newSectionItems)
             })
             .disposed(by: disposeBag)
@@ -529,7 +529,7 @@ class PoseFeedViewModel: ViewModelType {
         self.isLoading = false
     }
     
-    func checkReportData(posefeed: [PosePick]) -> [PosePick] {
+    func checkReportData(posefeed: [Pose]) -> [Pose] {
         var newPoseFeed = posefeed
         var allReportIds: [String] = []
         var posefeedIndicies: [Int] = []
@@ -553,7 +553,7 @@ class PoseFeedViewModel: ViewModelType {
         return newPoseFeed
     }
     
-    func retrieveCacheObservable(posefeed: [PosePick], isFilterSection: Bool = true) -> Observable<[PoseFeedPhotoCellViewModel]> {
+    func retrieveCacheObservable(posefeed: [Pose], isFilterSection: Bool = true) -> Observable<[PoseFeedPhotoCellViewModel]> {
         let viewModelObservable = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
         
         // 매 요소마다 accept하여 리로딩을 자주 처리하지 말고, 한번에 몰아서 진행
