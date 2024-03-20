@@ -1,18 +1,13 @@
 //
-//  PosePick.swift
+//  PoseInfo.swift
 //  posepicker
 //
-//  Created by Jun on 2023/10/23.
+//  Created by 박경준 on 3/20/24.
 //
 
 import Foundation
-import Alamofire
 
-struct PosePick: Codable {
-    let poseInfo: Pose
-}
-
-struct Pose: Codable {
+struct PoseInfo: Codable {
     let createdAt: String?
     let frameCount: Int
     let imageKey: String
