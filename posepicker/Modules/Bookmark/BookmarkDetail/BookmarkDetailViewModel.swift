@@ -20,9 +20,9 @@ class BookmarkDetailViewModel: ViewModelType {
     var apiSession: APIService = APISession()
     
     var disposeBag = DisposeBag()
-    var poseDetailData: PosePick
+    var poseDetailData: Pose
     
-    init(poseDetailData: PosePick) {
+    init(poseDetailData: Pose) {
         self.poseDetailData = poseDetailData
     }
     
