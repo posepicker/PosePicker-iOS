@@ -37,7 +37,7 @@ class PosePickViewModel: ViewModelType {
         
         /// 포즈픽 데이터 요청
         input.posePickButtonTapped
-            .flatMapLatest { [unowned self] _ -> Observable<PosePick> in
+            .flatMapLatest { [unowned self] _ -> Observable<Pose> in
                 self.apiSession.requestSingle(.retrievePosePick(peopleCount: input.selectedIndex.value + 1)).asObservable()
             }
             .subscribe(onNext: {
