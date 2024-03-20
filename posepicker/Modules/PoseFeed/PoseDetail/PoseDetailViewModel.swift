@@ -19,10 +19,10 @@ import KakaoSDKCommon
 class PoseDetailViewModel: ViewModelType {
     
     var disposeBag = DisposeBag()
-    var poseDetailData: PosePick
+    var poseDetailData: Pose
     var apiSession: APIService = APISession()
     
-    init(poseDetailData: PosePick) {
+    init(poseDetailData: Pose) {
         self.poseDetailData = poseDetailData
     }
     
