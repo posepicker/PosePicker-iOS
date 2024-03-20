@@ -110,6 +110,8 @@
 		C95DD3762B8710B1005ACE84 /* MyPoseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95DD3752B8710B1005ACE84 /* MyPoseViewModel.swift */; };
 		C95DD3782B8710BF005ACE84 /* MyPoseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95DD3772B8710BF005ACE84 /* MyPoseViewController.swift */; };
 		C95DD37A2B8711F4005ACE84 /* MyPoseGuidelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95DD3792B8711F4005ACE84 /* MyPoseGuidelineViewController.swift */; };
+		C9676BE82BAAAB79000A4114 /* PosePickUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9676BE72BAAAB79000A4114 /* PosePickUseCase.swift */; };
+		C9676BEA2BAAAB8D000A4114 /* DefaultPoseTalkUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9676BE92BAAAB8D000A4114 /* DefaultPoseTalkUseCase.swift */; };
 		C971A67C2B2036850078EF2B /* Bookmark_Next.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A67B2B2036850078EF2B /* Bookmark_Next.json */; };
 		C971A6822B26F5EA0078EF2B /* authenticateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971A6812B26F5EA0078EF2B /* authenticateTests.swift */; };
 		C971A6872B26FD290078EF2B /* AuthorizationCode.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A6862B26FD290078EF2B /* AuthorizationCode.json */; };
@@ -272,6 +274,8 @@
 		C95DD3752B8710B1005ACE84 /* MyPoseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseViewModel.swift; sourceTree = "<group>"; };
 		C95DD3772B8710BF005ACE84 /* MyPoseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseViewController.swift; sourceTree = "<group>"; };
 		C95DD3792B8711F4005ACE84 /* MyPoseGuidelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseGuidelineViewController.swift; sourceTree = "<group>"; };
+		C9676BE72BAAAB79000A4114 /* PosePickUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickUseCase.swift; sourceTree = "<group>"; };
+		C9676BE92BAAAB8D000A4114 /* DefaultPoseTalkUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseTalkUseCase.swift; sourceTree = "<group>"; };
 		C971A67A2B2008920078EF2B /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
 		C971A67B2B2036850078EF2B /* Bookmark_Next.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Bookmark_Next.json; sourceTree = "<group>"; };
 		C971A6812B26F5EA0078EF2B /* authenticateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = authenticateTests.swift; sourceTree = "<group>"; };
@@ -809,6 +813,40 @@
 			path = MyPose;
 			sourceTree = "<group>";
 		};
+		C9676BE32BAAAB39000A4114 /* Domain */ = {
+			isa = PBXGroup;
+			children = (
+				C9C8909E2AE107CA0010240A /* Model */,
+				C9676BE42BAAAB55000A4114 /* UseCase */,
+			);
+			path = Domain;
+			sourceTree = "<group>";
+		};
+		C9676BE42BAAAB55000A4114 /* UseCase */ = {
+			isa = PBXGroup;
+			children = (
+				C9676BE52BAAAB5C000A4114 /* PosePick */,
+			);
+			path = UseCase;
+			sourceTree = "<group>";
+		};
+		C9676BE52BAAAB5C000A4114 /* PosePick */ = {
+			isa = PBXGroup;
+			children = (
+				C9676BE62BAAAB6A000A4114 /* Protocol */,
+				C9676BE92BAAAB8D000A4114 /* DefaultPoseTalkUseCase.swift */,
+			);
+			path = PosePick;
+			sourceTree = "<group>";
+		};
+		C9676BE62BAAAB6A000A4114 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				C9676BE72BAAAB79000A4114 /* PosePickUseCase.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
 		C971A6792B2008870078EF2B /* Configs */ = {
 			isa = PBXGroup;
 			children = (
@@ -921,12 +959,12 @@
 		C9C890502AE103A10010240A /* posepicker */ = {
 			isa = PBXGroup;
 			children = (
+				C9676BE32BAAAB39000A4114 /* Domain */,
 				C9E6025A2B16DA270098BC96 /* posepicker.entitlements */,
 				C9C890812AE103C10010240A /* Application */,
 				C9C890842AE106EF0010240A /* Common */,
 				C971A6792B2008870078EF2B /* Configs */,
 				C9C8909A2AE107A40010240A /* Extensions */,
-				C9C8909E2AE107CA0010240A /* Models */,
 				C9C890A32AE109D80010240A /* Modules */,
 				C9C890A72AE10A280010240A /* Networking */,
 				C9C890AA2AE10A3D0010240A /* Resources */,
@@ -1012,13 +1050,13 @@
 			path = UIColor;
 			sourceTree = "<group>";
 		};
-		C9C8909E2AE107CA0010240A /* Models */ = {
+		C9C8909E2AE107CA0010240A /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				88EA81EE2AF69BB900020DEA /* User */,
 				88EA81EF2AF69BBD00020DEA /* Pose */,
 			);
-			path = Models;
+			path = Model;
 			sourceTree = "<group>";
 		};
 		C9C890A32AE109D80010240A /* Modules */ = {
@@ -1411,6 +1449,7 @@
 				C94FD29F2AE3AF4F003777EB /* UnderlineSegmentControl.swift in Sources */,
 				880E75342AE67CC4007FAD5A /* BasicSelection.swift in Sources */,
 				C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */,
+				C9676BEA2BAAAB8D000A4114 /* DefaultPoseTalkUseCase.swift in Sources */,
 				883132992B08EF9E00DAA5A7 /* PoseDetailTagCellViewModel.swift in Sources */,
 				C9188B272B909E78004B9C45 /* MyPoseCustomTagCellViewModel.swift in Sources */,
 				880E75422AE6BF4B007FAD5A /* APIService.swift in Sources */,
@@ -1418,6 +1457,7 @@
 				C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */,
 				88EA81F82AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift in Sources */,
 				C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */,
+				C9676BE82BAAAB79000A4114 /* PosePickUseCase.swift in Sources */,
 				C91A265F2B8788F900F1193E /* MyPoseCoordinator.swift in Sources */,
 				C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */,
 				C94FD27F2AE395E3003777EB /* PosePickViewController.swift in Sources */,
