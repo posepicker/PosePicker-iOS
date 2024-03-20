@@ -14,13 +14,7 @@ struct PosePickerUser: Codable {
     let token: Token
 }
 
-struct LogoutResponse: Codable {
-    let entity: String
-    let message: String
-    let status: Int
-}
-
-struct RevokeResponse: Codable {
+struct MeaninglessResponse: Codable {
     let entity: String
     let message: String
     let redirect: String
