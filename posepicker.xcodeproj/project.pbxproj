@@ -71,6 +71,8 @@
 		C91E184D2B99E484009611C3 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91E184C2B99E484009611C3 /* ReportViewController.swift */; };
 		C91E18502B99ECC1009611C3 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91E184F2B99ECC1009611C3 /* RadioButton.swift */; };
 		C91FF3432BAAADC500096E25 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3422BAAADC500096E25 /* Sort.swift */; };
+		C91FF34C2BAAB6E400096E25 /* PoseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF34B2BAAB6E400096E25 /* PoseRepository.swift */; };
+		C91FF34E2BAABD2300096E25 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF34D2BAABD2300096E25 /* UserRepository.swift */; };
 		C9254CE32B4922B100C4C779 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9254CE22B4922B000C4C779 /* WebKit.framework */; };
 		C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */; };
 		C93625902B907A6F00B90810 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C936258F2B907A6F00B90810 /* UITextField+.swift */; };
@@ -252,6 +254,8 @@
 		C91E184C2B99E484009611C3 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		C91E184F2B99ECC1009611C3 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		C91FF3422BAAADC500096E25 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
+		C91FF34B2BAAB6E400096E25 /* PoseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseRepository.swift; sourceTree = "<group>"; };
+		C91FF34D2BAABD2300096E25 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		C9254CE22B4922B000C4C779 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageWebViewController.swift; sourceTree = "<group>"; };
 		C936258F2B907A6F00B90810 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
@@ -701,6 +705,39 @@
 			path = Section;
 			sourceTree = "<group>";
 		};
+		C91FF3452BAAB66600096E25 /* Data */ = {
+			isa = PBXGroup;
+			children = (
+				C91FF3472BAAB67B00096E25 /* Repository */,
+			);
+			path = Data;
+			sourceTree = "<group>";
+		};
+		C91FF3472BAAB67B00096E25 /* Repository */ = {
+			isa = PBXGroup;
+			children = (
+				C91FF3482BAAB68000096E25 /* Common */,
+			);
+			path = Repository;
+			sourceTree = "<group>";
+		};
+		C91FF3482BAAB68000096E25 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				C91FF3492BAAB68700096E25 /* Protocol */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		C91FF3492BAAB68700096E25 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				C91FF34B2BAAB6E400096E25 /* PoseRepository.swift */,
+				C91FF34D2BAABD2300096E25 /* UserRepository.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
 		C9254CE42B4922D900C4C779 /* MyPageSubview */ = {
 			isa = PBXGroup;
 			children = (
@@ -974,6 +1011,7 @@
 			isa = PBXGroup;
 			children = (
 				C9676BE32BAAAB39000A4114 /* Domain */,
+				C91FF3452BAAB66600096E25 /* Data */,
 				C9E6025A2B16DA270098BC96 /* posepicker.entitlements */,
 				C9C890812AE103C10010240A /* Application */,
 				C9C890842AE106EF0010240A /* Common */,
@@ -1449,6 +1487,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C91FF34E2BAABD2300096E25 /* UserRepository.swift in Sources */,
 				C9042E5C2B0B043400BB4182 /* FrameCountTags.swift in Sources */,
 				C99D53B32B1EDA22007DEE9B /* BookmarkFeedCell.swift in Sources */,
 				8851477F2AF9490C00DCDD4E /* PinterestLayout.swift in Sources */,
@@ -1456,6 +1495,7 @@
 				C9676BEC2BAAAC68000A4114 /* PoseInfo.swift in Sources */,
 				880E75472AE6BFBC007FAD5A /* APISession.swift in Sources */,
 				C91E184B2B99C22A009611C3 /* PoseDetailMoreViewController.swift in Sources */,
+				C91FF34C2BAAB6E400096E25 /* PoseRepository.swift in Sources */,
 				880E755B2AF296E7007FAD5A /* PoseTalk.swift in Sources */,
 				C9C890A92AE10A370010240A /* APIRouter.swift in Sources */,
 				880E754F2AE6C188007FAD5A /* Pose.swift in Sources */,
