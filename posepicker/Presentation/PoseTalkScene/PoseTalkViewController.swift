@@ -61,21 +61,11 @@ class PoseTalkViewController: BaseViewController {
     
     // MARK: - Properties
     
-    let viewModel: PoseTalkViewModel
-    var coordinator: RootCoordinator
+    var viewModel: PoseTalkViewModel?
+//    var coordinator: RootCoordinator?
     var isAnimating = BehaviorRelay<Bool>(value: false)
     
     // MARK: - Life Cycles
-    
-    init(viewModel: PoseTalkViewModel, coordinator: RootCoordinator) {
-        self.viewModel = viewModel
-        self.coordinator = coordinator
-        super.init()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
@@ -112,16 +102,17 @@ class PoseTalkViewController: BaseViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
         }
         
-        coordinator.rootViewController.view.addSubViews([toolTip])
+        viewModel?.coordinator?.rootViewController.view.addSubViews([toolTip])
+        
     
-        let segmentHeight = coordinator.rootViewController.segmentControl.frame.height
-        let headerHeight = UIScreen.main.isWiderThan375pt ? coordinator.rootViewController.header.frame.height - 10 : coordinator.rootViewController.header.frame.height - 20
+        let segmentHeight = viewModel?.coordinator?.rootViewController.segmentControl.frame.height ?? 100
+        let headerHeight = UIScreen.main.isWiderThan375pt ? viewModel?.coordinator?.rootViewController.header.frame.height ?? 20 - 10 : viewModel?.coordinator?.rootViewController.header.frame.height ?? 20 - 20
         
         toolTip.snp.makeConstraints { make in
             make.leading.equalTo(UIScreen.main.isWiderThan375pt ? 76 : 66)
             make.width.equalTo(UIScreen.main.isWiderThan375pt ? 230 : 210)
             make.height.equalTo(UIScreen.main.isWiderThan375pt ? 80 : 68)
-            make.top.equalTo(coordinator.rootViewController.view.safeAreaLayoutGuide.snp.top).offset(segmentHeight + headerHeight)
+            make.top.equalTo(viewModel?.coordinator?.rootViewController.view.safeAreaLayoutGuide.snp.top ?? self.view.snp.top).offset(segmentHeight + headerHeight)
         }
     }
     
@@ -131,44 +122,14 @@ class PoseTalkViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseTalkViewModel.Input(poseTalkButtonTapped: selectButton.rx.controlEvent(.touchUpInside), isAnimating: isAnimating.asObservable())
+        let input = PoseTalkViewModel.Input(
+            poseTalkButtonTapped: selectButton.rx.controlEvent(.touchUpInside),
+            isAnimating: isAnimating.asObservable()
+        )
         
-        let output = viewModel.transform(input: input)
+        let output = viewModel!.transform(input: input)
+        self.configureViewModelOutput(output)
         
-        output.animate
-            .drive(onNext: { [unowned self] in
-                self.animationView.pause()
-                self.animationView.loopMode = .playOnce
-                self.animationView.animation = LottieAnimation.named("lottiePoseTalkTap")
-                self.animationView.snp.updateConstraints { make in
-                    let mainLabelHeight = "제시어에 맞춰\n포즈를 취해요!".height(withConstrainedWidth: UIScreen.main.bounds.width - 100, font: .h1)
-                    make.top.equalTo(mainLabel.snp.top).offset(mainLabelHeight + 6)
-                    make.leading.equalToSuperview().offset(-40)
-                    make.trailing.equalToSuperview().offset(44)
-                }
-        
-                self.isAnimating.accept(true)
-                self.animationView.play() {
-                    if $0 {
-                        self.isAnimating.accept(false)
-                    }
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        output.isLoading
-            .flatMapLatest { isLoading -> Observable<String> in
-                if isLoading {
-                    return Observable<String>.empty()
-                } else {
-                    return output.poseWord
-                }
-            }
-            .asDriver(onErrorJustReturn: "")
-            .drive(onNext: { [unowned self] in
-                self.mainLabel.text = $0
-            })
-            .disposed(by: disposeBag)
         
         toolTip.closeButton.rx.tap.asDriver()
             .drive(onNext: { [unowned self] in
@@ -192,4 +153,16 @@ class PoseTalkViewController: BaseViewController {
     }
     
     // MARK: - Objc Functions
+}
+
+private extension PoseTalkViewController {
+    func configureViewModelOutput(_ output: PoseTalkViewModel.Output?) {
+        output?.poseWord
+            .asDriver(onErrorJustReturn: "오류")
+            .drive(onNext: { [weak self] in
+                print("워드 세팅",$0)
+                self?.mainLabel.text = $0
+            })
+            .disposed(by: disposeBag)
+    }
 }
