@@ -819,6 +819,22 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
+		C91FF3662BAC0A1100096E25 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				C91FF3672BAC0A1800096E25 /* Protocol */,
+				C94FD2782AE38EBD003777EB /* RootCoordinator.swift */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		C91FF3672BAC0A1800096E25 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
 		C9254CE42B4922D900C4C779 /* MyPageSubview */ = {
 			isa = PBXGroup;
 			children = (
@@ -1211,8 +1227,8 @@
 		C9C890A62AE10A010010240A /* Root */ = {
 			isa = PBXGroup;
 			children = (
+				C91FF3662BAC0A1100096E25 /* Coordinator */,
 				C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */,
-				C94FD2782AE38EBD003777EB /* RootCoordinator.swift */,
 				C94FD2742AE38E26003777EB /* RootViewController.swift */,
 			);
 			path = Root;
