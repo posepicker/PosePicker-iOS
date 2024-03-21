@@ -9,5 +9,5 @@ import Foundation
 import RxSwift
 
 protocol PoseTalkRepository {
-    func fetchPoseWord() -> Observable<PoseTalk>
+    func fetchPoseWord() -> Observable<String>
 }
