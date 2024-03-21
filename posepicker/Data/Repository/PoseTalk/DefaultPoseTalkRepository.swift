@@ -17,8 +17,9 @@ final class DefaultPoseTalkRepository: PoseTalkRepository {
         self.networkService = networkService
     }
     
-    func fetchPoseWord() -> Observable<PoseTalk> {
-        return networkService.requestSingle(.retrievePoseTalk)
+    func fetchPoseWord() -> Observable<String> {
+        let request: Observable<PoseTalk> = networkService.requestSingle(.retrievePoseTalk)
             .asObservable()
+        return request.map { $0.poseWord.content }
     }
 }
