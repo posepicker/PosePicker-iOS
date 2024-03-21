@@ -847,13 +847,13 @@
 			path = PosePick;
 			sourceTree = "<group>";
 		};
-		C94FD27B2AE3950C003777EB /* PoseTok */ = {
+		C94FD27B2AE3950C003777EB /* PoseTalkScene */ = {
 			isa = PBXGroup;
 			children = (
 				C94FD2882AE39635003777EB /* PoseTalkViewModel.swift */,
 				C94FD2802AE39603003777EB /* PoseTalkViewController.swift */,
 			);
-			path = PoseTok;
+			path = PoseTalkScene;
 			sourceTree = "<group>";
 		};
 		C94FD27C2AE39512003777EB /* PoseFeed */ = {
@@ -1200,7 +1200,7 @@
 			children = (
 				C9C890A62AE10A010010240A /* Root */,
 				C94FD27A2AE39505003777EB /* PosePick */,
-				C94FD27B2AE3950C003777EB /* PoseTok */,
+				C94FD27B2AE3950C003777EB /* PoseTalkScene */,
 				C94FD27C2AE39512003777EB /* PoseFeed */,
 				C94FD27D2AE39517003777EB /* Bookmark */,
 				C94FD28E2AE398BD003777EB /* MyPage */,
