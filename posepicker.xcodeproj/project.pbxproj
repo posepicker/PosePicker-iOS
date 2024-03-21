@@ -78,6 +78,8 @@
 		C91FF3582BAB275A00096E25 /* DefaultNetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3572BAB275A00096E25 /* DefaultNetworkService.swift */; };
 		C91FF35C2BABFB5F00096E25 /* PoseTalkRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF35B2BABFB5F00096E25 /* PoseTalkRepository.swift */; };
 		C91FF35E2BABFBA300096E25 /* DefaultPoseTalkRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF35D2BABFBA300096E25 /* DefaultPoseTalkRepository.swift */; };
+		C91FF3622BAC001E00096E25 /* PoseTalkUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3612BAC001E00096E25 /* PoseTalkUseCase.swift */; };
+		C91FF3642BAC002700096E25 /* DefaultPoseTalkUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3632BAC002700096E25 /* DefaultPoseTalkUseCase.swift */; };
 		C9254CE32B4922B100C4C779 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9254CE22B4922B000C4C779 /* WebKit.framework */; };
 		C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */; };
 		C93625902B907A6F00B90810 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C936258F2B907A6F00B90810 /* UITextField+.swift */; };
@@ -118,7 +120,6 @@
 		C95DD3782B8710BF005ACE84 /* MyPoseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95DD3772B8710BF005ACE84 /* MyPoseViewController.swift */; };
 		C95DD37A2B8711F4005ACE84 /* MyPoseGuidelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95DD3792B8711F4005ACE84 /* MyPoseGuidelineViewController.swift */; };
 		C9676BE82BAAAB79000A4114 /* PosePickUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9676BE72BAAAB79000A4114 /* PosePickUseCase.swift */; };
-		C9676BEA2BAAAB8D000A4114 /* DefaultPoseTalkUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9676BE92BAAAB8D000A4114 /* DefaultPoseTalkUseCase.swift */; };
 		C9676BEC2BAAAC68000A4114 /* PoseInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9676BEB2BAAAC68000A4114 /* PoseInfo.swift */; };
 		C971A67C2B2036850078EF2B /* Bookmark_Next.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A67B2B2036850078EF2B /* Bookmark_Next.json */; };
 		C971A6822B26F5EA0078EF2B /* authenticateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971A6812B26F5EA0078EF2B /* authenticateTests.swift */; };
@@ -266,6 +267,8 @@
 		C91FF3572BAB275A00096E25 /* DefaultNetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultNetworkService.swift; sourceTree = "<group>"; };
 		C91FF35B2BABFB5F00096E25 /* PoseTalkRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseTalkRepository.swift; sourceTree = "<group>"; };
 		C91FF35D2BABFBA300096E25 /* DefaultPoseTalkRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseTalkRepository.swift; sourceTree = "<group>"; };
+		C91FF3612BAC001E00096E25 /* PoseTalkUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseTalkUseCase.swift; sourceTree = "<group>"; };
+		C91FF3632BAC002700096E25 /* DefaultPoseTalkUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseTalkUseCase.swift; sourceTree = "<group>"; };
 		C9254CE22B4922B000C4C779 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageWebViewController.swift; sourceTree = "<group>"; };
 		C936258F2B907A6F00B90810 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
@@ -289,7 +292,6 @@
 		C95DD3772B8710BF005ACE84 /* MyPoseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseViewController.swift; sourceTree = "<group>"; };
 		C95DD3792B8711F4005ACE84 /* MyPoseGuidelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseGuidelineViewController.swift; sourceTree = "<group>"; };
 		C9676BE72BAAAB79000A4114 /* PosePickUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickUseCase.swift; sourceTree = "<group>"; };
-		C9676BE92BAAAB8D000A4114 /* DefaultPoseTalkUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseTalkUseCase.swift; sourceTree = "<group>"; };
 		C9676BEB2BAAAC68000A4114 /* PoseInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseInfo.swift; sourceTree = "<group>"; };
 		C971A67A2B2008920078EF2B /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
 		C971A67B2B2036850078EF2B /* Bookmark_Next.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Bookmark_Next.json; sourceTree = "<group>"; };
@@ -800,6 +802,23 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
+		C91FF35F2BABFFFC00096E25 /* PoseTalk */ = {
+			isa = PBXGroup;
+			children = (
+				C91FF3602BAC000700096E25 /* Protocol */,
+				C91FF3632BAC002700096E25 /* DefaultPoseTalkUseCase.swift */,
+			);
+			path = PoseTalk;
+			sourceTree = "<group>";
+		};
+		C91FF3602BAC000700096E25 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				C91FF3612BAC001E00096E25 /* PoseTalkUseCase.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
 		C9254CE42B4922D900C4C779 /* MyPageSubview */ = {
 			isa = PBXGroup;
 			children = (
@@ -939,6 +958,7 @@
 			isa = PBXGroup;
 			children = (
 				C9676BE52BAAAB5C000A4114 /* PosePick */,
+				C91FF35F2BABFFFC00096E25 /* PoseTalk */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -947,7 +967,6 @@
 			isa = PBXGroup;
 			children = (
 				C9676BE62BAAAB6A000A4114 /* Protocol */,
-				C9676BE92BAAAB8D000A4114 /* DefaultPoseTalkUseCase.swift */,
 			);
 			path = PosePick;
 			sourceTree = "<group>";
@@ -1569,7 +1588,6 @@
 				C94FD29F2AE3AF4F003777EB /* UnderlineSegmentControl.swift in Sources */,
 				880E75342AE67CC4007FAD5A /* BasicSelection.swift in Sources */,
 				C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */,
-				C9676BEA2BAAAB8D000A4114 /* DefaultPoseTalkUseCase.swift in Sources */,
 				883132992B08EF9E00DAA5A7 /* PoseDetailTagCellViewModel.swift in Sources */,
 				C9188B272B909E78004B9C45 /* MyPoseCustomTagCellViewModel.swift in Sources */,
 				880E75422AE6BF4B007FAD5A /* APIService.swift in Sources */,
@@ -1621,6 +1639,7 @@
 				880E752D2AE60499007FAD5A /* Header.swift in Sources */,
 				C99D53B72B1EDCB8007DEE9B /* BookmarkEmptyView.swift in Sources */,
 				C9188B252B909E6A004B9C45 /* MyPoseCustomTagCell.swift in Sources */,
+				C91FF3642BAC002700096E25 /* DefaultPoseTalkUseCase.swift in Sources */,
 				C94FD2812AE39603003777EB /* PoseTalkViewController.swift in Sources */,
 				C91FF3502BAAD11C00096E25 /* DefaultUserRepository.swift in Sources */,
 				C9FDBDFA2B28AE5E0045AA54 /* BookmarkDetailViewModel.swift in Sources */,
@@ -1650,6 +1669,7 @@
 				880E75522AE6C275007FAD5A /* Data+.swift in Sources */,
 				C9D0C4082BA4172C004A3940 /* UserRevokeViewController.swift in Sources */,
 				C91A266B2B88524200F1193E /* MyPoseTagViewController.swift in Sources */,
+				C91FF3622BAC001E00096E25 /* PoseTalkUseCase.swift in Sources */,
 				C9DC2F942AEA282700D5170D /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				C903E5402AFCC46E00BD004F /* FilteredPose.swift in Sources */,
 				C91A266F2B88899300F1193E /* MyPoseSelectButton.swift in Sources */,
