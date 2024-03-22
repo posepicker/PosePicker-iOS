@@ -81,6 +81,11 @@
 		C91FF3622BAC001E00096E25 /* PoseTalkUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3612BAC001E00096E25 /* PoseTalkUseCase.swift */; };
 		C91FF3642BAC002700096E25 /* DefaultPoseTalkUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3632BAC002700096E25 /* DefaultPoseTalkUseCase.swift */; };
 		C91FF36C2BAD87DB00096E25 /* CoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF36B2BAD87DB00096E25 /* CoordinatorType.swift */; };
+		C91FF36F2BAD88D600096E25 /* Coordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF36E2BAD88D600096E25 /* Coordinator.swift */; };
+		C91FF3722BAD891600096E25 /* CoordinatorFinishDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3712BAD891600096E25 /* CoordinatorFinishDelegate.swift */; };
+		C91FF3742BAD894000096E25 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3732BAD894000096E25 /* AppCoordinator.swift */; };
+		C91FF3762BAD897900096E25 /* PageViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3752BAD897900096E25 /* PageViewCoordinator.swift */; };
+		C91FF3782BAD8A3100096E25 /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3772BAD8A3100096E25 /* Pages.swift */; };
 		C9254CE32B4922B100C4C779 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9254CE22B4922B000C4C779 /* WebKit.framework */; };
 		C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */; };
 		C93625902B907A6F00B90810 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C936258F2B907A6F00B90810 /* UITextField+.swift */; };
@@ -91,7 +96,7 @@
 		C93EE1BB2B583D47007D61EF /* RxKakaoSDKTalk in Frameworks */ = {isa = PBXBuildFile; productRef = C93EE1BA2B583D47007D61EF /* RxKakaoSDKTalk */; };
 		C93EE1BD2B583D47007D61EF /* RxKakaoSDKUser in Frameworks */ = {isa = PBXBuildFile; productRef = C93EE1BC2B583D47007D61EF /* RxKakaoSDKUser */; };
 		C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2742AE38E26003777EB /* RootViewController.swift */; };
-		C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2762AE38E82003777EB /* AppCoordinator.swift */; };
+		C94FD2772AE38E82003777EB /* DefaultAppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2762AE38E82003777EB /* DefaultAppCoordinator.swift */; };
 		C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2782AE38EBD003777EB /* RootCoordinator.swift */; };
 		C94FD27F2AE395E3003777EB /* PosePickViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD27E2AE395E3003777EB /* PosePickViewController.swift */; };
 		C94FD2812AE39603003777EB /* PoseTalkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2802AE39603003777EB /* PoseTalkViewController.swift */; };
@@ -271,11 +276,16 @@
 		C91FF3612BAC001E00096E25 /* PoseTalkUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseTalkUseCase.swift; sourceTree = "<group>"; };
 		C91FF3632BAC002700096E25 /* DefaultPoseTalkUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseTalkUseCase.swift; sourceTree = "<group>"; };
 		C91FF36B2BAD87DB00096E25 /* CoordinatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorType.swift; sourceTree = "<group>"; };
+		C91FF36E2BAD88D600096E25 /* Coordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Coordinator.swift; sourceTree = "<group>"; };
+		C91FF3712BAD891600096E25 /* CoordinatorFinishDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorFinishDelegate.swift; sourceTree = "<group>"; };
+		C91FF3732BAD894000096E25 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		C91FF3752BAD897900096E25 /* PageViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewCoordinator.swift; sourceTree = "<group>"; };
+		C91FF3772BAD8A3100096E25 /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
 		C9254CE22B4922B000C4C779 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageWebViewController.swift; sourceTree = "<group>"; };
 		C936258F2B907A6F00B90810 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
 		C94FD2742AE38E26003777EB /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
-		C94FD2762AE38E82003777EB /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
+		C94FD2762AE38E82003777EB /* DefaultAppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAppCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2782AE38EBD003777EB /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
 		C94FD27E2AE395E3003777EB /* PosePickViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickViewController.swift; sourceTree = "<group>"; };
 		C94FD2802AE39603003777EB /* PoseTalkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseTalkViewController.swift; sourceTree = "<group>"; };
@@ -542,6 +552,7 @@
 		88E1D6B92B1E232B00DB8BF6 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
+				880E754A2AE6C03D007FAD5A /* Constants */,
 				C9D0C4092BA45012004A3940 /* Functions */,
 				88E1D6BA2B1E233C00DB8BF6 /* KeychainManager */,
 			);
@@ -856,8 +867,29 @@
 		C91FF36A2BAD875800096E25 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
+				C94FD2762AE38E82003777EB /* DefaultAppCoordinator.swift */,
+				C91FF36D2BAD88CD00096E25 /* Protocol */,
+				C91FF3702BAD890700096E25 /* Delegate */,
 			);
 			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		C91FF36D2BAD88CD00096E25 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				C91FF36E2BAD88D600096E25 /* Coordinator.swift */,
+				C91FF3732BAD894000096E25 /* AppCoordinator.swift */,
+				C91FF3752BAD897900096E25 /* PageViewCoordinator.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		C91FF3702BAD890700096E25 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				C91FF3712BAD891600096E25 /* CoordinatorFinishDelegate.swift */,
+			);
+			path = Delegate;
 			sourceTree = "<group>";
 		};
 		C9254CE42B4922D900C4C779 /* MyPageSubview */ = {
@@ -1173,7 +1205,6 @@
 			isa = PBXGroup;
 			children = (
 				C9C890512AE103A10010240A /* AppDelegate.swift */,
-				C94FD2762AE38E82003777EB /* AppCoordinator.swift */,
 			);
 			path = Application;
 			sourceTree = "<group>";
@@ -1182,7 +1213,6 @@
 			isa = PBXGroup;
 			children = (
 				88E1D6B92B1E232B00DB8BF6 /* Utils */,
-				880E754A2AE6C03D007FAD5A /* Constants */,
 				C94FD29C2AE3AF1E003777EB /* Component */,
 				C9C890862AE106FA0010240A /* Base */,
 			);
@@ -1373,6 +1403,7 @@
 		C9DC2FA42AEB6E0C00D5170D /* enum */ = {
 			isa = PBXGroup;
 			children = (
+				C91FF3772BAD8A3100096E25 /* Pages.swift */,
 				C9DC2FA52AEB6E1800D5170D /* FilterTags.swift */,
 				C9042E572B0AFB8500BB4182 /* PeopleCountTags.swift */,
 				C9042E5B2B0B043400BB4182 /* FrameCountTags.swift */,
@@ -1632,10 +1663,11 @@
 				880E75342AE67CC4007FAD5A /* BasicSelection.swift in Sources */,
 				C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */,
 				883132992B08EF9E00DAA5A7 /* PoseDetailTagCellViewModel.swift in Sources */,
+				C91FF3742BAD894000096E25 /* AppCoordinator.swift in Sources */,
 				C9188B272B909E78004B9C45 /* MyPoseCustomTagCellViewModel.swift in Sources */,
 				880E75422AE6BF4B007FAD5A /* APIService.swift in Sources */,
 				C916730E2B5E526D0092661B /* ImagePopUpViewController.swift in Sources */,
-				C94FD2772AE38E82003777EB /* AppCoordinator.swift in Sources */,
+				C94FD2772AE38E82003777EB /* DefaultAppCoordinator.swift in Sources */,
 				88EA81F82AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift in Sources */,
 				C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */,
 				C9676BE82BAAAB79000A4114 /* PosePickUseCase.swift in Sources */,
@@ -1674,6 +1706,7 @@
 				8803ADB92B04FB0D00185933 /* PoseDetailViewController.swift in Sources */,
 				C94FD2852AE39612003777EB /* BookMarkViewController.swift in Sources */,
 				C95DD37A2B8711F4005ACE84 /* MyPoseGuidelineViewController.swift in Sources */,
+				C91FF36F2BAD88D600096E25 /* Coordinator.swift in Sources */,
 				C903E54C2B05C13B00BD004F /* PopUpView.swift in Sources */,
 				C94FD29B2AE3AC3E003777EB /* UIView+.swift in Sources */,
 				880E75592AEA8BE2007FAD5A /* EmptyBookmarkView.swift in Sources */,
@@ -1698,9 +1731,11 @@
 				88EA81F12AF69BD700020DEA /* PoseFeed.swift in Sources */,
 				C9C4D2022B8F6A5D00FF9363 /* MyPoseImageDetailViewController.swift in Sources */,
 				C94FD2892AE39635003777EB /* PoseTalkViewModel.swift in Sources */,
+				C91FF3762BAD897900096E25 /* PageViewCoordinator.swift in Sources */,
 				C91A266D2B88525200F1193E /* MyPoseImageSourceViewController.swift in Sources */,
 				C91E18502B99ECC1009611C3 /* RadioButton.swift in Sources */,
 				C9C890882AE107090010240A /* BaseViewController.swift in Sources */,
+				C91FF3782BAD8A3100096E25 /* Pages.swift in Sources */,
 				880E75372AE67DC8007FAD5A /* BasicButton.swift in Sources */,
 				C9C8909D2AE107BC0010240A /* UIColor+.swift in Sources */,
 				C94FD2872AE3961D003777EB /* PosePickViewModel.swift in Sources */,
@@ -1708,6 +1743,7 @@
 				88D5C4852B0318040045C081 /* PoseFeedHeader.swift in Sources */,
 				C94FD2902AE398CF003777EB /* MyPageViewController.swift in Sources */,
 				C93625902B907A6F00B90810 /* UITextField+.swift in Sources */,
+				C91FF3722BAD891600096E25 /* CoordinatorFinishDelegate.swift in Sources */,
 				C9D0C4032B9C4BFC004A3940 /* SecureField.swift in Sources */,
 				880E75492AE6BFE3007FAD5A /* NetworkEventLogger.swift in Sources */,
 				880E75522AE6C275007FAD5A /* Data+.swift in Sources */,
