@@ -38,6 +38,7 @@ class PoseTalkViewController: BaseViewController {
     
     let mainLabel = UILabel()
         .then {
+            $0.text = "제시어에 맞춰\n포즈를 취해요!"
             $0.textColor = .textPrimary
             $0.layer.zPosition = 999
             $0.textAlignment = .center
@@ -62,8 +63,7 @@ class PoseTalkViewController: BaseViewController {
     // MARK: - Properties
     
     var viewModel: PoseTalkViewModel?
-//    var coordinator: RootCoordinator?
-    var isAnimating = BehaviorRelay<Bool>(value: false)
+    var isAnimating = BehaviorRelay<Bool>(value: false) // 초기 화면 접속시에 애니메이션 처리 해야됨
     
     // MARK: - Life Cycles
     
@@ -103,7 +103,6 @@ class PoseTalkViewController: BaseViewController {
         }
         
         viewModel?.coordinator?.rootViewController.view.addSubViews([toolTip])
-        
     
         let segmentHeight = viewModel?.coordinator?.rootViewController.segmentControl.frame.height ?? 100
         let headerHeight = UIScreen.main.isWiderThan375pt ? viewModel?.coordinator?.rootViewController.header.frame.height ?? 20 - 10 : viewModel?.coordinator?.rootViewController.header.frame.height ?? 20 - 20
@@ -119,17 +118,6 @@ class PoseTalkViewController: BaseViewController {
     override func configUI() {
         self.navigationController?.isNavigationBarHidden = true
         view.backgroundColor = .bgWhite
-    }
-    
-    override func bindViewModel() {
-        let input = PoseTalkViewModel.Input(
-            poseTalkButtonTapped: selectButton.rx.controlEvent(.touchUpInside),
-            isAnimating: isAnimating.asObservable()
-        )
-        
-        let output = viewModel!.transform(input: input)
-        self.configureViewModelOutput(output)
-        
         
         toolTip.closeButton.rx.tap.asDriver()
             .drive(onNext: { [unowned self] in
@@ -152,16 +140,51 @@ class PoseTalkViewController: BaseViewController {
             .disposed(by: disposeBag)
     }
     
+    override func bindViewModel() {
+        let input = PoseTalkViewModel.Input(
+            poseTalkButtonTapped: selectButton.rx.controlEvent(.touchUpInside),
+            isAnimating: isAnimating
+        )
+        
+        let output = viewModel!.transform(input: input)
+        self.configureViewModelOutput(output)
+    }
+    
     // MARK: - Objc Functions
 }
 
 private extension PoseTalkViewController {
     func configureViewModelOutput(_ output: PoseTalkViewModel.Output?) {
+        
         output?.poseWord
             .asDriver(onErrorJustReturn: "오류")
             .drive(onNext: { [weak self] in
-                print("워드 세팅",$0)
                 self?.mainLabel.text = $0
+            })
+            .disposed(by: disposeBag)
+        
+        output?.animate
+            .asDriver(onErrorJustReturn: ())
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.animationView.pause()
+                self.animationView.loopMode = .playOnce
+                self.animationView.animation = LottieAnimation.named("lottiePoseTalkTap")
+                
+                // 애니메이션 로티뷰 사이즈 조정 -> 2줄 텍스트 기준 높이값 계산하는 로직
+                self.animationView.snp.updateConstraints { make in
+                    let mainLabelHeight = "제시어에 맞춰\n포즈를 취해요!".height(withConstrainedWidth: UIScreen.main.bounds.width - 100, font: .h1)
+                    make.top.equalTo(self.mainLabel.snp.top).offset(mainLabelHeight + 6)
+                    make.leading.equalToSuperview().offset(-40)
+                    make.trailing.equalToSuperview().offset(44)
+                }
+        
+                self.isAnimating.accept(true)
+                self.animationView.play() {
+                    if $0 {
+                        self.isAnimating.accept(false)
+                    }
+                }
             })
             .disposed(by: disposeBag)
     }
