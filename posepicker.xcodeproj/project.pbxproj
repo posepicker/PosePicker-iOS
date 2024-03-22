@@ -80,6 +80,7 @@
 		C91FF35E2BABFBA300096E25 /* DefaultPoseTalkRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF35D2BABFBA300096E25 /* DefaultPoseTalkRepository.swift */; };
 		C91FF3622BAC001E00096E25 /* PoseTalkUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3612BAC001E00096E25 /* PoseTalkUseCase.swift */; };
 		C91FF3642BAC002700096E25 /* DefaultPoseTalkUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3632BAC002700096E25 /* DefaultPoseTalkUseCase.swift */; };
+		C91FF36C2BAD87DB00096E25 /* CoordinatorType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF36B2BAD87DB00096E25 /* CoordinatorType.swift */; };
 		C9254CE32B4922B100C4C779 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9254CE22B4922B000C4C779 /* WebKit.framework */; };
 		C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */; };
 		C93625902B907A6F00B90810 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C936258F2B907A6F00B90810 /* UITextField+.swift */; };
@@ -269,6 +270,7 @@
 		C91FF35D2BABFBA300096E25 /* DefaultPoseTalkRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseTalkRepository.swift; sourceTree = "<group>"; };
 		C91FF3612BAC001E00096E25 /* PoseTalkUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseTalkUseCase.swift; sourceTree = "<group>"; };
 		C91FF3632BAC002700096E25 /* DefaultPoseTalkUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseTalkUseCase.swift; sourceTree = "<group>"; };
+		C91FF36B2BAD87DB00096E25 /* CoordinatorType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorType.swift; sourceTree = "<group>"; };
 		C9254CE22B4922B000C4C779 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageWebViewController.swift; sourceTree = "<group>"; };
 		C936258F2B907A6F00B90810 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
@@ -835,6 +837,29 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
+		C91FF3682BAD7BC800096E25 /* Common */ = {
+			isa = PBXGroup;
+			children = (
+				C91FF36A2BAD875800096E25 /* Coordinator */,
+				C91FF3692BAD7BDC00096E25 /* ViewModel */,
+			);
+			path = Common;
+			sourceTree = "<group>";
+		};
+		C91FF3692BAD7BDC00096E25 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C91FF36A2BAD875800096E25 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
 		C9254CE42B4922D900C4C779 /* MyPageSubview */ = {
 			isa = PBXGroup;
 			children = (
@@ -1214,6 +1239,7 @@
 		C9C890A32AE109D80010240A /* Presentation */ = {
 			isa = PBXGroup;
 			children = (
+				C91FF3682BAD7BC800096E25 /* Common */,
 				C9C890A62AE10A010010240A /* Root */,
 				C94FD27A2AE39505003777EB /* PosePick */,
 				C94FD27B2AE3950C003777EB /* PoseTalkScene */,
@@ -1350,6 +1376,7 @@
 				C9DC2FA52AEB6E1800D5170D /* FilterTags.swift */,
 				C9042E572B0AFB8500BB4182 /* PeopleCountTags.swift */,
 				C9042E5B2B0B043400BB4182 /* FrameCountTags.swift */,
+				C91FF36B2BAD87DB00096E25 /* CoordinatorType.swift */,
 			);
 			path = enum;
 			sourceTree = "<group>";
@@ -1634,6 +1661,7 @@
 				C9DC2FA82AECAD1A00D5170D /* RegisteredFilterCell.swift in Sources */,
 				C99D53BB2B1F16B8007DEE9B /* MockImageDownloaderIURLProtocol.swift in Sources */,
 				C94FD2AB2AE8CEEB003777EB /* Button.swift in Sources */,
+				C91FF36C2BAD87DB00096E25 /* CoordinatorType.swift in Sources */,
 				C91CE9262B1B0DDC00048FF7 /* MockURLProtocol.swift in Sources */,
 				C95DD3762B8710B1005ACE84 /* MyPoseViewModel.swift in Sources */,
 				C94FD2922AE398D6003777EB /* MyPageViewModel.swift in Sources */,
