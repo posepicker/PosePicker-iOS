@@ -21,27 +21,24 @@ class PoseTalkViewModel: ViewModelType {
         self.posetalkUseCase = posetalkUseCase
     }
     
+    /// UI 통신 순서
+    /// 1. 버튼을 누른다
+    /// 2. 애니메이션을 한바퀴 돌린다 - 버튼 인풋에 대해 애니메이션을 뷰 컨트롤러에게 명령
+    /// 3. 동시에 포즈톡 키워드를 요청한다
+    /// 4. 애니메이션이 끝나면 단어를 화면에 표시한다
+    /// 5. 데이터를 내보내는 시점 조절을 위해 컨트롤러로부터 애니메이션 종료 여부까지 전달받기
     struct Input {
         let poseTalkButtonTapped: ControlEvent<Void>
-        let isAnimating: Observable<Bool>
+        let isAnimating: BehaviorRelay<Bool>
     }
     
     struct Output {
-        let animate = Driver<Void>.empty()
+        let animate = PublishSubject<Void>()
         let poseWord = PublishRelay<String>()
         let isLoading = BehaviorRelay<Bool>(value: false)
     }
     
     func transform(input: Input) -> Output {
-        let poseWord = BehaviorRelay<String>(value: "제시어에 맞춰\n포즈를 취해요!")
-        let isLoading = BehaviorRelay<Bool>(value: false)
-        
-        /// 애니메이션 + 네트워크 관련 로직 추가를 고려한 설계
-        input.isAnimating
-            .subscribe(onNext: {
-                isLoading.accept($0)
-            })
-            .disposed(by: disposeBag)
         self.configureInput(input, disposeBag: disposeBag)
         return createOutput(from: input, disposeBag: disposeBag)
     }
@@ -52,7 +49,6 @@ class PoseTalkViewModel: ViewModelType {
     private func configureInput(_ input: Input, disposeBag: DisposeBag) {
         input.poseTalkButtonTapped
             .subscribe(onNext: { [weak self] in
-                print("TAPPP")
                 self?.posetalkUseCase.fetchPoseTalk()
             })
             .disposed(by: disposeBag)
@@ -62,10 +58,19 @@ class PoseTalkViewModel: ViewModelType {
     /// cocoa 이벤트를 기반으로 새롭게 아웃풋에 정제가 필요한 경우도 존재함
     private func createOutput(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        
+        input.poseTalkButtonTapped
+            .subscribe(onNext: {
+                output.animate.onNext(())
+            })
+            .disposed(by: disposeBag)
 
-        self.posetalkUseCase
-            .poseWord
-            .bind(to: output.poseWord)
+        Observable.combineLatest(self.posetalkUseCase.poseWord, input.isAnimating)
+            .subscribe(onNext: { poseWord, animating in
+                if !animating {
+                    output.poseWord.accept(poseWord)
+                }
+            })
             .disposed(by: disposeBag)
         
         return output
