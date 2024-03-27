@@ -18,3 +18,25 @@ protocol Coordinator: AnyObject {
     
     init(_ navigationController: UINavigationController)
 }
+
+extension Coordinator {
+    func finish() {
+        childCoordinators.removeAll()
+        finishDelegate?.coordinatorDidFinish(childCoordinator: self)
+    }
+    
+    func findCoordinator(type: CoordinatorType) -> Coordinator? {
+        var stack: [Coordinator] = [self]
+        
+        while !stack.isEmpty {
+            let currentCoordinator = stack.removeLast()
+            if currentCoordinator.type == type {
+                return currentCoordinator
+            }
+            currentCoordinator.childCoordinators.forEach({ child in
+                stack.append(child)
+            })
+        }
+        return nil
+    }
+}
