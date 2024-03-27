@@ -42,7 +42,7 @@ class PoseTalkViewModel: ViewModelType {
         self.configureInput(input, disposeBag: disposeBag)
         return createOutput(from: input, disposeBag: disposeBag)
     }
-    
+
     /// configureInput: 인풋 이벤트를 기반으로 유스케이스 -> 레파지토리를 거쳐 데이터를 저장해둔다.
     /// 유스케이스에는 레파지토리의 데이터 요청 내부 동작을 가린채 정제가 완료된 최종 데이터만 저장된다.
     /// 아웃풋에서는 저장된 유스케이스의 데이터를 바인딩만 해주면 끝
