@@ -52,7 +52,11 @@ struct DefaultNetworkService: NetworkService {
     /// Single Trait 멀티파트 통신
     func requestMultipartSingle<T: Codable>(_ request: APIRouter) -> Single<T> {
         return Single<T>.create { observer -> Disposable in
-            let request = session.upload(multipartFormData: request.multipartFormData, with: request, interceptor: APIInterceptor())
+            let request = session.upload(
+                multipartFormData: request.multipartFormData,
+                with: request,
+                interceptor: APIInterceptor()
+            )
                 .uploadProgress(closure: { (progress) in
                     print("Upload Progress: \(progress.fractionCompleted)")
                 })
