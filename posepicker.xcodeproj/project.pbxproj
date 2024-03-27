@@ -94,6 +94,7 @@
 		C938511C2BB3E1D100E597C1 /* DefaultPoseTalkCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938511B2BB3E1D100E597C1 /* DefaultPoseTalkCoordinator.swift */; };
 		C93851212BB3F44C00E597C1 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93851202BB3F44C00E597C1 /* CommonViewController.swift */; };
 		C93851232BB3F55000E597C1 /* CommonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93851222BB3F55000E597C1 /* CommonViewModel.swift */; };
+		C93851252BB414E000E597C1 /* PosePickCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93851242BB414E000E597C1 /* PosePickCoordinator.swift */; };
 		C93EE1B32B583D47007D61EF /* RxKakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = C93EE1B22B583D47007D61EF /* RxKakaoSDK */; };
 		C93EE1B52B583D47007D61EF /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C93EE1B42B583D47007D61EF /* RxKakaoSDKAuth */; };
 		C93EE1B72B583D47007D61EF /* RxKakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = C93EE1B62B583D47007D61EF /* RxKakaoSDKCommon */; };
@@ -294,6 +295,7 @@
 		C938511B2BB3E1D100E597C1 /* DefaultPoseTalkCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseTalkCoordinator.swift; sourceTree = "<group>"; };
 		C93851202BB3F44C00E597C1 /* CommonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		C93851222BB3F55000E597C1 /* CommonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViewModel.swift; sourceTree = "<group>"; };
+		C93851242BB414E000E597C1 /* PosePickCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2742AE38E26003777EB /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		C94FD2762AE38E82003777EB /* DefaultAppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAppCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2782AE38EBD003777EB /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -999,6 +1001,7 @@
 		C93851182BB3E19600E597C1 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
+				C93851242BB414E000E597C1 /* PosePickCoordinator.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -1792,6 +1795,7 @@
 				C903E54A2B05BCA300BD004F /* PopUpViewController.swift in Sources */,
 				C91FF3432BAAADC500096E25 /* Sort.swift in Sources */,
 				C9C8908A2AE107180010240A /* ViewModelType.swift in Sources */,
+				C93851252BB414E000E597C1 /* PosePickCoordinator.swift in Sources */,
 				C9C890BF2AE1107B0010240A /* ImageLiteral.swift in Sources */,
 				C9FDBDF62B28AE140045AA54 /* BookmarkDetailTagCellViewModel.swift in Sources */,
 				8874106A2B27491E00EBC060 /* AuthCode.swift in Sources */,
