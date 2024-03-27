@@ -6,3 +6,7 @@
 //
 
 import Foundation
+
+protocol PosePickCoordinator: Coordinator {
+    func presentDetailImage()
+}
