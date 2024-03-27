@@ -89,6 +89,7 @@
 		C9254CE32B4922B100C4C779 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9254CE22B4922B000C4C779 /* WebKit.framework */; };
 		C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */; };
 		C93625902B907A6F00B90810 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C936258F2B907A6F00B90810 /* UITextField+.swift */; };
+		C938510E2BB2B18400E597C1 /* DefaultPageViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938510D2BB2B18400E597C1 /* DefaultPageViewCoordinator.swift */; };
 		C93EE1B32B583D47007D61EF /* RxKakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = C93EE1B22B583D47007D61EF /* RxKakaoSDK */; };
 		C93EE1B52B583D47007D61EF /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C93EE1B42B583D47007D61EF /* RxKakaoSDKAuth */; };
 		C93EE1B72B583D47007D61EF /* RxKakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = C93EE1B62B583D47007D61EF /* RxKakaoSDKCommon */; };
@@ -284,6 +285,7 @@
 		C9254CE22B4922B000C4C779 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageWebViewController.swift; sourceTree = "<group>"; };
 		C936258F2B907A6F00B90810 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
+		C938510D2BB2B18400E597C1 /* DefaultPageViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPageViewCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2742AE38E26003777EB /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		C94FD2762AE38E82003777EB /* DefaultAppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAppCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2782AE38EBD003777EB /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -868,6 +870,7 @@
 			isa = PBXGroup;
 			children = (
 				C94FD2762AE38E82003777EB /* DefaultAppCoordinator.swift */,
+				C938510D2BB2B18400E597C1 /* DefaultPageViewCoordinator.swift */,
 				C91FF36D2BAD88CD00096E25 /* Protocol */,
 				C91FF3702BAD890700096E25 /* Delegate */,
 			);
@@ -911,6 +914,37 @@
 			path = UITextField;
 			sourceTree = "<group>";
 		};
+		C938510F2BB2B4BC00E597C1 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				C93851122BB2B4F700E597C1 /* Protocol */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		C93851102BB2B4D900E597C1 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C94FD2882AE39635003777EB /* PoseTalkViewModel.swift */,
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C93851112BB2B4DC00E597C1 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C94FD2802AE39603003777EB /* PoseTalkViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		C93851122BB2B4F700E597C1 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
 		C94FD27A2AE39505003777EB /* PosePick */ = {
 			isa = PBXGroup;
 			children = (
@@ -923,8 +957,9 @@
 		C94FD27B2AE3950C003777EB /* PoseTalkScene */ = {
 			isa = PBXGroup;
 			children = (
-				C94FD2882AE39635003777EB /* PoseTalkViewModel.swift */,
-				C94FD2802AE39603003777EB /* PoseTalkViewController.swift */,
+				C938510F2BB2B4BC00E597C1 /* Coordinator */,
+				C93851112BB2B4DC00E597C1 /* ViewController */,
+				C93851102BB2B4D900E597C1 /* ViewModel */,
 			);
 			path = PoseTalkScene;
 			sourceTree = "<group>";
@@ -1672,6 +1707,7 @@
 				C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */,
 				C9676BE82BAAAB79000A4114 /* PosePickUseCase.swift in Sources */,
 				C91A265F2B8788F900F1193E /* MyPoseCoordinator.swift in Sources */,
+				C938510E2BB2B18400E597C1 /* DefaultPageViewCoordinator.swift in Sources */,
 				C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */,
 				C94FD27F2AE395E3003777EB /* PosePickViewController.swift in Sources */,
 				C9DC2F9B2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift in Sources */,
