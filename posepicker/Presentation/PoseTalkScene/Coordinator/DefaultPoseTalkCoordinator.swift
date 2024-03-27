@@ -10,24 +10,23 @@ import UIKit
 final class DefaultPoseTalkCoordinator: PoseTalkCoordinator {
     weak var finishDelegate: CoordinatorFinishDelegate?
     var navigationController: UINavigationController
-    var recordViewController: PoseTalkViewController
+    var posetalkViewController: PoseTalkViewController
     var childCoordinators: [Coordinator] = []
     var type: CoordinatorType = .posetalk
     
     required init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
-        self.recordViewController = PoseTalkViewController()
+        self.posetalkViewController = PoseTalkViewController()
     }
     
     func start() {
-        let poseTalkViewController = PoseTalkViewController()
-        poseTalkViewController.viewModel = PoseTalkViewModel(
+        self.posetalkViewController.viewModel = PoseTalkViewModel(
             posetalkUseCase: DefaultPoseTalkUseCase(
                 posetalkRepository: DefaultPoseTalkRepository(
                     networkService: DefaultNetworkService())
             ))
         
-        self.navigationController.pushViewController(poseTalkViewController, animated: true)
+        self.navigationController.pushViewController(self.posetalkViewController, animated: true)
     }
 }
 
