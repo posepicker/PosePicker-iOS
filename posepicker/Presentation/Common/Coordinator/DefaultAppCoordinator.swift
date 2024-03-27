@@ -15,14 +15,18 @@ class DefaultAppCoordinator: AppCoordinator {
     
     required init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
-        navigationController.setNavigationBarHidden(true, animated: true)
+        navigationController.setNavigationBarHidden(false, animated: true)
     }
     
     func start() {
+        self.showPageviewFlow()
     }
     
     func showPageviewFlow() {
-        
+        let pageviewCoordinator = DefaultPageViewCoordinator(self.navigationController)
+        pageviewCoordinator.finishDelegate = self
+        pageviewCoordinator.start()
+        childCoordinators.append(pageviewCoordinator)
     }
     
 }
