@@ -10,14 +10,12 @@ import RxCocoa
 import RxSwift
 
 class PoseTalkViewModel: ViewModelType {
-    weak var coordinator: RootCoordinator?
     private let posetalkUseCase: PoseTalkUseCase
     
     var apiSession: APIService = APISession()
     var disposeBag = DisposeBag()
     
-    init(coordinator: RootCoordinator?, posetalkUseCase: PoseTalkUseCase) {
-        self.coordinator = coordinator
+    init(posetalkUseCase: PoseTalkUseCase) {
         self.posetalkUseCase = posetalkUseCase
     }
     
