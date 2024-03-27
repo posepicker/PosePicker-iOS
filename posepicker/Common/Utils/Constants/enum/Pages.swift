@@ -7,12 +7,21 @@
 
 import Foundation
 
-enum PageViewType {
+enum PageViewType: String, CaseIterable {
     case posepick
     case posetalk
     case posefeed
     case bookmark
     case myPage
+    
+    init?(index: Int) {
+        switch index {
+        case 0: self = .posepick
+        case 1: self = .posetalk
+        case 2: self = .posefeed
+        default: return nil
+        }
+    }
     
     func pageTitleValue() -> String {
         switch self {
