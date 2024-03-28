@@ -18,9 +18,11 @@ import RxKakaoSDKUser
 final class DefaultUserRepository: UserRepository {
     
     let networkService: DefaultNetworkService
+    let keychainService: DefaultKeychainService
     
-    init(networkService: DefaultNetworkService) {
+    init(networkService: DefaultNetworkService, keychainService: DefaultKeychainService) {
         self.networkService = networkService
+        self.keychainService = keychainService
     }
     
     /// 토큰 유효성 검사를 위해 서버로부터 자체 발급되는 JWT 로드
@@ -36,7 +38,7 @@ final class DefaultUserRepository: UserRepository {
     }
     
     /// 카카오 로그인 요청
-    func loginWithKakao(email: String, authCode: String, kakaoId: Int64) -> Observable<PosePickerUser> {
+    func loginWithKakao() -> Observable<PosePickerUser> {
         return Observable.combineLatest(
             self.fetchAuthCodeFromPosepicker(),
             self.loadKakaoInfo()
@@ -47,50 +49,63 @@ final class DefaultUserRepository: UserRepository {
             return self.networkService
                 .requestSingle(.kakaoLogin(authCode: authCode, email: email, kakaoId: kakaoId))
                 .asObservable()
-                .flatMapLatest { user -> Observable<PosePickerUser> in
-                    let relay = PublishRelay<PosePickerUser>()
-                    relay.accept(user)
-                    return relay.asObservable()
+                .flatMapLatest { [weak self] (user: PosePickerUser) -> Observable<PosePickerUser> in
+                    
+                    // 토큰 저장
+                    self?.keychainService.saveToken(user.token)
+                    self?.keychainService.saveEmail(user.email)
+                    
+                    return BehaviorRelay<PosePickerUser>(value: user).asObservable()
                 }
         }
     }
     
     func loginWithApple(idToken: String) -> Observable<PosePickerUser> {
-        let request: Observable<PosePickerUser> = networkService.requestSingle(
+        return networkService.requestSingle(
             .appleLogin(
                 idToken: idToken
-            )).asObservable()
-        return request
+            ))
+        .asObservable()
+        .flatMapLatest { [weak self] (user: PosePickerUser) -> Observable<PosePickerUser> in
+            self?.keychainService.saveToken(user.token)
+            self?.keychainService.saveEmail(user.email)
+            return BehaviorRelay<PosePickerUser>(value: user).asObservable()
+        }
     }
     
     func reissueToken(refreshToken: String) -> Observable<Token> {
-        let request: Observable<Token> = networkService.requestSingle(
+        return networkService.requestSingle(
             .refreshToken(
                 refreshToken: refreshToken
             ))
             .asObservable()
-        
-        return request
+            .flatMapLatest { token -> Observable<Token> in
+                return BehaviorRelay<Token>(value: token).asObservable()
+            }
     }
     
     func logout(accessToken: String, refreshToken: String) -> Observable<MeaninglessResponse> {
-        let request: Observable<MeaninglessResponse> = networkService.requestSingle(
+        networkService.requestSingle(
             .logout(
                 accessToken: accessToken,
                 refreshToken: refreshToken
             )).asObservable()
-        
-        return request
+            .flatMapLatest { response in
+                return BehaviorRelay<MeaninglessResponse>(value: response).asObservable()
+            }
     }
     
     func deleteUserInfo(accessToken: String, refreshToken: String, withdrawalReason: String) -> Observable<MeaninglessResponse> {
-        let request: Observable<MeaninglessResponse> = networkService.requestSingle(
+        return networkService.requestSingle(
             .revoke(
                 accessToken: accessToken,
                 refreshToken: refreshToken,
                 withdrawalReason: withdrawalReason
-            )).asObservable()
-        return request
+            ))
+        .asObservable()
+        .flatMapLatest { response in
+            return BehaviorRelay<MeaninglessResponse>(value: response).asObservable()
+        }
         
     }
     
