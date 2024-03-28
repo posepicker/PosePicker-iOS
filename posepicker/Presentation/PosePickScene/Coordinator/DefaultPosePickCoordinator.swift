@@ -16,11 +16,11 @@ final class DefaultPosePickCoordinator: PosePickCoordinator {
     
     required init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
-        self.posepickViewController = PosePickViewController(viewModel: PosePickViewModel())
+        self.posepickViewController = PosePickViewController()
     }
     
     func start() {
-        self.posepickViewController.viewModel = PosePickViewModel()
+//        self.posepickViewController.viewModel = PosePickViewModel()
         
         self.navigationController.pushViewController(self.posepickViewController, animated: true)
     }
