@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxRelay
 
 class CommonViewController: BaseViewController {
     
@@ -25,18 +26,13 @@ class CommonViewController: BaseViewController {
             $0.selectedSegmentIndex = 0
         }
     
-    lazy var pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
-        .then {
-            let pages: [RootPage] = [.posepick, .posetalk, .posefeed].sorted(by: { $0.pageOrderNumber() < $1.pageOrderNumber() })
-            viewControllers = pages.map { getNavigationController($0) }
-            $0.dataSource = self
-            $0.delegate = self
-        }
+    // 코디네이터의 페이지 뷰 컨트롤러를 가져와야됨
+    let pageViewController: UIPageViewController
     
     // MARK: - Properties
-    var viewControllers: [UIViewController] = []
     var viewModel: CommonViewModel?
     var loginCompletedTrigger = PublishSubject<Void>()
+    private let pageviewControllerDidFinishEvent = PublishRelay<Void>()
     
     var currentPage: Int = 0 {
         didSet {
@@ -48,6 +44,16 @@ class CommonViewController: BaseViewController {
     let appleIdentityTokenTrigger = PublishSubject<String>()
     let kakaoEmailTrigger = PublishSubject<String>()
     let kakaoIdTrigger = PublishSubject<Int64>()
+    
+    // MARK: - Initialization
+    init(pageViewController: UIPageViewController) {
+        self.pageViewController = pageViewController
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Life Cycles
     override func viewWillAppear(_ animated: Bool) {
@@ -107,11 +113,11 @@ class CommonViewController: BaseViewController {
             })
             .disposed(by: disposeBag)
         
-        header.menuButton.rx.tap.asDriver()
-            .drive(onNext: { [unowned self] in
-                self.coordinator.push(page: .myPage)
-            })
-            .disposed(by: disposeBag)
+//        header.menuButton.rx.tap.asDriver()
+//            .drive(onNext: { [weak self] in
+//                self.coordinator.push(page: .myPage)
+//            })
+//            .disposed(by: disposeBag)
         
         header.bookMarkButton.rx.tap.asDriver()
             .drive(onNext: { [unowned self] in
@@ -152,51 +158,24 @@ class CommonViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = RootViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger))
+        let input = CommonViewModel.Input(
+            pageviewTransitionDelegateEvent: pageviewControllerDidFinishEvent.asObservable(),
+            myPageButtonTapped: header.menuButton.rx.tap.asObservable()
+        )
+        let output = self.viewModel?.transform(from: input, disposeBag: disposeBag)
         
-        let output = viewModel.transform(input: input)
-        
-        output.dismissLoginView
-            .subscribe(onNext: { [unowned self] in
-                guard let popupVC = self.presentedViewController as? PopUpViewController,
-                      let _ = popupVC.popUpView as? LoginPopUpView else { return }
-                self.loginCompletedTrigger.onNext(())
-                self.dismiss(animated: true)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    func getNavigationController(_ page: RootPage) -> UINavigationController {
-        let navController = UINavigationController()
-        navController.setNavigationBarHidden(false, animated: false)
-        
-        switch page {
-        case .posepick:
-            let posePickerVC = PosePickViewController(viewModel: PosePickViewModel())
-            navController.pushViewController(posePickerVC, animated: true)
-        case .posetalk:
-            let poseTalkVC = PoseTalkViewController()
-            poseTalkVC.viewModel = PoseTalkViewModel(
-                coordinator: self.coordinator,
-                posetalkUseCase: DefaultPoseTalkUseCase(
-                    posetalkRepository: DefaultPoseTalkRepository(
-                        networkService: DefaultNetworkService()
-                    )
-                )
-            )
-            navController.pushViewController(poseTalkVC, animated: true)
-        case .posefeed:
-            let poseFeedVC = PoseFeedViewController(viewModel: PoseFeedViewModel(), coordinator: self.coordinator.posefeedCoordinator)
-            navController.pushViewController(poseFeedVC, animated: true)
-        case .bookmark:
-            let bookmarkVC = BookMarkViewController(viewModel: BookMarkViewModel(), coordinator: self.coordinator.posefeedCoordinator)
-            navController.pushViewController(bookmarkVC, animated: true)
-        case .myPage:
-            let myPageVC = MyPageViewController(viewModel: MyPageViewModel(), coordinator: self.coordinator)
-            navController.pushViewController(myPageVC, animated: true)
-        }
-        
-        return navController
+//        let input = RootViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger))
+//        
+//        let output = viewModel.transform(input: input)
+//
+//        output.dismissLoginView
+//            .subscribe(onNext: { [unowned self] in
+//                guard let popupVC = self.presentedViewController as? PopUpViewController,
+//                      let _ = popupVC.popUpView as? LoginPopUpView else { return }
+//                self.loginCompletedTrigger.onNext(())
+//                self.dismiss(animated: true)
+//            })
+//            .disposed(by: disposeBag)
     }
 }
 
@@ -207,30 +186,17 @@ extension CommonViewController: UIPageViewControllerDelegate {
         previousViewControllers: [UIViewController],
         transitionCompleted completed: Bool
     ) {
-        guard let navigationVC = pageViewController.viewControllers?[0] as? UINavigationController,
-              let index = self.viewControllers.firstIndex(of: navigationVC) else { return }
-        
-        coordinator.moveWithSegment(pageNumber: index)
+        self.pageviewControllerDidFinishEvent.accept(())
     }
 }
 
 extension CommonViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let navigationVC = viewController as? UINavigationController,
-              let index = self.viewControllers.firstIndex(of: navigationVC),
-              index - 1 >= 0 else {
-             return nil
-        }
-        return self.viewControllers[index - 1]
+        return viewModel?.viewControllerBefore()
     }
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let navigationVC = viewController as? UINavigationController,
-              let index = self.viewControllers.firstIndex(of: navigationVC),
-              index + 1 < self.viewControllers.count else {
-            return nil
-        }
-        return self.viewControllers[index + 1]
+        return viewModel?.viewControllerAfter()
     }
 }
