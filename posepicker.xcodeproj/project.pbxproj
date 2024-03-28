@@ -140,6 +140,8 @@
 		C96C9A862BB5416400AC2921 /* CommonViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A852BB5416400AC2921 /* CommonViewTest.swift */; };
 		C96C9A8C2BB5420800AC2921 /* DefaultCommonUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A8B2BB5420800AC2921 /* DefaultCommonUseCase.swift */; };
 		C96C9A8E2BB5425700AC2921 /* CommonUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A8D2BB5425700AC2921 /* CommonUseCase.swift */; };
+		C96C9A922BB5727900AC2921 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A912BB5727900AC2921 /* KeychainService.swift */; };
+		C96C9A942BB572D400AC2921 /* DefaultKeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A932BB572D400AC2921 /* DefaultKeychainService.swift */; };
 		C971A67C2B2036850078EF2B /* Bookmark_Next.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A67B2B2036850078EF2B /* Bookmark_Next.json */; };
 		C971A6822B26F5EA0078EF2B /* authenticateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971A6812B26F5EA0078EF2B /* authenticateTests.swift */; };
 		C971A6872B26FD290078EF2B /* AuthorizationCode.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A6862B26FD290078EF2B /* AuthorizationCode.json */; };
@@ -330,6 +332,8 @@
 		C96C9A852BB5416400AC2921 /* CommonViewTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViewTest.swift; sourceTree = "<group>"; };
 		C96C9A8B2BB5420800AC2921 /* DefaultCommonUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCommonUseCase.swift; sourceTree = "<group>"; };
 		C96C9A8D2BB5425700AC2921 /* CommonUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUseCase.swift; sourceTree = "<group>"; };
+		C96C9A912BB5727900AC2921 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
+		C96C9A932BB572D400AC2921 /* DefaultKeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultKeychainService.swift; sourceTree = "<group>"; };
 		C971A67A2B2008920078EF2B /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
 		C971A67B2B2036850078EF2B /* Bookmark_Next.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Bookmark_Next.json; sourceTree = "<group>"; };
 		C971A6812B26F5EA0078EF2B /* authenticateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = authenticateTests.swift; sourceTree = "<group>"; };
@@ -754,6 +758,7 @@
 		C91FF3452BAAB66600096E25 /* Data */ = {
 			isa = PBXGroup;
 			children = (
+				C96C9A8F2BB5726500AC2921 /* Keychain */,
 				C91FF3522BAB25E300096E25 /* Network */,
 				C91FF3472BAAB67B00096E25 /* Repository */,
 			);
@@ -1218,6 +1223,23 @@
 			isa = PBXGroup;
 			children = (
 				C96C9A8D2BB5425700AC2921 /* CommonUseCase.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		C96C9A8F2BB5726500AC2921 /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9A902BB5726D00AC2921 /* Protocol */,
+				C96C9A932BB572D400AC2921 /* DefaultKeychainService.swift */,
+			);
+			path = Keychain;
+			sourceTree = "<group>";
+		};
+		C96C9A902BB5726D00AC2921 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9A912BB5727900AC2921 /* KeychainService.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -1842,6 +1864,7 @@
 				C91FF3742BAD894000096E25 /* AppCoordinator.swift in Sources */,
 				C9188B272B909E78004B9C45 /* MyPoseCustomTagCellViewModel.swift in Sources */,
 				880E75422AE6BF4B007FAD5A /* APIService.swift in Sources */,
+				C96C9A942BB572D400AC2921 /* DefaultKeychainService.swift in Sources */,
 				C938512C2BB41CE300E597C1 /* DefaultPoseFeedCoordinator.swift in Sources */,
 				C916730E2B5E526D0092661B /* ImagePopUpViewController.swift in Sources */,
 				C94FD2772AE38E82003777EB /* DefaultAppCoordinator.swift in Sources */,
@@ -1908,6 +1931,7 @@
 				C9C890522AE103A10010240A /* AppDelegate.swift in Sources */,
 				C91A26642B87975900F1193E /* CircleSegmentButton.swift in Sources */,
 				C903E5472B01F51F00BD004F /* PoseFeedEmptyView.swift in Sources */,
+				C96C9A922BB5727900AC2921 /* KeychainService.swift in Sources */,
 				880E75402AE6BF2F007FAD5A /* ServicePose.swift in Sources */,
 				880E75562AE6C2F7007FAD5A /* NetworkInterceptor.swift in Sources */,
 				88EA81F12AF69BD700020DEA /* PoseFeed.swift in Sources */,
