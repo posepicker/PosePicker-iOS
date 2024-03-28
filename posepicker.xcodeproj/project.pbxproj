@@ -95,6 +95,9 @@
 		C93851212BB3F44C00E597C1 /* CommonViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93851202BB3F44C00E597C1 /* CommonViewController.swift */; };
 		C93851232BB3F55000E597C1 /* CommonViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93851222BB3F55000E597C1 /* CommonViewModel.swift */; };
 		C93851252BB414E000E597C1 /* PosePickCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93851242BB414E000E597C1 /* PosePickCoordinator.swift */; };
+		C93851272BB4152700E597C1 /* DefaultPosePickCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93851262BB4152700E597C1 /* DefaultPosePickCoordinator.swift */; };
+		C938512A2BB41CD900E597C1 /* PoseFeedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93851292BB41CD900E597C1 /* PoseFeedCoordinator.swift */; };
+		C938512C2BB41CE300E597C1 /* DefaultPoseFeedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938512B2BB41CE300E597C1 /* DefaultPoseFeedCoordinator.swift */; };
 		C93EE1B32B583D47007D61EF /* RxKakaoSDK in Frameworks */ = {isa = PBXBuildFile; productRef = C93EE1B22B583D47007D61EF /* RxKakaoSDK */; };
 		C93EE1B52B583D47007D61EF /* RxKakaoSDKAuth in Frameworks */ = {isa = PBXBuildFile; productRef = C93EE1B42B583D47007D61EF /* RxKakaoSDKAuth */; };
 		C93EE1B72B583D47007D61EF /* RxKakaoSDKCommon in Frameworks */ = {isa = PBXBuildFile; productRef = C93EE1B62B583D47007D61EF /* RxKakaoSDKCommon */; };
@@ -133,6 +136,7 @@
 		C95DD37A2B8711F4005ACE84 /* MyPoseGuidelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95DD3792B8711F4005ACE84 /* MyPoseGuidelineViewController.swift */; };
 		C9676BE82BAAAB79000A4114 /* PosePickUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9676BE72BAAAB79000A4114 /* PosePickUseCase.swift */; };
 		C9676BEC2BAAAC68000A4114 /* PoseInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9676BEB2BAAAC68000A4114 /* PoseInfo.swift */; };
+		C96C9A822BB5020400AC2921 /* UIPageViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A812BB5020300AC2921 /* UIPageViewController+Rx.swift */; };
 		C971A67C2B2036850078EF2B /* Bookmark_Next.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A67B2B2036850078EF2B /* Bookmark_Next.json */; };
 		C971A6822B26F5EA0078EF2B /* authenticateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971A6812B26F5EA0078EF2B /* authenticateTests.swift */; };
 		C971A6872B26FD290078EF2B /* AuthorizationCode.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A6862B26FD290078EF2B /* AuthorizationCode.json */; };
@@ -175,7 +179,6 @@
 		C9D0C4062BA2D228004A3940 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0C4052BA2D228004A3940 /* Toast.swift */; };
 		C9D0C4082BA4172C004A3940 /* UserRevokeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0C4072BA4172C004A3940 /* UserRevokeViewController.swift */; };
 		C9D0C40B2BA4501C004A3940 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0C40A2BA4501C004A3940 /* Functions.swift */; };
-		C9DC2F8E2AEA193300D5170D /* PoseFeedCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F8D2AEA193300D5170D /* PoseFeedCoordinator.swift */; };
 		C9DC2F902AEA1D5F00D5170D /* PoseFeedFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F8F2AEA1D5F00D5170D /* PoseFeedFilterViewController.swift */; };
 		C9DC2F942AEA282700D5170D /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F932AEA282600D5170D /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		C9DC2F962AEA284900D5170D /* UICollectionView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F952AEA284900D5170D /* UICollectionView+.swift */; };
@@ -296,6 +299,9 @@
 		C93851202BB3F44C00E597C1 /* CommonViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViewController.swift; sourceTree = "<group>"; };
 		C93851222BB3F55000E597C1 /* CommonViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViewModel.swift; sourceTree = "<group>"; };
 		C93851242BB414E000E597C1 /* PosePickCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickCoordinator.swift; sourceTree = "<group>"; };
+		C93851262BB4152700E597C1 /* DefaultPosePickCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPosePickCoordinator.swift; sourceTree = "<group>"; };
+		C93851292BB41CD900E597C1 /* PoseFeedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedCoordinator.swift; sourceTree = "<group>"; };
+		C938512B2BB41CE300E597C1 /* DefaultPoseFeedCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseFeedCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2742AE38E26003777EB /* RootViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewController.swift; sourceTree = "<group>"; };
 		C94FD2762AE38E82003777EB /* DefaultAppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultAppCoordinator.swift; sourceTree = "<group>"; };
 		C94FD2782AE38EBD003777EB /* RootCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootCoordinator.swift; sourceTree = "<group>"; };
@@ -317,6 +323,7 @@
 		C95DD3792B8711F4005ACE84 /* MyPoseGuidelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseGuidelineViewController.swift; sourceTree = "<group>"; };
 		C9676BE72BAAAB79000A4114 /* PosePickUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickUseCase.swift; sourceTree = "<group>"; };
 		C9676BEB2BAAAC68000A4114 /* PoseInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseInfo.swift; sourceTree = "<group>"; };
+		C96C9A812BB5020300AC2921 /* UIPageViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPageViewController+Rx.swift"; sourceTree = "<group>"; };
 		C971A67A2B2008920078EF2B /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
 		C971A67B2B2036850078EF2B /* Bookmark_Next.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Bookmark_Next.json; sourceTree = "<group>"; };
 		C971A6812B26F5EA0078EF2B /* authenticateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = authenticateTests.swift; sourceTree = "<group>"; };
@@ -972,6 +979,8 @@
 		C93851142BB3E16500E597C1 /* PoseFeedScene */ = {
 			isa = PBXGroup;
 			children = (
+				C93851282BB41CC700E597C1 /* Coordinator */,
+				C938512B2BB41CE300E597C1 /* DefaultPoseFeedCoordinator.swift */,
 			);
 			path = PoseFeedScene;
 			sourceTree = "<group>";
@@ -980,6 +989,7 @@
 			isa = PBXGroup;
 			children = (
 				C93851182BB3E19600E597C1 /* Protocol */,
+				C93851262BB4152700E597C1 /* DefaultPosePickCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -1012,6 +1022,14 @@
 				C93851202BB3F44C00E597C1 /* CommonViewController.swift */,
 			);
 			path = ViewController;
+			sourceTree = "<group>";
+		};
+		C93851282BB41CC700E597C1 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				C93851292BB41CD900E597C1 /* PoseFeedCoordinator.swift */,
+			);
+			path = Coordinator;
 			sourceTree = "<group>";
 		};
 		C94FD27A2AE39505003777EB /* PosePick */ = {
@@ -1154,6 +1172,14 @@
 				C9676BE72BAAAB79000A4114 /* PosePickUseCase.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		C96C9A802BB501EA00AC2921 /* UIPageViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9A812BB5020300AC2921 /* UIPageViewController+Rx.swift */,
+			);
+			path = UIPageViewController;
 			sourceTree = "<group>";
 		};
 		C971A6792B2008870078EF2B /* Configs */ = {
@@ -1336,6 +1362,7 @@
 		C9C8909A2AE107A40010240A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C96C9A802BB501EA00AC2921 /* UIPageViewController */,
 				C91E18422B99B2EC009611C3 /* UINavigationController */,
 				C936258E2B907A6500B90810 /* UITextField */,
 				C990AB1C2B5BF51D00567AA3 /* String */,
@@ -1774,6 +1801,7 @@
 				C91FF3742BAD894000096E25 /* AppCoordinator.swift in Sources */,
 				C9188B272B909E78004B9C45 /* MyPoseCustomTagCellViewModel.swift in Sources */,
 				880E75422AE6BF4B007FAD5A /* APIService.swift in Sources */,
+				C938512C2BB41CE300E597C1 /* DefaultPoseFeedCoordinator.swift in Sources */,
 				C916730E2B5E526D0092661B /* ImagePopUpViewController.swift in Sources */,
 				C94FD2772AE38E82003777EB /* DefaultAppCoordinator.swift in Sources */,
 				88EA81F82AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift in Sources */,
@@ -1789,6 +1817,7 @@
 				C94FD2832AE3960B003777EB /* PoseFeedViewController.swift in Sources */,
 				C99D53B52B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift in Sources */,
 				C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */,
+				C96C9A822BB5020400AC2921 /* UIPageViewController+Rx.swift in Sources */,
 				C9DC2F992AEA28E300D5170D /* PoseFeedFilterCell.swift in Sources */,
 				C91E184D2B99E484009611C3 /* ReportViewController.swift in Sources */,
 				C91E18442B99B300009611C3 /* UINavigationController+.swift in Sources */,
@@ -1813,9 +1842,9 @@
 				C9C0CDCE2AF353AB0041E423 /* ToolTip.swift in Sources */,
 				C938511C2BB3E1D100E597C1 /* DefaultPoseTalkCoordinator.swift in Sources */,
 				C9C890C52AE11BAB0010240A /* UIFont+.swift in Sources */,
-				C9DC2F8E2AEA193300D5170D /* PoseFeedCoordinator.swift in Sources */,
 				8803ADB92B04FB0D00185933 /* PoseDetailViewController.swift in Sources */,
 				C94FD2852AE39612003777EB /* BookMarkViewController.swift in Sources */,
+				C938512A2BB41CD900E597C1 /* PoseFeedCoordinator.swift in Sources */,
 				C95DD37A2B8711F4005ACE84 /* MyPoseGuidelineViewController.swift in Sources */,
 				C91FF36F2BAD88D600096E25 /* Coordinator.swift in Sources */,
 				C903E54C2B05C13B00BD004F /* PopUpView.swift in Sources */,
@@ -1848,6 +1877,7 @@
 				C91E18502B99ECC1009611C3 /* RadioButton.swift in Sources */,
 				C9C890882AE107090010240A /* BaseViewController.swift in Sources */,
 				C91FF3782BAD8A3100096E25 /* Pages.swift in Sources */,
+				C93851272BB4152700E597C1 /* DefaultPosePickCoordinator.swift in Sources */,
 				880E75372AE67DC8007FAD5A /* BasicButton.swift in Sources */,
 				C9C8909D2AE107BC0010240A /* UIColor+.swift in Sources */,
 				C94FD2872AE3961D003777EB /* PosePickViewModel.swift in Sources */,
