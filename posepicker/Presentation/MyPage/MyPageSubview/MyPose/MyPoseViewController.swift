@@ -242,10 +242,10 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
             }
             .subscribe(onNext: { [weak self] posepick in
                 self?.isLoading.accept(false)
-                let poseDetailViewModel = PoseDetailViewModel(poseDetailData: posepick)
-                let coordinator = PoseFeedCoordinator(navigationController: self!.navigationController!)
-                let detailVC = PoseDetailViewController(viewModel: poseDetailViewModel, coordinator: coordinator)
-                self?.present(detailVC, animated: true)
+//                let poseDetailViewModel = PoseDetailViewModel(poseDetailData: posepick)
+//                let coordinator = PoseFeedCoordinator(navigationController: self!.navigationController!)
+//                let detailVC = PoseDetailViewController(viewModel: poseDetailViewModel, coordinator: coordinator)
+//                self?.present(detailVC, animated: true)
             }, onError: { [weak self] in
                 self?.isLoading.accept(false)
                 print("ERROR...")

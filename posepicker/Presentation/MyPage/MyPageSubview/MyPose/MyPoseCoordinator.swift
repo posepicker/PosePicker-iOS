@@ -7,17 +7,17 @@
 
 import UIKit
 
-class MyPoseCoordinator: NSObject, Coordinator {
-    
-    var childCoordinators: [Coordinator] = []
-    var navigationController: UINavigationController
-    
-    // MARK: - Initialization
-    
-    required init(navigationController: UINavigationController) {
-        self.navigationController = navigationController
-    }
-    
-    // MARK: - Functions
-    func start() { }
-}
+//class MyPoseCoordinator: NSObject, Coordinator {
+//    
+//    var childCoordinators: [Coordinator] = []
+//    var navigationController: UINavigationController
+//    
+//    // MARK: - Initialization
+//    
+//    required init(navigationController: UINavigationController) {
+//        self.navigationController = navigationController
+//    }
+//    
+//    // MARK: - Functions
+//    func start() { }
+//}

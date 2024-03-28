@@ -98,7 +98,7 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             $0.setTitleColor(.textPrimary, for: .normal)
             $0.setTitle("로그아웃", for: .normal)
             $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
-            $0.isHidden = !AppCoordinator.loginState
+//            $0.isHidden = !AppCoordinator.loginState
         }
     
     let signoutButton = UIButton(type: .system)
@@ -106,7 +106,7 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             $0.setTitleColor(.textTertiary, for: .normal)
             $0.setTitle("탈퇴하기", for: .normal)
             $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
-            $0.isHidden = !AppCoordinator.loginState
+//            $0.isHidden = !AppCoordinator.loginState
         }
     
     let loginToast = Toast(title: "로그인 되었습니다!")
@@ -114,8 +114,8 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
     let revokeToast = Toast(title: "탈퇴가 완료되었습니다.")
     
     // MARK: - Properties
-    var viewModel: MyPageViewModel
-    var coordinator: RootCoordinator
+    var viewModel: MyPageViewModel?
+//    var coordinator: RootCoordinator
     
     let appleIdentityTokenTrigger = PublishSubject<String>()
     let kakaoEmailTrigger = PublishSubject<String>()
@@ -127,15 +127,6 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Life Cycles
     
-    init(viewModel: MyPageViewModel, coordinator: RootCoordinator) {
-        self.viewModel = viewModel
-        self.coordinator = coordinator
-        super.init()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
     }
@@ -202,7 +193,7 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
                 
                 popupView.confirmButton.rx.tap.asDriver()
                     .drive(onNext: { [weak self] in
-                        self?.coordinator.pushWebView(urlString: "https://litt.ly/posepicker", pageTitle: "문의하기")
+//                        self?.coordinator.pushWebView(urlString: "https://litt.ly/posepicker", pageTitle: "문의하기")
                         popupViewController.dismiss(animated: true)
                     })
                     .disposed(by: self.disposeBag)
@@ -219,31 +210,31 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
         
         noticeButton.rx.tap.asDriver()
             .drive(onNext: { [weak self] in
-                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/fde248040bed45f68fbfa3004e2c4856", pageTitle: "공지사항")
+//                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/fde248040bed45f68fbfa3004e2c4856", pageTitle: "공지사항")
             })
             .disposed(by: disposeBag)
         
         faqButton.rx.tap.asDriver()
             .drive(onNext: { [weak self] in
-                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/cc71decc2e534ae6abb195bb10a501c0", pageTitle: "자주 묻는 질문")
+//                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/cc71decc2e534ae6abb195bb10a501c0", pageTitle: "자주 묻는 질문")
             })
             .disposed(by: disposeBag)
         
         snsButton.rx.tap.asDriver()
             .drive(onNext: { [weak self] in
-                self?.coordinator.pushWebView(urlString: "https://www.instagram.com/posepicker?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==", pageTitle: "포즈피커 공식 SNS")
+//                self?.coordinator.pushWebView(urlString: "https://www.instagram.com/posepicker?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==", pageTitle: "포즈피커 공식 SNS")
             })
             .disposed(by: disposeBag)
         
         serviceInformationButton.rx.tap.asDriver()
             .drive(onNext: { [weak self] in
-                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/3113eb146abb4b5c809070c3f01380da", pageTitle: "이용약관")
+//                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/3113eb146abb4b5c809070c3f01380da", pageTitle: "이용약관")
             })
             .disposed(by: disposeBag)
         
         privacyInforationButton.rx.tap.asDriver()
             .drive(onNext: { [weak self] in
-                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/75e98a2462824b839a9c37473a6afbd5", pageTitle: "개인정보 처리방침")
+//                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/75e98a2462824b839a9c37473a6afbd5", pageTitle: "개인정보 처리방침")
             })
             .disposed(by: disposeBag)
         
@@ -405,114 +396,114 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
     }
     
     override func bindViewModel() {
-        let input = MyPageViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), logoutButtonTapped: logoutTrigger, revokeButtonTapped: revokeTrigger)
-        let output = viewModel.transform(input: input)
-        
-        // 로그인할때
-        output.dismissLoginView
-            .subscribe(onNext: { [unowned self] in
-                if let popupVC = self.presentedViewController as? PopUpViewController {
-                    // 로그인할때
-                    if let _ = popupVC.popUpView as? LoginPopUpView {
-                        self.dismiss(animated: true) {
-                            self.loginToast.snp.updateConstraints { make in
-                                make.bottom.equalTo(self.view).offset(-60)
-                            }
-                            
-                            UIView.animate(withDuration: 0.2) {
-                                self.view.layoutIfNeeded()
-                                self.loginToast.layer.opacity = 1
-                            }
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                self.loginToast.snp.updateConstraints { make in
-                                    make.bottom.equalTo(self.view).offset(46)
-                                }
-                                
-                                UIView.animate(withDuration: 0.2) {
-                                    self.view.layoutIfNeeded()
-                                    self.loginToast.layer.opacity = 0
-                                }
-                            }
-                        }
-                        self.loginStateTrigger.onNext(())
-                    } else if let popupView = popupVC.popUpView as? PopUpView,
-                              popupView.alertMainLabel.text! == "로그아웃" {
-                        self.dismiss(animated: true) {
-                            self.logoutToast.snp.updateConstraints { make in
-                                make.bottom.equalTo(self.view).offset(-60)
-                            }
-                            
-                            UIView.animate(withDuration: 0.2) {
-                                self.view.layoutIfNeeded()
-                                self.logoutToast.isHidden = false
-                                self.logoutToast.layer.opacity = 1
-                            }
-                            
-                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                                self.logoutToast.snp.updateConstraints { make in
-                                    make.bottom.equalTo(self.view).offset(46)
-                                }
-                                
-                                UIView.animate(withDuration: 0.2) {
-                                    self.view.layoutIfNeeded()
-                                    self.logoutToast.layer.opacity = 0
-                                }
-                            }
-                        }
-                        self.loginStateTrigger.onNext(())
-                    }
-                    
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        loginStateTrigger.asDriver(onErrorJustReturn: ())
-            .drive(onNext: { [weak self] in
-                
-                // 로그인 상태 새로고침
-                if let email = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
-                    self?.emailLabel.text = email
-                    self?.adjustLoginUI(isLoggedIn: true)
-                } else {
-                    self?.adjustLoginUI(isLoggedIn: false)
-                }
-                
-                guard let navigationVC = self?.coordinator.rootViewController.viewControllers.last as? UINavigationController,
-                      let posefeedVC = navigationVC.viewControllers.first as? PoseFeedViewController else { return }
-                self?.coordinator.posefeedCoordinator.poseFeedFilterViewController.detailViewDismissTrigger.onNext(())
-                posefeedVC.tagResetTrigger.onNext(())
-            })
-            .disposed(by: disposeBag)
-        
-        output.revokeToastTrigger
-            .asDriver(onErrorJustReturn: ())
-            .drive(onNext: { [weak self] in
-                guard let self = self else { return }
-                self.revokeToast.snp.updateConstraints { make in
-                    make.bottom.equalTo(self.view).offset(-60)
-                }
-                
-                UIView.animate(withDuration: 0.2) {
-                    self.view.layoutIfNeeded()
-                    self.revokeToast.isHidden = false
-                    self.revokeToast.layer.opacity = 1
-                }
-                
-                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-                    self.revokeToast.snp.updateConstraints { make in
-                        make.bottom.equalTo(self.view).offset(46)
-                    }
-                    
-                    UIView.animate(withDuration: 0.2) {
-                        self.view.layoutIfNeeded()
-                        self.revokeToast.layer.opacity = 0
-                    }
-                }
-                
-                self.loginStateTrigger.onNext(())
-            })
-            .disposed(by: disposeBag)
+//        let input = MyPageViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), logoutButtonTapped: logoutTrigger, revokeButtonTapped: revokeTrigger)
+//        let output = viewModel.transform(input: input)
+//        
+//        // 로그인할때
+//        output.dismissLoginView
+//            .subscribe(onNext: { [unowned self] in
+//                if let popupVC = self.presentedViewController as? PopUpViewController {
+//                    // 로그인할때
+//                    if let _ = popupVC.popUpView as? LoginPopUpView {
+//                        self.dismiss(animated: true) {
+//                            self.loginToast.snp.updateConstraints { make in
+//                                make.bottom.equalTo(self.view).offset(-60)
+//                            }
+//                            
+//                            UIView.animate(withDuration: 0.2) {
+//                                self.view.layoutIfNeeded()
+//                                self.loginToast.layer.opacity = 1
+//                            }
+//                            
+//                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//                                self.loginToast.snp.updateConstraints { make in
+//                                    make.bottom.equalTo(self.view).offset(46)
+//                                }
+//                                
+//                                UIView.animate(withDuration: 0.2) {
+//                                    self.view.layoutIfNeeded()
+//                                    self.loginToast.layer.opacity = 0
+//                                }
+//                            }
+//                        }
+//                        self.loginStateTrigger.onNext(())
+//                    } else if let popupView = popupVC.popUpView as? PopUpView,
+//                              popupView.alertMainLabel.text! == "로그아웃" {
+//                        self.dismiss(animated: true) {
+//                            self.logoutToast.snp.updateConstraints { make in
+//                                make.bottom.equalTo(self.view).offset(-60)
+//                            }
+//                            
+//                            UIView.animate(withDuration: 0.2) {
+//                                self.view.layoutIfNeeded()
+//                                self.logoutToast.isHidden = false
+//                                self.logoutToast.layer.opacity = 1
+//                            }
+//                            
+//                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//                                self.logoutToast.snp.updateConstraints { make in
+//                                    make.bottom.equalTo(self.view).offset(46)
+//                                }
+//                                
+//                                UIView.animate(withDuration: 0.2) {
+//                                    self.view.layoutIfNeeded()
+//                                    self.logoutToast.layer.opacity = 0
+//                                }
+//                            }
+//                        }
+//                        self.loginStateTrigger.onNext(())
+//                    }
+//                    
+//                }
+//            })
+//            .disposed(by: disposeBag)
+//        
+//        loginStateTrigger.asDriver(onErrorJustReturn: ())
+//            .drive(onNext: { [weak self] in
+//                
+//                // 로그인 상태 새로고침
+//                if let email = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
+//                    self?.emailLabel.text = email
+//                    self?.adjustLoginUI(isLoggedIn: true)
+//                } else {
+//                    self?.adjustLoginUI(isLoggedIn: false)
+//                }
+//                
+//                guard let navigationVC = self?.coordinator.rootViewController.viewControllers.last as? UINavigationController,
+//                      let posefeedVC = navigationVC.viewControllers.first as? PoseFeedViewController else { return }
+//                self?.coordinator.posefeedCoordinator.poseFeedFilterViewController.detailViewDismissTrigger.onNext(())
+//                posefeedVC.tagResetTrigger.onNext(())
+//            })
+//            .disposed(by: disposeBag)
+//        
+//        output.revokeToastTrigger
+//            .asDriver(onErrorJustReturn: ())
+//            .drive(onNext: { [weak self] in
+//                guard let self = self else { return }
+//                self.revokeToast.snp.updateConstraints { make in
+//                    make.bottom.equalTo(self.view).offset(-60)
+//                }
+//                
+//                UIView.animate(withDuration: 0.2) {
+//                    self.view.layoutIfNeeded()
+//                    self.revokeToast.isHidden = false
+//                    self.revokeToast.layer.opacity = 1
+//                }
+//                
+//                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+//                    self.revokeToast.snp.updateConstraints { make in
+//                        make.bottom.equalTo(self.view).offset(46)
+//                    }
+//                    
+//                    UIView.animate(withDuration: 0.2) {
+//                        self.view.layoutIfNeeded()
+//                        self.revokeToast.layer.opacity = 0
+//                    }
+//                }
+//                
+//                self.loginStateTrigger.onNext(())
+//            })
+//            .disposed(by: disposeBag)
     }
     
     func setBottomBorder() {

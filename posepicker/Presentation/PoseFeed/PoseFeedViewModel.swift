@@ -17,6 +17,8 @@ class PoseFeedViewModel: ViewModelType {
     var apiSession: APIService = APISession()
     var disposeBag = DisposeBag()
     
+//    private weak var coordinator: DefaultPageViewCoordinator?
+    
     var filteredContentSizes = BehaviorRelay<[CGSize]>(value: [])
     var recommendedContentsSizes = BehaviorRelay<[CGSize]>(value: [])
     
@@ -42,7 +44,7 @@ class PoseFeedViewModel: ViewModelType {
             .withUnretained(self)
             .subscribe { [weak item] (owner, _) in
                 guard let item = item else { return }
-                if AppCoordinator.loginState {
+                if true {
                     // API요청 보내기
                     if item.bookmarkCheck.value {
                         owner.bookmarkRemoveButtonTapped.onNext(item.poseId.value)

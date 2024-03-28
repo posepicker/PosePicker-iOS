@@ -36,7 +36,7 @@ class BookMarkViewModel: ViewModelType {
         
         cell.bookmarkButton.rx.tap
             .subscribe(onNext: { [unowned self] in
-                if AppCoordinator.loginState {
+                if true {
                     // API요청 보내기
                     if item.bookmarkCheck.value {
                         self.bookmarkRemoveButtonTapped.onNext(item.poseId.value)

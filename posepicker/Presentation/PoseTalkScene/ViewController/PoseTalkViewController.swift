@@ -102,17 +102,17 @@ class PoseTalkViewController: BaseViewController {
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
         }
         
-        viewModel?.coordinator?.rootViewController.view.addSubViews([toolTip])
-    
-        let segmentHeight = viewModel?.coordinator?.rootViewController.segmentControl.frame.height ?? 100
-        let headerHeight = UIScreen.main.isWiderThan375pt ? viewModel?.coordinator?.rootViewController.header.frame.height ?? 20 - 10 : viewModel?.coordinator?.rootViewController.header.frame.height ?? 20 - 20
-        
-        toolTip.snp.makeConstraints { make in
-            make.leading.equalTo(UIScreen.main.isWiderThan375pt ? 76 : 66)
-            make.width.equalTo(UIScreen.main.isWiderThan375pt ? 230 : 210)
-            make.height.equalTo(UIScreen.main.isWiderThan375pt ? 80 : 68)
-            make.top.equalTo(viewModel?.coordinator?.rootViewController.view.safeAreaLayoutGuide.snp.top ?? self.view.snp.top).offset(segmentHeight + headerHeight)
-        }
+//        viewModel?.coordinator?.rootViewController.view.addSubViews([toolTip])
+//    
+//        let segmentHeight = viewModel?.coordinator?.rootViewController.segmentControl.frame.height ?? 100
+//        let headerHeight = UIScreen.main.isWiderThan375pt ? viewModel?.coordinator?.rootViewController.header.frame.height ?? 20 - 10 : viewModel?.coordinator?.rootViewController.header.frame.height ?? 20 - 20
+//        
+//        toolTip.snp.makeConstraints { make in
+//            make.leading.equalTo(UIScreen.main.isWiderThan375pt ? 76 : 66)
+//            make.width.equalTo(UIScreen.main.isWiderThan375pt ? 230 : 210)
+//            make.height.equalTo(UIScreen.main.isWiderThan375pt ? 80 : 68)
+//            make.top.equalTo(viewModel?.coordinator?.rootViewController.view.safeAreaLayoutGuide.snp.top ?? self.view.snp.top).offset(segmentHeight + headerHeight)
+//        }
     }
     
     override func configUI() {

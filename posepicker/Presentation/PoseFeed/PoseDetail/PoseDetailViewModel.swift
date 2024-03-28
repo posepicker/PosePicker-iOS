@@ -148,7 +148,7 @@ class PoseDetailViewModel: ViewModelType {
         input.bookmarkButtonTapped
             .withUnretained(self)
             .flatMapLatest { owner, _ -> Observable<BookmarkResponse?> in
-                if AppCoordinator.loginState {
+                if true {
                     if let check = bookmarkCheck.value, check {
                         return owner.apiSession.requestSingle(.deleteBookmark(poseId: owner.poseDetailData.poseInfo.poseId)).asObservable()
                     } else {

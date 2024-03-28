@@ -95,24 +95,11 @@ class PoseDetailViewController: BaseViewController {
     
     // MARK: - Properties
     
-    var viewModel: PoseDetailViewModel
-    var coordinator: PoseFeedCoordinator
+    var viewModel: PoseDetailViewModel?
     
     let appleIdentityTokenTrigger = PublishSubject<String>()
     let kakaoEmailTrigger = PublishSubject<String>()
     let kakaoIdTrigger = PublishSubject<Int64>()
-    
-    // MARK: - Initialization
-    
-    init(viewModel: PoseDetailViewModel, coordinator: PoseFeedCoordinator) {
-        self.viewModel = viewModel
-        self.coordinator = coordinator
-        super.init()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
     
     // MARK: - Functions
     override func render() {
@@ -183,12 +170,12 @@ class PoseDetailViewController: BaseViewController {
         navigationBar.standardAppearance.backgroundColor = .bgWhite
         navigationBar.standardAppearance.shadowColor = nil
         
-        let sourceText = viewModel.poseDetailData.poseInfo.source
-        if !sourceText.isEmpty {
-            imageSourceButton.configuration?.attributedTitle = AttributedString(sourceText + "↗", attributes: AttributeContainer([NSAttributedString.Key.font : UIFont.pretendard(.medium, ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.textBrand]))
-        } else {
-            imageSourceButton.isHidden = true
-        }
+//        let sourceText = viewModel.poseDetailData.poseInfo.source
+//        if !sourceText.isEmpty {
+//            imageSourceButton.configuration?.attributedTitle = AttributedString(sourceText + "↗", attributes: AttributeContainer([NSAttributedString.Key.font : UIFont.pretendard(.medium, ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.textBrand]))
+//        } else {
+//            imageSourceButton.isHidden = true
+//        }
         
         // 캡처시 이미지 덮기
         guard let secureView = SecureField().secureContainer else { return }
@@ -205,126 +192,126 @@ class PoseDetailViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap, bookmarkButtonTapped: bookmarkButton.rx.tap, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger))
-        
-        let output = viewModel.transform(input: input)
-        
-        output.imageSourceLink
-            .compactMap { $0 }
-            .subscribe(onNext: {
-                UIApplication.shared.open($0)
-            })
-            .disposed(by: disposeBag)
-    
-        output.image.asDriver(onErrorJustReturn: nil)
-            .drive(onNext: { [weak self] in
-                self?.imageButton.setImage($0, for: .normal)
-            })
-            .disposed(by: disposeBag)
-        
-        imageButton.rx.tap.asDriver()
-            .drive(onNext: { [weak self] in
-                guard let retrievedImage = self?.imageButton.imageView?.image else { return }
-                let vc = ImagePopUpViewController(mainImage: retrievedImage)
-                vc.modalTransitionStyle = .crossDissolve
-                vc.modalPresentationStyle = .overFullScreen
-                self?.present(vc, animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        output.popupPresent
-            .drive(onNext: { [unowned self] in
-                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: false)
-                popupViewController.modalTransitionStyle = .crossDissolve
-                popupViewController.modalPresentationStyle = .overFullScreen
-                let popupView = popupViewController.popUpView as! PopUpView
-                popupView.alertText.accept("링크가 복사되었습니다.")
-                self.present(popupViewController, animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        output.tagItems
-            .drive(tagCollectionView.rx.items(cellIdentifier: PoseDetailTagCell.identifier, cellType: PoseDetailTagCell.self)) { _, viewModel, cell in
-                cell.disposeBag = DisposeBag()
-                cell.bind(to: viewModel)
-            }
-            .disposed(by: disposeBag)
-        
-        tagCollectionView.rx.modelSelected(PoseDetailTagCellViewModel.self)
-            .flatMapLatest { $0.title }
-            .subscribe(onNext: { [unowned self] in
-                self.coordinator.dismissPoseDetailWithTagSelection(tag: $0)
-                self.dismiss(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        output.isLoading.asDriver(onErrorJustReturn: false)
-            .drive(onNext: { [unowned self] in
-                if $0 {
-                    self.kakaoShareButton.isEnabled = false
-                    self.loadingIndicator.isHidden = false
-                } else {
-                    self.kakaoShareButton.isEnabled = true
-                    self.loadingIndicator.isHidden = true
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        output.bookmarkCheck
-            .compactMap { $0 }
-            .drive(onNext: { [weak self] in
-                guard let self = self else { return }
-                if $0 {
-                    self.bookmarkButton.image = ImageLiteral.imgBookmarkFill24.withTintColor(.iconDefault, renderingMode: .alwaysOriginal)
-                    self.coordinator.triggerBookmarkFromPoseId(poseId: self.viewModel.poseDetailData.poseInfo.poseId, bookmarkCheck: true)
-                } else {
-                    self.bookmarkButton.image = ImageLiteral.imgBookmarkOff24.withTintColor(.iconDefault, renderingMode: .alwaysOriginal)
-                    self.coordinator.triggerBookmarkFromPoseId(poseId: self.viewModel.poseDetailData.poseInfo.poseId, bookmarkCheck: false)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        output.loginPopUpPresent.asDriver(onErrorJustReturn: ())
-            .drive(onNext: { [weak self] in
-                guard let self = self else { return }
-                
-                let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
-                popUpVC.modalTransitionStyle = .crossDissolve
-                popUpVC.modalPresentationStyle = .overFullScreen
-                self.present(popUpVC, animated: true)
-                
-                popUpVC.appleIdentityToken
-                    .compactMap { $0 }
-                    .subscribe(onNext: { [unowned self] in
-                        self.appleIdentityTokenTrigger.onNext($0)
-                    })
-                    .disposed(by: self.disposeBag)
-                
-                popUpVC.email
-                    .compactMap { $0 }
-                    .subscribe(onNext: { [unowned self] in
-                        self.kakaoEmailTrigger.onNext($0)
-                    })
-                    .disposed(by: self.disposeBag)
-                
-                popUpVC.kakaoId
-                    .compactMap { $0 }
-                    .subscribe(onNext: { [unowned self] in
-                        self.kakaoIdTrigger.onNext($0)
-                    })
-                    .disposed(by: self.disposeBag)
-            })
-            .disposed(by: disposeBag)
-        
-        output.dismissLoginView
-            .subscribe(onNext: { [unowned self] in
-                guard let popupVC = self.presentedViewController as? PopUpViewController,
-                      let _ = popupVC.popUpView as? LoginPopUpView else { return }
-                self.dismiss(animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        tagCollectionView.updateCollectionViewHeight()
+//        let input = PoseDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap, bookmarkButtonTapped: bookmarkButton.rx.tap, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger))
+//        
+//        let output = viewModel.transform(input: input)
+//        
+//        output.imageSourceLink
+//            .compactMap { $0 }
+//            .subscribe(onNext: {
+//                UIApplication.shared.open($0)
+//            })
+//            .disposed(by: disposeBag)
+//    
+//        output.image.asDriver(onErrorJustReturn: nil)
+//            .drive(onNext: { [weak self] in
+//                self?.imageButton.setImage($0, for: .normal)
+//            })
+//            .disposed(by: disposeBag)
+//        
+//        imageButton.rx.tap.asDriver()
+//            .drive(onNext: { [weak self] in
+//                guard let retrievedImage = self?.imageButton.imageView?.image else { return }
+//                let vc = ImagePopUpViewController(mainImage: retrievedImage)
+//                vc.modalTransitionStyle = .crossDissolve
+//                vc.modalPresentationStyle = .overFullScreen
+//                self?.present(vc, animated: true)
+//            })
+//            .disposed(by: disposeBag)
+//        
+//        output.popupPresent
+//            .drive(onNext: { [unowned self] in
+//                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: false)
+//                popupViewController.modalTransitionStyle = .crossDissolve
+//                popupViewController.modalPresentationStyle = .overFullScreen
+//                let popupView = popupViewController.popUpView as! PopUpView
+//                popupView.alertText.accept("링크가 복사되었습니다.")
+//                self.present(popupViewController, animated: true)
+//            })
+//            .disposed(by: disposeBag)
+//        
+//        output.tagItems
+//            .drive(tagCollectionView.rx.items(cellIdentifier: PoseDetailTagCell.identifier, cellType: PoseDetailTagCell.self)) { _, viewModel, cell in
+//                cell.disposeBag = DisposeBag()
+//                cell.bind(to: viewModel)
+//            }
+//            .disposed(by: disposeBag)
+//        
+//        tagCollectionView.rx.modelSelected(PoseDetailTagCellViewModel.self)
+//            .flatMapLatest { $0.title }
+//            .subscribe(onNext: { [unowned self] in
+//                self.coordinator.dismissPoseDetailWithTagSelection(tag: $0)
+//                self.dismiss(animated: true)
+//            })
+//            .disposed(by: disposeBag)
+//        
+//        output.isLoading.asDriver(onErrorJustReturn: false)
+//            .drive(onNext: { [unowned self] in
+//                if $0 {
+//                    self.kakaoShareButton.isEnabled = false
+//                    self.loadingIndicator.isHidden = false
+//                } else {
+//                    self.kakaoShareButton.isEnabled = true
+//                    self.loadingIndicator.isHidden = true
+//                }
+//            })
+//            .disposed(by: disposeBag)
+//        
+//        output.bookmarkCheck
+//            .compactMap { $0 }
+//            .drive(onNext: { [weak self] in
+//                guard let self = self else { return }
+//                if $0 {
+//                    self.bookmarkButton.image = ImageLiteral.imgBookmarkFill24.withTintColor(.iconDefault, renderingMode: .alwaysOriginal)
+//                    self.coordinator.triggerBookmarkFromPoseId(poseId: self.viewModel.poseDetailData.poseInfo.poseId, bookmarkCheck: true)
+//                } else {
+//                    self.bookmarkButton.image = ImageLiteral.imgBookmarkOff24.withTintColor(.iconDefault, renderingMode: .alwaysOriginal)
+//                    self.coordinator.triggerBookmarkFromPoseId(poseId: self.viewModel.poseDetailData.poseInfo.poseId, bookmarkCheck: false)
+//                }
+//            })
+//            .disposed(by: disposeBag)
+//        
+//        output.loginPopUpPresent.asDriver(onErrorJustReturn: ())
+//            .drive(onNext: { [weak self] in
+//                guard let self = self else { return }
+//                
+//                let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
+//                popUpVC.modalTransitionStyle = .crossDissolve
+//                popUpVC.modalPresentationStyle = .overFullScreen
+//                self.present(popUpVC, animated: true)
+//                
+//                popUpVC.appleIdentityToken
+//                    .compactMap { $0 }
+//                    .subscribe(onNext: { [unowned self] in
+//                        self.appleIdentityTokenTrigger.onNext($0)
+//                    })
+//                    .disposed(by: self.disposeBag)
+//                
+//                popUpVC.email
+//                    .compactMap { $0 }
+//                    .subscribe(onNext: { [unowned self] in
+//                        self.kakaoEmailTrigger.onNext($0)
+//                    })
+//                    .disposed(by: self.disposeBag)
+//                
+//                popUpVC.kakaoId
+//                    .compactMap { $0 }
+//                    .subscribe(onNext: { [unowned self] in
+//                        self.kakaoIdTrigger.onNext($0)
+//                    })
+//                    .disposed(by: self.disposeBag)
+//            })
+//            .disposed(by: disposeBag)
+//        
+//        output.dismissLoginView
+//            .subscribe(onNext: { [unowned self] in
+//                guard let popupVC = self.presentedViewController as? PopUpViewController,
+//                      let _ = popupVC.popUpView as? LoginPopUpView else { return }
+//                self.dismiss(animated: true)
+//            })
+//            .disposed(by: disposeBag)
+//        
+//        tagCollectionView.updateCollectionViewHeight()
     }
     
     // MARK: - Objc Functions
@@ -341,12 +328,12 @@ class PoseDetailViewController: BaseViewController {
     
     @objc
     func showMoreButtonTapped() {
-        let modalVC = PoseDetailMoreViewController(poseId: viewModel.poseDetailData.poseInfo.poseId)
-        if let sheet = modalVC.sheetPresentationController {
-            sheet.detents = [.custom { _ in 180}]
-            sheet.preferredCornerRadius = 20
-        }
-        
-        self.present(modalVC, animated: true)
+//        let modalVC = PoseDetailMoreViewController(poseId: viewModel.poseDetailData.poseInfo.poseId)
+//        if let sheet = modalVC.sheetPresentationController {
+//            sheet.detents = [.custom { _ in 180}]
+//            sheet.preferredCornerRadius = 20
+//        }
+//        
+//        self.present(modalVC, animated: true)
     }
 }

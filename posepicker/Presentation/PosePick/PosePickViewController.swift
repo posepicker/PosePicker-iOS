@@ -46,20 +46,10 @@ class PosePickViewController: BaseViewController {
     let posePickerButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "인원수 선택하고 포즈 뽑기!", image: nil)
     
     // MARK: - Properties
-    var viewModel: PosePickViewModel
+    var viewModel: PosePickViewModel?
     let isImageLoading = BehaviorRelay<Bool>(value: false)
     let isAnimating = BehaviorRelay<Bool>(value: false)
     let refetchTrigger = PublishSubject<Void>()
-    
-    // MARK: - Life Cycles
-    init(viewModel: PosePickViewModel) {
-        self.viewModel = viewModel
-        super.init()
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
 
     
     // MARK: - Functions
@@ -129,41 +119,41 @@ class PosePickViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PosePickViewModel.Input(posePickButtonTapped: posePickerButton.rx.tap, isImageLoading: isImageLoading.asObservable(), isAnimating: isAnimating.asObservable(), refetchTrigger: refetchTrigger.asObservable(), selectedIndex: selection.pressIndex)
-
-        let output = viewModel.transform(input: input)
-        
-        output.animate
-            .drive(onNext: { [unowned self] in
-                self.retrievedImage.image = nil
-                self.isAnimating.accept(true)
-                self.animationView.play() {
-                    if $0 && self.isImageLoading.value { // 애니메이션은 끝났지만 이미지가 여전히 로딩중이면
-                        self.refetchTrigger.onNext(())
-                    } else if $0 {
-                        self.isAnimating.accept(false)
-                    }
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        output.imageUrl
-            .drive(onNext: { [unowned self] urlString in
-                self.isImageLoading.accept(true)
-                self.retrievedImage.kf.setImage(with: URL(string: urlString)) { _ in
-                    self.isImageLoading.accept(false)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        output.isLoading.bind(to: retrievedImage.rx.isHidden)
-            .disposed(by: disposeBag)
-        
-        output.isLoading.map { !$0 }.bind(to: animationView.rx.isHidden)
-            .disposed(by: disposeBag)
-        
-        output.isPosePickerImageHidden.bind(to: posepickerImage.rx.isHidden)
-            .disposed(by: disposeBag)
+//        let input = PosePickViewModel.Input(posePickButtonTapped: posePickerButton.rx.tap, isImageLoading: isImageLoading.asObservable(), isAnimating: isAnimating.asObservable(), refetchTrigger: refetchTrigger.asObservable(), selectedIndex: selection.pressIndex)
+//
+//        let output = viewModel.transform(input: input)
+//        
+//        output.animate
+//            .drive(onNext: { [unowned self] in
+//                self.retrievedImage.image = nil
+//                self.isAnimating.accept(true)
+//                self.animationView.play() {
+//                    if $0 && self.isImageLoading.value { // 애니메이션은 끝났지만 이미지가 여전히 로딩중이면
+//                        self.refetchTrigger.onNext(())
+//                    } else if $0 {
+//                        self.isAnimating.accept(false)
+//                    }
+//                }
+//            })
+//            .disposed(by: disposeBag)
+//        
+//        output.imageUrl
+//            .drive(onNext: { [unowned self] urlString in
+//                self.isImageLoading.accept(true)
+//                self.retrievedImage.kf.setImage(with: URL(string: urlString)) { _ in
+//                    self.isImageLoading.accept(false)
+//                }
+//            })
+//            .disposed(by: disposeBag)
+//        
+//        output.isLoading.bind(to: retrievedImage.rx.isHidden)
+//            .disposed(by: disposeBag)
+//        
+//        output.isLoading.map { !$0 }.bind(to: animationView.rx.isHidden)
+//            .disposed(by: disposeBag)
+//        
+//        output.isPosePickerImageHidden.bind(to: posepickerImage.rx.isHidden)
+//            .disposed(by: disposeBag)
     }
     
     // MARK: - Objc Functions

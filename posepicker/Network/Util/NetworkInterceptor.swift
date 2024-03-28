@@ -68,16 +68,16 @@ class APIInterceptor: RequestInterceptor {
                 
                 /// 4. 루트뷰 서브뷰 first 객체 타입캐스팅 및 접근
                 let navVC = root as? UINavigationController
-                guard let rootVC = navVC?.viewControllers.first as? RootViewController else { return }
+                guard let rootVC = navVC?.viewControllers.first as? CommonViewController else { return }
                 
                 /// 5. 루트뷰로 popToViewController
                 /// completion핸들러 익스텐션에 구현
                 /// 포즈피드 뷰 새로고침 진행하고 루트뷰 currentPage 세팅
-                navVC?.popToViewController(rootVC, animated: true) {
-                    guard let posefeedNavVC = rootVC.viewControllers.last as? UINavigationController,
-                          let posefeedVC = posefeedNavVC.viewControllers.first as? PoseFeedViewController else { return }
-                    posefeedVC.tagResetTrigger.onNext(())
-                }
+//                navVC?.popToViewController(rootVC, animated: true) {
+//                    guard let posefeedNavVC = rootVC.viewControllers.last as? UINavigationController,
+//                          let posefeedVC = posefeedNavVC.viewControllers.first as? PoseFeedViewController else { return }
+//                    posefeedVC.tagResetTrigger.onNext(())
+//                }
             }
             completion(.doNotRetry)
             return
