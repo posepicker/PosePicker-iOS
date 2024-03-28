@@ -19,6 +19,7 @@ import RxSwift
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    var appCoordinator: AppCoordinator?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
@@ -28,10 +29,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         /// SmartLook 셋업
-        if let smartlookProjectKey = Bundle.main.object(forInfoDictionaryKey: "SMARTLOOK_PROJECT_KEY") as? String {
-            Smartlook.instance.preferences.projectKey = smartlookProjectKey
-            Smartlook.instance.start()
-        }
+//        if let smartlookProjectKey = Bundle.main.object(forInfoDictionaryKey: "SMARTLOOK_PROJECT_KEY") as? String {
+//            Smartlook.instance.preferences.projectKey = smartlookProjectKey
+//            Smartlook.instance.start()
+//        }
         
 //        if let smartlookProjectKey = ProcessInfo.processInfo.environment["SMARTLOOK_PROJECT_KEY"] {
 //            Smartlook.instance.preferences.projectKey = smartlookProjectKey
@@ -39,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         
         /// Firebase 셋업
-        FirebaseApp.configure()
+//        FirebaseApp.configure()
 
         
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -49,13 +50,17 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationController.isNavigationBarHidden = true
         
         window.rootViewController = navigationController
+        window.makeKeyAndVisible()
         
-        let appCoordinator = AppCoordinator(navigationController: navigationController)
-        let rootCoordinator = RootCoordinator(navigationController: navigationController)
-        appCoordinator.childCoordinators.append(rootCoordinator)
-        appCoordinator.childCoordinators.first!.start()
+//        let appCoordinator = AppCoordinator(navigationController: navigationController)
+//        let rootCoordinator = RootCoordinator(navigationController: navigationController)
+//        appCoordinator.childCoordinators.append(rootCoordinator)
+//        appCoordinator.childCoordinators.first!.start()
         
         window.makeKeyAndVisible()
+        
+        self.appCoordinator = DefaultAppCoordinator(navigationController)
+        self.appCoordinator?.start()
         
         return true
     }
