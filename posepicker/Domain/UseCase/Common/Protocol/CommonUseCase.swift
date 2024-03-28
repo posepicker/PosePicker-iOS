@@ -6,10 +6,8 @@
 //
 
 import Foundation
-import RxSwift
 
 protocol CommonUseCase {
-    var poseWord: PublishSubject<String> { get set }
-    
-    func fetchPoseTalk()
+    func loginWithKakao()
+    func loginWithApple(idToken: String)
 }
