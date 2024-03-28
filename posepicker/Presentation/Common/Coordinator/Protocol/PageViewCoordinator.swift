@@ -12,4 +12,7 @@ protocol PageViewCoordinator: Coordinator {
     func selectPage(_ page: PageViewType)
     func setSelectedIndex(_ index: Int)
     func currentPage() -> PageViewType?
+    func viewControllerBefore() -> UIViewController?
+    func viewControllerAfter() -> UIViewController?
+    func pushMyPage()
 }
