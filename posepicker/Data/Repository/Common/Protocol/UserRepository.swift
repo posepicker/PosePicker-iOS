@@ -16,9 +16,6 @@ protocol UserRepository {
     // MARK: - 카카오 로그인 to 포즈피커
     
     func loginWithKakao(
-        email: String,              // 카카오 이메일
-        authCode: String,           // 토큰
-        kakaoId: Int64              // 카카오 아이디
     ) -> Observable<PosePickerUser>
     
     // MARK: - 애플 로그인 to 포즈피커
