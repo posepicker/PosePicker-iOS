@@ -146,6 +146,9 @@ enum APIRouter: URLRequestConvertible {
             return [
                 K.Parameters.idToken: idToken
             ]
+        /// authCode: token
+        /// uid: kakaoId
+        /// email: email
         case .kakaoLogin(let authCode, let email, let kakaoId):
             return [
                 K.Parameters.email: email,
