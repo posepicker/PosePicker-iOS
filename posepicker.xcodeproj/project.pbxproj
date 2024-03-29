@@ -142,6 +142,11 @@
 		C96C9A8E2BB5425700AC2921 /* CommonUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A8D2BB5425700AC2921 /* CommonUseCase.swift */; };
 		C96C9A922BB5727900AC2921 /* KeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A912BB5727900AC2921 /* KeychainService.swift */; };
 		C96C9A942BB572D400AC2921 /* DefaultKeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A932BB572D400AC2921 /* DefaultKeychainService.swift */; };
+		C96C9A962BB5C48200AC2921 /* DefaultPosePickUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A952BB5C48200AC2921 /* DefaultPosePickUseCase.swift */; };
+		C96C9A9A2BB5C52500AC2921 /* DefaultPosePickRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A992BB5C52500AC2921 /* DefaultPosePickRepository.swift */; };
+		C96C9A9C2BB5C53000AC2921 /* PosePickRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A9B2BB5C53000AC2921 /* PosePickRepository.swift */; };
+		C96C9AA02BB5C69D00AC2921 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A9F2BB5C69D00AC2921 /* CacheService.swift */; };
+		C96C9AA22BB5C6C700AC2921 /* DefaultCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9AA12BB5C6C700AC2921 /* DefaultCacheService.swift */; };
 		C971A67C2B2036850078EF2B /* Bookmark_Next.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A67B2B2036850078EF2B /* Bookmark_Next.json */; };
 		C971A6822B26F5EA0078EF2B /* authenticateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971A6812B26F5EA0078EF2B /* authenticateTests.swift */; };
 		C971A6872B26FD290078EF2B /* AuthorizationCode.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A6862B26FD290078EF2B /* AuthorizationCode.json */; };
@@ -334,6 +339,11 @@
 		C96C9A8D2BB5425700AC2921 /* CommonUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUseCase.swift; sourceTree = "<group>"; };
 		C96C9A912BB5727900AC2921 /* KeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainService.swift; sourceTree = "<group>"; };
 		C96C9A932BB572D400AC2921 /* DefaultKeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultKeychainService.swift; sourceTree = "<group>"; };
+		C96C9A952BB5C48200AC2921 /* DefaultPosePickUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPosePickUseCase.swift; sourceTree = "<group>"; };
+		C96C9A992BB5C52500AC2921 /* DefaultPosePickRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPosePickRepository.swift; sourceTree = "<group>"; };
+		C96C9A9B2BB5C53000AC2921 /* PosePickRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickRepository.swift; sourceTree = "<group>"; };
+		C96C9A9F2BB5C69D00AC2921 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
+		C96C9AA12BB5C6C700AC2921 /* DefaultCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCacheService.swift; sourceTree = "<group>"; };
 		C971A67A2B2008920078EF2B /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
 		C971A67B2B2036850078EF2B /* Bookmark_Next.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Bookmark_Next.json; sourceTree = "<group>"; };
 		C971A6812B26F5EA0078EF2B /* authenticateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = authenticateTests.swift; sourceTree = "<group>"; };
@@ -758,7 +768,6 @@
 		C91FF3452BAAB66600096E25 /* Data */ = {
 			isa = PBXGroup;
 			children = (
-				C96C9A8F2BB5726500AC2921 /* Keychain */,
 				C91FF3522BAB25E300096E25 /* Network */,
 				C91FF3472BAAB67B00096E25 /* Repository */,
 			);
@@ -768,8 +777,9 @@
 		C91FF3472BAAB67B00096E25 /* Repository */ = {
 			isa = PBXGroup;
 			children = (
-				C91FF3512BAAD6F800096E25 /* PoseTalk */,
 				C91FF3482BAAB68000096E25 /* Common */,
+				C96C9A972BB5C4F100AC2921 /* PosePick */,
+				C91FF3512BAAD6F800096E25 /* PoseTalk */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -1174,6 +1184,7 @@
 			isa = PBXGroup;
 			children = (
 				C9676BE62BAAAB6A000A4114 /* Protocol */,
+				C96C9A952BB5C48200AC2921 /* DefaultPosePickUseCase.swift */,
 			);
 			path = PosePick;
 			sourceTree = "<group>";
@@ -1227,18 +1238,45 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
-		C96C9A8F2BB5726500AC2921 /* Keychain */ = {
+		C96C9A972BB5C4F100AC2921 /* PosePick */ = {
 			isa = PBXGroup;
 			children = (
-				C96C9A902BB5726D00AC2921 /* Protocol */,
-				C96C9A932BB572D400AC2921 /* DefaultKeychainService.swift */,
+				C96C9A982BB5C51900AC2921 /* Protocol */,
+				C96C9A992BB5C52500AC2921 /* DefaultPosePickRepository.swift */,
 			);
-			path = Keychain;
+			path = PosePick;
 			sourceTree = "<group>";
 		};
-		C96C9A902BB5726D00AC2921 /* Protocol */ = {
+		C96C9A982BB5C51900AC2921 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
+				C96C9A9B2BB5C53000AC2921 /* PosePickRepository.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		C96C9AA32BB63E2800AC2921 /* Util */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9AA42BB63E2E00AC2921 /* Service */,
+				C96C9A932BB572D400AC2921 /* DefaultKeychainService.swift */,
+				C96C9AA12BB5C6C700AC2921 /* DefaultCacheService.swift */,
+			);
+			path = Util;
+			sourceTree = "<group>";
+		};
+		C96C9AA42BB63E2E00AC2921 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9AA52BB63E5100AC2921 /* Protocol */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
+		C96C9AA52BB63E5100AC2921 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9A9F2BB5C69D00AC2921 /* CacheService.swift */,
 				C96C9A912BB5727900AC2921 /* KeychainService.swift */,
 			);
 			path = Protocol;
@@ -1356,6 +1394,7 @@
 		C9C890502AE103A10010240A /* posepicker */ = {
 			isa = PBXGroup;
 			children = (
+				C96C9AA32BB63E2800AC2921 /* Util */,
 				C9676BE32BAAAB39000A4114 /* Domain */,
 				C91FF3452BAAB66600096E25 /* Data */,
 				C91FF3532BAB262F00096E25 /* Network */,
@@ -1880,6 +1919,7 @@
 				880E75302AE60937007FAD5A /* UIImage+.swift in Sources */,
 				C94FD2832AE3960B003777EB /* PoseFeedViewController.swift in Sources */,
 				C99D53B52B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift in Sources */,
+				C96C9A9C2BB5C53000AC2921 /* PosePickRepository.swift in Sources */,
 				C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */,
 				C96C9A822BB5020400AC2921 /* UIPageViewController+Rx.swift in Sources */,
 				C9DC2F992AEA28E300D5170D /* PoseFeedFilterCell.swift in Sources */,
@@ -1906,6 +1946,7 @@
 				C9C0CDCE2AF353AB0041E423 /* ToolTip.swift in Sources */,
 				C938511C2BB3E1D100E597C1 /* DefaultPoseTalkCoordinator.swift in Sources */,
 				C9C890C52AE11BAB0010240A /* UIFont+.swift in Sources */,
+				C96C9A962BB5C48200AC2921 /* DefaultPosePickUseCase.swift in Sources */,
 				8803ADB92B04FB0D00185933 /* PoseDetailViewController.swift in Sources */,
 				C94FD2852AE39612003777EB /* BookMarkViewController.swift in Sources */,
 				C938512A2BB41CD900E597C1 /* PoseFeedCoordinator.swift in Sources */,
@@ -1919,6 +1960,7 @@
 				88D5C4812B027B0A0045C081 /* Section.swift in Sources */,
 				880E752D2AE60499007FAD5A /* Header.swift in Sources */,
 				C99D53B72B1EDCB8007DEE9B /* BookmarkEmptyView.swift in Sources */,
+				C96C9AA02BB5C69D00AC2921 /* CacheService.swift in Sources */,
 				C9188B252B909E6A004B9C45 /* MyPoseCustomTagCell.swift in Sources */,
 				C91FF3642BAC002700096E25 /* DefaultPoseTalkUseCase.swift in Sources */,
 				C94FD2812AE39603003777EB /* PoseTalkViewController.swift in Sources */,
@@ -1938,6 +1980,7 @@
 				C9C4D2022B8F6A5D00FF9363 /* MyPoseImageDetailViewController.swift in Sources */,
 				C94FD2892AE39635003777EB /* PoseTalkViewModel.swift in Sources */,
 				C91FF3762BAD897900096E25 /* PageViewCoordinator.swift in Sources */,
+				C96C9AA22BB5C6C700AC2921 /* DefaultCacheService.swift in Sources */,
 				C91A266D2B88525200F1193E /* MyPoseImageSourceViewController.swift in Sources */,
 				C93851232BB3F55000E597C1 /* CommonViewModel.swift in Sources */,
 				C91E18502B99ECC1009611C3 /* RadioButton.swift in Sources */,
@@ -1956,6 +1999,7 @@
 				C9D0C4032B9C4BFC004A3940 /* SecureField.swift in Sources */,
 				880E75492AE6BFE3007FAD5A /* NetworkEventLogger.swift in Sources */,
 				880E75522AE6C275007FAD5A /* Data+.swift in Sources */,
+				C96C9A9A2BB5C52500AC2921 /* DefaultPosePickRepository.swift in Sources */,
 				C9D0C4082BA4172C004A3940 /* UserRevokeViewController.swift in Sources */,
 				C91A266B2B88524200F1193E /* MyPoseTagViewController.swift in Sources */,
 				C91FF3622BAC001E00096E25 /* PoseTalkUseCase.swift in Sources */,
