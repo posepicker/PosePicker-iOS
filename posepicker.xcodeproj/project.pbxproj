@@ -145,8 +145,7 @@
 		C96C9A962BB5C48200AC2921 /* DefaultPosePickUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A952BB5C48200AC2921 /* DefaultPosePickUseCase.swift */; };
 		C96C9A9A2BB5C52500AC2921 /* DefaultPosePickRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A992BB5C52500AC2921 /* DefaultPosePickRepository.swift */; };
 		C96C9A9C2BB5C53000AC2921 /* PosePickRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A9B2BB5C53000AC2921 /* PosePickRepository.swift */; };
-		C96C9AA02BB5C69D00AC2921 /* CacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A9F2BB5C69D00AC2921 /* CacheService.swift */; };
-		C96C9AA22BB5C6C700AC2921 /* DefaultCacheService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9AA12BB5C6C700AC2921 /* DefaultCacheService.swift */; };
+		C96C9AAA2BB9998F00AC2921 /* Result+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9AA92BB9998F00AC2921 /* Result+.swift */; };
 		C971A67C2B2036850078EF2B /* Bookmark_Next.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A67B2B2036850078EF2B /* Bookmark_Next.json */; };
 		C971A6822B26F5EA0078EF2B /* authenticateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971A6812B26F5EA0078EF2B /* authenticateTests.swift */; };
 		C971A6872B26FD290078EF2B /* AuthorizationCode.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A6862B26FD290078EF2B /* AuthorizationCode.json */; };
@@ -342,8 +341,7 @@
 		C96C9A952BB5C48200AC2921 /* DefaultPosePickUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPosePickUseCase.swift; sourceTree = "<group>"; };
 		C96C9A992BB5C52500AC2921 /* DefaultPosePickRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPosePickRepository.swift; sourceTree = "<group>"; };
 		C96C9A9B2BB5C53000AC2921 /* PosePickRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickRepository.swift; sourceTree = "<group>"; };
-		C96C9A9F2BB5C69D00AC2921 /* CacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CacheService.swift; sourceTree = "<group>"; };
-		C96C9AA12BB5C6C700AC2921 /* DefaultCacheService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCacheService.swift; sourceTree = "<group>"; };
+		C96C9AA92BB9998F00AC2921 /* Result+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Result+.swift"; sourceTree = "<group>"; };
 		C971A67A2B2008920078EF2B /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
 		C971A67B2B2036850078EF2B /* Bookmark_Next.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Bookmark_Next.json; sourceTree = "<group>"; };
 		C971A6812B26F5EA0078EF2B /* authenticateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = authenticateTests.swift; sourceTree = "<group>"; };
@@ -1260,7 +1258,6 @@
 			children = (
 				C96C9AA42BB63E2E00AC2921 /* Service */,
 				C96C9A932BB572D400AC2921 /* DefaultKeychainService.swift */,
-				C96C9AA12BB5C6C700AC2921 /* DefaultCacheService.swift */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1276,10 +1273,24 @@
 		C96C9AA52BB63E5100AC2921 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
-				C96C9A9F2BB5C69D00AC2921 /* CacheService.swift */,
 				C96C9A912BB5727900AC2921 /* KeychainService.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		C96C9AA82BB9998600AC2921 /* Result */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9AA92BB9998F00AC2921 /* Result+.swift */,
+			);
+			path = Result;
+			sourceTree = "<group>";
+		};
+		C96C9AAE2BB9A0A100AC2921 /* PosePickScene */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = PosePickScene;
 			sourceTree = "<group>";
 		};
 		C971A6792B2008870078EF2B /* Configs */ = {
@@ -1414,6 +1425,7 @@
 		C9C890672AE103A30010240A /* PosepickerViewModelTests */ = {
 			isa = PBXGroup;
 			children = (
+				C96C9AAE2BB9A0A100AC2921 /* PosePickScene */,
 				C96C9A842BB5415300AC2921 /* Common */,
 				C971A6802B26F5DA0078EF2B /* Authenticate */,
 				88E1D6BD2B1E34E900DB8BF6 /* Bookmark */,
@@ -1464,6 +1476,7 @@
 		C9C8909A2AE107A40010240A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C96C9AA82BB9998600AC2921 /* Result */,
 				C96C9A802BB501EA00AC2921 /* UIPageViewController */,
 				C91E18422B99B2EC009611C3 /* UINavigationController */,
 				C936258E2B907A6500B90810 /* UITextField */,
@@ -1929,6 +1942,7 @@
 				C91FF3432BAAADC500096E25 /* Sort.swift in Sources */,
 				C9C8908A2AE107180010240A /* ViewModelType.swift in Sources */,
 				C93851252BB414E000E597C1 /* PosePickCoordinator.swift in Sources */,
+				C96C9AAA2BB9998F00AC2921 /* Result+.swift in Sources */,
 				C9C890BF2AE1107B0010240A /* ImageLiteral.swift in Sources */,
 				C9FDBDF62B28AE140045AA54 /* BookmarkDetailTagCellViewModel.swift in Sources */,
 				8874106A2B27491E00EBC060 /* AuthCode.swift in Sources */,
@@ -1960,7 +1974,6 @@
 				88D5C4812B027B0A0045C081 /* Section.swift in Sources */,
 				880E752D2AE60499007FAD5A /* Header.swift in Sources */,
 				C99D53B72B1EDCB8007DEE9B /* BookmarkEmptyView.swift in Sources */,
-				C96C9AA02BB5C69D00AC2921 /* CacheService.swift in Sources */,
 				C9188B252B909E6A004B9C45 /* MyPoseCustomTagCell.swift in Sources */,
 				C91FF3642BAC002700096E25 /* DefaultPoseTalkUseCase.swift in Sources */,
 				C94FD2812AE39603003777EB /* PoseTalkViewController.swift in Sources */,
@@ -1980,7 +1993,6 @@
 				C9C4D2022B8F6A5D00FF9363 /* MyPoseImageDetailViewController.swift in Sources */,
 				C94FD2892AE39635003777EB /* PoseTalkViewModel.swift in Sources */,
 				C91FF3762BAD897900096E25 /* PageViewCoordinator.swift in Sources */,
-				C96C9AA22BB5C6C700AC2921 /* DefaultCacheService.swift in Sources */,
 				C91A266D2B88525200F1193E /* MyPoseImageSourceViewController.swift in Sources */,
 				C93851232BB3F55000E597C1 /* CommonViewModel.swift in Sources */,
 				C91E18502B99ECC1009611C3 /* RadioButton.swift in Sources */,
