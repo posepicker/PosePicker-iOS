@@ -35,11 +35,9 @@
 		88D5C47D2B0277BE0045C081 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = 88D5C47C2B0277BE0045C081 /* RxDataSources */; };
 		88D5C4812B027B0A0045C081 /* Section.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D5C4802B027B0A0045C081 /* Section.swift */; };
 		88D5C4852B0318040045C081 /* PoseFeedHeader.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88D5C4842B0318040045C081 /* PoseFeedHeader.swift */; };
-		88E1D6B22B1E09C400DB8BF6 /* mypageTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E1D6B12B1E09C400DB8BF6 /* mypageTests.swift */; };
 		88E1D6B62B1E0B9E00DB8BF6 /* User.json in Resources */ = {isa = PBXBuildFile; fileRef = 88E1D6B52B1E0B9E00DB8BF6 /* User.json */; };
 		88E1D6B82B1E11A100DB8BF6 /* RxTest in Frameworks */ = {isa = PBXBuildFile; productRef = 88E1D6B72B1E11A100DB8BF6 /* RxTest */; };
 		88E1D6BC2B1E234A00DB8BF6 /* KeychainManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E1D6BB2B1E234A00DB8BF6 /* KeychainManager.swift */; };
-		88E1D6BF2B1E34FC00DB8BF6 /* bookmarkTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88E1D6BE2B1E34FC00DB8BF6 /* bookmarkTests.swift */; };
 		88EA81F12AF69BD700020DEA /* PoseFeed.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F02AF69BD700020DEA /* PoseFeed.swift */; };
 		88EA81F62AF6A17A00020DEA /* PoseFeedPhotoCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F52AF6A17A00020DEA /* PoseFeedPhotoCell.swift */; };
 		88EA81F82AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F72AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift */; };
@@ -65,7 +63,6 @@
 		C91A266F2B88899300F1193E /* MyPoseSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A266E2B88899300F1193E /* MyPoseSelectButton.swift */; };
 		C91CE9262B1B0DDC00048FF7 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91CE9252B1B0DDC00048FF7 /* MockURLProtocol.swift */; };
 		C91CE92D2B1B1CA300048FF7 /* PosePick.json in Resources */ = {isa = PBXBuildFile; fileRef = C91CE92C2B1B1CA300048FF7 /* PosePick.json */; };
-		C91CE9342B1DA15700048FF7 /* posefeedTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91CE9322B1DA15700048FF7 /* posefeedTests.swift */; };
 		C91E18442B99B300009611C3 /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91E18432B99B300009611C3 /* UINavigationController+.swift */; };
 		C91E184B2B99C22A009611C3 /* PoseDetailMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91E184A2B99C22A009611C3 /* PoseDetailMoreViewController.swift */; };
 		C91E184D2B99E484009611C3 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91E184C2B99E484009611C3 /* ReportViewController.swift */; };
@@ -146,8 +143,10 @@
 		C96C9A9A2BB5C52500AC2921 /* DefaultPosePickRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A992BB5C52500AC2921 /* DefaultPosePickRepository.swift */; };
 		C96C9A9C2BB5C53000AC2921 /* PosePickRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A9B2BB5C53000AC2921 /* PosePickRepository.swift */; };
 		C96C9AAA2BB9998F00AC2921 /* Result+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9AA92BB9998F00AC2921 /* Result+.swift */; };
+		C96C9AB72BB9A2FB00AC2921 /* PosePickUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9AB62BB9A2FB00AC2921 /* PosePickUseCaseTests.swift */; };
+		C96C9AB82BB9A37C00AC2921 /* PosePickUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9AB62BB9A2FB00AC2921 /* PosePickUseCaseTests.swift */; };
+		C96C9ABA2BB9A3C200AC2921 /* MockPosePickRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9AB92BB9A3C200AC2921 /* MockPosePickRepository.swift */; };
 		C971A67C2B2036850078EF2B /* Bookmark_Next.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A67B2B2036850078EF2B /* Bookmark_Next.json */; };
-		C971A6822B26F5EA0078EF2B /* authenticateTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C971A6812B26F5EA0078EF2B /* authenticateTests.swift */; };
 		C971A6872B26FD290078EF2B /* AuthorizationCode.json in Resources */ = {isa = PBXBuildFile; fileRef = C971A6862B26FD290078EF2B /* AuthorizationCode.json */; };
 		C990AB1E2B5BF52600567AA3 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C990AB1D2B5BF52600567AA3 /* String+.swift */; };
 		C99A8A6E2B109AA60072B361 /* SmartlookAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A6D2B109AA60072B361 /* SmartlookAnalytics */; };
@@ -168,7 +167,6 @@
 		C9C890522AE103A10010240A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890512AE103A10010240A /* AppDelegate.swift */; };
 		C9C8905B2AE103A30010240A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9C8905A2AE103A30010240A /* Assets.xcassets */; };
 		C9C8905E2AE103A30010240A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9C8905C2AE103A30010240A /* LaunchScreen.storyboard */; };
-		C9C890692AE103A30010240A /* posepickerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890682AE103A30010240A /* posepickerTests.swift */; };
 		C9C890732AE103A30010240A /* posepickerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890722AE103A30010240A /* posepickerUITests.swift */; };
 		C9C890752AE103A30010240A /* posepickerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890742AE103A30010240A /* posepickerUITestsLaunchTests.swift */; };
 		C9C890882AE107090010240A /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890872AE107090010240A /* BaseViewController.swift */; };
@@ -250,10 +248,8 @@
 		887410692B27491E00EBC060 /* AuthCode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthCode.swift; sourceTree = "<group>"; };
 		88D5C4802B027B0A0045C081 /* Section.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Section.swift; sourceTree = "<group>"; };
 		88D5C4842B0318040045C081 /* PoseFeedHeader.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedHeader.swift; sourceTree = "<group>"; };
-		88E1D6B12B1E09C400DB8BF6 /* mypageTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = mypageTests.swift; sourceTree = "<group>"; };
 		88E1D6B52B1E0B9E00DB8BF6 /* User.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = User.json; sourceTree = "<group>"; };
 		88E1D6BB2B1E234A00DB8BF6 /* KeychainManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = KeychainManager.swift; sourceTree = "<group>"; };
-		88E1D6BE2B1E34FC00DB8BF6 /* bookmarkTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = bookmarkTests.swift; sourceTree = "<group>"; };
 		88EA81F02AF69BD700020DEA /* PoseFeed.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeed.swift; sourceTree = "<group>"; };
 		88EA81F52AF6A17A00020DEA /* PoseFeedPhotoCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedPhotoCell.swift; sourceTree = "<group>"; };
 		88EA81F72AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedPhotoCellViewModel.swift; sourceTree = "<group>"; };
@@ -278,7 +274,6 @@
 		C91A266E2B88899300F1193E /* MyPoseSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseSelectButton.swift; sourceTree = "<group>"; };
 		C91CE9252B1B0DDC00048FF7 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
 		C91CE92C2B1B1CA300048FF7 /* PosePick.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = PosePick.json; sourceTree = "<group>"; };
-		C91CE9322B1DA15700048FF7 /* posefeedTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posefeedTests.swift; sourceTree = "<group>"; };
 		C91E18432B99B300009611C3 /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
 		C91E184A2B99C22A009611C3 /* PoseDetailMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseDetailMoreViewController.swift; sourceTree = "<group>"; };
 		C91E184C2B99E484009611C3 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
@@ -342,9 +337,10 @@
 		C96C9A992BB5C52500AC2921 /* DefaultPosePickRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPosePickRepository.swift; sourceTree = "<group>"; };
 		C96C9A9B2BB5C53000AC2921 /* PosePickRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickRepository.swift; sourceTree = "<group>"; };
 		C96C9AA92BB9998F00AC2921 /* Result+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Result+.swift"; sourceTree = "<group>"; };
+		C96C9AB62BB9A2FB00AC2921 /* PosePickUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickUseCaseTests.swift; sourceTree = "<group>"; };
+		C96C9AB92BB9A3C200AC2921 /* MockPosePickRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPosePickRepository.swift; sourceTree = "<group>"; };
 		C971A67A2B2008920078EF2B /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
 		C971A67B2B2036850078EF2B /* Bookmark_Next.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = Bookmark_Next.json; sourceTree = "<group>"; };
-		C971A6812B26F5EA0078EF2B /* authenticateTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = authenticateTests.swift; sourceTree = "<group>"; };
 		C971A6862B26FD290078EF2B /* AuthorizationCode.json */ = {isa = PBXFileReference; lastKnownFileType = text.json; path = AuthorizationCode.json; sourceTree = "<group>"; };
 		C990AB1D2B5BF52600567AA3 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -364,7 +360,6 @@
 		C9C8905D2AE103A30010240A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C9C8905F2AE103A30010240A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C9C890642AE103A30010240A /* posepickerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = posepickerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C9C890682AE103A30010240A /* posepickerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posepickerTests.swift; sourceTree = "<group>"; };
 		C9C8906E2AE103A30010240A /* posepickerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = posepickerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C9C890722AE103A30010240A /* posepickerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posepickerUITests.swift; sourceTree = "<group>"; };
 		C9C890742AE103A30010240A /* posepickerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posepickerUITestsLaunchTests.swift; sourceTree = "<group>"; };
@@ -578,14 +573,6 @@
 			path = PinterestLayout;
 			sourceTree = "<group>";
 		};
-		88E1D6AE2B1E098B00DB8BF6 /* MyPage */ = {
-			isa = PBXGroup;
-			children = (
-				88E1D6B12B1E09C400DB8BF6 /* mypageTests.swift */,
-			);
-			path = MyPage;
-			sourceTree = "<group>";
-		};
 		88E1D6B92B1E232B00DB8BF6 /* Utils */ = {
 			isa = PBXGroup;
 			children = (
@@ -602,14 +589,6 @@
 				88E1D6BB2B1E234A00DB8BF6 /* KeychainManager.swift */,
 			);
 			path = KeychainManager;
-			sourceTree = "<group>";
-		};
-		88E1D6BD2B1E34E900DB8BF6 /* Bookmark */ = {
-			isa = PBXGroup;
-			children = (
-				88E1D6BE2B1E34FC00DB8BF6 /* bookmarkTests.swift */,
-			);
-			path = Bookmark;
 			sourceTree = "<group>";
 		};
 		88EA81EE2AF69BB900020DEA /* User */ = {
@@ -719,14 +698,6 @@
 				C99D53BC2B1F1714007DEE9B /* JSON */,
 			);
 			path = MockData;
-			sourceTree = "<group>";
-		};
-		C91CE92F2B1D9FF500048FF7 /* PoseFeed */ = {
-			isa = PBXGroup;
-			children = (
-				C91CE9322B1DA15700048FF7 /* posefeedTests.swift */,
-			);
-			path = PoseFeed;
 			sourceTree = "<group>";
 		};
 		C91E18422B99B2EC009611C3 /* UINavigationController */ = {
@@ -1016,6 +987,7 @@
 		C93851162BB3E18300E597C1 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				C94FD27E2AE395E3003777EB /* PosePickViewController.swift */,
 			);
 			path = ViewController;
 			sourceTree = "<group>";
@@ -1023,6 +995,7 @@
 		C93851172BB3E18800E597C1 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				C94FD2862AE3961D003777EB /* PosePickViewModel.swift */,
 			);
 			path = ViewModel;
 			sourceTree = "<group>";
@@ -1054,8 +1027,6 @@
 		C94FD27A2AE39505003777EB /* PosePick */ = {
 			isa = PBXGroup;
 			children = (
-				C94FD2862AE3961D003777EB /* PosePickViewModel.swift */,
-				C94FD27E2AE395E3003777EB /* PosePickViewController.swift */,
 			);
 			path = PosePick;
 			sourceTree = "<group>";
@@ -1293,20 +1264,37 @@
 			path = PosePickScene;
 			sourceTree = "<group>";
 		};
+		C96C9AAF2BB9A29D00AC2921 /* PosePickerUseCaseTests */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9AB02BB9A2B500AC2921 /* PosePickScene */,
+			);
+			path = PosePickerUseCaseTests;
+			sourceTree = "<group>";
+		};
+		C96C9AB02BB9A2B500AC2921 /* PosePickScene */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9AB32BB9A2CF00AC2921 /* Mock */,
+				C96C9AB62BB9A2FB00AC2921 /* PosePickUseCaseTests.swift */,
+			);
+			path = PosePickScene;
+			sourceTree = "<group>";
+		};
+		C96C9AB32BB9A2CF00AC2921 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9AB92BB9A3C200AC2921 /* MockPosePickRepository.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
 		C971A6792B2008870078EF2B /* Configs */ = {
 			isa = PBXGroup;
 			children = (
 				C971A67A2B2008920078EF2B /* posepicker.xcconfig */,
 			);
 			path = Configs;
-			sourceTree = "<group>";
-		};
-		C971A6802B26F5DA0078EF2B /* Authenticate */ = {
-			isa = PBXGroup;
-			children = (
-				C971A6812B26F5EA0078EF2B /* authenticateTests.swift */,
-			);
-			path = Authenticate;
 			sourceTree = "<group>";
 		};
 		C971A6832B26FCE20078EF2B /* User */ = {
@@ -1386,6 +1374,7 @@
 			children = (
 				C9C890502AE103A10010240A /* posepicker */,
 				C9C890672AE103A30010240A /* PosepickerViewModelTests */,
+				C96C9AAF2BB9A29D00AC2921 /* PosePickerUseCaseTests */,
 				C9C890712AE103A30010240A /* posepickerUITests */,
 				C9C8904F2AE103A10010240A /* Products */,
 				C9042E6C2B0DC6B900BB4182 /* Frameworks */,
@@ -1425,13 +1414,8 @@
 		C9C890672AE103A30010240A /* PosepickerViewModelTests */ = {
 			isa = PBXGroup;
 			children = (
-				C96C9AAE2BB9A0A100AC2921 /* PosePickScene */,
 				C96C9A842BB5415300AC2921 /* Common */,
-				C971A6802B26F5DA0078EF2B /* Authenticate */,
-				88E1D6BD2B1E34E900DB8BF6 /* Bookmark */,
-				88E1D6AE2B1E098B00DB8BF6 /* MyPage */,
-				C91CE92F2B1D9FF500048FF7 /* PoseFeed */,
-				C9C890682AE103A30010240A /* posepickerTests.swift */,
+				C96C9AAE2BB9A0A100AC2921 /* PosePickScene */,
 			);
 			path = PosepickerViewModelTests;
 			sourceTree = "<group>";
@@ -2004,6 +1988,7 @@
 				C9C8909D2AE107BC0010240A /* UIColor+.swift in Sources */,
 				C94FD2872AE3961D003777EB /* PosePickViewModel.swift in Sources */,
 				8803ADBB2B04FB4100185933 /* PoseDetailViewModel.swift in Sources */,
+				C96C9ABA2BB9A3C200AC2921 /* MockPosePickRepository.swift in Sources */,
 				88D5C4852B0318040045C081 /* PoseFeedHeader.swift in Sources */,
 				C94FD2902AE398CF003777EB /* MyPageViewController.swift in Sources */,
 				C93625902B907A6F00B90810 /* UITextField+.swift in Sources */,
@@ -2022,6 +2007,7 @@
 				880E753C2AE6BE3A007FAD5A /* BindableViewModel.swift in Sources */,
 				C9DC2FA62AEB6E1800D5170D /* FilterTags.swift in Sources */,
 				C9D0C4062BA2D228004A3940 /* Toast.swift in Sources */,
+				C96C9AB82BB9A37C00AC2921 /* PosePickUseCaseTests.swift in Sources */,
 				C94FD28D2AE39646003777EB /* BookmarkViewModel.swift in Sources */,
 				C9DC2FAA2AECAD4500D5170D /* RegisteredFilterCellViewModel.swift in Sources */,
 				C9042E6B2B0D7CB000BB4182 /* LoginPopUpView.swift in Sources */,
@@ -2045,11 +2031,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C971A6822B26F5EA0078EF2B /* authenticateTests.swift in Sources */,
-				C91CE9342B1DA15700048FF7 /* posefeedTests.swift in Sources */,
-				88E1D6B22B1E09C400DB8BF6 /* mypageTests.swift in Sources */,
-				C9C890692AE103A30010240A /* posepickerTests.swift in Sources */,
-				88E1D6BF2B1E34FC00DB8BF6 /* bookmarkTests.swift in Sources */,
+				C96C9AB72BB9A2FB00AC2921 /* PosePickUseCaseTests.swift in Sources */,
 				C96C9A862BB5416400AC2921 /* CommonViewTest.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
