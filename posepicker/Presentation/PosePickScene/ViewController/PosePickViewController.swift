@@ -119,41 +119,6 @@ class PosePickViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-//        let input = PosePickViewModel.Input(posePickButtonTapped: posePickerButton.rx.tap, isImageLoading: isImageLoading.asObservable(), isAnimating: isAnimating.asObservable(), refetchTrigger: refetchTrigger.asObservable(), selectedIndex: selection.pressIndex)
-//
-//        let output = viewModel.transform(input: input)
-//        
-//        output.animate
-//            .drive(onNext: { [unowned self] in
-//                self.retrievedImage.image = nil
-//                self.isAnimating.accept(true)
-//                self.animationView.play() {
-//                    if $0 && self.isImageLoading.value { // 애니메이션은 끝났지만 이미지가 여전히 로딩중이면
-//                        self.refetchTrigger.onNext(())
-//                    } else if $0 {
-//                        self.isAnimating.accept(false)
-//                    }
-//                }
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.imageUrl
-//            .drive(onNext: { [unowned self] urlString in
-//                self.isImageLoading.accept(true)
-//                self.retrievedImage.kf.setImage(with: URL(string: urlString)) { _ in
-//                    self.isImageLoading.accept(false)
-//                }
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.isLoading.bind(to: retrievedImage.rx.isHidden)
-//            .disposed(by: disposeBag)
-//        
-//        output.isLoading.map { !$0 }.bind(to: animationView.rx.isHidden)
-//            .disposed(by: disposeBag)
-//        
-//        output.isPosePickerImageHidden.bind(to: posepickerImage.rx.isHidden)
-//            .disposed(by: disposeBag)
     }
     
     // MARK: - Objc Functions
