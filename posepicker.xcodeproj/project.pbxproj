@@ -138,14 +138,17 @@
 		C96C9A9A2BB5C52500AC2921 /* DefaultPosePickRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A992BB5C52500AC2921 /* DefaultPosePickRepository.swift */; };
 		C96C9A9C2BB5C53000AC2921 /* PosePickRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A9B2BB5C53000AC2921 /* PosePickRepository.swift */; };
 		C96C9AAA2BB9998F00AC2921 /* Result+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9AA92BB9998F00AC2921 /* Result+.swift */; };
-		C96C9AE52BBA387F00AC2921 /* MockPosePickUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9AE42BBA387F00AC2921 /* MockPosePickUseCase.swift */; };
 		C96C9AF52BBA39F800AC2921 /* PosePickViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9AE62BBA396D00AC2921 /* PosePickViewModelTests.swift */; };
-		C96C9AF62BBA3A0600AC2921 /* CommonViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A852BB5416400AC2921 /* CommonViewTest.swift */; };
 		C96C9AF82BBA3A0900AC2921 /* CommonViewTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A852BB5416400AC2921 /* CommonViewTest.swift */; };
-		C96C9AF92BBA3A0D00AC2921 /* PosePickViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9AE62BBA396D00AC2921 /* PosePickViewModelTests.swift */; };
 		C96C9AFB2BBA3A1800AC2921 /* MockPosePickUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9AE42BBA387F00AC2921 /* MockPosePickUseCase.swift */; };
 		C96C9AFE2BBA3A8B00AC2921 /* RxTest in Frameworks */ = {isa = PBXBuildFile; productRef = C96C9AFD2BBA3A8B00AC2921 /* RxTest */; };
-		C96C9B272BBA485300AC2921 /* PosePickerUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B262BBA485300AC2921 /* PosePickerUseCaseTests.swift */; };
+		C96C9B2F2BBA48E200AC2921 /* RxTest in Frameworks */ = {isa = PBXBuildFile; productRef = C96C9B2E2BBA48E200AC2921 /* RxTest */; };
+		C96C9B442BBA4BBE00AC2921 /* MockPosePickRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B342BBA494A00AC2921 /* MockPosePickRepository.swift */; };
+		C96C9B452BBA4BCD00AC2921 /* PosePickUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B312BBA48F300AC2921 /* PosePickUseCaseTests.swift */; };
+		C96C9B4A2BBA7B5C00AC2921 /* mock.png in Resources */ = {isa = PBXBuildFile; fileRef = C96C9B492BBA7B5C00AC2921 /* mock.png */; };
+		C96C9B4B2BBA7B5C00AC2921 /* mock.png in Resources */ = {isa = PBXBuildFile; fileRef = C96C9B492BBA7B5C00AC2921 /* mock.png */; };
+		C96C9B4D2BBA7F1200AC2921 /* mock.png in Resources */ = {isa = PBXBuildFile; fileRef = C96C9B492BBA7B5C00AC2921 /* mock.png */; };
+		C96C9B502BBA86A200AC2921 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B362BBA495200AC2921 /* MockURLProtocol.swift */; };
 		C990AB1E2B5BF52600567AA3 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C990AB1D2B5BF52600567AA3 /* String+.swift */; };
 		C99A8A6E2B109AA60072B361 /* SmartlookAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A6D2B109AA60072B361 /* SmartlookAnalytics */; };
 		C99A8A702B10A4970072B361 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */; };
@@ -160,8 +163,6 @@
 		C9C890522AE103A10010240A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890512AE103A10010240A /* AppDelegate.swift */; };
 		C9C8905B2AE103A30010240A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C9C8905A2AE103A30010240A /* Assets.xcassets */; };
 		C9C8905E2AE103A30010240A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C9C8905C2AE103A30010240A /* LaunchScreen.storyboard */; };
-		C9C890732AE103A30010240A /* posepickerUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890722AE103A30010240A /* posepickerUITests.swift */; };
-		C9C890752AE103A30010240A /* posepickerUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890742AE103A30010240A /* posepickerUITestsLaunchTests.swift */; };
 		C9C890882AE107090010240A /* BaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890872AE107090010240A /* BaseViewController.swift */; };
 		C9C8908A2AE107180010240A /* ViewModelType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C890892AE107180010240A /* ViewModelType.swift */; };
 		C9C8908E2AE1073F0010240A /* BaseCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C8908D2AE1073F0010240A /* BaseCollectionViewCell.swift */; };
@@ -207,13 +208,6 @@
 			remoteInfo = posepicker;
 		};
 		C96C9B282BBA485300AC2921 /* PBXContainerItemProxy */ = {
-			isa = PBXContainerItemProxy;
-			containerPortal = C9C890462AE103A10010240A /* Project object */;
-			proxyType = 1;
-			remoteGlobalIDString = C9C8904D2AE103A10010240A;
-			remoteInfo = posepicker;
-		};
-		C9C8906F2AE103A30010240A /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
 			containerPortal = C9C890462AE103A10010240A /* Project object */;
 			proxyType = 1;
@@ -338,7 +332,10 @@
 		C96C9AE62BBA396D00AC2921 /* PosePickViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickViewModelTests.swift; sourceTree = "<group>"; };
 		C96C9AEC2BBA39EC00AC2921 /* PosePickerViewModelTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PosePickerViewModelTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C96C9B242BBA485300AC2921 /* PosePickerUseCaseTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PosePickerUseCaseTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C96C9B262BBA485300AC2921 /* PosePickerUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickerUseCaseTests.swift; sourceTree = "<group>"; };
+		C96C9B312BBA48F300AC2921 /* PosePickUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickUseCaseTests.swift; sourceTree = "<group>"; };
+		C96C9B342BBA494A00AC2921 /* MockPosePickRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPosePickRepository.swift; sourceTree = "<group>"; };
+		C96C9B362BBA495200AC2921 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
+		C96C9B492BBA7B5C00AC2921 /* mock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mock.png; sourceTree = "<group>"; };
 		C971A67A2B2008920078EF2B /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
 		C990AB1D2B5BF52600567AA3 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -352,9 +349,6 @@
 		C9C8905A2AE103A30010240A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		C9C8905D2AE103A30010240A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		C9C8905F2AE103A30010240A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		C9C8906E2AE103A30010240A /* posepickerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = posepickerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		C9C890722AE103A30010240A /* posepickerUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posepickerUITests.swift; sourceTree = "<group>"; };
-		C9C890742AE103A30010240A /* posepickerUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = posepickerUITestsLaunchTests.swift; sourceTree = "<group>"; };
 		C9C890872AE107090010240A /* BaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseViewController.swift; sourceTree = "<group>"; };
 		C9C890892AE107180010240A /* ViewModelType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewModelType.swift; sourceTree = "<group>"; };
 		C9C8908D2AE1073F0010240A /* BaseCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BaseCollectionViewCell.swift; sourceTree = "<group>"; };
@@ -410,6 +404,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C96C9B2F2BBA48E200AC2921 /* RxTest in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -439,13 +434,6 @@
 				C93EE1B32B583D47007D61EF /* RxKakaoSDK in Frameworks */,
 				C9C890912AE107730010240A /* RxBlocking in Frameworks */,
 				C99A8A732B10A54E0072B361 /* FirebaseAnalytics in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C9C8906B2AE103A30010240A /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1207,6 +1195,7 @@
 		C96C9AA32BB63E2800AC2921 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				C96C9B4F2BBA868000AC2921 /* Mock */,
 				C96C9AA42BB63E2E00AC2921 /* Service */,
 				C96C9A932BB572D400AC2921 /* DefaultKeychainService.swift */,
 			);
@@ -1266,9 +1255,42 @@
 		C96C9B252BBA485300AC2921 /* PosePickerUseCaseTests */ = {
 			isa = PBXGroup;
 			children = (
-				C96C9B262BBA485300AC2921 /* PosePickerUseCaseTests.swift */,
+				C96C9B2D2BBA489700AC2921 /* PosePickScene */,
 			);
 			path = PosePickerUseCaseTests;
+			sourceTree = "<group>";
+		};
+		C96C9B2D2BBA489700AC2921 /* PosePickScene */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9B332BBA493D00AC2921 /* Mock */,
+				C96C9B312BBA48F300AC2921 /* PosePickUseCaseTests.swift */,
+			);
+			path = PosePickScene;
+			sourceTree = "<group>";
+		};
+		C96C9B332BBA493D00AC2921 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9B342BBA494A00AC2921 /* MockPosePickRepository.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		C96C9B4C2BBA7EEA00AC2921 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9B492BBA7B5C00AC2921 /* mock.png */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		C96C9B4F2BBA868000AC2921 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9B362BBA495200AC2921 /* MockURLProtocol.swift */,
+			);
+			path = Mock;
 			sourceTree = "<group>";
 		};
 		C971A6792B2008870078EF2B /* Configs */ = {
@@ -1318,7 +1340,6 @@
 			children = (
 				C9C890502AE103A10010240A /* posepicker */,
 				C96C9AED2BBA39EC00AC2921 /* PosePickerViewModelTests */,
-				C9C890712AE103A30010240A /* posepickerUITests */,
 				C96C9B252BBA485300AC2921 /* PosePickerUseCaseTests */,
 				C9C8904F2AE103A10010240A /* Products */,
 				C9042E6C2B0DC6B900BB4182 /* Frameworks */,
@@ -1329,7 +1350,6 @@
 			isa = PBXGroup;
 			children = (
 				C9C8904E2AE103A10010240A /* posepicker.app */,
-				C9C8906E2AE103A30010240A /* posepickerUITests.xctest */,
 				C96C9AEC2BBA39EC00AC2921 /* PosePickerViewModelTests.xctest */,
 				C96C9B242BBA485300AC2921 /* PosePickerUseCaseTests.xctest */,
 			);
@@ -1354,15 +1374,6 @@
 				C9C8905C2AE103A30010240A /* LaunchScreen.storyboard */,
 			);
 			path = posepicker;
-			sourceTree = "<group>";
-		};
-		C9C890712AE103A30010240A /* posepickerUITests */ = {
-			isa = PBXGroup;
-			children = (
-				C9C890722AE103A30010240A /* posepickerUITests.swift */,
-				C9C890742AE103A30010240A /* posepickerUITestsLaunchTests.swift */,
-			);
-			path = posepickerUITests;
 			sourceTree = "<group>";
 		};
 		C9C890812AE103C10010240A /* Application */ = {
@@ -1471,6 +1482,7 @@
 		C9C890AA2AE10A3D0010240A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
+				C96C9B4C2BBA7EEA00AC2921 /* Mock */,
 				C9C890AB2AE110320010240A /* Font */,
 				C9C8905A2AE103A30010240A /* Assets.xcassets */,
 				C9C890BE2AE1107B0010240A /* ImageLiteral.swift */,
@@ -1636,6 +1648,9 @@
 				C96C9B292BBA485300AC2921 /* PBXTargetDependency */,
 			);
 			name = PosePickerUseCaseTests;
+			packageProductDependencies = (
+				C96C9B2E2BBA48E200AC2921 /* RxTest */,
+			);
 			productName = PosePickerUseCaseTests;
 			productReference = C96C9B242BBA485300AC2921 /* PosePickerUseCaseTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
@@ -1681,24 +1696,6 @@
 			productReference = C9C8904E2AE103A10010240A /* posepicker.app */;
 			productType = "com.apple.product-type.application";
 		};
-		C9C8906D2AE103A30010240A /* posepickerUITests */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C9C8907E2AE103A30010240A /* Build configuration list for PBXNativeTarget "posepickerUITests" */;
-			buildPhases = (
-				C9C8906A2AE103A30010240A /* Sources */,
-				C9C8906B2AE103A30010240A /* Frameworks */,
-				C9C8906C2AE103A30010240A /* Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-				C9C890702AE103A30010240A /* PBXTargetDependency */,
-			);
-			name = posepickerUITests;
-			productName = posepickerUITests;
-			productReference = C9C8906E2AE103A30010240A /* posepickerUITests.xctest */;
-			productType = "com.apple.product-type.bundle.ui-testing";
-		};
 /* End PBXNativeTarget section */
 
 /* Begin PBXProject section */
@@ -1715,14 +1712,11 @@
 					};
 					C96C9B232BBA485300AC2921 = {
 						CreatedOnToolsVersion = 15.3;
+						LastSwiftMigration = 1530;
 						TestTargetID = C9C8904D2AE103A10010240A;
 					};
 					C9C8904D2AE103A10010240A = {
 						CreatedOnToolsVersion = 14.3.1;
-					};
-					C9C8906D2AE103A30010240A = {
-						CreatedOnToolsVersion = 14.3.1;
-						TestTargetID = C9C8904D2AE103A10010240A;
 					};
 				};
 			};
@@ -1753,7 +1747,6 @@
 			projectRoot = "";
 			targets = (
 				C9C8904D2AE103A10010240A /* posepicker */,
-				C9C8906D2AE103A30010240A /* posepickerUITests */,
 				C96C9AEB2BBA39EC00AC2921 /* PosePickerViewModelTests */,
 				C96C9B232BBA485300AC2921 /* PosePickerUseCaseTests */,
 			);
@@ -1765,6 +1758,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C96C9B4A2BBA7B5C00AC2921 /* mock.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1772,6 +1766,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C96C9B4B2BBA7B5C00AC2921 /* mock.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1788,16 +1783,10 @@
 				C94FD2A52AE3B282003777EB /* Pretendard-Medium.otf in Resources */,
 				C94FD2A62AE3B282003777EB /* Pretendard-Regular.otf in Resources */,
 				C94FD2A72AE3B282003777EB /* Pretendard-SemiBold.otf in Resources */,
+				C96C9B4D2BBA7F1200AC2921 /* mock.png in Resources */,
 				C94FD2A82AE3B282003777EB /* Pretendard-Thin.otf in Resources */,
 				C9C8905E2AE103A30010240A /* LaunchScreen.storyboard in Resources */,
 				C9C8905B2AE103A30010240A /* Assets.xcassets in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C9C8906C2AE103A30010240A /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1842,7 +1831,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C96C9B272BBA485300AC2921 /* PosePickerUseCaseTests.swift in Sources */,
+				C96C9B452BBA4BCD00AC2921 /* PosePickUseCaseTests.swift in Sources */,
+				C96C9B442BBA4BBE00AC2921 /* MockPosePickRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1884,8 +1874,8 @@
 				C9676BE82BAAAB79000A4114 /* PosePickUseCase.swift in Sources */,
 				C91A265F2B8788F900F1193E /* MyPoseCoordinator.swift in Sources */,
 				C938510E2BB2B18400E597C1 /* DefaultPageViewCoordinator.swift in Sources */,
-				C96C9AF62BBA3A0600AC2921 /* CommonViewTest.swift in Sources */,
 				C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */,
+				C96C9B502BBA86A200AC2921 /* MockURLProtocol.swift in Sources */,
 				C94FD27F2AE395E3003777EB /* PosePickViewController.swift in Sources */,
 				C9DC2F9B2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift in Sources */,
 				C91FF35E2BABFBA300096E25 /* DefaultPoseTalkRepository.swift in Sources */,
@@ -1933,7 +1923,6 @@
 				880E752D2AE60499007FAD5A /* Header.swift in Sources */,
 				C99D53B72B1EDCB8007DEE9B /* BookmarkEmptyView.swift in Sources */,
 				C9188B252B909E6A004B9C45 /* MyPoseCustomTagCell.swift in Sources */,
-				C96C9AE52BBA387F00AC2921 /* MockPosePickUseCase.swift in Sources */,
 				C91FF3642BAC002700096E25 /* DefaultPoseTalkUseCase.swift in Sources */,
 				C94FD2812AE39603003777EB /* PoseTalkViewController.swift in Sources */,
 				C91FF3502BAAD11C00096E25 /* DefaultUserRepository.swift in Sources */,
@@ -1987,7 +1976,6 @@
 				C9C890A02AE109610010240A /* User.swift in Sources */,
 				C9DC2FA32AEA564D00D5170D /* UIScreen+.swift in Sources */,
 				C91FF3582BAB275A00096E25 /* DefaultNetworkService.swift in Sources */,
-				C96C9AF92BBA3A0D00AC2921 /* PosePickViewModelTests.swift in Sources */,
 				C91FF35C2BABFB5F00096E25 /* PoseTalkRepository.swift in Sources */,
 				C9C890A22AE1098B0010240A /* Token.swift in Sources */,
 				C94FD28B2AE3963E003777EB /* PoseFeedViewModel.swift in Sources */,
@@ -1998,15 +1986,6 @@
 				880E75542AE6C28D007FAD5A /* NetworkError.swift in Sources */,
 				C9042E582B0AFB8500BB4182 /* PeopleCountTags.swift in Sources */,
 				C95DD3782B8710BF005ACE84 /* MyPoseViewController.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		C9C8906A2AE103A30010240A /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C9C890732AE103A30010240A /* posepickerUITests.swift in Sources */,
-				C9C890752AE103A30010240A /* posepickerUITestsLaunchTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2022,11 +2001,6 @@
 			isa = PBXTargetDependency;
 			target = C9C8904D2AE103A10010240A /* posepicker */;
 			targetProxy = C96C9B282BBA485300AC2921 /* PBXContainerItemProxy */;
-		};
-		C9C890702AE103A30010240A /* PBXTargetDependency */ = {
-			isa = PBXTargetDependency;
-			target = C9C8904D2AE103A10010240A /* posepicker */;
-			targetProxy = C9C8906F2AE103A30010240A /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
 
@@ -2094,19 +2068,21 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5JQS3FU5R6;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = posepicker.PosePickerUseCaseTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
 				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/posepicker.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/posepicker";
@@ -2118,13 +2094,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
+				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = 5JQS3FU5R6;
 				ENABLE_USER_SCRIPT_SANDBOXING = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu17;
 				GENERATE_INFOPLIST_FILE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 17.4;
+				IPHONEOS_DEPLOYMENT_TARGET = 16.0;
 				LOCALIZATION_PREFERS_STRING_CATALOGS = YES;
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = posepicker.PosePickerUseCaseTests;
@@ -2325,42 +2302,6 @@
 			};
 			name = Release;
 		};
-		C9C8907F2AE103A30010240A /* Debug */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5JQS3FU5R6;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.parkjju.posepickerUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = posepicker;
-			};
-			name = Debug;
-		};
-		C9C890802AE103A30010240A /* Release */ = {
-			isa = XCBuildConfiguration;
-			buildSettings = {
-				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
-				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = 5JQS3FU5R6;
-				GENERATE_INFOPLIST_FILE = YES;
-				MARKETING_VERSION = 1.0;
-				PRODUCT_BUNDLE_IDENTIFIER = com.parkjju.posepickerUITests;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				SWIFT_EMIT_LOC_STRINGS = NO;
-				SWIFT_VERSION = 5.0;
-				TARGETED_DEVICE_FAMILY = "1,2";
-				TEST_TARGET_NAME = posepicker;
-			};
-			name = Release;
-		};
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
@@ -2396,15 +2337,6 @@
 			buildConfigurations = (
 				C9C890792AE103A30010240A /* Debug */,
 				C9C8907A2AE103A30010240A /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		C9C8907E2AE103A30010240A /* Build configuration list for PBXNativeTarget "posepickerUITests" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C9C8907F2AE103A30010240A /* Debug */,
-				C9C890802AE103A30010240A /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
@@ -2564,6 +2496,11 @@
 			productName = Then;
 		};
 		C96C9AFD2BBA3A8B00AC2921 /* RxTest */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C9C8908F2AE107730010240A /* XCRemoteSwiftPackageReference "RxSwift" */;
+			productName = RxTest;
+		};
+		C96C9B2E2BBA48E200AC2921 /* RxTest */ = {
 			isa = XCSwiftPackageProductDependency;
 			package = C9C8908F2AE107730010240A /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxTest;
