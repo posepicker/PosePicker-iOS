@@ -1,13 +1,13 @@
 //
-//  CommonViewTest.swift
-//  posepickerTests
+//  PosePickerUseCaseTests.swift
+//  PosePickerUseCaseTests
 //
-//  Created by 박경준 on 3/28/24.
+//  Created by 박경준 on 4/1/24.
 //
 
 import XCTest
 
-final class CommonViewTest: XCTestCase {
+final class PosePickerUseCaseTests: XCTestCase {
 
     override func setUpWithError() throws {
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -27,7 +27,7 @@ final class CommonViewTest: XCTestCase {
 
     func testPerformanceExample() throws {
         // This is an example of a performance test case.
-        self.measure {
+        measure {
             // Put the code you want to measure the time of here.
         }
     }
