@@ -9,6 +9,13 @@ import UIKit
 import RxSwift
 
 protocol PosePickUseCase {
-    var poseImage: PublishSubject<UIImage> { get set }
+    var poseImage: PublishSubject<UIImage?> { get set }
     func fetchPosePick(peopleCount: Int)
+}
+
+extension PosePickUseCase {
+    // 이미지 재요청시 기존 이미지 삭제
+    func setImageNil() {
+        poseImage.onNext(nil)
+    }
 }
