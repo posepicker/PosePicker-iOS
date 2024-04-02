@@ -26,16 +26,25 @@ final class PosePickViewModel {
     
     struct Output {
         let animate = PublishSubject<Void>()
-        let poseImage = PublishRelay<UIImage>()
+        let poseImage = PublishRelay<UIImage?>()
+        let lottieImageHidden = PublishRelay<Bool>()
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        let selectedPeopleCount = BehaviorRelay<Int>(value: 0)
+        
+        /// 1. 선택 인원 수 바인딩
+        input.selectedPeopleCount
+            .bind(to: selectedPeopleCount)
+            .disposed(by: disposeBag)
         
         /// 2. 레파지토리로 유스케이스 데이터 저장
-        Observable.combineLatest(input.selectedPeopleCount, input.posepickButtonEvent)
-            .subscribe(onNext: { [weak self] (peopleCount, _) in
-                self?.posepickUseCase.fetchPosePick(peopleCount: peopleCount)
+        input.posepickButtonEvent
+            .subscribe(onNext: { [weak self] in
+                output.poseImage.accept(nil)
+                self?.posepickUseCase.setImageNil()
+                self?.posepickUseCase.fetchPosePick(peopleCount: selectedPeopleCount.value + 1)
                 output.animate.onNext(())
             })
             .disposed(by: disposeBag)
@@ -44,20 +53,20 @@ final class PosePickViewModel {
         /// 애니메이션 진행중이면 로티와 이미지뷰 히든속성이 교체되면 안됨. 로티 그대로 유지
         Observable.combineLatest(input.isAnimating, self.posepickUseCase.poseImage)
             .subscribe(onNext: { (isAnimating, image) in
-                print("애니메이팅",isAnimating)
+                guard let image = image else {
+                    if !isAnimating {
+                        output.lottieImageHidden.accept(false)
+                        output.animate.onNext(())
+                    }
+                    return
+                }
+                
                 if !isAnimating {
+                    output.lottieImageHidden.accept(true)
                     output.poseImage.accept(image)
                 }
             })
             .disposed(by: disposeBag)
-        
-//        self.posepickUseCase.poseImage
-//            .subscribe(onNext: {
-//                output.poseImage.accept($0)
-//                output.isLottieHidden.accept(true)
-//                output.isImageHidden.accept(false)
-//            })
-//            .disposed(by: disposeBag)
         
         return output
     }
