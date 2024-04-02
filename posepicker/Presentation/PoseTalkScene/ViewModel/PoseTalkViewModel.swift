@@ -9,13 +9,12 @@ import Foundation
 import RxCocoa
 import RxSwift
 
-class PoseTalkViewModel: ViewModelType {
+// TODO: - 코디네이터로 수퍼뷰 높이값 확인 필요 / 툴팁 위치 지정하는 로직 구현해야됨
+class PoseTalkViewModel {
+    weak var coordinator: PoseTalkCoordinator?
     private let posetalkUseCase: PoseTalkUseCase
     
-    var apiSession: APIService = APISession()
-    var disposeBag = DisposeBag()
-    
-    init(posetalkUseCase: PoseTalkUseCase) {
+    init(coordinator: PoseTalkCoordinator?, posetalkUseCase: PoseTalkUseCase) {
         self.posetalkUseCase = posetalkUseCase
     }
     
@@ -33,10 +32,9 @@ class PoseTalkViewModel: ViewModelType {
     struct Output {
         let animate = PublishSubject<Void>()
         let poseWord = PublishRelay<String>()
-        let isLoading = BehaviorRelay<Bool>(value: false)
     }
     
-    func transform(input: Input) -> Output {
+    func transform(input: Input, disposeBag: DisposeBag) -> Output {
         self.configureInput(input, disposeBag: disposeBag)
         return createOutput(from: input, disposeBag: disposeBag)
     }
