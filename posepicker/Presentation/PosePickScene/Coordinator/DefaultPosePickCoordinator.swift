@@ -20,7 +20,14 @@ final class DefaultPosePickCoordinator: PosePickCoordinator {
     }
     
     func start() {
-//        self.posepickViewController.viewModel = PosePickViewModel()
+        self.posepickViewController.viewModel = PosePickViewModel(
+            coordinator: self,
+            posepickUseCase: DefaultPosePickUseCase(
+                posepickRepository: DefaultPosePickRepository(
+                    networkService: DefaultNetworkService()
+                )
+            )
+        )
         
         self.navigationController.pushViewController(self.posepickViewController, animated: true)
     }
