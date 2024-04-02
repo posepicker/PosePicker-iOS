@@ -38,9 +38,9 @@ class PosePickViewController: BaseViewController {
     
     let retrievedImage = UIImageView(image: ImageLiteral.imgPosePicker)
         .then {
+            $0.layer.zPosition = 10
             $0.contentMode = .scaleAspectFit
             $0.clipsToBounds = true
-            $0.isHidden = true
         }
     
     let posePickerButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "인원수 선택하고 포즈 뽑기!", image: nil)
@@ -119,6 +119,14 @@ class PosePickViewController: BaseViewController {
     }
     
     override func bindViewModel() {
+        let input = PosePickViewModel.Input(
+            selectedPeopleCount: selection.pressIndex.asObservable(),
+            posepickButtonEvent: posePickerButton.rx.tap.asObservable(),
+            isAnimating: isAnimating.asObservable()
+        )
+        
+        let output = viewModel!.transform(input: input, disposeBag: disposeBag)
+        self.configureViewModelOutput(output)
     }
     
     // MARK: - Objc Functions
@@ -129,5 +137,36 @@ class PosePickViewController: BaseViewController {
         vc.modalTransitionStyle = .crossDissolve
         vc.modalPresentationStyle = .overFullScreen
         self.present(vc, animated: true)
+    }
+}
+
+
+private extension PosePickViewController {
+    func configureViewModelOutput(_ output: PosePickViewModel.Output?) {
+        output?.lottieImageHidden
+            .bind(to: animationView.rx.isHidden, posepickerImage.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        output?.poseImage
+            .bind(to: retrievedImage.rx.image)
+            .disposed(by: disposeBag)
+        
+        output?.animate
+            .asDriver(onErrorJustReturn: ())
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.animationView.pause()
+                self.animationView.loopMode = .playOnce
+                self.animationView.animation = LottieAnimation.named("lottiePosePicker")
+                
+                self.isAnimating.accept(true)
+                self.animationView.play() { [weak self] in
+                    guard let self = self else { return }
+                    if $0 {
+                        self.isAnimating.accept(false)
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }
