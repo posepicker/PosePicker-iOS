@@ -15,7 +15,7 @@ class RootViewModel: ViewModelType {
     
     struct Input {
         let appleIdentityTokenTrigger: Observable<String>
-        let kakaoLoginTrigger: Observable<(String, Int64)>
+        let kakaoLoginTrigger: Observable<(String, Int64)> // 카카오 이메일 & 카카오 아이디
     }
     
     struct Output {
