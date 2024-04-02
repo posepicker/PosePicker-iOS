@@ -18,6 +18,7 @@ struct PoseInfo: Codable {
     let tagAttributes: String?
     let updatedAt: String?
     let bookmarkCheck: Bool?
+    let user: PoseUploadUser
     
     enum CodingKeys: String, CodingKey {
         case createdAt
@@ -30,9 +31,10 @@ struct PoseInfo: Codable {
         case tagAttributes
         case updatedAt
         case bookmarkCheck
+        case user
     }
     
-    init(createdAt: String?, frameCount: Int, imageKey: String, peopleCount: Int, poseId: Int, source: String, sourceUrl: String, tagAttributes: String?, updatedAt: String?, bookmarkCheck: Bool?) {
+    init(createdAt: String?, frameCount: Int, imageKey: String, peopleCount: Int, poseId: Int, source: String, sourceUrl: String, tagAttributes: String?, updatedAt: String?, bookmarkCheck: Bool?, poseUploadUser: PoseUploadUser) {
         self.createdAt = createdAt
         self.frameCount = frameCount
         self.imageKey = imageKey
@@ -43,6 +45,7 @@ struct PoseInfo: Codable {
         self.tagAttributes = tagAttributes
         self.updatedAt = updatedAt
         self.bookmarkCheck = bookmarkCheck
+        self.user = poseUploadUser
     }
     
     init(from decoder: Decoder) throws {
@@ -57,5 +60,6 @@ struct PoseInfo: Codable {
         self.tagAttributes = try container.decodeIfPresent(String.self, forKey: .tagAttributes)
         self.updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
         self.bookmarkCheck = try container.decodeIfPresent(Bool.self, forKey: .bookmarkCheck)
+        self.user = try container.decode(PoseUploadUser.self, forKey: .user)
     }
 }
