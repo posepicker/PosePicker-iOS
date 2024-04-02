@@ -13,7 +13,7 @@ final class DefaultPosePickUseCase: PosePickUseCase {
     private let posepickRepository: PosePickRepository
     private let disposeBag = DisposeBag()
     
-    var poseImage = PublishSubject<UIImage>()
+    var poseImage = PublishSubject<UIImage?>()
     
     init(posepickRepository: PosePickRepository) {
         self.posepickRepository = posepickRepository
