@@ -14,6 +14,7 @@ import RxKakaoSDKAuth
 import KakaoSDKAuth
 import RxKakaoSDKCommon
 import RxSwift
+import Kingfisher
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -22,6 +23,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     var appCoordinator: AppCoordinator?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        // 캐시 한계설정
+        ImageCache.default.memoryStorage.config.countLimit = 70
+        ImageCache.default.diskStorage.config.sizeLimit = 1000 * 1024 * 1024
         
         /// 카카오 셋업
         if let kakaoKey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_KEY") as? String {
