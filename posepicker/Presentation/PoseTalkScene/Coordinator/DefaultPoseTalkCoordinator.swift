@@ -21,6 +21,7 @@ final class DefaultPoseTalkCoordinator: PoseTalkCoordinator {
     
     func start() {
         self.posetalkViewController.viewModel = PoseTalkViewModel(
+            coordinator: nil,
             posetalkUseCase: DefaultPoseTalkUseCase(
                 posetalkRepository: DefaultPoseTalkRepository(
                     networkService: DefaultNetworkService())
