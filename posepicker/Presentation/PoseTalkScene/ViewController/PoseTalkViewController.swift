@@ -146,7 +146,7 @@ class PoseTalkViewController: BaseViewController {
             isAnimating: isAnimating
         )
         
-        let output = viewModel!.transform(input: input)
+        let output = viewModel!.transform(input: input, disposeBag: disposeBag)
         self.configureViewModelOutput(output)
     }
     
