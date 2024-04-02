@@ -15,7 +15,7 @@ import XCTest
 // 온전히 UI간 통신 로직 구축만 검증하기 위한 테스트
 // 불러온 데이터를 기반으로 인풋과 아웃풋 로직을 구축
 final class MockPosePickUseCase: PosePickUseCase {
-    var poseImage = PublishSubject<UIImage>()
+    var poseImage = PublishSubject<UIImage?>()
     
     func fetchPosePick(peopleCount: Int) {
         self.poseImage.onNext(ImageLiteral.imgInfo24)
