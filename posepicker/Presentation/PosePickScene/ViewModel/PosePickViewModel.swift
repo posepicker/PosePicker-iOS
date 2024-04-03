@@ -22,6 +22,7 @@ final class PosePickViewModel {
         let selectedPeopleCount: Observable<Int>        // 선택 인원수
         let posepickButtonEvent: Observable<Void>       // 포즈픽 API 요청 버튼
         let isAnimating: Observable<Bool>               // 로딩 상태값
+        let imageViewTapEvent: Observable<UIImage?>     // 이미지 상세 뷰 띄우기
     }
     
     struct Output {
@@ -65,6 +66,13 @@ final class PosePickViewModel {
                     output.lottieImageHidden.accept(true)
                     output.poseImage.accept(image)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        /// 4. 이미지뷰 탭 이후 상세 이미지 띄우기
+        input.imageViewTapEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.presentDetailImage(retrievedImage: $0)
             })
             .disposed(by: disposeBag)
         

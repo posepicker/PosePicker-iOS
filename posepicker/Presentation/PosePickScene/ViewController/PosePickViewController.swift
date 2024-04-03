@@ -50,6 +50,7 @@ class PosePickViewController: BaseViewController {
     private let isImageLoading = BehaviorRelay<Bool>(value: false)
     private let isAnimating = BehaviorRelay<Bool>(value: false)
     private let refetchTrigger = PublishSubject<Void>()
+    private let imageViewTapEvent = PublishSubject<UIImage?>()
 
     
     // MARK: - Functions
@@ -122,7 +123,8 @@ class PosePickViewController: BaseViewController {
         let input = PosePickViewModel.Input(
             selectedPeopleCount: selection.pressIndex.asObservable(),
             posepickButtonEvent: posePickerButton.rx.tap.asObservable(),
-            isAnimating: isAnimating.asObservable()
+            isAnimating: isAnimating.asObservable(),
+            imageViewTapEvent: imageViewTapEvent
         )
         
         let output = viewModel!.transform(input: input, disposeBag: disposeBag)
@@ -133,10 +135,7 @@ class PosePickViewController: BaseViewController {
     @objc
     func retrievedImageTapped() {
         guard let retrievedImage = retrievedImage.image else { return }
-        let vc = ImagePopUpViewController(mainImage: retrievedImage)
-        vc.modalTransitionStyle = .crossDissolve
-        vc.modalPresentationStyle = .overFullScreen
-        self.present(vc, animated: true)
+        imageViewTapEvent.onNext(retrievedImage)
     }
 }
 
