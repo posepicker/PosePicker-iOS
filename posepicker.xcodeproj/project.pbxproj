@@ -946,7 +946,8 @@
 			isa = PBXGroup;
 			children = (
 				C93851282BB41CC700E597C1 /* Coordinator */,
-				C938512B2BB41CE300E597C1 /* DefaultPoseFeedCoordinator.swift */,
+				C96C9B5F2BBD215500AC2921 /* ViewController */,
+				C96C9B5D2BBD213C00AC2921 /* ViewModel */,
 			);
 			path = PoseFeedScene;
 			sourceTree = "<group>";
@@ -995,7 +996,8 @@
 		C93851282BB41CC700E597C1 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
-				C93851292BB41CD900E597C1 /* PoseFeedCoordinator.swift */,
+				C96C9B602BBD216000AC2921 /* Protocol */,
+				C938512B2BB41CE300E597C1 /* DefaultPoseFeedCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
@@ -1312,6 +1314,28 @@
 				C96C9B572BBC29CE00AC2921 /* MockUserRepository.swift */,
 			);
 			path = Mock;
+			sourceTree = "<group>";
+		};
+		C96C9B5D2BBD213C00AC2921 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C96C9B5F2BBD215500AC2921 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		C96C9B602BBD216000AC2921 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				C93851292BB41CD900E597C1 /* PoseFeedCoordinator.swift */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		C971A6792B2008870078EF2B /* Configs */ = {
