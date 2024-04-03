@@ -150,7 +150,7 @@
 		C96C9B502BBA86A200AC2921 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B362BBA495200AC2921 /* MockURLProtocol.swift */; };
 		C96C9B522BBB887400AC2921 /* PoseUploadUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B512BBB887400AC2921 /* PoseUploadUser.swift */; };
 		C96C9B552BBC29A500AC2921 /* CommonUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B542BBC29A500AC2921 /* CommonUseCaseTests.swift */; };
-		C96C9B582BBC29CE00AC2921 /* MockCommonRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B572BBC29CE00AC2921 /* MockCommonRepository.swift */; };
+		C96C9B582BBC29CE00AC2921 /* MockUserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B572BBC29CE00AC2921 /* MockUserRepository.swift */; };
 		C990AB1E2B5BF52600567AA3 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C990AB1D2B5BF52600567AA3 /* String+.swift */; };
 		C99A8A6E2B109AA60072B361 /* SmartlookAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A6D2B109AA60072B361 /* SmartlookAnalytics */; };
 		C99A8A702B10A4970072B361 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */; };
@@ -339,7 +339,7 @@
 		C96C9B492BBA7B5C00AC2921 /* mock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mock.png; sourceTree = "<group>"; };
 		C96C9B512BBB887400AC2921 /* PoseUploadUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadUser.swift; sourceTree = "<group>"; };
 		C96C9B542BBC29A500AC2921 /* CommonUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUseCaseTests.swift; sourceTree = "<group>"; };
-		C96C9B572BBC29CE00AC2921 /* MockCommonRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCommonRepository.swift; sourceTree = "<group>"; };
+		C96C9B572BBC29CE00AC2921 /* MockUserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockUserRepository.swift; sourceTree = "<group>"; };
 		C971A67A2B2008920078EF2B /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
 		C990AB1D2B5BF52600567AA3 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -1303,7 +1303,7 @@
 		C96C9B562BBC29C100AC2921 /* Mock */ = {
 			isa = PBXGroup;
 			children = (
-				C96C9B572BBC29CE00AC2921 /* MockCommonRepository.swift */,
+				C96C9B572BBC29CE00AC2921 /* MockUserRepository.swift */,
 			);
 			path = Mock;
 			sourceTree = "<group>";
@@ -1845,7 +1845,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C96C9B582BBC29CE00AC2921 /* MockCommonRepository.swift in Sources */,
+				C96C9B582BBC29CE00AC2921 /* MockUserRepository.swift in Sources */,
 				C96C9B452BBA4BCD00AC2921 /* PosePickUseCaseTests.swift in Sources */,
 				C96C9B442BBA4BBE00AC2921 /* MockPosePickRepository.swift in Sources */,
 				C96C9B552BBC29A500AC2921 /* CommonUseCaseTests.swift in Sources */,
