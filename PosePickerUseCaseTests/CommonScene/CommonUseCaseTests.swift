@@ -13,19 +13,24 @@ import RxSwift
 final class CommonSceneUseCaseTests: XCTestCase {
 
     private let disposeBag = DisposeBag()
-    // private var commonRespository: Common!
+    private var userRepository: UserRepository!
     private var commonUseCase: CommonUseCase!
     private var scheduler: TestScheduler!
     
     override func setUp() {
         super.setUp()
+        self.userRepository = MockUserRepository()
         self.commonUseCase = DefaultCommonUseCase(
-            userRepository: <#T##DefaultUserRepository#>
+            userRepository: self.userRepository
         )
+        self.scheduler = TestScheduler(initialClock: 0)
     }
     
     override func tearDown() {
-        
+        super.tearDown()
+        self.userRepository = nil
+        self.commonUseCase = nil
+        self.scheduler = nil
     }
 
 }
