@@ -12,29 +12,31 @@ import RxSwift
 
 final class CommonViewModel {
     private weak var coordinator: PageViewCoordinator?
+    private let commonUseCase: CommonUseCase
     
     struct Input {
         let pageviewTransitionDelegateEvent: Observable<Void>
         let myPageButtonTapped: Observable<Void>
+        let currentPage: Observable<Int>
     }
     
     struct Output {
-        
+        let pageTransitionEvent = PublishRelay<Int>()
     }
     
-    init(coordinator: PageViewCoordinator?) {
+    init(coordinator: PageViewCoordinator?, commonUseCase: CommonUseCase) {
         self.coordinator = coordinator
+        self.commonUseCase = commonUseCase
     }
     
     func transform(from input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
-        
         input.pageviewTransitionDelegateEvent
             .subscribe(onNext: { [weak self] in
                 guard let self = self,
                       let coordinator = self.coordinator else {return}
                 coordinator.selectPage(coordinator.currentPage() ?? .posepick)
-                
+                output.pageTransitionEvent.accept(coordinator.currentPage()?.pageOrderNumber() ?? 0)
             })
             .disposed(by: disposeBag)
         
@@ -43,6 +45,14 @@ final class CommonViewModel {
                 guard let self = self,
                       let coordinator = self.coordinator else { return }
                 coordinator.pushMyPage()
+            })
+            .disposed(by: disposeBag)
+        
+        input.currentPage
+            .subscribe(onNext: { [weak self] in
+                guard let self = self,
+                      let coordinator = self.coordinator else { return }
+                coordinator.setSelectedIndex($0)
             })
             .disposed(by: disposeBag)
         
