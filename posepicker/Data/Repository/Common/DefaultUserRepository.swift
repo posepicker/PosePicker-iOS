@@ -17,10 +17,10 @@ import RxKakaoSDKUser
 
 final class DefaultUserRepository: UserRepository {
     
-    let networkService: DefaultNetworkService
-    let keychainService: DefaultKeychainService
+    let networkService: NetworkService
+    let keychainService: KeychainService
     
-    init(networkService: DefaultNetworkService, keychainService: DefaultKeychainService) {
+    init(networkService: NetworkService, keychainService: KeychainService) {
         self.networkService = networkService
         self.keychainService = keychainService
     }

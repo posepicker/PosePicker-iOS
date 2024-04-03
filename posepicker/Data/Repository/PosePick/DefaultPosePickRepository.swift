@@ -12,9 +12,9 @@ import Kingfisher
 
 final class DefaultPosePickRepository: PosePickRepository {
     
-    let networkService: DefaultNetworkService
+    let networkService: NetworkService
     
-    init(networkService: DefaultNetworkService) {
+    init(networkService: NetworkService) {
         self.networkService = networkService
     }
     
