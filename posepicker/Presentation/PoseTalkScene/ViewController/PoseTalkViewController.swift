@@ -63,7 +63,7 @@ class PoseTalkViewController: BaseViewController {
     // MARK: - Properties
     
     var viewModel: PoseTalkViewModel?
-    var isAnimating = BehaviorRelay<Bool>(value: false) // 초기 화면 접속시에 애니메이션 처리 해야됨
+    private var isAnimating = BehaviorRelay<Bool>(value: false) // 초기 화면 접속시에 애니메이션 처리 해야됨
     
     // MARK: - Life Cycles
     

@@ -47,9 +47,9 @@ class PosePickViewController: BaseViewController {
     
     // MARK: - Properties
     var viewModel: PosePickViewModel?
-    let isImageLoading = BehaviorRelay<Bool>(value: false)
-    let isAnimating = BehaviorRelay<Bool>(value: false)
-    let refetchTrigger = PublishSubject<Void>()
+    private let isImageLoading = BehaviorRelay<Bool>(value: false)
+    private let isAnimating = BehaviorRelay<Bool>(value: false)
+    private let refetchTrigger = PublishSubject<Void>()
 
     
     // MARK: - Functions
