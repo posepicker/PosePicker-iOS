@@ -21,7 +21,15 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
         self.navigationController = navigationController
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
         self.commonViewController = CommonViewController(pageViewController: pageViewController)
-        self.commonViewController.viewModel = CommonViewModel(coordinator: self)
+        self.commonViewController.viewModel = CommonViewModel(
+            coordinator: self,
+            commonUseCase: DefaultCommonUseCase(
+                userRepository: DefaultUserRepository(
+                    networkService: DefaultNetworkService(),
+                    keychainService: DefaultKeychainService()
+                )
+            )
+        )
         navigationController.setNavigationBarHidden(true, animated: true)
     }
     
