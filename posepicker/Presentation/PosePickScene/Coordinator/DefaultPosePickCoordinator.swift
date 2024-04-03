@@ -32,8 +32,11 @@ final class DefaultPosePickCoordinator: PosePickCoordinator {
         self.navigationController.pushViewController(self.posepickViewController, animated: true)
     }
     
-    func presentDetailImage() {
-        
+    func presentDetailImage(retrievedImage: UIImage?) {
+        let vc = ImagePopUpViewController(mainImage: retrievedImage)
+        vc.modalTransitionStyle = .crossDissolve
+        vc.modalPresentationStyle = .overFullScreen
+        self.navigationController.present(vc, animated: true)
     }
 }
 

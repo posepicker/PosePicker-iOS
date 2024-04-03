@@ -5,8 +5,8 @@
 //  Created by 박경준 on 3/27/24.
 //
 
-import Foundation
+import UIKit
 
 protocol PosePickCoordinator: Coordinator {
-    func presentDetailImage()
+    func presentDetailImage(retrievedImage: UIImage?)
 }
