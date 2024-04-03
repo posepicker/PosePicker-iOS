@@ -24,7 +24,8 @@ final class CommonViewTest: XCTestCase {
     
     override func setUp() {
         super.setUp()
-        self.mockPageViewCoordinator = MockPageViewCoordinator(UINavigationController())
+        self.mockPageViewCoordinator = MockPageViewCoordinator(UINavigationController(rootViewController: UIViewController()))
+        self.mockPageViewCoordinator.start()
         self.commonUseCase = MockCommonUseCase()
         self.viewModel = CommonViewModel(
             coordinator: self.mockPageViewCoordinator,
@@ -37,9 +38,10 @@ final class CommonViewTest: XCTestCase {
     func test_페이지뷰_델리게이트_호출이후_인덱스값_방출이_이루어지는지() {
         // MARK: - 코디네이터 주입이 되지 않으면 화면 간 데이터 주고받는 로직 테스트가 불가능
         // MARK: - 목업 코디네이터 주입 필요
-        // 테스트 코드 작성이 어려움.
+        // MARK: - 뷰 컨트롤러의 페이지뷰 데이터소스에 대한 접근 권한을 테스트코드에서 얻어올 수 없어서 작성 한계
          let pageviewTransitionDelegateEvent = self.scheduler.createHotObservable([
-             .next(1, ())
+             .next(1, ()),
+             .next(2, ()),
          ])
          let mypageButtonTapped: TestableObservable<Void> = self.scheduler.createHotObservable([])
          let currentPage = self.scheduler.createHotObservable([
@@ -66,11 +68,19 @@ final class CommonViewTest: XCTestCase {
          self.scheduler.start()
         
          XCTAssertEqual(pageTransitionEvent.events, [
-             .next(1, 1)
+             .next(1, 0),
+             .next(2, 1)
          ])
     }
 
     override func tearDown() {
-        
+        super.tearDown()
+        self.mockPageViewCoordinator = nil
+        self.commonUseCase = nil
+        self.viewModel = nil
+        self.scheduler = nil
+        self.disposeBag = nil
+        self.input = nil
+        self.output = nil
     }
 }
