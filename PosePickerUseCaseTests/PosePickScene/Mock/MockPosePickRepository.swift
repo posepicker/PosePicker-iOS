@@ -54,24 +54,3 @@ final class MockPosePickRepository: PosePickRepository {
         }
     }
 }
-//{
-//  "poseInfo": {
-//    "bookmarkCheck": true,
-//    "createdAt": "2024-03-31T14:03:02.592Z",
-//    "frameCount": 0,
-//    "imageKey": "string",
-//    "peopleCount": 0,
-//    "poseId": 0,
-//    "source": "string",
-//    "sourceUrl": "string",
-//    "tagAttributes": "string",
-//    "updatedAt": "2024-03-31T14:03:02.592Z",
-//    "user": {
-//      "email": "string",
-//      "iosId": "string",
-//      "loginType": "string",
-//      "nickname": "string",
-//      "uid": 0
-//    }
-//  }
-//}
