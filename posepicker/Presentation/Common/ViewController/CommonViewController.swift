@@ -103,6 +103,7 @@ class CommonViewController: BaseViewController {
         segmentControl.rx.selectedSegmentIndex.asDriver()
             .drive(onNext: { [weak self] in
                 self?.currentPage.accept($0)
+                self?.segmentControl.updateUnderlineViewWidth()
             })
             .disposed(by: disposeBag)
         
@@ -110,6 +111,7 @@ class CommonViewController: BaseViewController {
             .asDriver()
             .drive(onNext: { [weak self] in
                 self?.segmentControl.selectedSegmentIndex = $0
+                self?.segmentControl.updateUnderlineViewWidth()
             })
             .disposed(by: self.disposeBag)
         
