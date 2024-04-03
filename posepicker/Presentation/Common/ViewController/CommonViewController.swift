@@ -31,19 +31,12 @@ class CommonViewController: BaseViewController {
     
     // MARK: - Properties
     var viewModel: CommonViewModel?
-    var loginCompletedTrigger = PublishSubject<Void>()
+    private let loginCompletedTrigger = PublishSubject<Void>()
+    private let currentPage = BehaviorRelay<Int>(value: 0)
     private let pageviewControllerDidFinishEvent = PublishRelay<Void>()
-    
-    var currentPage: Int = 0 {
-        didSet {
-//            let direction: UIPageViewController.NavigationDirection = oldValue <= self.currentPage ? .forward : .reverse
-//            viewModel.coordinator.moveWithViewController(viewController: [viewControllers[self.currentPage]], direction: direction, pageNumber: currentPage)
-        }
-    }
-    
-    let appleIdentityTokenTrigger = PublishSubject<String>()
-    let kakaoEmailTrigger = PublishSubject<String>()
-    let kakaoIdTrigger = PublishSubject<Int64>()
+    private let appleIdentityTokenTrigger = PublishSubject<String>()
+    private let kakaoEmailTrigger = PublishSubject<String>()
+    private let kakaoIdTrigger = PublishSubject<Int64>()
     
     // MARK: - Initialization
     init(pageViewController: UIPageViewController) {
@@ -108,10 +101,17 @@ class CommonViewController: BaseViewController {
         )
         
         segmentControl.rx.selectedSegmentIndex.asDriver()
-            .drive(onNext: { [unowned self] in
-                self.currentPage = $0
+            .drive(onNext: { [weak self] in
+                self?.currentPage.accept($0)
             })
             .disposed(by: disposeBag)
+        
+        currentPage
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.segmentControl.selectedSegmentIndex = $0
+            })
+            .disposed(by: self.disposeBag)
         
 //        header.menuButton.rx.tap.asDriver()
 //            .drive(onNext: { [weak self] in
@@ -160,9 +160,14 @@ class CommonViewController: BaseViewController {
     override func bindViewModel() {
         let input = CommonViewModel.Input(
             pageviewTransitionDelegateEvent: pageviewControllerDidFinishEvent.asObservable(),
-            myPageButtonTapped: header.menuButton.rx.tap.asObservable()
+            myPageButtonTapped: header.menuButton.rx.tap.asObservable(),
+            currentPage: currentPage.asObservable()
         )
-        let output = self.viewModel?.transform(from: input, disposeBag: disposeBag)
+        let output = self.viewModel!.transform(from: input, disposeBag: disposeBag)
+        
+        output.pageTransitionEvent
+            .bind(to: currentPage)
+            .disposed(by: disposeBag)
         
 //        let input = RootViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger))
 //        
@@ -191,7 +196,6 @@ extension CommonViewController: UIPageViewControllerDelegate {
 }
 
 extension CommonViewController: UIPageViewControllerDataSource {
-    
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         return viewModel?.viewControllerBefore()
     }
