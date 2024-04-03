@@ -64,7 +64,6 @@
 		C91E184D2B99E484009611C3 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91E184C2B99E484009611C3 /* ReportViewController.swift */; };
 		C91E18502B99ECC1009611C3 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91E184F2B99ECC1009611C3 /* RadioButton.swift */; };
 		C91FF3432BAAADC500096E25 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3422BAAADC500096E25 /* Sort.swift */; };
-		C91FF34C2BAAB6E400096E25 /* PoseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF34B2BAAB6E400096E25 /* PoseRepository.swift */; };
 		C91FF34E2BAABD2300096E25 /* UserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF34D2BAABD2300096E25 /* UserRepository.swift */; };
 		C91FF3502BAAD11C00096E25 /* DefaultUserRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF34F2BAAD11C00096E25 /* DefaultUserRepository.swift */; };
 		C91FF3562BAB267D00096E25 /* NetworkService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3552BAB267D00096E25 /* NetworkService.swift */; };
@@ -150,6 +149,8 @@
 		C96C9B4D2BBA7F1200AC2921 /* mock.png in Resources */ = {isa = PBXBuildFile; fileRef = C96C9B492BBA7B5C00AC2921 /* mock.png */; };
 		C96C9B502BBA86A200AC2921 /* MockURLProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B362BBA495200AC2921 /* MockURLProtocol.swift */; };
 		C96C9B522BBB887400AC2921 /* PoseUploadUser.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B512BBB887400AC2921 /* PoseUploadUser.swift */; };
+		C96C9B552BBC29A500AC2921 /* CommonUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B542BBC29A500AC2921 /* CommonUseCaseTests.swift */; };
+		C96C9B582BBC29CE00AC2921 /* MockCommonRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B572BBC29CE00AC2921 /* MockCommonRepository.swift */; };
 		C990AB1E2B5BF52600567AA3 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C990AB1D2B5BF52600567AA3 /* String+.swift */; };
 		C99A8A6E2B109AA60072B361 /* SmartlookAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A6D2B109AA60072B361 /* SmartlookAnalytics */; };
 		C99A8A702B10A4970072B361 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */; };
@@ -271,7 +272,6 @@
 		C91E184C2B99E484009611C3 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		C91E184F2B99ECC1009611C3 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		C91FF3422BAAADC500096E25 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
-		C91FF34B2BAAB6E400096E25 /* PoseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseRepository.swift; sourceTree = "<group>"; };
 		C91FF34D2BAABD2300096E25 /* UserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRepository.swift; sourceTree = "<group>"; };
 		C91FF34F2BAAD11C00096E25 /* DefaultUserRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultUserRepository.swift; sourceTree = "<group>"; };
 		C91FF3552BAB267D00096E25 /* NetworkService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkService.swift; sourceTree = "<group>"; };
@@ -338,6 +338,8 @@
 		C96C9B362BBA495200AC2921 /* MockURLProtocol.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockURLProtocol.swift; sourceTree = "<group>"; };
 		C96C9B492BBA7B5C00AC2921 /* mock.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = mock.png; sourceTree = "<group>"; };
 		C96C9B512BBB887400AC2921 /* PoseUploadUser.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadUser.swift; sourceTree = "<group>"; };
+		C96C9B542BBC29A500AC2921 /* CommonUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonUseCaseTests.swift; sourceTree = "<group>"; };
+		C96C9B572BBC29CE00AC2921 /* MockCommonRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockCommonRepository.swift; sourceTree = "<group>"; };
 		C971A67A2B2008920078EF2B /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
 		C990AB1D2B5BF52600567AA3 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -736,7 +738,6 @@
 		C91FF3492BAAB68700096E25 /* Protocol */ = {
 			isa = PBXGroup;
 			children = (
-				C91FF34B2BAAB6E400096E25 /* PoseRepository.swift */,
 				C91FF34D2BAABD2300096E25 /* UserRepository.swift */,
 			);
 			path = Protocol;
@@ -1251,6 +1252,7 @@
 		C96C9B252BBA485300AC2921 /* PosePickerUseCaseTests */ = {
 			isa = PBXGroup;
 			children = (
+				C96C9B532BBC248200AC2921 /* CommonScene */,
 				C96C9B2D2BBA489700AC2921 /* PosePickScene */,
 			);
 			path = PosePickerUseCaseTests;
@@ -1285,6 +1287,23 @@
 			isa = PBXGroup;
 			children = (
 				C96C9B362BBA495200AC2921 /* MockURLProtocol.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		C96C9B532BBC248200AC2921 /* CommonScene */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9B562BBC29C100AC2921 /* Mock */,
+				C96C9B542BBC29A500AC2921 /* CommonUseCaseTests.swift */,
+			);
+			path = CommonScene;
+			sourceTree = "<group>";
+		};
+		C96C9B562BBC29C100AC2921 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				C96C9B572BBC29CE00AC2921 /* MockCommonRepository.swift */,
 			);
 			path = Mock;
 			sourceTree = "<group>";
@@ -1826,8 +1845,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C96C9B582BBC29CE00AC2921 /* MockCommonRepository.swift in Sources */,
 				C96C9B452BBA4BCD00AC2921 /* PosePickUseCaseTests.swift in Sources */,
 				C96C9B442BBA4BBE00AC2921 /* MockPosePickRepository.swift in Sources */,
+				C96C9B552BBC29A500AC2921 /* CommonUseCaseTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1844,7 +1865,6 @@
 				C9676BEC2BAAAC68000A4114 /* PoseInfo.swift in Sources */,
 				880E75472AE6BFBC007FAD5A /* APISession.swift in Sources */,
 				C91E184B2B99C22A009611C3 /* PoseDetailMoreViewController.swift in Sources */,
-				C91FF34C2BAAB6E400096E25 /* PoseRepository.swift in Sources */,
 				880E755B2AF296E7007FAD5A /* PoseTalk.swift in Sources */,
 				C9C890A92AE10A370010240A /* NetworkRouter.swift in Sources */,
 				880E754F2AE6C188007FAD5A /* Pose.swift in Sources */,
