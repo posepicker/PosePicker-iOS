@@ -9,14 +9,14 @@ import Foundation
 import RxSwift
 
 final class DefaultCommonUseCase: CommonUseCase {
-    private let userRepository: DefaultUserRepository
+    private let userRepository: UserRepository
     
     private let disposeBag = DisposeBag()
     
     let loginCompletedTrigger = PublishSubject<Void>()
 
     // 외부에서 목업 키체인 서비스 객체를 주입할 수 있어야됨
-    init(userRepository: DefaultUserRepository) {
+    init(userRepository: UserRepository) {
         self.userRepository = userRepository
     }
     
