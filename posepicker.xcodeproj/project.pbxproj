@@ -197,6 +197,9 @@
 		C9DC2FA62AEB6E1800D5170D /* FilterTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2FA52AEB6E1800D5170D /* FilterTags.swift */; };
 		C9DC2FA82AECAD1A00D5170D /* RegisteredFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2FA72AECAD1A00D5170D /* RegisteredFilterCell.swift */; };
 		C9DC2FAA2AECAD4500D5170D /* RegisteredFilterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2FA92AECAD4500D5170D /* RegisteredFilterCellViewModel.swift */; };
+		C9DEE3F92BBD322800C9C495 /* PoseFeedRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE3F82BBD322800C9C495 /* PoseFeedRepository.swift */; };
+		C9DEE3FB2BBD323200C9C495 /* DefaultPoseFeedRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE3FA2BBD323200C9C495 /* DefaultPoseFeedRepository.swift */; };
+		C9DEE3FF2BBD4FEA00C9C495 /* MockPoseFeedRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE3FE2BBD4FEA00C9C495 /* MockPoseFeedRepository.swift */; };
 		C9FDBDEC2B2835E10045AA54 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9FDBDEB2B2835E10045AA54 /* RxSwift */; };
 		C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */; };
 		C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */; };
@@ -396,6 +399,9 @@
 		C9DC2FA52AEB6E1800D5170D /* FilterTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTags.swift; sourceTree = "<group>"; };
 		C9DC2FA72AECAD1A00D5170D /* RegisteredFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredFilterCell.swift; sourceTree = "<group>"; };
 		C9DC2FA92AECAD4500D5170D /* RegisteredFilterCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredFilterCellViewModel.swift; sourceTree = "<group>"; };
+		C9DEE3F82BBD322800C9C495 /* PoseFeedRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedRepository.swift; sourceTree = "<group>"; };
+		C9DEE3FA2BBD323200C9C495 /* DefaultPoseFeedRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseFeedRepository.swift; sourceTree = "<group>"; };
+		C9DEE3FE2BBD4FEA00C9C495 /* MockPoseFeedRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPoseFeedRepository.swift; sourceTree = "<group>"; };
 		C9E6025A2B16DA270098BC96 /* posepicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = posepicker.entitlements; sourceTree = "<group>"; };
 		C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkResponse.swift; sourceTree = "<group>"; };
@@ -721,6 +727,7 @@
 				C91FF3482BAAB68000096E25 /* Common */,
 				C96C9A972BB5C4F100AC2921 /* PosePick */,
 				C91FF3512BAAD6F800096E25 /* PoseTalk */,
+				C9DEE3F62BBD321300C9C495 /* PoseFeed */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -1257,6 +1264,7 @@
 			children = (
 				C96C9B532BBC248200AC2921 /* CommonScene */,
 				C96C9B2D2BBA489700AC2921 /* PosePickScene */,
+				C9DEE3FC2BBD4FD900C9C495 /* PoseFeedScene */,
 			);
 			path = PosePickerUseCaseTests;
 			sourceTree = "<group>";
@@ -1660,6 +1668,39 @@
 			path = enum;
 			sourceTree = "<group>";
 		};
+		C9DEE3F62BBD321300C9C495 /* PoseFeed */ = {
+			isa = PBXGroup;
+			children = (
+				C9DEE3F72BBD321C00C9C495 /* Protocol */,
+				C9DEE3FA2BBD323200C9C495 /* DefaultPoseFeedRepository.swift */,
+			);
+			path = PoseFeed;
+			sourceTree = "<group>";
+		};
+		C9DEE3F72BBD321C00C9C495 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				C9DEE3F82BBD322800C9C495 /* PoseFeedRepository.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		C9DEE3FC2BBD4FD900C9C495 /* PoseFeedScene */ = {
+			isa = PBXGroup;
+			children = (
+				C9DEE3FD2BBD4FE100C9C495 /* Mock */,
+			);
+			path = PoseFeedScene;
+			sourceTree = "<group>";
+		};
+		C9DEE3FD2BBD4FE100C9C495 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				C9DEE3FE2BBD4FEA00C9C495 /* MockPoseFeedRepository.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
 		C9FDBDF32B28ADD50045AA54 /* BookmarkDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -1906,6 +1947,7 @@
 				C96C9B452BBA4BCD00AC2921 /* PosePickUseCaseTests.swift in Sources */,
 				C96C9B442BBA4BBE00AC2921 /* MockPosePickRepository.swift in Sources */,
 				C96C9B552BBC29A500AC2921 /* CommonUseCaseTests.swift in Sources */,
+				C9DEE3FF2BBD4FEA00C9C495 /* MockPoseFeedRepository.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1995,6 +2037,7 @@
 				88D5C4812B027B0A0045C081 /* Section.swift in Sources */,
 				880E752D2AE60499007FAD5A /* Header.swift in Sources */,
 				C99D53B72B1EDCB8007DEE9B /* BookmarkEmptyView.swift in Sources */,
+				C9DEE3F92BBD322800C9C495 /* PoseFeedRepository.swift in Sources */,
 				C9188B252B909E6A004B9C45 /* MyPoseCustomTagCell.swift in Sources */,
 				C91FF3642BAC002700096E25 /* DefaultPoseTalkUseCase.swift in Sources */,
 				C94FD2812AE39603003777EB /* PoseTalkViewController.swift in Sources */,
@@ -2008,6 +2051,7 @@
 				C91A26642B87975900F1193E /* CircleSegmentButton.swift in Sources */,
 				C903E5472B01F51F00BD004F /* PoseFeedEmptyView.swift in Sources */,
 				C96C9A922BB5727900AC2921 /* KeychainService.swift in Sources */,
+				C9DEE3FB2BBD323200C9C495 /* DefaultPoseFeedRepository.swift in Sources */,
 				880E75402AE6BF2F007FAD5A /* ServicePose.swift in Sources */,
 				880E75562AE6C2F7007FAD5A /* NetworkInterceptor.swift in Sources */,
 				88EA81F12AF69BD700020DEA /* PoseFeed.swift in Sources */,
