@@ -454,7 +454,7 @@ private extension PoseFeedViewController {
         .subscribe(onNext: { [weak self] (contentOffset, isLoading, isLastPage) in
             guard let self = self else { return }
             if contentOffset.y > 300
-                && contentOffset.y + 300 > self.poseFeedCollectionView.bounds.size.height
+                && contentOffset.y + 300 > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height
                 && !isLoading
                 && !isLastPage {
                 self.currentPage.accept(self.currentPage.value + 1)
