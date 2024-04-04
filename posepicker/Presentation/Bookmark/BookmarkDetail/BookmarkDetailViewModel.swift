@@ -55,7 +55,8 @@ class BookmarkDetailViewModel: ViewModelType {
         /// 1. 이미지 출처 - URL 전달
         input.imageSourceButtonTapped
             .subscribe(onNext: { [unowned self] in
-                let url = URL(string: "https://" + self.poseDetailData.poseInfo.sourceUrl)
+                guard let sourceUrl = self.poseDetailData.poseInfo.sourceUrl else { return }
+                let url = URL(string: "https://" + sourceUrl)
                 imageSource.accept(url)
             })
             .disposed(by: disposeBag)
