@@ -20,11 +20,14 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
     }
     
     func start() {
-//        self.posetalkViewController.viewModel = PoseFeedViewModel(
-//            posetalkUseCase: DefaultPoseTalkUseCase(
-//                posetalkRepository: DefaultPoseTalkRepository(
-//                    networkService: DefaultNetworkService())
-//            ))
+        self.posefeedViewController.viewModel = PoseFeedViewModel(
+            coordinator: self,
+            posefeedUseCase: DefaultPoseFeedUseCase(
+                posefeedRepository: DefaultPoseFeedRepository(
+                    networkService: DefaultNetworkService()
+                )
+            )
+        )
         
         self.navigationController.pushViewController(self.posefeedViewController, animated: true)
     }
