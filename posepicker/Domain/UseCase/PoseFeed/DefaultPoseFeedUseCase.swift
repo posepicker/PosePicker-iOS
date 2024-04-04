@@ -18,41 +18,61 @@ final class DefaultPoseFeedUseCase: PoseFeedUseCase {
         self.posefeedRepository = posefeedRepository
     }
     
-    var feedContents = PublishSubject<[Section<PoseFeedPhotoCellViewModel>]>()
+    var feedContents = BehaviorRelay<[Section<PoseFeedPhotoCellViewModel>]>(value: [])
     var filterSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
     var recommendSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
+    var isLastPage = PublishSubject<Bool>()
     
     func fetchFeedContents(peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int) {
         
         self.posefeedRepository
             .fetchFeedContents(peopleCount: peopleCount, frameCount: frameCount, filterTags: filterTags, pageNumber: pageNumber)
-            .subscribe(onNext: { [weak self] sectionItems in
-                self?.feedContents.onNext(sectionItems)
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, sectionItems) in
+                if pageNumber == 0 { owner.feedContents.accept(sectionItems) }
+                else {
+                    var contents = owner.feedContents.value
+                    contents[0].items += sectionItems[0].items
+                    contents[1].items += sectionItems[1].items
+                    owner.feedContents.accept(contents)
+                }
+                
+                owner.checkIsLastPage() // 포즈피드 데이터 업데이트 이후 페이지 마지막 여부 업데이트
                 
                 // 필터링 섹션 이미지 사이즈
                 sectionItems[0].items.forEach { viewModel in
-                    guard let image = viewModel.image.value,
-                          let self = self else { return }
-                    let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
+                    guard let image = viewModel.image.value else { return }
+                    let newSizeImage = owner.newSizeImageWidthDownloadedResource(image: image)
                     viewModel.image.accept(newSizeImage)
-                    self.filterSectionContentSizes.accept(
-                        self.filterSectionContentSizes.value + [newSizeImage.size]
+                    owner.filterSectionContentSizes.accept(
+                        owner.filterSectionContentSizes.value + [newSizeImage.size]
                     )
                 }
                 
                 // 추천 섹션 이미지 사이즈
                 sectionItems[1].items.forEach { viewModel in
-                    guard let image = viewModel.image.value,
-                          let self = self else { return }
-                    let newSizeImage = self.newSizeImageWidthDownloadedResource(image: image)
+                    guard let image = viewModel.image.value else { return }
+                    let newSizeImage = owner.newSizeImageWidthDownloadedResource(image: image)
                     viewModel.image.accept(newSizeImage)
-                    self.recommendSectionContentSizes.accept(
-                        self.recommendSectionContentSizes.value + [newSizeImage.size]
+                    owner.recommendSectionContentSizes.accept(
+                        owner.recommendSectionContentSizes.value + [newSizeImage.size]
                     )
                 }
             })
             .disposed(by: disposeBag)
         
+    }
+    
+    /// 필터링 & 추천 둘다 마지막 페이지면 무한스크롤 더 이상 호출할 필요 없음
+    private func checkIsLastPage() {
+        Observable.combineLatest(
+            self.posefeedRepository.isLastFilteredContents(),
+            self.posefeedRepository.isLastRecommendContents()
+        )
+        .subscribe(onNext: { [weak self] (isLastFilteredContents, isLastRecommendedContents) in
+            self?.isLastPage.onNext(isLastFilteredContents && isLastRecommendedContents)
+        })
+        .disposed(by: disposeBag)
     }
     
     private func newSizeImageWidthDownloadedResource(image: UIImage) -> UIImage {
