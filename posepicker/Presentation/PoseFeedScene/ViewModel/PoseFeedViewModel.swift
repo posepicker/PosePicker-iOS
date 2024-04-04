@@ -28,6 +28,7 @@ final class PoseFeedViewModel {
         let dataSource: RxCollectionViewSectionedReloadDataSource<Section<PoseFeedPhotoCellViewModel>>
         let contents = PublishRelay<[Section<PoseFeedPhotoCellViewModel>]>()
         let isLoading = PublishRelay<Bool>()
+        let isLastPage = PublishRelay<Bool>()
         let filteredSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
         let recommendedSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
     }
@@ -38,7 +39,7 @@ final class PoseFeedViewModel {
         input.currentPage
             .subscribe(onNext: { [weak self] in
                 output.isLoading.accept(true)
-                self?.posefeedUseCase.fetchFeedContents(peopleCount: "2인", frameCount: "4컷", filterTags: ["커플"], pageNumber: $0)
+                self?.posefeedUseCase.fetchFeedContents(peopleCount: "", frameCount: "", filterTags: [], pageNumber: $0)
             })
             .disposed(by: disposeBag)
         
@@ -61,6 +62,13 @@ final class PoseFeedViewModel {
             .recommendSectionContentSizes
             .subscribe(onNext: {
                 output.recommendedSectionContentSizes.accept($0)
+            })
+            .disposed(by: disposeBag)
+        
+        self.posefeedUseCase
+            .isLastPage
+            .subscribe(onNext: {
+                output.isLastPage.accept($0)
             })
             .disposed(by: disposeBag)
         
