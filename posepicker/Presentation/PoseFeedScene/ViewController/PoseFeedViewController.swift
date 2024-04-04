@@ -174,21 +174,6 @@ class PoseFeedViewController: BaseViewController {
         self.navigationController?.isNavigationBarHidden = true
         view.backgroundColor = .bgWhite
         
-//        poseFeedCollectionView.rx.contentOffset.asDriver()
-//            .drive(onNext: { [unowned self] in
-//                
-//                if $0.y > 300 && $0.y + 300 > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height && !self.viewModel.isLoading && !self.viewModel.isLast {
-//                    self.viewModel.searchNext()
-//                    return
-//                }
-//                
-//                if $0.y > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height && !self.viewModel.isLoading && !self.viewModel.isLast {
-//                    // 초기 로딩시에도 nextPage 트리거하면 안됨
-//                    self.viewModel.searchNext()
-//                }
-//            })
-//            .disposed(by: disposeBag)
-        
 //        viewModel.presentLoginPopUp
 //            .subscribe(onNext: { [unowned self] in
 //                let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
@@ -459,6 +444,30 @@ extension PoseFeedViewController: PinterestLayoutDelegate {
 private extension PoseFeedViewController {
     func configureViewModelOutput(_ output: PoseFeedViewModel.Output?) {
         guard let output = output else { return }
+        
+        /// 무한스크롤 로직
+        Observable.combineLatest(
+            poseFeedCollectionView.rx.contentOffset,
+            output.isLoading,
+            output.isLastPage
+        )
+        .subscribe(onNext: { [weak self] (contentOffset, isLoading, isLastPage) in
+            guard let self = self else { return }
+            if contentOffset.y > 300
+                && contentOffset.y + 300 > self.poseFeedCollectionView.bounds.size.height
+                && !isLoading
+                && !isLastPage {
+                self.currentPage.accept(self.currentPage.value + 1)
+                return
+            }
+            
+            if contentOffset.y > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height
+                && !isLoading
+                && isLastPage {
+                self.currentPage.accept(self.currentPage.value + 1)
+            }
+        })
+        .disposed(by: disposeBag)
         
         output.contents
             .bind(to: poseFeedCollectionView.rx.items(dataSource: output.dataSource))
