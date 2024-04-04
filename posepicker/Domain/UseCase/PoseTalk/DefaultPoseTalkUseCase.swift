@@ -12,7 +12,7 @@ import RxSwift
 // 데이터 타입도 모르는게 좋을 것 같다 -> 레포지토리 쪽에서 데이터 정제 후에 유스케이스에 넘겨주기
 final class DefaultPoseTalkUseCase: PoseTalkUseCase {
     private let posetalkRepository: DefaultPoseTalkRepository
-    private let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
     
     var poseWord = PublishSubject<String>()
     
