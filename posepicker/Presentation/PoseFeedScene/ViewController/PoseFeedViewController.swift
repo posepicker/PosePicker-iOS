@@ -93,7 +93,10 @@ class PoseFeedViewController: BaseViewController {
     
     // MARK: - Properties
     
-//    var viewModel: PoseFeedViewModel?
+    var viewModel: PoseFeedViewModel?
+    private let currentPage = BehaviorRelay<Int>(value: 0)
+    private let filteredContentSizes = BehaviorRelay<[CGSize]>(value: [])
+    private let recommendedContentSizes = BehaviorRelay<[CGSize]>(value: [])
 //
 //    private let nextPageRequestTrigger = PublishSubject<PoseFeedViewModel.RequestState>()
 //    private let modalDismissWithTag = PublishSubject<String>() // 상세 페이지에서 태그 tap과 함께 dismiss 트리거
@@ -258,6 +261,13 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func bindViewModel() {
+        let input = PoseFeedViewModel.Input(
+            currentPage: currentPage.asObservable()
+        )
+        
+        let output = viewModel!.transform(input: input, disposeBag: disposeBag)
+        
+        configureViewModelOutput(output)
 //        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags, coordinator.poseFeedFilterViewController.registeredSubTag), filterTagSelection: tagDeleteConfirmed, filterRegisterCompleted: registerButtonTapped, poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), modalDismissWithTag: modalDismissWithTag, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), bookmarkFromPoseId: coordinator.bookmarkCheckObservable, dismissState: coordinator.poseFeedFilterViewController.dismissState, tagResetTrigger: tagResetTrigger)
 //    
 //        let output = viewModel.transform(input: input)
@@ -438,11 +448,37 @@ extension PoseFeedViewController: UICollectionViewDelegateFlowLayout {
 
 extension PoseFeedViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-        return 0
-//        if indexPath.section == 0 {
-//            return viewModel.filteredContentSizes.value[indexPath.item].height
-//        } else {
-//            return viewModel.recommendedContentsSizes.value[indexPath.item].height
-//        }
+        if indexPath.section == 0 {
+            return filteredContentSizes.value[indexPath.item].height
+        } else {
+            return recommendedContentSizes.value[indexPath.item].height
+        }
+    }
+}
+
+private extension PoseFeedViewController {
+    func configureViewModelOutput(_ output: PoseFeedViewModel.Output?) {
+        guard let output = output else { return }
+        
+        output.contents
+            .bind(to: poseFeedCollectionView.rx.items(dataSource: output.dataSource))
+            .disposed(by: disposeBag)
+        
+        output.isLoading
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] in
+                guard let flowLayout = self?.poseFeedCollectionView.collectionViewLayout as? PinterestLayout else { return }
+                flowLayout.isLoading.accept($0)
+                self?.loadingIndicator.isHidden = !$0
+            })
+            .disposed(by: disposeBag)
+        
+        output.filteredSectionContentSizes
+            .bind(to: filteredContentSizes)
+            .disposed(by: disposeBag)
+        
+        output.recommendedSectionContentSizes
+            .bind(to: recommendedContentSizes)
+            .disposed(by: disposeBag)
     }
 }
