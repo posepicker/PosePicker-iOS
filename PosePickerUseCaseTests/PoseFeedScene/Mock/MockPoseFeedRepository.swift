@@ -30,5 +30,11 @@ final class MockPoseFeedRepository: PoseFeedRepository {
         ])
     }
     
+    func isLastFilteredContents() -> Observable<Bool> {
+        return Observable.just(true)
+    }
     
+    func isLastRecommendContents() -> Observable<Bool> {
+        return Observable.just(true)
+    }
 }
