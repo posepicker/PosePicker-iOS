@@ -201,6 +201,8 @@
 		C9DEE3FF2BBD4FEA00C9C495 /* MockPoseFeedRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE3FE2BBD4FEA00C9C495 /* MockPoseFeedRepository.swift */; };
 		C9DEE4002BBD51F400C9C495 /* PoseFeedPhotoCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 88EA81F72AF6A2DE00020DEA /* PoseFeedPhotoCellViewModel.swift */; };
 		C9DEE4042BBE78C700C9C495 /* PoseFeedUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE4032BBE78C700C9C495 /* PoseFeedUseCaseTests.swift */; };
+		C9DEE4082BBE94C500C9C495 /* MockPoseFeedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE4072BBE94C500C9C495 /* MockPoseFeedUseCase.swift */; };
+		C9DEE40A2BBE97DC00C9C495 /* PoseFeedViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE4092BBE97DC00C9C495 /* PoseFeedViewModelTests.swift */; };
 		C9FDBDEC2B2835E10045AA54 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9FDBDEB2B2835E10045AA54 /* RxSwift */; };
 		C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */; };
 		C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */; };
@@ -404,6 +406,8 @@
 		C9DEE3FA2BBD323200C9C495 /* DefaultPoseFeedRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseFeedRepository.swift; sourceTree = "<group>"; };
 		C9DEE3FE2BBD4FEA00C9C495 /* MockPoseFeedRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPoseFeedRepository.swift; sourceTree = "<group>"; };
 		C9DEE4032BBE78C700C9C495 /* PoseFeedUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedUseCaseTests.swift; sourceTree = "<group>"; };
+		C9DEE4072BBE94C500C9C495 /* MockPoseFeedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPoseFeedUseCase.swift; sourceTree = "<group>"; };
+		C9DEE4092BBE97DC00C9C495 /* PoseFeedViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedViewModelTests.swift; sourceTree = "<group>"; };
 		C9E6025A2B16DA270098BC96 /* posepicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = posepicker.entitlements; sourceTree = "<group>"; };
 		C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkResponse.swift; sourceTree = "<group>"; };
@@ -1248,6 +1252,7 @@
 			children = (
 				C96C9A842BB5415300AC2921 /* Common */,
 				C96C9AFC2BBA3A2400AC2921 /* PosePickScene */,
+				C9DEE4052BBE94AE00C9C495 /* PoseFeedScene */,
 			);
 			path = PosePickerViewModelTests;
 			sourceTree = "<group>";
@@ -1704,6 +1709,23 @@
 			path = Mock;
 			sourceTree = "<group>";
 		};
+		C9DEE4052BBE94AE00C9C495 /* PoseFeedScene */ = {
+			isa = PBXGroup;
+			children = (
+				C9DEE4062BBE94B900C9C495 /* Mock */,
+				C9DEE4092BBE97DC00C9C495 /* PoseFeedViewModelTests.swift */,
+			);
+			path = PoseFeedScene;
+			sourceTree = "<group>";
+		};
+		C9DEE4062BBE94B900C9C495 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				C9DEE4072BBE94C500C9C495 /* MockPoseFeedUseCase.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
 		C9FDBDF32B28ADD50045AA54 /* BookmarkDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -1936,6 +1958,8 @@
 			files = (
 				C96C9AF52BBA39F800AC2921 /* PosePickViewModelTests.swift in Sources */,
 				C96C9B5C2BBCDE7A00AC2921 /* MockPageViewCoordinator.swift in Sources */,
+				C9DEE4082BBE94C500C9C495 /* MockPoseFeedUseCase.swift in Sources */,
+				C9DEE40A2BBE97DC00C9C495 /* PoseFeedViewModelTests.swift in Sources */,
 				C96C9AFB2BBA3A1800AC2921 /* MockPosePickUseCase.swift in Sources */,
 				C96C9B5A2BBCD87F00AC2921 /* MockCommonUseCase.swift in Sources */,
 				C96C9AF82BBA3A0900AC2921 /* CommonViewModelTest.swift in Sources */,
