@@ -10,4 +10,6 @@ import RxSwift
 
 protocol PoseFeedRepository {
     func fetchFeedContents(peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int) -> Observable<[Section<PoseFeedPhotoCellViewModel>]>
+    func isLastFilteredContents() -> Observable<Bool>
+    func isLastRecommendContents() -> Observable<Bool>
 }
