@@ -30,9 +30,9 @@ class APIEventLogger: EventMonitor {
         print("🛰 NETWORK Response LOG")
         print(
           "URL: " + (request.request?.url?.absoluteString ?? "") + "\n"
-//            + "Result: " + "\(response.result)" + "\n"
+            + "Result: " + "\(response.result)" + "\n"
             + "StatusCode: " + "\(response.response?.statusCode ?? 0)" + "\n"
-//            + "Data: \(response.data?.toPrettyPrintedString ?? "")"
+            + "Data: \(response.data?.toPrettyPrintedString ?? "")"
         )
     }
 }
