@@ -23,36 +23,18 @@ final class DefaultPoseFeedRepository: PoseFeedRepository {
             .asObservable()
             .withUnretained(self)
             .flatMapLatest { (owner, filteredContents: FilteredPose) -> Observable<[Section<PoseFeedPhotoCellViewModel>]> in
-                
-                let relay = PublishRelay<[Section<PoseFeedPhotoCellViewModel>]>()
-                
-                if let filteredPose = filteredContents.filteredContents {
-                    let filteredSectionObservable = owner.cacheItem(for: filteredPose.content)
+                return Observable.combineLatest(
+                    owner.cacheItem(for: filteredContents.filteredContents?.content ?? []),
+                    owner.cacheItem(for: filteredContents.recommendedContents?.content ?? [])
+                )
+                .flatMapLatest { filterSection, recommendSection in
+                    let relay = BehaviorRelay<[Section<PoseFeedPhotoCellViewModel>]>(value: [
+                        Section(header: "", items: filterSection),
+                        Section(header: "이런 포즈는 어때요?", items: recommendSection)
+                    ])
                     
-                    if let recommendedPose = filteredContents.recommendedContents {
-                        let recommendedSectionObservable = owner.cacheItem(for: recommendedPose.content)
-                        
-                        return Observable.combineLatest(filteredSectionObservable, recommendedSectionObservable)
-                            .flatMapLatest { filterSection, recommendedSection in
-                                relay.accept([
-                                    Section(header: "", items: filterSection),
-                                    Section(header: "이런 포즈는 어때요?", items: recommendedSection)
-                                ])
-                                return relay
-                            }
-                    }
-                    
-                    
-                    return filteredSectionObservable
-                        .flatMapLatest { filteredSection in
-                            relay.accept([
-                                Section(header: "", items: filteredSection)
-                            ])
-                            return relay
-                        }
+                    return relay.asObservable()
                 }
-                
-                return relay.asObservable()
             }
     }
     
@@ -78,6 +60,7 @@ final class DefaultPoseFeedRepository: PoseFeedRepository {
                                     image: downloaded.image,
                                     poseId: pose.poseInfo.poseId,
                                     bookmarkCheck: pose.poseInfo.bookmarkCheck ?? false)
+                                viewModelObservable.accept(viewModelObservable.value + [viewModel])
                             case .failure:
                                 return
                             }
@@ -91,32 +74,6 @@ final class DefaultPoseFeedRepository: PoseFeedRepository {
         
         return viewModelObservable.skip(while: { $0.count < contents.count }).asObservable()
     }
-    
-//    private func cacheItem(for contents: [Pose]) -> Observable<[PoseFeedPhotoCellViewModel]> {
-//        return Observable.create { observer in
-//            var posefeedPhotoCellViewModels: [PoseFeedPhotoCellViewModel] = []
-//            contents.forEach { pose in
-//                ImageCache.default.retrieveImageInDiskCache(forKey: pose.poseInfo.imageKey) { result in
-//                    switch result {
-//                    case .success(let value):
-//                        if let image = value?.images?.first {
-//                            let viewModel = PoseFeedPhotoCellViewModel(
-//                                image: image,
-//                                poseId: pose.poseInfo.poseId,
-//                                bookmarkCheck: pose.poseInfo.bookmarkCheck ?? false
-//                            )
-//                            posefeedPhotoCellViewModels.append(viewModel)
-//                        }
-//                    case .failure(let error):
-//                        observer.onError(error)
-//                    }
-//                }
-//            }
-//            return Disposables.create {
-//                
-//            }
-//        }
-//    }
 }
 
 
