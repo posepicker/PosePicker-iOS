@@ -16,7 +16,7 @@ import Kingfisher
 
 final class PosePickUseCaseTests: XCTestCase {
 
-    private let disposeBag = DisposeBag()
+    private var disposeBag = DisposeBag()
     private var posepickRespository: PosePickRepository!
     private var posepickUseCase: PosePickUseCase!
     private var scheduler: TestScheduler!
@@ -71,6 +71,7 @@ final class PosePickUseCaseTests: XCTestCase {
 
     override func tearDown() {
         super.tearDown()
+        self.disposeBag = DisposeBag()
         self.posepickUseCase = nil
         self.posepickRespository = nil
         self.scheduler = nil
