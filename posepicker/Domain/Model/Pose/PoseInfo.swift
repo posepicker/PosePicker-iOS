@@ -14,7 +14,7 @@ struct PoseInfo: Codable {
     let peopleCount: Int
     let poseId: Int
     let source: String
-    let sourceUrl: String
+    let sourceUrl: String?
     let tagAttributes: String?
     let updatedAt: String?
     let bookmarkCheck: Bool?
@@ -56,7 +56,7 @@ struct PoseInfo: Codable {
         self.peopleCount = try container.decode(Int.self, forKey: .peopleCount)
         self.poseId = try container.decode(Int.self, forKey: .poseId)
         self.source = try container.decode(String.self, forKey: .source)
-        self.sourceUrl = try container.decode(String.self, forKey: .sourceUrl)
+        self.sourceUrl = try container.decodeIfPresent(String.self, forKey: .sourceUrl)
         self.tagAttributes = try container.decodeIfPresent(String.self, forKey: .tagAttributes)
         self.updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
         self.bookmarkCheck = try container.decodeIfPresent(Bool.self, forKey: .bookmarkCheck)
