@@ -13,8 +13,19 @@ import RxRelay
 final class DefaultPoseFeedRepository: PoseFeedRepository {
     let networkService: NetworkService
     
+    private let isLastFilteredContentsObservable = BehaviorRelay<Bool>(value: false)
+    private let isLastRecommendedContentsObservable = BehaviorRelay<Bool>(value: false)
+    
     init(networkService: NetworkService) {
         self.networkService = networkService
+    }
+    
+    func isLastFilteredContents() -> Observable<Bool> {
+        return self.isLastFilteredContentsObservable.asObservable()
+    }
+    
+    func isLastRecommendContents() -> Observable<Bool> {
+        return self.isLastRecommendedContentsObservable.asObservable()
     }
     
     func fetchFeedContents(peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int) -> Observable<[Section<PoseFeedPhotoCellViewModel>]> {
@@ -23,6 +34,8 @@ final class DefaultPoseFeedRepository: PoseFeedRepository {
             .asObservable()
             .withUnretained(self)
             .flatMapLatest { (owner, filteredContents: FilteredPose) -> Observable<[Section<PoseFeedPhotoCellViewModel>]> in
+                owner.isLastFilteredContentsObservable.accept(filteredContents.filteredContents?.last ?? true)
+                owner.isLastRecommendedContentsObservable.accept(filteredContents.recommendedContents?.last ?? true)
                 return Observable.combineLatest(
                     owner.cacheItem(for: filteredContents.filteredContents?.content ?? []),
                     owner.cacheItem(for: filteredContents.recommendedContents?.content ?? [])
