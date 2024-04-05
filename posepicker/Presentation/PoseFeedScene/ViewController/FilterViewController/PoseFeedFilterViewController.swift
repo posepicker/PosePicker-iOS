@@ -173,7 +173,9 @@ class PoseFeedFilterViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseFeedFilterViewModel.Input()
+        let input = PoseFeedFilterViewModel.Input(
+            filterTagSelectedEvent: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable()
+        )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
         configureOutput(output)
