@@ -12,6 +12,9 @@ import RxRelay
 final class DefaultPoseFeedFilterUseCase: PoseFeedFilterUseCase {
     private var disposeBag = DisposeBag()
     
+    var peopleCount = BehaviorRelay<Int>(value: 0)
+    var frameCount = BehaviorRelay<Int>(value: 0)
+    
     var tagItems = BehaviorRelay<[PoseFeedFilterCellViewModel]>(value: [
         .init(title: "친구"),
         .init(title: "커플"),
@@ -31,5 +34,28 @@ final class DefaultPoseFeedFilterUseCase: PoseFeedFilterUseCase {
         }) {
             tagItemsValue[index].isSelected.accept(!tagItemsValue[index].isSelected.value)
         }
+    }
+    
+    func selectPeopleCount(value: Int) {
+        peopleCount.accept(value)
+    }
+    
+    func selectFrameCount(value: Int) {
+        frameCount.accept(value)
+    }
+    
+    func resetAllTags() {
+        peopleCount.accept(0)
+        frameCount.accept(0)
+        
+        let tagItemsValue = tagItems.value
+        tagItemsValue.forEach {
+            $0.isSelected.accept(false)
+        }
+        tagItems.accept(tagItemsValue)
+    }
+    
+    func cancelTagSetting() {
+        
     }
 }
