@@ -482,7 +482,6 @@
 				C91E18492B99C216009611C3 /* Modal */,
 				883132952B08ECED00DAA5A7 /* Cell */,
 				8803ADBA2B04FB4100185933 /* PoseDetailViewModel.swift */,
-				8803ADB82B04FB0D00185933 /* PoseDetailViewController.swift */,
 			);
 			path = PoseDetail;
 			sourceTree = "<group>";
@@ -1348,6 +1347,7 @@
 		C96C9B5F2BBD215500AC2921 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				C9DEE41D2BC047BB00C9C495 /* DetailViewController */,
 				C9DEE40B2BBFC7E400C9C495 /* FilterViewController */,
 				C94FD2822AE3960B003777EB /* PoseFeedViewController.swift */,
 			);
@@ -1779,6 +1779,14 @@
 				C9DEE41B2BBFE02400C9C495 /* FilterUseCaseTests.swift */,
 			);
 			path = FilterUseCase;
+			sourceTree = "<group>";
+		};
+		C9DEE41D2BC047BB00C9C495 /* DetailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				8803ADB82B04FB0D00185933 /* PoseDetailViewController.swift */,
+			);
+			path = DetailViewController;
 			sourceTree = "<group>";
 		};
 		C9FDBDF32B28ADD50045AA54 /* BookmarkDetail */ = {
