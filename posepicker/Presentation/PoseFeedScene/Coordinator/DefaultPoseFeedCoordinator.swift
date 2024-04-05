@@ -50,6 +50,15 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
         self.navigationController.present(posefeedFilterViewController, animated: true)
     }
     
+    func dismissFilterModal(registeredTags: [String]) {
+        self.navigationController.dismiss(animated: true)
+        self.posefeedViewController.dismissFilterModalEvent.onNext(
+            registeredTags.map {
+                RegisteredFilterCellViewModel(title: $0)
+            }
+        )
+    }
+    
     func presentTagResetConfirmModal(disposeBag: DisposeBag) -> Observable<Bool> {
         let isConfirmed = BehaviorRelay<Bool>(value: false)
         
