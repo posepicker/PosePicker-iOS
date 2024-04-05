@@ -115,4 +115,14 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
         
         return isConfirmed.asObservable()
     }
+    
+    func presentPoseDetail(viewModel: PoseFeedPhotoCellViewModel) {
+        let poseDetailViewController = PoseDetailViewController()
+        poseDetailViewController.viewModel = PoseDetailViewModel(
+            coordinator: self,
+            bindViewModel: viewModel
+        )
+        
+        self.navigationController.present(poseDetailViewController, animated: true)
+    }
 }
