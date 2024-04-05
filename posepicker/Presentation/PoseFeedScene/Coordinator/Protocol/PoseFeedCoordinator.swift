@@ -9,7 +9,7 @@ import Foundation
 import RxSwift
 
 protocol PoseFeedCoordinator: Coordinator {
-    func presentFilterModal()
+    func presentFilterModal(currentTags: [String])
     func dismissFilterModal(registeredTags: [String])
     func presentTagResetConfirmModal(disposeBag: DisposeBag) -> Observable<Bool>
 }
