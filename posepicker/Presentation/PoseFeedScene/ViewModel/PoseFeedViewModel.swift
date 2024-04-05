@@ -24,6 +24,7 @@ final class PoseFeedViewModel {
         let infiniteScrollEvent: Observable<Void>
         let filterButtonTapEvent: Observable<Void>
         let dismissFilterModalEvent: Observable<[RegisteredFilterCellViewModel]>
+        let filterTagTapEvent: Observable<RegisteredFilterCellViewModel>
     }
     
     struct Output {
@@ -156,6 +157,48 @@ final class PoseFeedViewModel {
                 
                 currentPage.accept(0)
                 output.isLoading.accept(true)
+            })
+            .disposed(by: disposeBag)
+        
+        /// 11. 포즈피드 필터 태그 삭제 팝업창 present
+        input.filterTagTapEvent
+            .flatMapLatest { [weak self] viewModel -> Observable<String?> in
+                guard let self = self,
+                      let coordinator = self.coordinator else { return .empty() }
+                return coordinator.presentTagRemovePopup(title: viewModel.title.value, disposeBag: disposeBag)
+            }
+            .compactMap { $0 }
+            .subscribe(onNext: { [weak self] removeTargetTag in
+                var apiRequestParams = apiRequestParameters.value
+                if let index
+                    = apiRequestParams.firstIndex(where: {
+                    $0 == removeTargetTag
+                    }),
+                   removeTargetTag != "전체" {
+                    
+                    // 인원 수 태그 삭제 혹은 프레임 수 태그는 API 파라미터 삭제 말고 교체로 변경
+                    if removeTargetTag.last! == "인" {
+                        apiRequestParams[index] = "전체"
+                    } else if removeTargetTag.last! == "컷" {
+                        apiRequestParams[index] = "전체"
+                    } else {
+                        apiRequestParams.remove(at: index)
+                    }
+                }
+                apiRequestParameters.accept(apiRequestParams)
+                
+                var registeredTags = output.registeredTagItems.value
+                registeredTags.removeAll(where: {
+                    $0.title.value == removeTargetTag
+                })
+                output.registeredTagItems.accept(registeredTags)
+                
+                self?.posefeedUseCase.fetchFeedContents(
+                    peopleCount: apiRequestParams[0],
+                    frameCount: apiRequestParams[1],
+                    filterTags: apiRequestParams[2...].map { String($0) },
+                    pageNumber: 0
+                )
             })
             .disposed(by: disposeBag)
         return output
