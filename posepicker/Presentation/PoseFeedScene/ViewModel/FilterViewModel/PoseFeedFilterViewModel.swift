@@ -12,13 +12,16 @@ import RxRelay
 final class PoseFeedFilterViewModel {
     weak var coordinator: PoseFeedCoordinator?
     private var posefeedFilterUseCase: PoseFeedFilterUseCase
+    private let currentTags: [String]
     
-    init(coordinator: PoseFeedCoordinator?, posefeedFilterUseCase: PoseFeedFilterUseCase) {
+    init(coordinator: PoseFeedCoordinator?, posefeedFilterUseCase: PoseFeedFilterUseCase, currentTags: [String]) {
         self.coordinator = coordinator
         self.posefeedFilterUseCase = posefeedFilterUseCase
+        self.currentTags = currentTags
     }
     
     struct Input {
+        let viewDidLoadEvent: Observable<Void>
         let peopleCountTagSelectedEvent: Observable<Int>
         let frameCountTagSelectedEvent: Observable<Int>
         let filterTagSelectedEvent: Observable<PoseFeedFilterCellViewModel>
@@ -27,11 +30,30 @@ final class PoseFeedFilterViewModel {
     }
     
     struct Output {
+        let peopleCountIndex = PublishRelay<Int>()
+        let frameCountIndex = PublishRelay<Int>()
         let tagItems = BehaviorRelay<[PoseFeedFilterCellViewModel]>(value: [])
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        
+        input.viewDidLoadEvent
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, _) in
+                if let index = PeopleCountTags.getIndexFromPeopleCountString(countString: owner.currentTags[0]) {
+                    output.peopleCountIndex.accept(index)
+                }
+                
+                if let index = FrameCountTags.getIndexFromFrameCountString(countString: owner.currentTags[1]) {
+                    output.frameCountIndex.accept(index)
+                }
+                
+                for tag in owner.currentTags[2...] {
+                    owner.posefeedFilterUseCase.selectItem(title: tag)
+                }
+            })
+            .disposed(by: disposeBag)
         
         self.posefeedFilterUseCase.tagItems
             .subscribe(onNext: {
@@ -65,6 +87,8 @@ final class PoseFeedFilterViewModel {
             }
             .subscribe(onNext: { [weak self] in
                 if $0 {
+                    output.peopleCountIndex.accept(0)
+                    output.frameCountIndex.accept(0)
                     self?.posefeedFilterUseCase.resetAllTags()
                 } else {
                     return
