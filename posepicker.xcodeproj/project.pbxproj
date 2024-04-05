@@ -8,7 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		8803ADB92B04FB0D00185933 /* PoseDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8803ADB82B04FB0D00185933 /* PoseDetailViewController.swift */; };
-		8803ADBB2B04FB4100185933 /* PoseDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8803ADBA2B04FB4100185933 /* PoseDetailViewModel.swift */; };
+		8803ADBB2B04FB4100185933 /* PoseDetailViewModeltest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 8803ADBA2B04FB4100185933 /* PoseDetailViewModeltest.swift */; };
 		880E752D2AE60499007FAD5A /* Header.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E752C2AE60499007FAD5A /* Header.swift */; };
 		880E75302AE60937007FAD5A /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E752F2AE60937007FAD5A /* UIImage+.swift */; };
 		880E75342AE67CC4007FAD5A /* BasicSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75332AE67CC4007FAD5A /* BasicSelection.swift */; };
@@ -208,6 +208,7 @@
 		C9DEE4162BBFCCB100C9C495 /* DefaultPoseFeedFilterUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE4152BBFCCB100C9C495 /* DefaultPoseFeedFilterUseCase.swift */; };
 		C9DEE4192BBFDFB200C9C495 /* PoseFeedFilterViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE4182BBFDFB200C9C495 /* PoseFeedFilterViewModelTests.swift */; };
 		C9DEE41C2BBFE02400C9C495 /* FilterUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE41B2BBFE02400C9C495 /* FilterUseCaseTests.swift */; };
+		C9DEE4202BC0481600C9C495 /* PoseDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE41F2BC0481600C9C495 /* PoseDetailViewModel.swift */; };
 		C9FDBDEC2B2835E10045AA54 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9FDBDEB2B2835E10045AA54 /* RxSwift */; };
 		C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */; };
 		C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */; };
@@ -236,7 +237,7 @@
 
 /* Begin PBXFileReference section */
 		8803ADB82B04FB0D00185933 /* PoseDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseDetailViewController.swift; sourceTree = "<group>"; };
-		8803ADBA2B04FB4100185933 /* PoseDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseDetailViewModel.swift; sourceTree = "<group>"; };
+		8803ADBA2B04FB4100185933 /* PoseDetailViewModeltest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseDetailViewModeltest.swift; sourceTree = "<group>"; };
 		880E752C2AE60499007FAD5A /* Header.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Header.swift; sourceTree = "<group>"; };
 		880E752F2AE60937007FAD5A /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		880E75332AE67CC4007FAD5A /* BasicSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicSelection.swift; sourceTree = "<group>"; };
@@ -418,6 +419,7 @@
 		C9DEE4152BBFCCB100C9C495 /* DefaultPoseFeedFilterUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseFeedFilterUseCase.swift; sourceTree = "<group>"; };
 		C9DEE4182BBFDFB200C9C495 /* PoseFeedFilterViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterViewModelTests.swift; sourceTree = "<group>"; };
 		C9DEE41B2BBFE02400C9C495 /* FilterUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterUseCaseTests.swift; sourceTree = "<group>"; };
+		C9DEE41F2BC0481600C9C495 /* PoseDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseDetailViewModel.swift; sourceTree = "<group>"; };
 		C9E6025A2B16DA270098BC96 /* posepicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = posepicker.entitlements; sourceTree = "<group>"; };
 		C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkResponse.swift; sourceTree = "<group>"; };
@@ -481,7 +483,7 @@
 			children = (
 				C91E18492B99C216009611C3 /* Modal */,
 				883132952B08ECED00DAA5A7 /* Cell */,
-				8803ADBA2B04FB4100185933 /* PoseDetailViewModel.swift */,
+				8803ADBA2B04FB4100185933 /* PoseDetailViewModeltest.swift */,
 			);
 			path = PoseDetail;
 			sourceTree = "<group>";
@@ -1338,6 +1340,7 @@
 		C96C9B5D2BBD213C00AC2921 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				C9DEE41E2BC0480000C9C495 /* DetailViewModel */,
 				C9DEE40E2BBFCB9700C9C495 /* FilterViewModel */,
 				C96C9B612BBD2A5200AC2921 /* PoseFeedViewModel.swift */,
 			);
@@ -1789,6 +1792,14 @@
 			path = DetailViewController;
 			sourceTree = "<group>";
 		};
+		C9DEE41E2BC0480000C9C495 /* DetailViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C9DEE41F2BC0481600C9C495 /* PoseDetailViewModel.swift */,
+			);
+			path = DetailViewModel;
+			sourceTree = "<group>";
+		};
 		C9FDBDF32B28ADD50045AA54 /* BookmarkDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -2085,6 +2096,7 @@
 				C938510E2BB2B18400E597C1 /* DefaultPageViewCoordinator.swift in Sources */,
 				C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */,
 				C96C9B502BBA86A200AC2921 /* MockURLProtocol.swift in Sources */,
+				C9DEE4202BC0481600C9C495 /* PoseDetailViewModel.swift in Sources */,
 				C94FD27F2AE395E3003777EB /* PosePickViewController.swift in Sources */,
 				C9DC2F9B2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift in Sources */,
 				C91FF35E2BABFBA300096E25 /* DefaultPoseTalkRepository.swift in Sources */,
@@ -2165,7 +2177,7 @@
 				C96C9B682BBD2ACB00AC2921 /* PoseFeedUseCase.swift in Sources */,
 				C9C8909D2AE107BC0010240A /* UIColor+.swift in Sources */,
 				C94FD2872AE3961D003777EB /* PosePickViewModel.swift in Sources */,
-				8803ADBB2B04FB4100185933 /* PoseDetailViewModel.swift in Sources */,
+				8803ADBB2B04FB4100185933 /* PoseDetailViewModeltest.swift in Sources */,
 				88D5C4852B0318040045C081 /* PoseFeedHeader.swift in Sources */,
 				C94FD2902AE398CF003777EB /* MyPageViewController.swift in Sources */,
 				C93625902B907A6F00B90810 /* UITextField+.swift in Sources */,
