@@ -46,7 +46,8 @@ final class PoseFeedViewModelTests: XCTestCase {
         self.input = PoseFeedViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             infiniteScrollEvent: infiniteScrollEvent.asObservable(),
-            filterButtonTapEvent: Observable<Void>.empty()
+            filterButtonTapEvent: .empty(),
+            dismissFilterModalEvent: .empty()
         )
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
         
@@ -92,6 +93,101 @@ final class PoseFeedViewModelTests: XCTestCase {
             .next(0, 0),
             .next(0, 5),
             .next(1, 10)
+        ])
+    }
+    
+    func test_필터모달_dismiss_인원수_프레임수가_전체로_선택되었을때_안보여지는지() {
+        let dismissModalEventObservable = self.scheduler.createHotObservable([
+            .next(1, [
+                RegisteredFilterCellViewModel(title: "전체"),
+                RegisteredFilterCellViewModel(title: "전체")
+            ]),
+            .next(2, [
+                RegisteredFilterCellViewModel(title: "1인"),
+                RegisteredFilterCellViewModel(title: "전체"),
+            ]),
+            .next(3, [
+                RegisteredFilterCellViewModel(title: "전체"),
+                RegisteredFilterCellViewModel(title: "1컷")
+            ]),
+            .next(4, [
+                RegisteredFilterCellViewModel(title: "1인"),
+                RegisteredFilterCellViewModel(title: "1컷"),
+                RegisteredFilterCellViewModel(title: "친구")
+            ])
+        ])
+        
+        let registeredTagsCountObserver = self.scheduler.createObserver(Int.self)
+        
+        self.input = PoseFeedViewModel.Input(
+            viewDidLoadEvent: .empty(),
+            infiniteScrollEvent: .empty(),
+            filterButtonTapEvent: .empty(),
+            dismissFilterModalEvent: dismissModalEventObservable.asObservable()
+        )
+        
+        self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
+        
+        self.output
+            .registeredTagItems
+            .map { $0.count }
+            .subscribe(registeredTagsCountObserver)
+            .disposed(by: self.disposeBag)
+        
+        self.scheduler.start()
+        
+        XCTAssertEqual(registeredTagsCountObserver.events, [
+            .next(1, 0),
+            .next(2, 1),
+            .next(3, 1),
+            .next(4, 3)
+        ])
+    }
+    
+    func test_필터모달_dismiss이후_API요청_이루어지는지() {
+        let dismissModalEventObservable = self.scheduler.createHotObservable([
+            .next(0, [
+                RegisteredFilterCellViewModel(title: "이상한 태그")
+            ]),
+            .next(1, [
+                RegisteredFilterCellViewModel(title: "1인"),
+                RegisteredFilterCellViewModel(title: "1컷"),
+                RegisteredFilterCellViewModel(title: "친구")
+            ])
+        ])
+        
+        let filteredContentsCountObserver = self.scheduler.createObserver(Int.self)
+        let recommendedContentsCountObserver = self.scheduler.createObserver(Int.self)
+        
+        self.input = PoseFeedViewModel.Input(
+            viewDidLoadEvent: .empty(),
+            infiniteScrollEvent: .empty(),
+            filterButtonTapEvent: .empty(),
+            dismissFilterModalEvent: dismissModalEventObservable.asObservable()
+        )
+        
+        self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
+        
+        self.output
+            .contents
+            .map { $0[0].items.count }
+            .subscribe(filteredContentsCountObserver)
+            .disposed(by: self.disposeBag)
+        
+        self.output
+            .contents
+            .map { $0[1].items.count }
+            .subscribe(recommendedContentsCountObserver)
+            .disposed(by: self.disposeBag)
+        
+        self.scheduler.start()
+        
+        XCTAssertEqual(filteredContentsCountObserver.events, [
+            .next(1, 5)
+        ])
+        
+        XCTAssertEqual(recommendedContentsCountObserver.events, [
+            .next(1, 5)
         ])
     }
     
