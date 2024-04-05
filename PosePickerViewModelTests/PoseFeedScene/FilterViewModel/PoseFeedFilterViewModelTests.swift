@@ -8,6 +8,7 @@
 import XCTest
 
 final class PoseFeedFilterViewModelTests: XCTestCase {
+    
     override func setUp() {
         
     }
