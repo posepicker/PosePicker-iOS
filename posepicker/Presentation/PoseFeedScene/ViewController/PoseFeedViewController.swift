@@ -98,6 +98,7 @@ class PoseFeedViewController: BaseViewController {
     private let recommendedContentSizes = BehaviorRelay<[CGSize]>(value: [])
     private let viewDidLoadEvent = PublishSubject<Void>()
     private let infiniteScrollEvent = PublishSubject<Void>()
+    let dismissFilterModalEvent = PublishSubject<[RegisteredFilterCellViewModel]>()
 
 //    private let nextPageRequestTrigger = PublishSubject<PoseFeedViewModel.RequestState>()
 //    private let modalDismissWithTag = PublishSubject<String>() // 상세 페이지에서 태그 tap과 함께 dismiss 트리거
@@ -254,7 +255,8 @@ class PoseFeedViewController: BaseViewController {
         let input = PoseFeedViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent,
             infiniteScrollEvent: infiniteScrollEvent,
-            filterButtonTapEvent: filterButton.rx.tap.asObservable()
+            filterButtonTapEvent: filterButton.rx.tap.asObservable(),
+            dismissFilterModalEvent: dismissFilterModalEvent
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
@@ -493,6 +495,17 @@ private extension PoseFeedViewController {
         
         output.recommendedSectionContentSizes
             .bind(to: recommendedContentSizes)
+            .disposed(by: disposeBag)
+        
+        output.registeredTagItems
+            .asDriver(onErrorJustReturn: [])
+            .drive(filterCollectionView.rx.items(
+                cellIdentifier: RegisteredFilterCell.identifier,
+                cellType: RegisteredFilterCell.self)
+            ){ _, viewModel, cell in
+                cell.disposeBag = DisposeBag()
+                cell.bind(to: viewModel)
+            }
             .disposed(by: disposeBag)
     }
 }
