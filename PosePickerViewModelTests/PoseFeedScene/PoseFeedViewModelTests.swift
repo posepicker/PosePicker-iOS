@@ -30,14 +30,18 @@ final class PoseFeedViewModelTests: XCTestCase {
     }
     
     func test_무한스크롤() {
-        let currentPageTestObservable = self.scheduler.createHotObservable([
-            .next(0, 0),
-            .next(1, 1)
+        let viewDidLoadEvent = self.scheduler.createHotObservable([
+            .next(0, ())
         ])
+        let infiniteScrollEvent = self.scheduler.createHotObservable([
+            .next(1, ())
+        ])
+        
         let filteredContentsCountObserver = self.scheduler.createObserver(Int.self)
         let recommendedContentsCountObserver = self.scheduler.createObserver(Int.self)
         self.input = PoseFeedViewModel.Input(
-            currentPage: currentPageTestObservable.asObservable()
+            viewDidLoadEvent: viewDidLoadEvent.asObservable(),
+            infiniteScrollEvent: infiniteScrollEvent.asObservable()
         )
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
         
