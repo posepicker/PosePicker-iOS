@@ -13,4 +13,5 @@ protocol PoseFeedCoordinator: Coordinator {
     func dismissFilterModal(registeredTags: [String])
     func presentTagResetConfirmModal(disposeBag: DisposeBag) -> Observable<Bool>
     func presentTagRemovePopup(title: String, disposeBag: DisposeBag) -> Observable<String?>
+    func presentPoseDetail(viewModel: PoseFeedPhotoCellViewModel)
 }
