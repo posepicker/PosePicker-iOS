@@ -191,7 +191,7 @@
 		C9DC2F962AEA284900D5170D /* UICollectionView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F952AEA284900D5170D /* UICollectionView+.swift */; };
 		C9DC2F992AEA28E300D5170D /* PoseFeedFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F982AEA28E300D5170D /* PoseFeedFilterCell.swift */; };
 		C9DC2F9B2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F9A2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift */; };
-		C9DC2F9E2AEA2BB000D5170D /* PoseFeedFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F9D2AEA2BB000D5170D /* PoseFeedFilterViewModel.swift */; };
+		C9DC2F9E2AEA2BB000D5170D /* PoseFeedFilterViewModeltest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F9D2AEA2BB000D5170D /* PoseFeedFilterViewModeltest.swift */; };
 		C9DC2FA32AEA564D00D5170D /* UIScreen+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2FA22AEA564D00D5170D /* UIScreen+.swift */; };
 		C9DC2FA62AEB6E1800D5170D /* FilterTags.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2FA52AEB6E1800D5170D /* FilterTags.swift */; };
 		C9DC2FA82AECAD1A00D5170D /* RegisteredFilterCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2FA72AECAD1A00D5170D /* RegisteredFilterCell.swift */; };
@@ -203,6 +203,9 @@
 		C9DEE4042BBE78C700C9C495 /* PoseFeedUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE4032BBE78C700C9C495 /* PoseFeedUseCaseTests.swift */; };
 		C9DEE4082BBE94C500C9C495 /* MockPoseFeedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE4072BBE94C500C9C495 /* MockPoseFeedUseCase.swift */; };
 		C9DEE40A2BBE97DC00C9C495 /* PoseFeedViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE4092BBE97DC00C9C495 /* PoseFeedViewModelTests.swift */; };
+		C9DEE4102BBFCBB000C9C495 /* PoseFeedFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE40F2BBFCBB000C9C495 /* PoseFeedFilterViewModel.swift */; };
+		C9DEE4142BBFCC9300C9C495 /* PoseFeedFilterUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE4132BBFCC9300C9C495 /* PoseFeedFilterUseCase.swift */; };
+		C9DEE4162BBFCCB100C9C495 /* DefaultPoseFeedFilterUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE4152BBFCCB100C9C495 /* DefaultPoseFeedFilterUseCase.swift */; };
 		C9FDBDEC2B2835E10045AA54 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9FDBDEB2B2835E10045AA54 /* RxSwift */; };
 		C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */; };
 		C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */; };
@@ -397,7 +400,7 @@
 		C9DC2F952AEA284900D5170D /* UICollectionView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+.swift"; sourceTree = "<group>"; };
 		C9DC2F982AEA28E300D5170D /* PoseFeedFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterCell.swift; sourceTree = "<group>"; };
 		C9DC2F9A2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterCellViewModel.swift; sourceTree = "<group>"; };
-		C9DC2F9D2AEA2BB000D5170D /* PoseFeedFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterViewModel.swift; sourceTree = "<group>"; };
+		C9DC2F9D2AEA2BB000D5170D /* PoseFeedFilterViewModeltest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterViewModeltest.swift; sourceTree = "<group>"; };
 		C9DC2FA22AEA564D00D5170D /* UIScreen+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIScreen+.swift"; sourceTree = "<group>"; };
 		C9DC2FA52AEB6E1800D5170D /* FilterTags.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterTags.swift; sourceTree = "<group>"; };
 		C9DC2FA72AECAD1A00D5170D /* RegisteredFilterCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisteredFilterCell.swift; sourceTree = "<group>"; };
@@ -408,6 +411,9 @@
 		C9DEE4032BBE78C700C9C495 /* PoseFeedUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedUseCaseTests.swift; sourceTree = "<group>"; };
 		C9DEE4072BBE94C500C9C495 /* MockPoseFeedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPoseFeedUseCase.swift; sourceTree = "<group>"; };
 		C9DEE4092BBE97DC00C9C495 /* PoseFeedViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedViewModelTests.swift; sourceTree = "<group>"; };
+		C9DEE40F2BBFCBB000C9C495 /* PoseFeedFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterViewModel.swift; sourceTree = "<group>"; };
+		C9DEE4132BBFCC9300C9C495 /* PoseFeedFilterUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterUseCase.swift; sourceTree = "<group>"; };
+		C9DEE4152BBFCCB100C9C495 /* DefaultPoseFeedFilterUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseFeedFilterUseCase.swift; sourceTree = "<group>"; };
 		C9E6025A2B16DA270098BC96 /* posepicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = posepicker.entitlements; sourceTree = "<group>"; };
 		C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkResponse.swift; sourceTree = "<group>"; };
@@ -1329,6 +1335,7 @@
 		C96C9B5D2BBD213C00AC2921 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				C9DEE40E2BBFCB9700C9C495 /* FilterViewModel */,
 				C96C9B612BBD2A5200AC2921 /* PoseFeedViewModel.swift */,
 			);
 			path = ViewModel;
@@ -1337,6 +1344,7 @@
 		C96C9B5F2BBD215500AC2921 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				C9DEE40B2BBFC7E400C9C495 /* FilterViewController */,
 				C94FD2822AE3960B003777EB /* PoseFeedViewController.swift */,
 			);
 			path = ViewController;
@@ -1353,8 +1361,9 @@
 		C96C9B632BBD2AA600AC2921 /* PoseFeed */ = {
 			isa = PBXGroup;
 			children = (
-				C96C9B642BBD2AB900AC2921 /* Protocol */,
 				C96C9B652BBD2AC400AC2921 /* DefaultPoseFeedUseCase.swift */,
+				C96C9B642BBD2AB900AC2921 /* Protocol */,
+				C9DEE4112BBFCC6500C9C495 /* FilterUseCase */,
 			);
 			path = PoseFeed;
 			sourceTree = "<group>";
@@ -1363,6 +1372,7 @@
 			isa = PBXGroup;
 			children = (
 				C96C9B672BBD2ACB00AC2921 /* PoseFeedUseCase.swift */,
+				C9DEE4132BBFCC9300C9C495 /* PoseFeedFilterUseCase.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -1649,8 +1659,7 @@
 			isa = PBXGroup;
 			children = (
 				C9DC2F972AEA28CE00D5170D /* Cell */,
-				C9DC2F9D2AEA2BB000D5170D /* PoseFeedFilterViewModel.swift */,
-				C9DC2F8F2AEA1D5F00D5170D /* PoseFeedFilterViewController.swift */,
+				C9DC2F9D2AEA2BB000D5170D /* PoseFeedFilterViewModeltest.swift */,
 			);
 			path = PoseFeedFilter;
 			sourceTree = "<group>";
@@ -1724,6 +1733,30 @@
 				C9DEE4072BBE94C500C9C495 /* MockPoseFeedUseCase.swift */,
 			);
 			path = Mock;
+			sourceTree = "<group>";
+		};
+		C9DEE40B2BBFC7E400C9C495 /* FilterViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C9DC2F8F2AEA1D5F00D5170D /* PoseFeedFilterViewController.swift */,
+			);
+			path = FilterViewController;
+			sourceTree = "<group>";
+		};
+		C9DEE40E2BBFCB9700C9C495 /* FilterViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C9DEE40F2BBFCBB000C9C495 /* PoseFeedFilterViewModel.swift */,
+			);
+			path = FilterViewModel;
+			sourceTree = "<group>";
+		};
+		C9DEE4112BBFCC6500C9C495 /* FilterUseCase */ = {
+			isa = PBXGroup;
+			children = (
+				C9DEE4152BBFCCB100C9C495 /* DefaultPoseFeedFilterUseCase.swift */,
+			);
+			path = FilterUseCase;
 			sourceTree = "<group>";
 		};
 		C9FDBDF32B28ADD50045AA54 /* BookmarkDetail */ = {
@@ -1996,6 +2029,7 @@
 				880E755B2AF296E7007FAD5A /* PoseTalk.swift in Sources */,
 				C9C890A92AE10A370010240A /* NetworkRouter.swift in Sources */,
 				880E754F2AE6C188007FAD5A /* Pose.swift in Sources */,
+				C9DEE4102BBFCBB000C9C495 /* PoseFeedFilterViewModel.swift in Sources */,
 				C9DC2F962AEA284900D5170D /* UICollectionView+.swift in Sources */,
 				C91A26672B88521200F1193E /* MyPoseHeadcountViewController.swift in Sources */,
 				C9D0C40B2BA4501C004A3940 /* Functions.swift in Sources */,
@@ -2047,7 +2081,7 @@
 				C94FD2922AE398D6003777EB /* MyPageViewModel.swift in Sources */,
 				C94FD2792AE38EBD003777EB /* RootCoordinator.swift in Sources */,
 				880E753E2AE6BE59007FAD5A /* Service.swift in Sources */,
-				C9DC2F9E2AEA2BB000D5170D /* PoseFeedFilterViewModel.swift in Sources */,
+				C9DC2F9E2AEA2BB000D5170D /* PoseFeedFilterViewModeltest.swift in Sources */,
 				C9C0CDCE2AF353AB0041E423 /* ToolTip.swift in Sources */,
 				C938511C2BB3E1D100E597C1 /* DefaultPoseTalkCoordinator.swift in Sources */,
 				C9C890C52AE11BAB0010240A /* UIFont+.swift in Sources */,
@@ -2059,6 +2093,7 @@
 				C91FF36F2BAD88D600096E25 /* Coordinator.swift in Sources */,
 				C903E54C2B05C13B00BD004F /* PopUpView.swift in Sources */,
 				C94FD29B2AE3AC3E003777EB /* UIView+.swift in Sources */,
+				C9DEE4142BBFCC9300C9C495 /* PoseFeedFilterUseCase.swift in Sources */,
 				880E75592AEA8BE2007FAD5A /* EmptyBookmarkView.swift in Sources */,
 				C9DC2F902AEA1D5F00D5170D /* PoseFeedFilterViewController.swift in Sources */,
 				C91FF3562BAB267D00096E25 /* NetworkService.swift in Sources */,
@@ -2077,6 +2112,7 @@
 				C91A26692B88522700F1193E /* MyPoseFramecountViewController.swift in Sources */,
 				C9C890522AE103A10010240A /* AppDelegate.swift in Sources */,
 				C91A26642B87975900F1193E /* CircleSegmentButton.swift in Sources */,
+				C9DEE4162BBFCCB100C9C495 /* DefaultPoseFeedFilterUseCase.swift in Sources */,
 				C903E5472B01F51F00BD004F /* PoseFeedEmptyView.swift in Sources */,
 				C96C9A922BB5727900AC2921 /* KeychainService.swift in Sources */,
 				C9DEE3FB2BBD323200C9C495 /* DefaultPoseFeedRepository.swift in Sources */,
