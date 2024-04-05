@@ -17,7 +17,8 @@ protocol PoseFeedUseCase {
     var feedContents: BehaviorRelay<[Section<PoseFeedPhotoCellViewModel>]> { get set }
     var filterSectionContentSizes: BehaviorRelay<[CGSize]> { get set }
     var recommendSectionContentSizes: BehaviorRelay<[CGSize]> { get set }
-    var isLastPage: PublishSubject<Bool> { get set }
+    var isLastPage: BehaviorRelay<Bool> { get set }
+    var contentLoaded: PublishSubject<Void> { get set }
     
     func fetchFeedContents(peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int)
 }
