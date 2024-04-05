@@ -116,7 +116,7 @@ final class PoseFeedViewModel {
         /// 8. 필터 버튼 탭 후 필터 세팅 모달창 present
         input.filterButtonTapEvent
             .subscribe(onNext: { [weak self] in
-                self?.coordinator?.presentFilterModal()
+                self?.coordinator?.presentFilterModal(currentTags: apiRequestParameters.value)
             })
             .disposed(by: disposeBag)
         
