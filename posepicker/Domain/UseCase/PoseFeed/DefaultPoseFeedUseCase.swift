@@ -21,14 +21,15 @@ final class DefaultPoseFeedUseCase: PoseFeedUseCase {
     var feedContents = BehaviorRelay<[Section<PoseFeedPhotoCellViewModel>]>(value: [])
     var filterSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
     var recommendSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
-    var isLastPage = PublishSubject<Bool>()
+    var isLastPage = BehaviorRelay<Bool>(value: false)
+    var contentLoaded = PublishSubject<Void>()
     
     func fetchFeedContents(peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int) {
-        
         self.posefeedRepository
             .fetchFeedContents(peopleCount: peopleCount, frameCount: frameCount, filterTags: filterTags, pageNumber: pageNumber)
             .withUnretained(self)
             .subscribe(onNext: { (owner, sectionItems) in
+                owner.contentLoaded.onNext(())
                 if pageNumber == 0 { owner.feedContents.accept(sectionItems) }
                 else {
                     var contents = owner.feedContents.value
@@ -70,7 +71,7 @@ final class DefaultPoseFeedUseCase: PoseFeedUseCase {
             self.posefeedRepository.isLastRecommendContents()
         )
         .subscribe(onNext: { [weak self] (isLastFilteredContents, isLastRecommendedContents) in
-            self?.isLastPage.onNext(isLastFilteredContents && isLastRecommendedContents)
+            self?.isLastPage.accept(isLastFilteredContents && isLastRecommendedContents)
         })
         .disposed(by: disposeBag)
     }
