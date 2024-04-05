@@ -192,6 +192,10 @@ class PoseDetailViewController: BaseViewController {
     }
     
     override func bindViewModel() {
+        let input = PoseDetailViewModel.Input()
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        
+        configureOutput(output)
 //        let input = PoseDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap, bookmarkButtonTapped: bookmarkButton.rx.tap, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger))
 //        
 //        let output = viewModel.transform(input: input)
@@ -335,5 +339,16 @@ class PoseDetailViewController: BaseViewController {
 //        }
 //        
 //        self.present(modalVC, animated: true)
+    }
+}
+
+private extension PoseDetailViewController {
+    func configureOutput(_ output: PoseDetailViewModel.Output?) {
+        output?.image
+            .asDriver(onErrorJustReturn: nil)
+            .drive(onNext: { [weak self] in
+                self?.imageButton.setImage($0, for: .normal)
+            })
+            .disposed(by: disposeBag)
     }
 }
