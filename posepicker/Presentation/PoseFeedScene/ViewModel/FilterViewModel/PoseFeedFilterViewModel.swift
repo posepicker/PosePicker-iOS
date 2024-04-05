@@ -19,7 +19,7 @@ final class PoseFeedFilterViewModel {
     }
     
     struct Input {
-        
+        let filterTagSelectedEvent: Observable<PoseFeedFilterCellViewModel>
     }
     
     struct Output {
@@ -32,6 +32,12 @@ final class PoseFeedFilterViewModel {
         self.posefeedFilterUseCase.tagItems
             .subscribe(onNext: {
                 output.tagItems.accept($0)
+            })
+            .disposed(by: disposeBag)
+        
+        input.filterTagSelectedEvent
+            .subscribe(onNext: { [weak self] in
+                self?.posefeedFilterUseCase.selectItem(title: $0.title.value)
             })
             .disposed(by: disposeBag)
         
