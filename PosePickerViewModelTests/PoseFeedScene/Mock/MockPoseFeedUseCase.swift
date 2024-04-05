@@ -19,9 +19,14 @@ final class MockPoseFeedUseCase: PoseFeedUseCase {
     
     var recommendSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
     
-    var isLastPage = PublishSubject<Bool>()
+    var isLastPage = BehaviorRelay<Bool>(value: false)
+    
+    var contentLoaded = PublishSubject<Void>()
+    
     
     func fetchFeedContents(peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int) {
+        contentLoaded.onNext(())
+        isLastPage.accept(false)
         let value = generateMockupData()
         
         if pageNumber == 0 { self.feedContents.accept(value) }
