@@ -253,10 +253,11 @@ class PoseFeedViewController: BaseViewController {
     override func bindViewModel() {
         let input = PoseFeedViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent,
-            infiniteScrollEvent: infiniteScrollEvent
+            infiniteScrollEvent: infiniteScrollEvent,
+            filterButtonTapEvent: filterButton.rx.tap.asObservable()
         )
         
-        let output = viewModel!.transform(input: input, disposeBag: disposeBag)
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
         configureViewModelOutput(output)
 //        let input = PoseFeedViewModel.Input(filterButtonTapped: filterButton.rx.controlEvent(.touchUpInside), tagItems: Observable.combineLatest(coordinator.poseFeedFilterViewController.selectedHeadCount, coordinator.poseFeedFilterViewController.selectedFrameCount, coordinator.poseFeedFilterViewController.selectedTags, coordinator.poseFeedFilterViewController.registeredSubTag), filterTagSelection: tagDeleteConfirmed, filterRegisterCompleted: registerButtonTapped, poseFeedFilterViewIsPresenting: coordinator.poseFeedFilterViewController.isPresenting, poseFeedSelection: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self), modalDismissWithTag: modalDismissWithTag, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), bookmarkFromPoseId: coordinator.bookmarkCheckObservable, dismissState: coordinator.poseFeedFilterViewController.dismissState, tagResetTrigger: tagResetTrigger)
