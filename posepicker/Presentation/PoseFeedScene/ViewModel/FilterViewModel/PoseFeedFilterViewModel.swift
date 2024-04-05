@@ -19,14 +19,15 @@ final class PoseFeedFilterViewModel {
     }
     
     struct Input {
+        let peopleCountTagSelectedEvent: Observable<Int>
+        let frameCountTagSelectedEvent: Observable<Int>
         let filterTagSelectedEvent: Observable<PoseFeedFilterCellViewModel>
         let filterResetButtonTapEvent: Observable<Void>
+        let filterTagSaveButtonTapEvent: Observable<Void>
     }
     
     struct Output {
         let tagItems = BehaviorRelay<[PoseFeedFilterCellViewModel]>(value: [])
-        let selectedPeopleCount = PublishRelay<Int>()
-        let selectedFrameCount = PublishRelay<Int>()
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -38,15 +39,15 @@ final class PoseFeedFilterViewModel {
             })
             .disposed(by: disposeBag)
         
-        self.posefeedFilterUseCase.peopleCount
-            .subscribe(onNext: {
-                output.selectedPeopleCount.accept($0)
+        input.peopleCountTagSelectedEvent
+            .subscribe(onNext: { [weak self] in
+                self?.posefeedFilterUseCase.selectPeopleCount(value: $0)
             })
             .disposed(by: disposeBag)
         
-        self.posefeedFilterUseCase.frameCount
-            .subscribe(onNext: {
-                output.selectedFrameCount.accept($0)
+        input.frameCountTagSelectedEvent
+            .subscribe(onNext: { [weak self] in
+                self?.posefeedFilterUseCase.selectFrameCount(value: $0)
             })
             .disposed(by: disposeBag)
         
@@ -68,6 +69,18 @@ final class PoseFeedFilterViewModel {
                 } else {
                     return
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        input.filterTagSaveButtonTapEvent
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                guard let peopleCountTag = PeopleCountTags.getTagTitleFromIndex(index: self.posefeedFilterUseCase.peopleCount.value),
+                      let frameCountTag = FrameCountTags.getTagTitleFromIndex(index: self.posefeedFilterUseCase.frameCount.value) else { return }
+                var tags = [peopleCountTag, frameCountTag]
+                tags += self.posefeedFilterUseCase.tagItems.value.filter { $0.isSelected.value }.map { $0.title.value }
+                
+                self.coordinator?.dismissFilterModal(registeredTags: tags)
             })
             .disposed(by: disposeBag)
         
