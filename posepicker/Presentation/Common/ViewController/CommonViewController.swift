@@ -165,11 +165,8 @@ class CommonViewController: BaseViewController {
             myPageButtonTapped: header.menuButton.rx.tap.asObservable(),
             currentPage: currentPage.asObservable()
         )
-        let output = self.viewModel!.transform(from: input, disposeBag: disposeBag)
-        
-        output.pageTransitionEvent
-            .bind(to: currentPage)
-            .disposed(by: disposeBag)
+        let output = self.viewModel?.transform(from: input, disposeBag: disposeBag)
+        configureOutput(output)
         
 //        let input = RootViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger))
 //        
@@ -204,5 +201,13 @@ extension CommonViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
         return viewModel?.viewControllerAfter()
+    }
+}
+
+private extension CommonViewController {
+    func configureOutput(_ output: CommonViewModel.Output?) {
+        output?.pageTransitionEvent
+            .bind(to: currentPage)
+            .disposed(by: disposeBag)
     }
 }
