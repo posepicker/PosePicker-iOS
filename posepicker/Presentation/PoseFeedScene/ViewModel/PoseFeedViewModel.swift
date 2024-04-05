@@ -25,6 +25,7 @@ final class PoseFeedViewModel {
         let filterButtonTapEvent: Observable<Void>
         let dismissFilterModalEvent: Observable<[RegisteredFilterCellViewModel]>
         let filterTagTapEvent: Observable<RegisteredFilterCellViewModel>
+        let posefeedPhotoCellTapEvent: Observable<PoseFeedPhotoCellViewModel>
     }
     
     struct Output {
@@ -65,12 +66,6 @@ final class PoseFeedViewModel {
                     filterTags: apiRequestParameters.value[2...].map { String($0) },
                     pageNumber: nextPage
                 )
-//                let tags = output.registeredTagItems.value
-//                if tags.isEmpty {
-//                    self?.posefeedUseCase.fetchFeedContents(peopleCount: apiRequestParameters.value[0], frameCount: apiRequestParameters.value[1], filterTags: [], pageNumber: nextPage)
-//                } else {
-//                    self?.posefeedUseCase.fetchFeedContents(peopleCount: tags[0].title.value, frameCount: tags[1].title.value, filterTags: tags[2...].map { $0.title.value }, pageNumber: nextPage)
-//                }
             })
             .disposed(by: disposeBag)
         
@@ -201,6 +196,13 @@ final class PoseFeedViewModel {
                 )
             })
             .disposed(by: disposeBag)
+        
+        input.posefeedPhotoCellTapEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.presentPoseDetail(viewModel: $0)
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
     
