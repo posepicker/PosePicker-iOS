@@ -13,7 +13,6 @@ import RxDataSources
 final class PoseFeedViewModel {
     weak var coordinator: PoseFeedCoordinator?
     private var posefeedUseCase: PoseFeedUseCase
-    private var isLoading = PublishRelay<Bool>()
     
     init(coordinator: PoseFeedCoordinator?, posefeedUseCase: PoseFeedUseCase) {
         self.coordinator = coordinator
@@ -21,14 +20,15 @@ final class PoseFeedViewModel {
     }
     
     struct Input {
-        let currentPage: Observable<Int>
+        let viewDidLoadEvent: Observable<Void>
+        let infiniteScrollEvent: Observable<Void>
     }
     
     struct Output {
         let dataSource: RxCollectionViewSectionedReloadDataSource<Section<PoseFeedPhotoCellViewModel>>
         let contents = PublishRelay<[Section<PoseFeedPhotoCellViewModel>]>()
-        let isLoading = PublishRelay<Bool>()
-        let isLastPage = PublishRelay<Bool>()
+        let isLoading = BehaviorRelay<Bool>(value: false)
+        let isLastPage = BehaviorRelay<Bool>(value: true)
         let filteredSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
         let recommendedSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
     }
@@ -36,18 +36,44 @@ final class PoseFeedViewModel {
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output(dataSource: configureDataSource(disposeBag: disposeBag))
         
-        input.currentPage
+        let currentPage = BehaviorRelay<Int>(value: 0)
+        
+        // repository에 로딩값 추가
+        input.viewDidLoadEvent
             .subscribe(onNext: { [weak self] in
                 output.isLoading.accept(true)
-                self?.posefeedUseCase.fetchFeedContents(peopleCount: "", frameCount: "", filterTags: [], pageNumber: $0)
+                currentPage.accept(0)
+                self?.posefeedUseCase.fetchFeedContents(peopleCount: "", frameCount: "", filterTags: [], pageNumber: 0)
+            })
+            .disposed(by: disposeBag)
+        
+        input.infiniteScrollEvent
+            .subscribe(onNext: { [weak self] in
+                output.isLoading.accept(true)
+                let nextPage = currentPage.value + 1
+                currentPage.accept(nextPage)
+                self?.posefeedUseCase.fetchFeedContents(peopleCount: "", frameCount: "", filterTags: [], pageNumber: nextPage)
+            })
+            .disposed(by: disposeBag)
+        
+        self.posefeedUseCase
+            .isLastPage
+            .subscribe(onNext: {
+                output.isLastPage.accept($0)
             })
             .disposed(by: disposeBag)
         
         self.posefeedUseCase
             .feedContents
             .subscribe(onNext: {
-                output.isLoading.accept(false)
                 output.contents.accept($0)
+            })
+            .disposed(by: disposeBag)
+        
+        self.posefeedUseCase
+            .contentLoaded
+            .subscribe(onNext: {
+                output.isLoading.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -65,16 +91,8 @@ final class PoseFeedViewModel {
             })
             .disposed(by: disposeBag)
         
-        self.posefeedUseCase
-            .isLastPage
-            .subscribe(onNext: {
-                output.isLastPage.accept($0)
-            })
-            .disposed(by: disposeBag)
-        
         return output
     }
-    
     
     private func configureDataSource(disposeBag: DisposeBag) -> RxCollectionViewSectionedReloadDataSource<Section<PoseFeedPhotoCellViewModel>> {
         return RxCollectionViewSectionedReloadDataSource<Section<PoseFeedPhotoCellViewModel>>(configureCell: { dataSource, collectionView, indexPath, item in
