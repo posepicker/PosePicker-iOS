@@ -29,7 +29,7 @@ final class PoseFeedViewModelTests: XCTestCase {
         self.disposeBag = DisposeBag()
     }
     
-    func test_무한스크롤() {
+    func test_무한스크롤_이후_컨텐츠_갯수와_컨텐츠사이즈_갯수가_누적되는지 () {
         let viewDidLoadEvent = self.scheduler.createHotObservable([
             .next(0, ())
         ])
@@ -39,21 +39,36 @@ final class PoseFeedViewModelTests: XCTestCase {
         
         let filteredContentsCountObserver = self.scheduler.createObserver(Int.self)
         let recommendedContentsCountObserver = self.scheduler.createObserver(Int.self)
+        
+        let filteredContentSizesCountObserver = self.scheduler.createObserver(Int.self)
+        let recommendedContentSizesCountObserver = self.scheduler.createObserver(Int.self)
+        
         self.input = PoseFeedViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
-            infiniteScrollEvent: infiniteScrollEvent.asObservable()
+            infiniteScrollEvent: infiniteScrollEvent.asObservable(),
+            filterButtonTapEvent: Observable<Void>.empty()
         )
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
         
         output.contents
             .map { $0[0].items.count }
             .subscribe(filteredContentsCountObserver)
-            .disposed(by: disposeBag)
+            .disposed(by: self.disposeBag)
         
         output.contents
             .map { $0[1].items.count }
             .subscribe(recommendedContentsCountObserver)
-            .disposed(by: disposeBag)
+            .disposed(by: self.disposeBag)
+        
+        output.filteredSectionContentSizes
+            .map { $0.count }
+            .subscribe(filteredContentSizesCountObserver)
+            .disposed(by: self.disposeBag)
+        
+        output.recommendedSectionContentSizes
+            .map { $0.count }
+            .subscribe(recommendedContentSizesCountObserver)
+            .disposed(by: self.disposeBag)
         
         self.scheduler.start()
         
@@ -63,6 +78,18 @@ final class PoseFeedViewModelTests: XCTestCase {
         ])
         
         XCTAssertEqual(recommendedContentsCountObserver.events, [
+            .next(0, 5),
+            .next(1, 10)
+        ])
+        
+        XCTAssertEqual(filteredContentSizesCountObserver.events, [
+            .next(0, 0),
+            .next(0, 5),
+            .next(1, 10)
+        ])
+        
+        XCTAssertEqual(recommendedContentSizesCountObserver.events, [
+            .next(0, 0),
             .next(0, 5),
             .next(1, 10)
         ])
