@@ -23,6 +23,7 @@ final class PoseFeedViewModel {
         let viewDidLoadEvent: Observable<Void>
         let infiniteScrollEvent: Observable<Void>
         let filterButtonTapEvent: Observable<Void>
+        let dismissFilterModalEvent: Observable<[RegisteredFilterCellViewModel]>
     }
     
     struct Output {
@@ -32,6 +33,7 @@ final class PoseFeedViewModel {
         let isLastPage = BehaviorRelay<Bool>(value: true)
         let filteredSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
         let recommendedSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
+        let registeredTagItems = PublishRelay<[RegisteredFilterCellViewModel]>()
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -105,6 +107,37 @@ final class PoseFeedViewModel {
             })
             .disposed(by: disposeBag)
         
+        /// 9. 모달에서 세팅된 태그들을 컬렉션뷰에 바인딩
+        input.dismissFilterModalEvent
+            .subscribe(onNext: { registeredTagViewModels in
+                var viewModels = registeredTagViewModels
+                
+                if let removeTargetIndex = viewModels.firstIndex(where: {$0.title.value == "전체"}) {
+                    viewModels.remove(at: removeTargetIndex)
+                }
+                
+                if let removeTargetIndex = viewModels.firstIndex(where: {$0.title.value == "전체"}) {
+                    viewModels.remove(at: removeTargetIndex)
+                }
+                
+                output.registeredTagItems.accept(viewModels)
+            })
+            .disposed(by: disposeBag)
+        
+        /// 10. 모달에서 세팅된 태그들로 API 요청
+        input.dismissFilterModalEvent
+            .subscribe(onNext: { [weak self] registeredTagViewModels in
+                guard let peopleCountTag = PeopleCountTags.getTagFromTitle(title: registeredTagViewModels[0].title.value),
+                      let frameCountTag = FrameCountTags.getTagFromTitle(title: registeredTagViewModels[1].title.value) else {
+                    return
+                }
+                let filterTags = registeredTagViewModels[2...].map { $0.title.value }
+                
+                self?.posefeedUseCase.fetchFeedContents(peopleCount: peopleCountTag.rawValue, frameCount: frameCountTag.rawValue, filterTags: filterTags, pageNumber: 0)
+                currentPage.accept(0)
+                output.isLoading.accept(true)
+            })
+            .disposed(by: disposeBag)
         return output
     }
     
