@@ -8,5 +8,5 @@
 import Foundation
 
 protocol PoseFeedCoordinator: Coordinator {
-    
+    func presentFilterModal()
 }

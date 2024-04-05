@@ -32,4 +32,20 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
         self.navigationController.pushViewController(self.posefeedViewController, animated: true)
     }
     
+    func presentFilterModal() {
+        let posefeedFilterViewController = PoseFeedFilterViewController()
+        
+        posefeedFilterViewController.viewModel = PoseFeedFilterViewModel(
+            coordinator: self,
+            posefeedFilterUseCase: DefaultPoseFeedFilterUseCase()
+        )
+        
+        if let sheet = posefeedFilterViewController.sheetPresentationController {
+            sheet.detents = [.custom(resolver: { _ in 476 })]
+            sheet.preferredCornerRadius = 20
+        }
+        
+        self.navigationController.present(posefeedFilterViewController, animated: true)
+    }
+    
 }
