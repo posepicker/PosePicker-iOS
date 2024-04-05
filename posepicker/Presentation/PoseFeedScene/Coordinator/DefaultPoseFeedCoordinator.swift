@@ -88,4 +88,31 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
         return isConfirmed.asObservable()
     }
     
+    func presentTagRemovePopup(title:String, disposeBag: DisposeBag) -> Observable<String?> {
+        let isConfirmed = BehaviorRelay<String?>(value: nil)
+        
+        let popupVC = PopUpViewController(isLoginPopUp: false, isChoice: true)
+        guard let popupView = popupVC.popUpView as? PopUpView else { return Observable<String?>.empty() }
+        popupView.alertText.accept("필터를 삭제하시겠습니까?")
+        popupVC.modalTransitionStyle = .crossDissolve
+        popupVC.modalPresentationStyle = .overFullScreen
+        
+        popupView.cancelButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
+                self?.navigationController.dismiss(animated: true)
+                isConfirmed.accept(nil)
+            })
+            .disposed(by: disposeBag)
+        
+        popupView.confirmButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
+                isConfirmed.accept(title)
+                self?.navigationController.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
+        
+        self.navigationController.present(popupVC, animated: true)
+        
+        return isConfirmed.asObservable()
+    }
 }
