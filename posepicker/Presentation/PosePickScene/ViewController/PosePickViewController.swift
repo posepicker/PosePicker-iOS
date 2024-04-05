@@ -127,7 +127,7 @@ class PosePickViewController: BaseViewController {
             imageViewTapEvent: imageViewTapEvent
         )
         
-        let output = viewModel!.transform(input: input, disposeBag: disposeBag)
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         self.configureViewModelOutput(output)
     }
     
