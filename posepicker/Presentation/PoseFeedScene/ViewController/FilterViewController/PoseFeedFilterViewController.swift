@@ -59,6 +59,7 @@ class PoseFeedFilterViewController: BaseViewController {
     // MARK: - Properties
     
     var viewModel: PoseFeedFilterViewModel?
+    let viewDidLoadEvent = PublishSubject<Void>()
     
     let selectedHeadCount = BehaviorRelay<PeopleCountTags>(value: .all)
     let selectedFrameCount = BehaviorRelay<FrameCountTags>(value: .allCut)
@@ -81,16 +82,9 @@ class PoseFeedFilterViewController: BaseViewController {
     // MARK: - Initialization
     
     // MARK: - Life Cycles
-    
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-//        dismissState.accept(.normal)
-    }
-    
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        isPresenting.accept(false)
-        viewWillDisappearTrigger.onNext(())
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewDidLoadEvent.onNext(())
     }
     
     // MARK: - Functions
@@ -174,6 +168,7 @@ class PoseFeedFilterViewController: BaseViewController {
     
     override func bindViewModel() {
         let input = PoseFeedFilterViewModel.Input(
+            viewDidLoadEvent: viewDidLoadEvent,
             peopleCountTagSelectedEvent: headCountSelection.pressIndex.asObservable(),
             frameCountTagSelectedEvent: frameCountSelection.pressIndex.asObservable(),
             filterTagSelectedEvent: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable(),
@@ -265,6 +260,14 @@ private extension PoseFeedFilterViewController {
                 cell.disposeBag = DisposeBag()
                 cell.bind(to: viewModel)
             }
+            .disposed(by: disposeBag)
+        
+        output?.peopleCountIndex
+            .bind(to: headCountSelection.pressIndex)
+            .disposed(by: disposeBag)
+        
+        output?.frameCountIndex
+            .bind(to: frameCountSelection.pressIndex)
             .disposed(by: disposeBag)
     }
 }
