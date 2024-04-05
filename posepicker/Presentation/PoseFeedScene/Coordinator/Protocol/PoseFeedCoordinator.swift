@@ -10,5 +10,6 @@ import RxSwift
 
 protocol PoseFeedCoordinator: Coordinator {
     func presentFilterModal()
+    func dismissFilterModal(registeredTags: [String])
     func presentTagResetConfirmModal(disposeBag: DisposeBag) -> Observable<Bool>
 }
