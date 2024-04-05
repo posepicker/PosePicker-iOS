@@ -174,8 +174,11 @@ class PoseFeedFilterViewController: BaseViewController {
     
     override func bindViewModel() {
         let input = PoseFeedFilterViewModel.Input(
+            peopleCountTagSelectedEvent: headCountSelection.pressIndex.asObservable(),
+            frameCountTagSelectedEvent: frameCountSelection.pressIndex.asObservable(),
             filterTagSelectedEvent: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable(),
-            filterResetButtonTapEvent: resetButton.rx.tap.asObservable()
+            filterResetButtonTapEvent: resetButton.rx.tap.asObservable(),
+            filterTagSaveButtonTapEvent: submitButton.rx.tap.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
@@ -262,14 +265,6 @@ private extension PoseFeedFilterViewController {
                 cell.disposeBag = DisposeBag()
                 cell.bind(to: viewModel)
             }
-            .disposed(by: disposeBag)
-        
-        output?.selectedPeopleCount
-            .bind(to: headCountSelection.pressIndex)
-            .disposed(by: disposeBag)
-        
-        output?.selectedFrameCount
-            .bind(to: frameCountSelection.pressIndex)
             .disposed(by: disposeBag)
     }
 }
