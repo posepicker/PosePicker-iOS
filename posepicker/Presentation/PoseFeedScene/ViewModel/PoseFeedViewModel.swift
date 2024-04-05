@@ -40,13 +40,14 @@ final class PoseFeedViewModel {
         let output = Output(dataSource: configureDataSource(disposeBag: disposeBag))
         
         let currentPage = BehaviorRelay<Int>(value: 0)
+        let apiRequestParameters = BehaviorRelay<[String]>(value: ["전체", "전체"])
         
         /// 1. viewDidLoad 이후 초기 데이터 요청
         input.viewDidLoadEvent
             .subscribe(onNext: { [weak self] in
                 output.isLoading.accept(true)
                 currentPage.accept(0)
-                self?.posefeedUseCase.fetchFeedContents(peopleCount: "", frameCount: "", filterTags: [], pageNumber: 0)
+                self?.posefeedUseCase.fetchFeedContents(peopleCount: apiRequestParameters.value[0], frameCount: apiRequestParameters.value[1], filterTags: [], pageNumber: 0)
             })
             .disposed(by: disposeBag)
         
@@ -57,12 +58,18 @@ final class PoseFeedViewModel {
                 let nextPage = currentPage.value + 1
                 currentPage.accept(nextPage)
                 
-                let tags = output.registeredTagItems.value
-                if tags.isEmpty {
-                    self?.posefeedUseCase.fetchFeedContents(peopleCount: "", frameCount: "", filterTags: [], pageNumber: nextPage)
-                } else {
-                    self?.posefeedUseCase.fetchFeedContents(peopleCount: tags[0].title.value, frameCount: tags[1].title.value, filterTags: tags[2...].map { $0.title.value }, pageNumber: nextPage)
-                }
+                self?.posefeedUseCase.fetchFeedContents(
+                    peopleCount: apiRequestParameters.value[0],
+                    frameCount: apiRequestParameters.value[1],
+                    filterTags: apiRequestParameters.value[2...].map { String($0) },
+                    pageNumber: nextPage
+                )
+//                let tags = output.registeredTagItems.value
+//                if tags.isEmpty {
+//                    self?.posefeedUseCase.fetchFeedContents(peopleCount: apiRequestParameters.value[0], frameCount: apiRequestParameters.value[1], filterTags: [], pageNumber: nextPage)
+//                } else {
+//                    self?.posefeedUseCase.fetchFeedContents(peopleCount: tags[0].title.value, frameCount: tags[1].title.value, filterTags: tags[2...].map { $0.title.value }, pageNumber: nextPage)
+//                }
             })
             .disposed(by: disposeBag)
         
@@ -125,7 +132,6 @@ final class PoseFeedViewModel {
                 if let removeTargetIndex = viewModels.firstIndex(where: {$0.title.value == "전체"}) {
                     viewModels.remove(at: removeTargetIndex)
                 }
-                
                 output.registeredTagItems.accept(viewModels)
             })
             .disposed(by: disposeBag)
@@ -137,9 +143,17 @@ final class PoseFeedViewModel {
                       let frameCountTag = FrameCountTags.getTagFromTitle(title: registeredTagViewModels[1].title.value) else {
                     return
                 }
-                let filterTags = registeredTagViewModels[2...].map { $0.title.value }
                 
-                self?.posefeedUseCase.fetchFeedContents(peopleCount: peopleCountTag.rawValue, frameCount: frameCountTag.rawValue, filterTags: filterTags, pageNumber: 0)
+                let filterTags = registeredTagViewModels[2...].map { $0.title.value }
+                apiRequestParameters.accept([peopleCountTag.rawValue, frameCountTag.rawValue] + filterTags)
+                
+                self?.posefeedUseCase.fetchFeedContents(
+                    peopleCount: apiRequestParameters.value[0],
+                    frameCount: apiRequestParameters.value[1],
+                    filterTags: apiRequestParameters.value[2...].map { String($0) },
+                    pageNumber: 0
+                )
+                
                 currentPage.accept(0)
                 output.isLoading.accept(true)
             })
