@@ -256,7 +256,8 @@ class PoseFeedViewController: BaseViewController {
             viewDidLoadEvent: viewDidLoadEvent,
             infiniteScrollEvent: infiniteScrollEvent,
             filterButtonTapEvent: filterButton.rx.tap.asObservable(),
-            dismissFilterModalEvent: dismissFilterModalEvent
+            dismissFilterModalEvent: dismissFilterModalEvent,
+            filterTagTapEvent: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable()
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
@@ -488,7 +489,6 @@ private extension PoseFeedViewController {
                 if $0 {
                     self?.poseFeedCollectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
                 }
-                
             })
             .disposed(by: disposeBag)
         
@@ -519,5 +519,7 @@ private extension PoseFeedViewController {
                 cell.bind(to: viewModel)
             }
             .disposed(by: disposeBag)
+        
+        
     }
 }
