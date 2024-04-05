@@ -34,12 +34,13 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
         self.navigationController.pushViewController(self.posefeedViewController, animated: true)
     }
     
-    func presentFilterModal() {
+    func presentFilterModal(currentTags: [String]) {
         let posefeedFilterViewController = PoseFeedFilterViewController()
         
         posefeedFilterViewController.viewModel = PoseFeedFilterViewModel(
             coordinator: self,
-            posefeedFilterUseCase: DefaultPoseFeedFilterUseCase()
+            posefeedFilterUseCase: DefaultPoseFeedFilterUseCase(),
+            currentTags: currentTags
         )
         
         if let sheet = posefeedFilterViewController.sheetPresentationController {
