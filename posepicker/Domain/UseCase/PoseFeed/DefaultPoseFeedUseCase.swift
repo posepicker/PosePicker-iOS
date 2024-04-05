@@ -25,6 +25,10 @@ final class DefaultPoseFeedUseCase: PoseFeedUseCase {
     var contentLoaded = PublishSubject<Void>()
     
     func fetchFeedContents(peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int) {
+        if pageNumber == 0 {
+            filterSectionContentSizes.accept([])
+            recommendSectionContentSizes.accept([])
+        }
         self.posefeedRepository
             .fetchFeedContents(peopleCount: peopleCount, frameCount: frameCount, filterTags: filterTags, pageNumber: pageNumber)
             .withUnretained(self)
