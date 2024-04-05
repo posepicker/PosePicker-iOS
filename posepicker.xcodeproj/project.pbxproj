@@ -206,6 +206,8 @@
 		C9DEE4102BBFCBB000C9C495 /* PoseFeedFilterViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE40F2BBFCBB000C9C495 /* PoseFeedFilterViewModel.swift */; };
 		C9DEE4142BBFCC9300C9C495 /* PoseFeedFilterUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE4132BBFCC9300C9C495 /* PoseFeedFilterUseCase.swift */; };
 		C9DEE4162BBFCCB100C9C495 /* DefaultPoseFeedFilterUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE4152BBFCCB100C9C495 /* DefaultPoseFeedFilterUseCase.swift */; };
+		C9DEE4192BBFDFB200C9C495 /* PoseFeedFilterViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE4182BBFDFB200C9C495 /* PoseFeedFilterViewModelTests.swift */; };
+		C9DEE41C2BBFE02400C9C495 /* FilterUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE41B2BBFE02400C9C495 /* FilterUseCaseTests.swift */; };
 		C9FDBDEC2B2835E10045AA54 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9FDBDEB2B2835E10045AA54 /* RxSwift */; };
 		C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */; };
 		C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */; };
@@ -414,6 +416,8 @@
 		C9DEE40F2BBFCBB000C9C495 /* PoseFeedFilterViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterViewModel.swift; sourceTree = "<group>"; };
 		C9DEE4132BBFCC9300C9C495 /* PoseFeedFilterUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterUseCase.swift; sourceTree = "<group>"; };
 		C9DEE4152BBFCCB100C9C495 /* DefaultPoseFeedFilterUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseFeedFilterUseCase.swift; sourceTree = "<group>"; };
+		C9DEE4182BBFDFB200C9C495 /* PoseFeedFilterViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterViewModelTests.swift; sourceTree = "<group>"; };
+		C9DEE41B2BBFE02400C9C495 /* FilterUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterUseCaseTests.swift; sourceTree = "<group>"; };
 		C9E6025A2B16DA270098BC96 /* posepicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = posepicker.entitlements; sourceTree = "<group>"; };
 		C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkResponse.swift; sourceTree = "<group>"; };
@@ -1706,6 +1710,7 @@
 			children = (
 				C9DEE3FD2BBD4FE100C9C495 /* Mock */,
 				C9DEE4032BBE78C700C9C495 /* PoseFeedUseCaseTests.swift */,
+				C9DEE41A2BBFDFC700C9C495 /* FilterUseCase */,
 			);
 			path = PoseFeedScene;
 			sourceTree = "<group>";
@@ -1721,6 +1726,7 @@
 		C9DEE4052BBE94AE00C9C495 /* PoseFeedScene */ = {
 			isa = PBXGroup;
 			children = (
+				C9DEE4172BBFDF6700C9C495 /* FilterViewModel */,
 				C9DEE4062BBE94B900C9C495 /* Mock */,
 				C9DEE4092BBE97DC00C9C495 /* PoseFeedViewModelTests.swift */,
 			);
@@ -1755,6 +1761,22 @@
 			isa = PBXGroup;
 			children = (
 				C9DEE4152BBFCCB100C9C495 /* DefaultPoseFeedFilterUseCase.swift */,
+			);
+			path = FilterUseCase;
+			sourceTree = "<group>";
+		};
+		C9DEE4172BBFDF6700C9C495 /* FilterViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C9DEE4182BBFDFB200C9C495 /* PoseFeedFilterViewModelTests.swift */,
+			);
+			path = FilterViewModel;
+			sourceTree = "<group>";
+		};
+		C9DEE41A2BBFDFC700C9C495 /* FilterUseCase */ = {
+			isa = PBXGroup;
+			children = (
+				C9DEE41B2BBFE02400C9C495 /* FilterUseCaseTests.swift */,
 			);
 			path = FilterUseCase;
 			sourceTree = "<group>";
@@ -1990,6 +2012,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				C96C9AF52BBA39F800AC2921 /* PosePickViewModelTests.swift in Sources */,
+				C9DEE4192BBFDFB200C9C495 /* PoseFeedFilterViewModelTests.swift in Sources */,
 				C96C9B5C2BBCDE7A00AC2921 /* MockPageViewCoordinator.swift in Sources */,
 				C9DEE4082BBE94C500C9C495 /* MockPoseFeedUseCase.swift in Sources */,
 				C9DEE40A2BBE97DC00C9C495 /* PoseFeedViewModelTests.swift in Sources */,
@@ -2005,6 +2028,7 @@
 			files = (
 				C96C9B582BBC29CE00AC2921 /* MockUserRepository.swift in Sources */,
 				C96C9B452BBA4BCD00AC2921 /* PosePickUseCaseTests.swift in Sources */,
+				C9DEE41C2BBFE02400C9C495 /* FilterUseCaseTests.swift in Sources */,
 				C96C9B442BBA4BBE00AC2921 /* MockPosePickRepository.swift in Sources */,
 				C96C9B552BBC29A500AC2921 /* CommonUseCaseTests.swift in Sources */,
 				C9DEE4042BBE78C700C9C495 /* PoseFeedUseCaseTests.swift in Sources */,
