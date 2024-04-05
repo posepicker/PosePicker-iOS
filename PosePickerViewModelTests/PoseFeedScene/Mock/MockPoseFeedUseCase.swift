@@ -39,6 +39,16 @@ final class MockPoseFeedUseCase: PoseFeedUseCase {
     }
     
     private func generateMockupData() -> [Section<PoseFeedPhotoCellViewModel>] {
+        self.filterSectionContentSizes.accept(
+            self.filterSectionContentSizes.value + .init(
+            repeating: CGSize(width: 10, height: 10),
+            count: 5
+        ))
+        self.recommendSectionContentSizes.accept(
+            self.recommendSectionContentSizes.value + .init(
+                repeating: CGSize(width: 10, height: 10),
+                count: 5
+            ))
         return [
             Section(header: "", items: [
             .init(image: ImageLiteral.imgInfo24, poseId: 0, bookmarkCheck: false),
