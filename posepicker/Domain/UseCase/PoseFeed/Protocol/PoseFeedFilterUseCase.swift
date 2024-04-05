@@ -10,4 +10,6 @@ import RxRelay
 
 protocol PoseFeedFilterUseCase {
     var tagItems: BehaviorRelay<[PoseFeedFilterCellViewModel]> { get set }
+    
+    func selectItem(title: String)
 }

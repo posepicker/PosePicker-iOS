@@ -23,4 +23,13 @@ final class DefaultPoseFeedFilterUseCase: PoseFeedFilterUseCase {
         .init(title: "유명인 프레임"),
         .init(title: "소품")
     ])
+    
+    func selectItem(title: String) {
+        let tagItemsValue = tagItems.value
+        if let index = tagItemsValue.firstIndex(where: {
+            $0.title.value == title
+        }) {
+            tagItemsValue[index].isSelected.accept(!tagItemsValue[index].isSelected.value)
+        }
+    }
 }
