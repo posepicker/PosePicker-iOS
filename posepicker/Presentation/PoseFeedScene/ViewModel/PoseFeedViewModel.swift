@@ -33,7 +33,7 @@ final class PoseFeedViewModel {
         let isLastPage = BehaviorRelay<Bool>(value: true)
         let filteredSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
         let recommendedSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
-        let registeredTagItems = PublishRelay<[RegisteredFilterCellViewModel]>()
+        let registeredTagItems = BehaviorRelay<[RegisteredFilterCellViewModel]>(value: [])
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -56,7 +56,13 @@ final class PoseFeedViewModel {
                 output.isLoading.accept(true)
                 let nextPage = currentPage.value + 1
                 currentPage.accept(nextPage)
-                self?.posefeedUseCase.fetchFeedContents(peopleCount: "", frameCount: "", filterTags: [], pageNumber: nextPage)
+                
+                let tags = output.registeredTagItems.value
+                if tags.isEmpty {
+                    self?.posefeedUseCase.fetchFeedContents(peopleCount: "", frameCount: "", filterTags: [], pageNumber: nextPage)
+                } else {
+                    self?.posefeedUseCase.fetchFeedContents(peopleCount: tags[0].title.value, frameCount: tags[1].title.value, filterTags: tags[2...].map { $0.title.value }, pageNumber: nextPage)
+                }
             })
             .disposed(by: disposeBag)
         
