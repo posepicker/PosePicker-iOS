@@ -94,10 +94,11 @@ class PoseFeedViewController: BaseViewController {
     // MARK: - Properties
     
     var viewModel: PoseFeedViewModel?
-    private let currentPage = BehaviorRelay<Int>(value: 0)
     private let filteredContentSizes = BehaviorRelay<[CGSize]>(value: [])
     private let recommendedContentSizes = BehaviorRelay<[CGSize]>(value: [])
-//
+    private let viewDidLoadEvent = PublishSubject<Void>()
+    private let infiniteScrollEvent = PublishSubject<Void>()
+
 //    private let nextPageRequestTrigger = PublishSubject<PoseFeedViewModel.RequestState>()
 //    private let modalDismissWithTag = PublishSubject<String>() // 상세 페이지에서 태그 tap과 함께 dismiss 트리거
 //    private let registerButtonTapped = PublishSubject<Void>()
@@ -112,6 +113,10 @@ class PoseFeedViewController: BaseViewController {
 //    private let reportCompletedTrigger = PublishSubject<Void>()
     
     // MARK: - Life Cycles
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewDidLoadEvent.onNext(())
+    }
     
     // MARK: - Functions
     
@@ -247,7 +252,8 @@ class PoseFeedViewController: BaseViewController {
     
     override func bindViewModel() {
         let input = PoseFeedViewModel.Input(
-            currentPage: currentPage.asObservable()
+            viewDidLoadEvent: viewDidLoadEvent,
+            infiniteScrollEvent: infiniteScrollEvent
         )
         
         let output = viewModel!.transform(input: input, disposeBag: disposeBag)
@@ -446,28 +452,26 @@ private extension PoseFeedViewController {
         guard let output = output else { return }
         
         /// 무한스크롤 로직
-        Observable.combineLatest(
-            poseFeedCollectionView.rx.contentOffset,
-            output.isLoading,
-            output.isLastPage
-        )
-        .subscribe(onNext: { [weak self] (contentOffset, isLoading, isLastPage) in
-            guard let self = self else { return }
-            if contentOffset.y > 300
-                && contentOffset.y + 300 > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height
-                && !isLoading
-                && !isLastPage {
-                self.currentPage.accept(self.currentPage.value + 1)
-                return
-            }
-            
-            if contentOffset.y > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height
-                && !isLoading
-                && isLastPage {
-                self.currentPage.accept(self.currentPage.value + 1)
-            }
-        })
-        .disposed(by: disposeBag)
+        /// Reentry anomaly 에러 해결 - 구독중에 복잡한 값 방출
+        poseFeedCollectionView.rx.contentOffset
+            .asDriver()
+            .drive(onNext: { [weak self] contentOffset in
+                guard let self = self else { return }
+                if contentOffset.y > 300
+                    && contentOffset.y + 300 > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height
+                    && !output.isLoading.value
+                    && !output.isLastPage.value {
+                    self.infiniteScrollEvent.onNext(())
+                    return
+                }
+                
+                if contentOffset.y > self.poseFeedCollectionView.contentSize.height - self.poseFeedCollectionView.bounds.size.height
+                    && !output.isLoading.value
+                    && !output.isLastPage.value {
+                    self.infiniteScrollEvent.onNext(())
+                }
+            })
+            .disposed(by: disposeBag)
         
         output.contents
             .bind(to: poseFeedCollectionView.rx.items(dataSource: output.dataSource))
