@@ -22,6 +22,7 @@ final class PoseFeedViewModel {
     struct Input {
         let viewDidLoadEvent: Observable<Void>
         let infiniteScrollEvent: Observable<Void>
+        let filterButtonTapEvent: Observable<Void>
     }
     
     struct Output {
@@ -38,7 +39,7 @@ final class PoseFeedViewModel {
         
         let currentPage = BehaviorRelay<Int>(value: 0)
         
-        // repository에 로딩값 추가
+        /// 1. viewDidLoad 이후 초기 데이터 요청
         input.viewDidLoadEvent
             .subscribe(onNext: { [weak self] in
                 output.isLoading.accept(true)
@@ -47,6 +48,7 @@ final class PoseFeedViewModel {
             })
             .disposed(by: disposeBag)
         
+        /// 2. 무한스크롤 트리거 로직
         input.infiniteScrollEvent
             .subscribe(onNext: { [weak self] in
                 output.isLoading.accept(true)
@@ -56,6 +58,7 @@ final class PoseFeedViewModel {
             })
             .disposed(by: disposeBag)
         
+        /// 3. 포즈피드 유스케이스에서 무한스크롤 last값 불러오기
         self.posefeedUseCase
             .isLastPage
             .subscribe(onNext: {
@@ -63,6 +66,7 @@ final class PoseFeedViewModel {
             })
             .disposed(by: disposeBag)
         
+        /// 4. 포즈피드 유스케이스에서 피드 컨텐츠 가져와서 뷰 컨트롤러에 바인딩하기
         self.posefeedUseCase
             .feedContents
             .subscribe(onNext: {
@@ -70,6 +74,7 @@ final class PoseFeedViewModel {
             })
             .disposed(by: disposeBag)
         
+        /// 5. 포즈피드 유스케이스 컨텐츠 로드 끝나는 시점 가져오기
         self.posefeedUseCase
             .contentLoaded
             .subscribe(onNext: {
@@ -77,6 +82,7 @@ final class PoseFeedViewModel {
             })
             .disposed(by: disposeBag)
         
+        /// 6. 포즈피드 유스케이스에서 필터 컨텐츠들 사이즈 가져오기
         self.posefeedUseCase
             .filterSectionContentSizes
             .subscribe(onNext: {
@@ -84,10 +90,18 @@ final class PoseFeedViewModel {
             })
             .disposed(by: disposeBag)
         
+        /// 7. 포즈피드 유스케이스에서 추천 컨텐츠들 사이즈 가져오기
         self.posefeedUseCase
             .recommendSectionContentSizes
             .subscribe(onNext: {
                 output.recommendedSectionContentSizes.accept($0)
+            })
+            .disposed(by: disposeBag)
+        
+        /// 8. 필터 버튼 탭 후 필터 세팅 모달창 present
+        input.filterButtonTapEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.presentFilterModal()
             })
             .disposed(by: disposeBag)
         
