@@ -68,4 +68,16 @@ enum PeopleCountTags: String {
             return nil
         }
     }
+    
+    static func getTagTitleFromIndex(index: Int) -> String? {
+        switch index {
+        case 0: return "전체"
+        case 1: return "1인"
+        case 2: return "2인"
+        case 3: return "3인"
+        case 4: return "4인"
+        case 5: return "5인+"
+        default: return nil
+        }
+    }
 }
