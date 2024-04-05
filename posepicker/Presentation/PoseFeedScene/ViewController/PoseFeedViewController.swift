@@ -480,6 +480,18 @@ private extension PoseFeedViewController {
             .bind(to: poseFeedCollectionView.rx.items(dataSource: output.dataSource))
             .disposed(by: disposeBag)
         
+        // 컨텐츠 세팅 후 컬렉션뷰 스크롤 초기 위치로 이동
+        output.registeredTagItems
+            .map { $0.count > 0 }
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] in
+                if $0 {
+                    self?.poseFeedCollectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+                }
+                
+            })
+            .disposed(by: disposeBag)
+        
         output.isLoading
             .asDriver(onErrorJustReturn: false)
             .drive(onNext: { [weak self] in
