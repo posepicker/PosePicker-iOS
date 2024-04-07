@@ -163,6 +163,11 @@
 		C99D53B32B1EDA22007DEE9B /* BookmarkFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D53B22B1EDA22007DEE9B /* BookmarkFeedCell.swift */; };
 		C99D53B52B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D53B42B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift */; };
 		C99D53B72B1EDCB8007DEE9B /* BookmarkEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D53B62B1EDCB8007DEE9B /* BookmarkEmptyView.swift */; };
+		C9AF36962BC2E46600629B63 /* PoseFeedDetailUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36952BC2E46600629B63 /* PoseFeedDetailUseCase.swift */; };
+		C9AF36982BC2E52000629B63 /* PoseFeedDetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36972BC2E52000629B63 /* PoseFeedDetailRepository.swift */; };
+		C9AF369C2BC2E64B00629B63 /* DefaultPoseFeedDetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF369B2BC2E64B00629B63 /* DefaultPoseFeedDetailRepository.swift */; };
+		C9AF369F2BC2E8AA00629B63 /* DefaultPoseFeedDetailUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF369E2BC2E8AA00629B63 /* DefaultPoseFeedDetailUseCase.swift */; };
+		C9AF36A22BC2EB1300629B63 /* PoseInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36A12BC2EB1300629B63 /* PoseInfoDTO.swift */; };
 		C9C0CDC82AF1D9160041E423 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = C9C0CDC72AF1D9160041E423 /* Kingfisher */; };
 		C9C0CDCE2AF353AB0041E423 /* ToolTip.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */; };
 		C9C4D2022B8F6A5D00FF9363 /* MyPoseImageDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9C4D2012B8F6A5D00FF9363 /* MyPoseImageDetailViewController.swift */; };
@@ -362,12 +367,17 @@
 		C96C9B612BBD2A5200AC2921 /* PoseFeedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedViewModel.swift; sourceTree = "<group>"; };
 		C96C9B652BBD2AC400AC2921 /* DefaultPoseFeedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseFeedUseCase.swift; sourceTree = "<group>"; };
 		C96C9B672BBD2ACB00AC2921 /* PoseFeedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedUseCase.swift; sourceTree = "<group>"; };
-		C971A67A2B2008920078EF2B /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
 		C990AB1D2B5BF52600567AA3 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
 		C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C99D53B22B1EDA22007DEE9B /* BookmarkFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFeedCell.swift; sourceTree = "<group>"; };
 		C99D53B42B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFeedCellViewModel.swift; sourceTree = "<group>"; };
 		C99D53B62B1EDCB8007DEE9B /* BookmarkEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkEmptyView.swift; sourceTree = "<group>"; };
+		C9AF36942BC2E2EF00629B63 /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
+		C9AF36952BC2E46600629B63 /* PoseFeedDetailUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedDetailUseCase.swift; sourceTree = "<group>"; };
+		C9AF36972BC2E52000629B63 /* PoseFeedDetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedDetailRepository.swift; sourceTree = "<group>"; };
+		C9AF369B2BC2E64B00629B63 /* DefaultPoseFeedDetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseFeedDetailRepository.swift; sourceTree = "<group>"; };
+		C9AF369E2BC2E8AA00629B63 /* DefaultPoseFeedDetailUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseFeedDetailUseCase.swift; sourceTree = "<group>"; };
+		C9AF36A12BC2EB1300629B63 /* PoseInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseInfoDTO.swift; sourceTree = "<group>"; };
 		C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolTip.swift; sourceTree = "<group>"; };
 		C9C4D2012B8F6A5D00FF9363 /* MyPoseImageDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseImageDetailViewController.swift; sourceTree = "<group>"; };
 		C9C8904E2AE103A10010240A /* posepicker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = posepicker.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -778,6 +788,7 @@
 		C91FF3522BAB25E300096E25 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				C9AF36A02BC2EA6B00629B63 /* DataMapping */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -1371,6 +1382,7 @@
 				C96C9B652BBD2AC400AC2921 /* DefaultPoseFeedUseCase.swift */,
 				C96C9B642BBD2AB900AC2921 /* Protocol */,
 				C9DEE4112BBFCC6500C9C495 /* FilterUseCase */,
+				C9AF369D2BC2E89600629B63 /* DetailUseCase */,
 			);
 			path = PoseFeed;
 			sourceTree = "<group>";
@@ -1380,6 +1392,7 @@
 			children = (
 				C96C9B672BBD2ACB00AC2921 /* PoseFeedUseCase.swift */,
 				C9DEE4132BBFCC9300C9C495 /* PoseFeedFilterUseCase.swift */,
+				C9AF36952BC2E46600629B63 /* PoseFeedDetailUseCase.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -1398,7 +1411,7 @@
 		C971A6792B2008870078EF2B /* Configs */ = {
 			isa = PBXGroup;
 			children = (
-				C971A67A2B2008920078EF2B /* posepicker.xcconfig */,
+				C9AF36942BC2E2EF00629B63 /* posepicker.xcconfig */,
 			);
 			path = Configs;
 			sourceTree = "<group>";
@@ -1419,6 +1432,30 @@
 				C99D53B62B1EDCB8007DEE9B /* BookmarkEmptyView.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		C9AF369A2BC2E53300629B63 /* DetailRepository */ = {
+			isa = PBXGroup;
+			children = (
+				C9AF369B2BC2E64B00629B63 /* DefaultPoseFeedDetailRepository.swift */,
+			);
+			path = DetailRepository;
+			sourceTree = "<group>";
+		};
+		C9AF369D2BC2E89600629B63 /* DetailUseCase */ = {
+			isa = PBXGroup;
+			children = (
+				C9AF369E2BC2E8AA00629B63 /* DefaultPoseFeedDetailUseCase.swift */,
+			);
+			path = DetailUseCase;
+			sourceTree = "<group>";
+		};
+		C9AF36A02BC2EA6B00629B63 /* DataMapping */ = {
+			isa = PBXGroup;
+			children = (
+				C9AF36A12BC2EB1300629B63 /* PoseInfoDTO.swift */,
+			);
+			path = DataMapping;
 			sourceTree = "<group>";
 		};
 		C9C0CDCA2AF3538C0041E423 /* ToolTip */ = {
@@ -1694,8 +1731,9 @@
 		C9DEE3F62BBD321300C9C495 /* PoseFeed */ = {
 			isa = PBXGroup;
 			children = (
-				C9DEE3F72BBD321C00C9C495 /* Protocol */,
 				C9DEE3FA2BBD323200C9C495 /* DefaultPoseFeedRepository.swift */,
+				C9AF369A2BC2E53300629B63 /* DetailRepository */,
+				C9DEE3F72BBD321C00C9C495 /* Protocol */,
 			);
 			path = PoseFeed;
 			sourceTree = "<group>";
@@ -1704,6 +1742,7 @@
 			isa = PBXGroup;
 			children = (
 				C9DEE3F82BBD322800C9C495 /* PoseFeedRepository.swift */,
+				C9AF36972BC2E52000629B63 /* PoseFeedDetailRepository.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -2059,6 +2098,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9AF369F2BC2E8AA00629B63 /* DefaultPoseFeedDetailUseCase.swift in Sources */,
 				C9DEE4002BBD51F400C9C495 /* PoseFeedPhotoCellViewModel.swift in Sources */,
 				C91FF34E2BAABD2300096E25 /* UserRepository.swift in Sources */,
 				C9042E5C2B0B043400BB4182 /* FrameCountTags.swift in Sources */,
@@ -2096,6 +2136,7 @@
 				C938510E2BB2B18400E597C1 /* DefaultPageViewCoordinator.swift in Sources */,
 				C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */,
 				C96C9B502BBA86A200AC2921 /* MockURLProtocol.swift in Sources */,
+				C9AF36A22BC2EB1300629B63 /* PoseInfoDTO.swift in Sources */,
 				C9DEE4202BC0481600C9C495 /* PoseDetailViewModel.swift in Sources */,
 				C94FD27F2AE395E3003777EB /* PosePickViewController.swift in Sources */,
 				C9DC2F9B2AEA290200D5170D /* PoseFeedFilterCellViewModel.swift in Sources */,
@@ -2138,6 +2179,7 @@
 				C903E54C2B05C13B00BD004F /* PopUpView.swift in Sources */,
 				C94FD29B2AE3AC3E003777EB /* UIView+.swift in Sources */,
 				C9DEE4142BBFCC9300C9C495 /* PoseFeedFilterUseCase.swift in Sources */,
+				C9AF369C2BC2E64B00629B63 /* DefaultPoseFeedDetailRepository.swift in Sources */,
 				880E75592AEA8BE2007FAD5A /* EmptyBookmarkView.swift in Sources */,
 				C9DC2F902AEA1D5F00D5170D /* PoseFeedFilterViewController.swift in Sources */,
 				C91FF3562BAB267D00096E25 /* NetworkService.swift in Sources */,
@@ -2169,6 +2211,7 @@
 				C91A266D2B88525200F1193E /* MyPoseImageSourceViewController.swift in Sources */,
 				C93851232BB3F55000E597C1 /* CommonViewModel.swift in Sources */,
 				C91E18502B99ECC1009611C3 /* RadioButton.swift in Sources */,
+				C9AF36982BC2E52000629B63 /* PoseFeedDetailRepository.swift in Sources */,
 				C9C890882AE107090010240A /* BaseViewController.swift in Sources */,
 				C96C9A8C2BB5420800AC2921 /* DefaultCommonUseCase.swift in Sources */,
 				C91FF3782BAD8A3100096E25 /* Pages.swift in Sources */,
@@ -2196,6 +2239,7 @@
 				880E753C2AE6BE3A007FAD5A /* BindableViewModel.swift in Sources */,
 				C9DC2FA62AEB6E1800D5170D /* FilterTags.swift in Sources */,
 				C9D0C4062BA2D228004A3940 /* Toast.swift in Sources */,
+				C9AF36962BC2E46600629B63 /* PoseFeedDetailUseCase.swift in Sources */,
 				C94FD28D2AE39646003777EB /* BookmarkViewModel.swift in Sources */,
 				C9DC2FAA2AECAD4500D5170D /* RegisteredFilterCellViewModel.swift in Sources */,
 				C9042E6B2B0D7CB000BB4182 /* LoginPopUpView.swift in Sources */,
@@ -2343,7 +2387,7 @@
 		};
 		C9C890762AE103A30010240A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C971A67A2B2008920078EF2B /* posepicker.xcconfig */;
+			baseConfigurationReference = C9AF36942BC2E2EF00629B63 /* posepicker.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2405,7 +2449,7 @@
 		};
 		C9C890772AE103A30010240A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C971A67A2B2008920078EF2B /* posepicker.xcconfig */;
+			baseConfigurationReference = C9AF36942BC2E2EF00629B63 /* posepicker.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2461,7 +2505,7 @@
 		};
 		C9C890792AE103A30010240A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C971A67A2B2008920078EF2B /* posepicker.xcconfig */;
+			baseConfigurationReference = C9AF36942BC2E2EF00629B63 /* posepicker.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
@@ -2497,7 +2541,7 @@
 		};
 		C9C8907A2AE103A30010240A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C971A67A2B2008920078EF2B /* posepicker.xcconfig */;
+			baseConfigurationReference = C9AF36942BC2E2EF00629B63 /* posepicker.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
