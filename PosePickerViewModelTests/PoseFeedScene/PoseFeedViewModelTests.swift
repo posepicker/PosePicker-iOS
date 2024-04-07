@@ -47,7 +47,9 @@ final class PoseFeedViewModelTests: XCTestCase {
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             infiniteScrollEvent: infiniteScrollEvent.asObservable(),
             filterButtonTapEvent: .empty(),
-            dismissFilterModalEvent: .empty()
+            dismissFilterModalEvent: .empty(),
+            filterTagTapEvent: .empty(),
+            posefeedPhotoCellTapEvent: .empty()
         )
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
         
@@ -123,7 +125,9 @@ final class PoseFeedViewModelTests: XCTestCase {
             viewDidLoadEvent: .empty(),
             infiniteScrollEvent: .empty(),
             filterButtonTapEvent: .empty(),
-            dismissFilterModalEvent: dismissModalEventObservable.asObservable()
+            dismissFilterModalEvent: dismissModalEventObservable.asObservable(),
+            filterTagTapEvent: .empty(),
+            posefeedPhotoCellTapEvent: .empty()
         )
         
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
@@ -137,6 +141,7 @@ final class PoseFeedViewModelTests: XCTestCase {
         self.scheduler.start()
         
         XCTAssertEqual(registeredTagsCountObserver.events, [
+            .next(0, 0),
             .next(1, 0),
             .next(2, 1),
             .next(3, 1),
@@ -163,7 +168,9 @@ final class PoseFeedViewModelTests: XCTestCase {
             viewDidLoadEvent: .empty(),
             infiniteScrollEvent: .empty(),
             filterButtonTapEvent: .empty(),
-            dismissFilterModalEvent: dismissModalEventObservable.asObservable()
+            dismissFilterModalEvent: dismissModalEventObservable.asObservable(),
+            filterTagTapEvent: .empty(),
+            posefeedPhotoCellTapEvent: .empty()
         )
         
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
