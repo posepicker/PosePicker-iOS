@@ -99,7 +99,7 @@ class PoseFeedViewController: BaseViewController {
     private let viewDidLoadEvent = PublishSubject<Void>()
     private let infiniteScrollEvent = PublishSubject<Void>()
     let dismissFilterModalEvent = PublishSubject<[RegisteredFilterCellViewModel]>()
-
+    let dismissPoseDetailEvent = PublishSubject<RegisteredFilterCellViewModel>()
 //    private let nextPageRequestTrigger = PublishSubject<PoseFeedViewModel.RequestState>()
 //    private let modalDismissWithTag = PublishSubject<String>() // 상세 페이지에서 태그 tap과 함께 dismiss 트리거
 //    private let registerButtonTapped = PublishSubject<Void>()
@@ -258,7 +258,8 @@ class PoseFeedViewController: BaseViewController {
             filterButtonTapEvent: filterButton.rx.tap.asObservable(),
             dismissFilterModalEvent: dismissFilterModalEvent,
             filterTagTapEvent: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(),
-            posefeedPhotoCellTapEvent: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self).asObservable()
+            posefeedPhotoCellTapEvent: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self).asObservable(),
+            dismissPoseDetailEvent: dismissPoseDetailEvent
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
