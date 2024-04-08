@@ -26,6 +26,7 @@ final class PoseFeedViewModel {
         let dismissFilterModalEvent: Observable<[RegisteredFilterCellViewModel]>
         let filterTagTapEvent: Observable<RegisteredFilterCellViewModel>
         let posefeedPhotoCellTapEvent: Observable<PoseFeedPhotoCellViewModel>
+        let dismissPoseDetailEvent: Observable<RegisteredFilterCellViewModel>
     }
     
     struct Output {
@@ -200,6 +201,31 @@ final class PoseFeedViewModel {
         input.posefeedPhotoCellTapEvent
             .subscribe(onNext: { [weak self] in
                 self?.coordinator?.presentPoseDetail(viewModel: $0)
+            })
+            .disposed(by: disposeBag)
+        
+        input.dismissPoseDetailEvent
+            .subscribe(onNext: { [weak self] in
+                var apiRequestParams = apiRequestParameters.value
+                apiRequestParams[0] = "전체"
+                apiRequestParams[1] = "전체"
+                apiRequestParams.removeSubrange(2...)
+                apiRequestParams.append($0.title.value)
+                apiRequestParameters.accept(apiRequestParams)
+                
+                self?.posefeedUseCase.fetchFeedContents(
+                    peopleCount: apiRequestParameters.value[0],
+                    frameCount: apiRequestParameters.value[1],
+                    filterTags: apiRequestParameters.value[2...].map { String($0) },
+                    pageNumber: 0
+                )
+                
+                var registeredTags = output.registeredTagItems.value
+                registeredTags.append(RegisteredFilterCellViewModel(title: $0.title.value))
+                output.registeredTagItems.accept([RegisteredFilterCellViewModel(title: $0.title.value)])
+                
+                currentPage.accept(0)
+                output.isLoading.accept(true)
             })
             .disposed(by: disposeBag)
         
