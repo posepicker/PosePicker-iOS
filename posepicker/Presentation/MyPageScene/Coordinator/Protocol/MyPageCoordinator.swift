@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol MyPageCoordinator {
+protocol MyPageCoordinator: Coordinator {
     
 }
