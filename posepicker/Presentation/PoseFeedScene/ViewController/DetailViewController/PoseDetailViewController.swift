@@ -184,13 +184,13 @@ class PoseDetailViewController: BaseViewController {
 //        } else {
 //            imageSourceButton.isHidden = true
 //        }
-        
         // 캡처시 이미지 덮기
         guard let secureView = SecureField().secureContainer else { return }
 
         scrollView.subviews.first!.addSubView(secureView)
         secureView.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(imageSourceButton.snp.bottom)
         }
         
         secureView.addSubview(imageButton)
@@ -203,7 +203,8 @@ class PoseDetailViewController: BaseViewController {
         let input = PoseDetailViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent,
             kakaoShareButtonTapEvent: kakaoShareButton.rx.tap.asObservable(),
-            linkShareButtonTapEvent: linkShareButton.rx.tap.asObservable()
+            linkShareButtonTapEvent: linkShareButton.rx.tap.asObservable(),
+            imageSourceButtonTapEvent: imageSourceButton.rx.tap.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
@@ -363,17 +364,11 @@ private extension PoseDetailViewController {
             })
             .disposed(by: disposeBag)
         
-        //        let sourceText = viewModel.poseDetailData.poseInfo.source
-        //        if !sourceText.isEmpty {
-        //            imageSourceButton.configuration?.attributedTitle = AttributedString(sourceText + "↗", attributes: AttributeContainer([NSAttributedString.Key.font : UIFont.pretendard(.medium, ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.textBrand]))
-        //        } else {
-        //            imageSourceButton.isHidden = true
-        //        }
-        
-        output?.url
+        output?.source
             .asDriver(onErrorJustReturn: "")
             .drive(onNext: { [weak self] in
                 if !$0.isEmpty {
+                    self?.imageSourceButton.isHidden = false
                     self?.imageSourceButton.configuration?.attributedTitle = AttributedString($0 + "↗", attributes: AttributeContainer([NSAttributedString.Key.font : UIFont.pretendard(.medium, ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.textBrand]))
                 } else {
                     self?.imageSourceButton.isHidden = true
