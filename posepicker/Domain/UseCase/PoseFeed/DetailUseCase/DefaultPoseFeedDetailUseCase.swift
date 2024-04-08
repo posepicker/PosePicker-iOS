@@ -28,6 +28,7 @@ final class DefaultPoseFeedDetailUseCase: PoseFeedDetailUseCase {
     var tagItems = BehaviorRelay<[String]>(value: [])
     var sourceUrl = PublishSubject<String>()
     var pose = PublishSubject<Pose>()
+    var source = PublishSubject<String>()
     
     func getTagsFromPoseInfo() {
         pose
@@ -39,7 +40,7 @@ final class DefaultPoseFeedDetailUseCase: PoseFeedDetailUseCase {
             .disposed(by: disposeBag)
     }
     
-    func getSourceURLFrom() {
+    func getSourceURLFromPoseInfo() {
         pose
             .compactMap { $0.poseInfo.sourceUrl }
             .subscribe(onNext: { [weak self] in
@@ -48,5 +49,12 @@ final class DefaultPoseFeedDetailUseCase: PoseFeedDetailUseCase {
             .disposed(by: self.disposeBag)
     }
     
-    
+    func getSourceFromPoseInfo() {
+        pose
+            .compactMap { $0.poseInfo.source }
+            .subscribe(onNext: { [weak self] in
+                self?.source.onNext($0)
+            })
+            .disposed(by: disposeBag)
+    }
 }
