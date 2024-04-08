@@ -134,8 +134,6 @@ extension PopUpViewController: ASAuthorizationControllerDelegate {
             try? KeychainManager.shared.updateItem(with: tokenString, ofClass: .password, key: K.Parameters.idToken)
             guard let popUpView = self.popUpView as? LoginPopUpView else { return }
             popUpView.socialLogin.onNext(.apple)
-            
-//            self.appleIdentityToken.accept(tokenString)
         case let passwordCredential as ASPasswordCredential:
             print(passwordCredential)
             // Sign in using an existing iCloud Keychain credential.
