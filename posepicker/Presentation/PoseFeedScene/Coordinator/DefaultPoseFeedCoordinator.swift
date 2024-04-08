@@ -145,4 +145,10 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
     func moveToExternalApp(url: URL) {
         UIApplication.shared.open(url)
     }
+
+    func dismissPoseDetail(tag: String) {
+        self.navigationController.dismiss(animated: true)
+        self.posefeedViewController.dismissPoseDetailEvent
+            .onNext(RegisteredFilterCellViewModel(title: tag))
+    }
 }
