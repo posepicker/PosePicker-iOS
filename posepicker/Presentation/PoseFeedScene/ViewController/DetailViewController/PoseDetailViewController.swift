@@ -201,7 +201,8 @@ class PoseDetailViewController: BaseViewController {
     
     override func bindViewModel() {
         let input = PoseDetailViewModel.Input(
-            viewDidLoadEvent: viewDidLoadEvent
+            viewDidLoadEvent: viewDidLoadEvent,
+            kakaoShareButtonTapped: kakaoShareButton.rx.tap.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
@@ -385,6 +386,19 @@ private extension PoseDetailViewController {
                 cell.disposeBag = DisposeBag()
                 cell.bind(to: viewModel)
             }
+            .disposed(by: disposeBag)
+        
+        output?.isLoading
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                if $0 {
+                    self?.kakaoShareButton.isEnabled = false
+                    self?.loadingIndicator.isHidden = false
+                } else {
+                    self?.kakaoShareButton.isEnabled = true
+                    self?.loadingIndicator.isHidden = true
+                }
+            })
             .disposed(by: disposeBag)
     }
 }
