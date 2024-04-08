@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 protocol PageViewCoordinator: Coordinator {
     var pageViewController: UIPageViewController { get set }
@@ -15,4 +16,6 @@ protocol PageViewCoordinator: Coordinator {
     func viewControllerBefore() -> UIViewController?
     func viewControllerAfter() -> UIViewController?
     func pushMyPage()
+    func pushBookmarkPage() -> Observable<LoginPopUpView.SocialLogin>
+    func dismissLoginPopUp()
 }
