@@ -162,8 +162,9 @@ class CommonViewController: BaseViewController {
     override func bindViewModel() {
         let input = CommonViewModel.Input(
             pageviewTransitionDelegateEvent: pageviewControllerDidFinishEvent.asObservable(),
-            myPageButtonTapped: header.menuButton.rx.tap.asObservable(),
-            currentPage: currentPage.asObservable()
+            myPageButtonTapEvent: header.menuButton.rx.tap.asObservable(),
+            currentPage: currentPage.asObservable(),
+            bookmarkButtonTapEvent: header.bookMarkButton.rx.tap.asObservable()
         )
         let output = self.viewModel?.transform(from: input, disposeBag: disposeBag)
         configureOutput(output)
