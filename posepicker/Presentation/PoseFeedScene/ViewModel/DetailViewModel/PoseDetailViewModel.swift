@@ -29,24 +29,26 @@ final class PoseDetailViewModel {
         let viewDidLoadEvent: Observable<Void>
         let kakaoShareButtonTapEvent: Observable<Void>
         let linkShareButtonTapEvent: Observable<Void>
+        let imageSourceButtonTapEvent: Observable<Void>
     }
     
     struct Output {
         let image = BehaviorRelay<UIImage?>(value: nil)
         let tagItems = BehaviorRelay<[PoseDetailTagCellViewModel]>(value: [])
-        let url = PublishRelay<String>()
+        let source = PublishRelay<String>()
         let isLoading = BehaviorRelay<Bool>(value: false)
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         
-        let pasteboardURL = PublishRelay<String>()
+        let sourceURL = BehaviorRelay<String>(value: "")
         
         input.viewDidLoadEvent
             .subscribe(onNext: { [weak self] in
-                self?.posefeedDetailUseCase.getSourceURLFrom()
+                self?.posefeedDetailUseCase.getSourceURLFromPoseInfo()
                 self?.posefeedDetailUseCase.getTagsFromPoseInfo()
+                self?.posefeedDetailUseCase.getSourceFromPoseInfo()
             })
             .disposed(by: disposeBag)
         
@@ -61,9 +63,9 @@ final class PoseDetailViewModel {
             .disposed(by: disposeBag)
         
         self.posefeedDetailUseCase
-            .sourceUrl
+            .source
             .subscribe(onNext: {
-                output.url.accept($0)
+                output.source.accept($0)
             })
             .disposed(by: disposeBag)
         
@@ -112,6 +114,27 @@ final class PoseDetailViewModel {
             .subscribe(onNext: { (owner, _) in
                 UIPasteboard.general.string = "https://www.posepicker.site/detail/\(owner.bindViewModel.poseId.value)"
                 owner.coordinator?.presentClipboardCompleted(poseId: owner.bindViewModel.poseId.value)
+            })
+            .disposed(by: disposeBag)
+        
+        input.imageSourceButtonTapEvent
+            .withUnretained(self)
+            .flatMapLatest { (owner, _) in
+                return sourceURL
+            }
+            .map {
+                return URL(string: "https://" + $0)
+            }
+            .compactMap { $0 }
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.moveToExternalApp(url: $0)
+            })
+            .disposed(by: disposeBag)
+        
+        self.posefeedDetailUseCase
+            .sourceUrl
+            .subscribe(onNext: {
+                sourceURL.accept($0)
             })
             .disposed(by: disposeBag)
         
