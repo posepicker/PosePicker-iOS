@@ -30,11 +30,7 @@ final class DefaultUserRepository: UserRepository {
     private func fetchAuthCodeFromPosepicker() -> Observable<String> {
         return networkService.requestSingle(.retrieveAuthoirzationCode)
             .asObservable()
-            .flatMapLatest { (authCode: AuthCode) -> Observable<String> in
-                let relay = PublishRelay<String>()
-                relay.accept(authCode.token)
-                return relay.asObservable()
-            }
+            .map { (authCode: AuthCode) in authCode.token }
     }
     
     /// 카카오 로그인 요청
@@ -55,6 +51,9 @@ final class DefaultUserRepository: UserRepository {
                     self?.keychainService.saveToken(user.token)
                     self?.keychainService.saveEmail(user.email)
                     
+                    UserDefaults.standard.setValue(true, forKey: K.SocialLogin.isLoggedIn)
+                    UserDefaults.standard.setValue(K.SocialLogin.kakao, forKey: K.SocialLogin.socialLogin)
+                    
                     return BehaviorRelay<PosePickerUser>(value: user).asObservable()
                 }
         }
@@ -69,6 +68,10 @@ final class DefaultUserRepository: UserRepository {
         .flatMapLatest { [weak self] (user: PosePickerUser) -> Observable<PosePickerUser> in
             self?.keychainService.saveToken(user.token)
             self?.keychainService.saveEmail(user.email)
+            
+            UserDefaults.standard.setValue(true, forKey: K.SocialLogin.isLoggedIn)
+            UserDefaults.standard.setValue(K.SocialLogin.apple, forKey: K.SocialLogin.socialLogin)
+            
             return BehaviorRelay<PosePickerUser>(value: user).asObservable()
         }
     }
@@ -91,6 +94,8 @@ final class DefaultUserRepository: UserRepository {
                 refreshToken: refreshToken
             )).asObservable()
             .flatMapLatest { response in
+                UserDefaults.standard.setValue(false, forKey: K.SocialLogin.isLoggedIn)
+                UserDefaults.standard.removeObject(forKey: K.SocialLogin.socialLogin)
                 return BehaviorRelay<MeaninglessResponse>(value: response).asObservable()
             }
     }
@@ -104,6 +109,8 @@ final class DefaultUserRepository: UserRepository {
             ))
         .asObservable()
         .flatMapLatest { response in
+            UserDefaults.standard.setValue(false, forKey: K.SocialLogin.isLoggedIn)
+            UserDefaults.standard.removeObject(forKey: K.SocialLogin.socialLogin)
             return BehaviorRelay<MeaninglessResponse>(value: response).asObservable()
         }
         
@@ -115,7 +122,7 @@ final class DefaultUserRepository: UserRepository {
         
         guard let kakaoId = kakaoUser.id else { return .empty() }
         
-        let relay = PublishRelay<(String, Int64)>()
+        let relay = BehaviorRelay<(String, Int64)>(value: ("",-1))
         if let email = kakaoUser.kakaoAccount?.email {
             relay.accept((email, kakaoId))
         } else if let nickname = kakaoUser.kakaoAccount?.profile?.nickname {
