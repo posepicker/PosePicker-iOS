@@ -30,6 +30,7 @@ final class PoseDetailViewModel {
         let kakaoShareButtonTapEvent: Observable<Void>
         let linkShareButtonTapEvent: Observable<Void>
         let imageSourceButtonTapEvent: Observable<Void>
+        let poseTagTapEvent: Observable<PoseDetailTagCellViewModel>
     }
     
     struct Output {
@@ -135,6 +136,12 @@ final class PoseDetailViewModel {
             .sourceUrl
             .subscribe(onNext: {
                 sourceURL.accept($0)
+            })
+            .disposed(by: disposeBag)
+        
+        input.poseTagTapEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.dismissPoseDetail(tag: $0.title.value)
             })
             .disposed(by: disposeBag)
         
