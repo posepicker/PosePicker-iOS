@@ -202,7 +202,8 @@ class PoseDetailViewController: BaseViewController {
     override func bindViewModel() {
         let input = PoseDetailViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent,
-            kakaoShareButtonTapped: kakaoShareButton.rx.tap.asObservable()
+            kakaoShareButtonTapEvent: kakaoShareButton.rx.tap.asObservable(),
+            linkShareButtonTapEvent: linkShareButton.rx.tap.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
