@@ -159,26 +159,26 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
                 popUpVC.modalPresentationStyle = .overFullScreen
                 self.present(popUpVC, animated: true)
                 
-                popUpVC.appleIdentityToken
-                    .compactMap { $0 }
-                    .subscribe(onNext: { [unowned self] in
-                        self.appleIdentityTokenTrigger.onNext($0)
-                    })
-                    .disposed(by: self.disposeBag)
-                
-                popUpVC.email
-                    .compactMap { $0 }
-                    .subscribe(onNext: { [unowned self] in
-                        self.kakaoEmailTrigger.onNext($0)
-                    })
-                    .disposed(by: disposeBag)
-                
-                popUpVC.kakaoId
-                    .compactMap { $0 }
-                    .subscribe(onNext: { [unowned self] in
-                        self.kakaoIdTrigger.onNext($0)
-                    })
-                    .disposed(by: disposeBag)
+//                popUpVC.appleIdentityToken
+//                    .compactMap { $0 }
+//                    .subscribe(onNext: { [unowned self] in
+//                        self.appleIdentityTokenTrigger.onNext($0)
+//                    })
+//                    .disposed(by: self.disposeBag)
+//                
+//                popUpVC.email
+//                    .compactMap { $0 }
+//                    .subscribe(onNext: { [unowned self] in
+//                        self.kakaoEmailTrigger.onNext($0)
+//                    })
+//                    .disposed(by: disposeBag)
+//                
+//                popUpVC.kakaoId
+//                    .compactMap { $0 }
+//                    .subscribe(onNext: { [unowned self] in
+//                        self.kakaoIdTrigger.onNext($0)
+//                    })
+//                    .disposed(by: disposeBag)
                 
             })
             .disposed(by: disposeBag)
