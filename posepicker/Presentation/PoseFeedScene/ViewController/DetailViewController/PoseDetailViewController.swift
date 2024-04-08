@@ -101,6 +101,14 @@ class PoseDetailViewController: BaseViewController {
     let kakaoEmailTrigger = PublishSubject<String>()
     let kakaoIdTrigger = PublishSubject<Int64>()
     
+    private let viewDidLoadEvent = PublishSubject<Void>()
+    
+    // MARK: - Life Cycles
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewDidLoadEvent.onNext(())
+    }
+    
     // MARK: - Functions
     override func render() {
         self.view.addSubViews([navigationBar, scrollView, shareButtonGroup, loadingIndicator])
@@ -192,7 +200,9 @@ class PoseDetailViewController: BaseViewController {
     }
     
     override func bindViewModel() {
-        let input = PoseDetailViewModel.Input()
+        let input = PoseDetailViewModel.Input(
+            viewDidLoadEvent: viewDidLoadEvent
+        )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
         configureOutput(output)
@@ -349,6 +359,32 @@ private extension PoseDetailViewController {
             .drive(onNext: { [weak self] in
                 self?.imageButton.setImage($0, for: .normal)
             })
+            .disposed(by: disposeBag)
+        
+        //        let sourceText = viewModel.poseDetailData.poseInfo.source
+        //        if !sourceText.isEmpty {
+        //            imageSourceButton.configuration?.attributedTitle = AttributedString(sourceText + "↗", attributes: AttributeContainer([NSAttributedString.Key.font : UIFont.pretendard(.medium, ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.textBrand]))
+        //        } else {
+        //            imageSourceButton.isHidden = true
+        //        }
+        
+        output?.url
+            .asDriver(onErrorJustReturn: "")
+            .drive(onNext: { [weak self] in
+                if !$0.isEmpty {
+                    self?.imageSourceButton.configuration?.attributedTitle = AttributedString($0 + "↗", attributes: AttributeContainer([NSAttributedString.Key.font : UIFont.pretendard(.medium, ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.textBrand]))
+                } else {
+                    self?.imageSourceButton.isHidden = true
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output?.tagItems
+            .asDriver()
+            .drive(tagCollectionView.rx.items(cellIdentifier: PoseDetailTagCell.identifier, cellType: PoseDetailTagCell.self)) { _, viewModel, cell in
+                cell.disposeBag = DisposeBag()
+                cell.bind(to: viewModel)
+            }
             .disposed(by: disposeBag)
     }
 }
