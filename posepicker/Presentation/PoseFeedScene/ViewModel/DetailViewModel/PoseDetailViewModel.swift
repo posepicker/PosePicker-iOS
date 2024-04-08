@@ -27,7 +27,8 @@ final class PoseDetailViewModel {
     
     struct Input {
         let viewDidLoadEvent: Observable<Void>
-        let kakaoShareButtonTapped: Observable<Void>
+        let kakaoShareButtonTapEvent: Observable<Void>
+        let linkShareButtonTapEvent: Observable<Void>
     }
     
     struct Output {
@@ -39,6 +40,8 @@ final class PoseDetailViewModel {
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        
+        let pasteboardURL = PublishRelay<String>()
         
         input.viewDidLoadEvent
             .subscribe(onNext: { [weak self] in
@@ -65,7 +68,7 @@ final class PoseDetailViewModel {
             .disposed(by: disposeBag)
         
         /// 5. 카카오 공유하기 버튼
-        input.kakaoShareButtonTapped
+        input.kakaoShareButtonTapEvent
             .withUnretained(self)
             .subscribe(onNext: { (owner, _) in
                 let template = owner.getFeedTemplateObject()
@@ -101,6 +104,14 @@ final class PoseDetailViewModel {
                         }
                     }
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        input.linkShareButtonTapEvent
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, _) in
+                UIPasteboard.general.string = "https://www.posepicker.site/detail/\(owner.bindViewModel.poseId.value)"
+                owner.coordinator?.presentClipboardCompleted(poseId: owner.bindViewModel.poseId.value)
             })
             .disposed(by: disposeBag)
         
