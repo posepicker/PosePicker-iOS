@@ -141,4 +141,8 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
         popupView.alertText.accept("링크가 복사되었습니다.")
         self.navigationController.presentedViewController?.present(popupVC, animated: true)
     }
+    
+    func moveToExternalApp(url: URL) {
+        UIApplication.shared.open(url)
+    }
 }
