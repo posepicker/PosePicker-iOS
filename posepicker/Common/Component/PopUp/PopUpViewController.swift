@@ -24,11 +24,10 @@ class PopUpViewController: BaseViewController {
     var isChoice: Bool
     var isLabelNeeded: Bool
     var isSignout: Bool
-    
     /// Optional 타입이 아니면 초기에 next로 값이 방출되어버림
-    let appleIdentityToken = BehaviorRelay<String?>(value: nil)
-    let kakaoId = BehaviorRelay<Int64?>(value: nil)
-    let email = BehaviorRelay<String?>(value: nil)
+//    let appleIdentityToken = BehaviorRelay<String?>(value: nil)
+//    let kakaoId = BehaviorRelay<Int64?>(value: nil)
+//    let email = BehaviorRelay<String?>(value: nil)
     
     /// 인사 텍스트
     private let greetText = "포즈피커 회원님 반가워요!"
@@ -85,125 +84,19 @@ class PopUpViewController: BaseViewController {
         
         /// 로그인 팝업일때
         if let popUpView = popUpView as? LoginPopUpView {
-            /// 카카오 로그인
-            /// 이메일 동의항목을 초기에 체크하기 때문에 사실상 이메일을 받지 못하는 경우는 없음
-            /// 그럼에도 체크를 해제하는 유저를 고려하여 추후 에러처리가 필요할듯 함
             popUpView.kakaoLoginButton.rx.tap.asDriver()
-                .drive(onNext: {[unowned self] in
+                .drive(onNext: {
                     UserDefaults.standard.setValue(K.SocialLogin.kakao, forKey: K.SocialLogin.socialLogin)
                     popUpView.socialLogin.onNext(.kakao)
                     popUpView.isLoading.accept(true)
-                    if (AuthApi.hasToken()) {
-                        UserApi.shared.rx.accessTokenInfo()
-                            .subscribe(onSuccess: { _ in
-                                UserApi.shared.rx.me()
-                                    .subscribe(onSuccess: { [unowned self] in
-                                        if let email = $0.kakaoAccount?.email {
-                                            self.email.accept(Functions.nicknameFromEmail(email) + "님 반가워요!")
-                                        } else if let nickname = $0.kakaoAccount?.profile?.nickname {
-                                            self.email.accept(nickname  + "님 반가워요!")
-                                        } else {
-                                            self.email.accept(greetText)
-                                        }
-                                        self.kakaoId.accept($0.id)
-                                        popUpView.isLoading.accept(false)
-                                    })
-                                    .disposed(by: self.disposeBag)
-                            }, onFailure: { error in
-                                if let sdkError = error as? SdkError, sdkError.isInvalidTokenError() == true {
-                                    if (UserApi.isKakaoTalkLoginAvailable()) {
-                                        UserApi.shared.rx.loginWithKakaoTalk()
-                                            .subscribe(onNext: { [unowned self] _ in
-                                                UserApi.shared.rx.me()
-                                                    .subscribe(onSuccess: { [unowned self] in
-                                                        if let email = $0.kakaoAccount?.email {
-                                                            self.email.accept(Functions.nicknameFromEmail(email) + "님 반가워요!")
-                                                        } else if let nickname = $0.kakaoAccount?.profile?.nickname {
-                                                            self.email.accept(nickname  + "님 반가워요!")
-                                                        } else {
-                                                            self.email.accept(greetText)
-                                                        }
-                                                        self.kakaoId.accept($0.id)
-                                                        popUpView.isLoading.accept(false)
-                                                    })
-                                                    .disposed(by: self.disposeBag)
-                                            })
-                                            .disposed(by: self.disposeBag)
-                                    } else {
-                                        UserApi.shared.rx.loginWithKakaoAccount()
-                                            .subscribe(onNext: { [unowned self] _ in
-                                                UserApi.shared.rx.me()
-                                                    .subscribe(onSuccess: { [unowned self] in
-                                                        if let email = $0.kakaoAccount?.email {
-                                                            self.email.accept(Functions.nicknameFromEmail(email) + "님 반가워요!")
-                                                        } else if let nickname = $0.kakaoAccount?.profile?.nickname {
-                                                            self.email.accept(nickname  + "님 반가워요!")
-                                                        } else {
-                                                            self.email.accept(greetText)
-                                                        }
-                                                        self.kakaoId.accept($0.id)
-                                                        popUpView.isLoading.accept(false)
-                                                    })
-                                                    .disposed(by: self.disposeBag)
-                                            })
-                                            .disposed(by: self.disposeBag)
-                                    }
-                                } else {
-                                    print("이상한 에러")
-                                    popUpView.isLoading.accept(false)
-                                    popUpView.kakaoLoginButton.setTitle("카카오 로그인", for: .normal)
-                                }
-                            })
-                            .disposed(by: self.disposeBag)
-                    } else {
-                        if (UserApi.isKakaoTalkLoginAvailable()) {
-                            UserApi.shared.rx.loginWithKakaoTalk()
-                                .subscribe(onNext: { [unowned self] _ in
-                                    UserApi.shared.rx.me()
-                                        .subscribe(onSuccess: {[unowned self] in
-                                            if let email = $0.kakaoAccount?.email {
-                                                self.email.accept(Functions.nicknameFromEmail(email) + "님 반가워요!")
-                                            } else if let nickname = $0.kakaoAccount?.profile?.nickname {
-                                                self.email.accept(nickname  + "님 반가워요!")
-                                            } else {
-                                                self.email.accept(greetText)
-                                            }
-                                            self.kakaoId.accept($0.id)
-                                            popUpView.isLoading.accept(false)
-                                        })
-                                        .disposed(by: disposeBag)
-                                })
-                                .disposed(by: disposeBag)
-                        } else {
-                            UserApi.shared.rx.loginWithKakaoAccount()
-                                .subscribe(onNext: { [unowned self] _ in
-                                    UserApi.shared.rx.me()
-                                        .subscribe(onSuccess: {[unowned self] in
-                                            
-                                            if let email = $0.kakaoAccount?.email {
-                                                self.email.accept(Functions.nicknameFromEmail(email))
-                                            } else if let nickname = $0.kakaoAccount?.profile?.nickname {
-                                                self.email.accept(nickname  + "님 반가워요!")
-                                            } else {
-                                                self.email.accept(greetText)
-                                            }
-                                            self.kakaoId.accept($0.id)
-                                            popUpView.isLoading.accept(false)
-                                        })
-                                        .disposed(by: disposeBag)
-                                })
-                                .disposed(by: disposeBag)
-                        }
-                    }
                 })
                 .disposed(by: disposeBag)
             // 애플로그인
             popUpView.appleLoginButton.rx.tap
                 .subscribe(onNext: { [weak self] in
                     UserDefaults.standard.setValue(K.SocialLogin.apple, forKey: K.SocialLogin.socialLogin)
-                    popUpView.socialLogin.onNext(.apple)
-                    popUpView.isLoading.accept(true)
                     self?.handleAppleLogin()
+                    popUpView.isLoading.accept(true)
                 })
                 .disposed(by: disposeBag)
         }
@@ -237,7 +130,12 @@ extension PopUpViewController: ASAuthorizationControllerDelegate {
         case let appleIDCredential as ASAuthorizationAppleIDCredential:
             guard let tokenData = appleIDCredential.identityToken,
                   let tokenString = String(data: tokenData, encoding: .utf8) else { return }
-            self.appleIdentityToken.accept(tokenString)
+            try? KeychainManager.shared.saveItem(tokenString, itemClass: .password, key: K.Parameters.idToken)
+            try? KeychainManager.shared.updateItem(with: tokenString, ofClass: .password, key: K.Parameters.idToken)
+            guard let popUpView = self.popUpView as? LoginPopUpView else { return }
+            popUpView.socialLogin.onNext(.apple)
+            
+//            self.appleIdentityToken.accept(tokenString)
         case let passwordCredential as ASPasswordCredential:
             print(passwordCredential)
             // Sign in using an existing iCloud Keychain credential.
