@@ -120,6 +120,13 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
         let poseDetailViewController = PoseDetailViewController()
         poseDetailViewController.viewModel = PoseDetailViewModel(
             coordinator: self,
+            posefeedDetailUseCase: DefaultPoseFeedDetailUseCase(
+                posefeedDetailRepository:
+                    DefaultPoseFeedDetailRepository(
+                        networkService: DefaultNetworkService()
+                    ),
+                poseId: viewModel.poseId.value
+            ),
             bindViewModel: viewModel
         )
         
