@@ -132,4 +132,13 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
         
         self.navigationController.present(poseDetailViewController, animated: true)
     }
+    
+    func presentClipboardCompleted(poseId: Int) {
+        let popupVC = PopUpViewController(isLoginPopUp: false, isChoice: false)
+        popupVC.modalTransitionStyle = .crossDissolve
+        popupVC.modalPresentationStyle = .overFullScreen
+        let popupView = popupVC.popUpView as! PopUpView
+        popupView.alertText.accept("링크가 복사되었습니다.")
+        self.navigationController.presentedViewController?.present(popupVC, animated: true)
+    }
 }
