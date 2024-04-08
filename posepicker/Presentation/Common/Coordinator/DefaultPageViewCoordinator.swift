@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 class DefaultPageViewCoordinator: PageViewCoordinator {
     weak var finishDelegate: CoordinatorFinishDelegate?
@@ -87,6 +88,33 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
     func pushMyPage() {
         let mypageViewController = MyPageViewController()
         self.navigationController.pushViewController(mypageViewController, animated: true)
+    }
+    
+    func pushBookmarkPage() -> Observable<LoginPopUpView.SocialLogin> {
+        if UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn) {
+            let bookmarkViewController = BookMarkViewController()
+            bookmarkViewController.viewModel = BookMarkViewModel()
+            self.navigationController.pushViewController(bookmarkViewController, animated: true)
+            return .empty()
+        } else {
+            return showLoginFlow()
+        }
+    }
+    
+    func dismissLoginPopUp() {
+        self.navigationController.dismiss(animated: true)
+    }
+    
+    // 애플 or 카카오 탭 여부 확인
+    private func showLoginFlow() -> Observable<LoginPopUpView.SocialLogin> {
+        let popupVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
+        popupVC.modalTransitionStyle = .crossDissolve
+        popupVC.modalPresentationStyle = .overFullScreen
+        
+        guard let popupView = popupVC.popUpView as? LoginPopUpView else { return .empty() }
+        self.navigationController.present(popupVC, animated: true)
+        
+        return popupView.socialLogin
     }
 
     private func createPageViewNavigationController(of page: PageViewType) -> UINavigationController {
