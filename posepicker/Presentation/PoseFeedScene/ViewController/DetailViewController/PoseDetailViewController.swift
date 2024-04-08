@@ -204,7 +204,8 @@ class PoseDetailViewController: BaseViewController {
             viewDidLoadEvent: viewDidLoadEvent,
             kakaoShareButtonTapEvent: kakaoShareButton.rx.tap.asObservable(),
             linkShareButtonTapEvent: linkShareButton.rx.tap.asObservable(),
-            imageSourceButtonTapEvent: imageSourceButton.rx.tap.asObservable()
+            imageSourceButtonTapEvent: imageSourceButton.rx.tap.asObservable(),
+            poseTagTapEvent: tagCollectionView.rx.modelSelected(PoseDetailTagCellViewModel.self).asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
