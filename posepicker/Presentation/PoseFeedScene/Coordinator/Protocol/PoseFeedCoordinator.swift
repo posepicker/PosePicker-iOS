@@ -16,4 +16,5 @@ protocol PoseFeedCoordinator: Coordinator {
     func presentPoseDetail(viewModel: PoseFeedPhotoCellViewModel)
     func presentClipboardCompleted(poseId: Int)
     func moveToExternalApp(url: URL)
+    func dismissPoseDetail(tag: String)
 }
