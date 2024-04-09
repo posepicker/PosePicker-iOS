@@ -51,6 +51,12 @@ final class BookmarkViewModel {
             })
             .disposed(by: disposeBag)
         
+        input.bookmarkCellTapEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.presentBookmarkDetail(viewModel: $0)
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
 }
