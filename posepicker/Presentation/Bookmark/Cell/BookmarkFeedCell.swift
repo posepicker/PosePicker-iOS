@@ -26,7 +26,6 @@ class BookmarkFeedCell: BaseCollectionViewCell {
     
     // MARK: - Properties
     static let identifier = "BookmarkFeedCell"
-    var viewModel: BookmarkFeedCellViewModel!
     
     // MARK: - Life Cycles
     
@@ -34,7 +33,6 @@ class BookmarkFeedCell: BaseCollectionViewCell {
         super.prepareForReuse()
         imageView.image = nil
         bookmarkButton.setImage(nil, for: .normal)
-        viewModel = nil
         disposeBag = DisposeBag()
     }
     
@@ -58,8 +56,7 @@ class BookmarkFeedCell: BaseCollectionViewCell {
         self.layer.cornerRadius = 8
     }
     
-    func bind() {
-        weak var viewModel: BookmarkFeedCellViewModel! = viewModel
+    func bind(to viewModel: BookmarkFeedCellViewModel) {
         viewModel.image.asDriver()
             .drive(onNext: { [weak self] in
                 self?.imageView.image = $0
