@@ -20,6 +20,7 @@ final class BookmarkViewModel {
     
     struct Input {
         let viewDidLoadEvent: Observable<Void>
+        let bookmarkCellTapEvent: Observable<BookmarkFeedCellViewModel>
     }
     
     struct Output {
