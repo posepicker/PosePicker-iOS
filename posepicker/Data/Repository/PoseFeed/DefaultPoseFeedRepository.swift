@@ -51,6 +51,35 @@ final class DefaultPoseFeedRepository: PoseFeedRepository {
             }
     }
     
+    // true 리턴되어야 정상 응답처리된 것
+    func bookmarkContent(poseId: Int, checked: Bool) -> Observable<Bool> {
+        if checked {
+            // 등록된 북마크 지우기
+            // 응답으로 포즈아이디 -1
+            return networkService
+                .requestSingle(.deleteBookmark(poseId: poseId))
+                .asObservable()
+                .flatMapLatest { (response: BookmarkResponse) -> Observable<BookmarkResponse> in
+                    let relay = BehaviorRelay<BookmarkResponse>(value: .init(poseId: -1))
+                    relay.accept(response)
+                    return relay.asObservable()
+                }
+                .map { $0.poseId == -1}
+        } else {
+            // 북마크 등록하기
+            // 응답으로 포즈아이디
+            return networkService
+                .requestSingle(.registerBookmark(poseId: poseId))
+                .asObservable()
+                .flatMapLatest { (response: BookmarkResponse) -> Observable<BookmarkResponse> in
+                    let relay = BehaviorRelay<BookmarkResponse>(value: .init(poseId: -1))
+                    relay.accept(response)
+                    return relay.asObservable()
+                }
+                .map { $0.poseId != -1}
+        }
+    }
+    
     private func cacheItem(for contents: [Pose]) -> Observable<[PoseFeedPhotoCellViewModel]> {
         let viewModelObservable = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
         
