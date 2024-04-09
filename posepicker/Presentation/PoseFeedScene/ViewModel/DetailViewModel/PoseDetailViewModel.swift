@@ -16,12 +16,12 @@ import KakaoSDKCommon
 
 final class PoseDetailViewModel {
     weak var coordinator: PoseFeedCoordinator?
-    private var posefeedDetailUseCase: PoseFeedDetailUseCase
+    private var poseDetailUseCase: PoseDetailUseCase
     private let bindViewModel: PoseFeedPhotoCellViewModel
     
-    init(coordinator: PoseFeedCoordinator?, posefeedDetailUseCase: PoseFeedDetailUseCase, bindViewModel: PoseFeedPhotoCellViewModel) {
+    init(coordinator: PoseFeedCoordinator?, poseDetailUseCase: PoseDetailUseCase, bindViewModel: PoseFeedPhotoCellViewModel) {
         self.coordinator = coordinator
-        self.posefeedDetailUseCase = posefeedDetailUseCase
+        self.poseDetailUseCase = poseDetailUseCase
         self.bindViewModel = bindViewModel
     }
     
@@ -47,13 +47,13 @@ final class PoseDetailViewModel {
         
         input.viewDidLoadEvent
             .subscribe(onNext: { [weak self] in
-                self?.posefeedDetailUseCase.getSourceURLFromPoseInfo()
-                self?.posefeedDetailUseCase.getTagsFromPoseInfo()
-                self?.posefeedDetailUseCase.getSourceFromPoseInfo()
+                self?.poseDetailUseCase.getSourceURLFromPoseInfo()
+                self?.poseDetailUseCase.getTagsFromPoseInfo()
+                self?.poseDetailUseCase.getSourceFromPoseInfo()
             })
             .disposed(by: disposeBag)
         
-        self.posefeedDetailUseCase
+        self.poseDetailUseCase
             .tagItems
             .map { tags in
                 tags.map { PoseDetailTagCellViewModel(title: $0)}
@@ -63,7 +63,7 @@ final class PoseDetailViewModel {
             })
             .disposed(by: disposeBag)
         
-        self.posefeedDetailUseCase
+        self.poseDetailUseCase
             .source
             .subscribe(onNext: {
                 output.source.accept($0)
@@ -132,7 +132,7 @@ final class PoseDetailViewModel {
             })
             .disposed(by: disposeBag)
         
-        self.posefeedDetailUseCase
+        self.poseDetailUseCase
             .sourceUrl
             .subscribe(onNext: {
                 sourceURL.accept($0)
