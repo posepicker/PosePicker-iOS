@@ -22,5 +22,5 @@ protocol PoseFeedUseCase {
     var bookmarkTaskCompleted: PublishSubject<Bool> { get set }
     
     func fetchFeedContents(peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int)
-    func bookmarkContent(poseId: Int, checked: Bool)
+    func bookmarkContent(poseId: Int, currentChecked: Bool)
 }

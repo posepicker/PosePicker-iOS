@@ -68,8 +68,8 @@ final class DefaultPoseFeedUseCase: PoseFeedUseCase {
             .disposed(by: disposeBag)
     }
     
-    func bookmarkContent(poseId: Int, checked: Bool) {
-        self.posefeedRepository.bookmarkContent(poseId: poseId, checked: checked)
+    func bookmarkContent(poseId: Int, currentChecked: Bool) {
+        self.posefeedRepository.bookmarkContent(poseId: poseId, currentChecked: currentChecked)
             .subscribe(onNext: { [weak self] in
                 self?.bookmarkTaskCompleted.onNext($0)
             })
