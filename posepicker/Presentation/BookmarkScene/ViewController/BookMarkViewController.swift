@@ -102,10 +102,14 @@ class BookMarkViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     override func bindViewModel() {
         let input = BookmarkViewModel.Input(
-            viewDidLoadEvent: viewDidLoadEvent
+            viewDidLoadEvent: viewDidLoadEvent,
+            bookmarkCellTapEvent: bookmarkCollectionView.rx.modelSelected(BookmarkFeedCellViewModel.self).asObservable()
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        
+        configureOutput(output)
+        
 //        let input = BookMarkViewModel.Input(viewDidLoadTrigger: viewDidLoadTrigger, nextPageTrigger: nextPageTrigger, bookmarkSelection: bookmarkCollectionView.rx.modelSelected(BookmarkFeedCellViewModel.self), bookmarkFromPoseId: bookmarkCheckObservable)
 //        let output = viewModel.transform(input: input)
 //        
