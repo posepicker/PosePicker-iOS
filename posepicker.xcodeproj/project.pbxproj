@@ -229,6 +229,7 @@
 		C9FD20F32BC4CC8B00C23E25 /* BookmarkDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD20F22BC4CC8B00C23E25 /* BookmarkDetailViewModel.swift */; };
 		C9FD20F52BC4D0E000C23E25 /* BookmarkDetailUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD20F42BC4D0E000C23E25 /* BookmarkDetailUseCase.swift */; };
 		C9FD20FA2BC51AC200C23E25 /* CoordinatorLoginDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD20F92BC51AC200C23E25 /* CoordinatorLoginDelegate.swift */; };
+		C9FD20FD2BC53E0300C23E25 /* CoordinatorBookmarkBindingDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD20FC2BC53E0300C23E25 /* CoordinatorBookmarkBindingDelegate.swift */; };
 		C9FDBDEC2B2835E10045AA54 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9FDBDEB2B2835E10045AA54 /* RxSwift */; };
 		C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */; };
 		C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */; };
@@ -461,6 +462,7 @@
 		C9FD20F22BC4CC8B00C23E25 /* BookmarkDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailViewModel.swift; sourceTree = "<group>"; };
 		C9FD20F42BC4D0E000C23E25 /* BookmarkDetailUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailUseCase.swift; sourceTree = "<group>"; };
 		C9FD20F92BC51AC200C23E25 /* CoordinatorLoginDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorLoginDelegate.swift; sourceTree = "<group>"; };
+		C9FD20FC2BC53E0300C23E25 /* CoordinatorBookmarkBindingDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorBookmarkBindingDelegate.swift; sourceTree = "<group>"; };
 		C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkResponse.swift; sourceTree = "<group>"; };
 		C9FDBDF52B28AE140045AA54 /* BookmarkDetailTagCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailTagCellViewModel.swift; sourceTree = "<group>"; };
@@ -1059,6 +1061,7 @@
 		C93851282BB41CC700E597C1 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
+				C9FD20FB2BC53DDA00C23E25 /* Delegate */,
 				C96C9B602BBD216000AC2921 /* Protocol */,
 				C938512B2BB41CE300E597C1 /* DefaultPoseFeedCoordinator.swift */,
 			);
@@ -2029,6 +2032,14 @@
 			path = DetailViewModel;
 			sourceTree = "<group>";
 		};
+		C9FD20FB2BC53DDA00C23E25 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				C9FD20FC2BC53E0300C23E25 /* CoordinatorBookmarkBindingDelegate.swift */,
+			);
+			path = Delegate;
+			sourceTree = "<group>";
+		};
 		C9FDBDF32B28ADD50045AA54 /* BookmarkDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -2322,6 +2333,7 @@
 				C94FD2772AE38E82003777EB /* DefaultAppCoordinator.swift in Sources */,
 				C9AF36A92BC3BA5100629B63 /* MyPageViewModel.swift in Sources */,
 				C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */,
+				C9FD20FD2BC53E0300C23E25 /* CoordinatorBookmarkBindingDelegate.swift in Sources */,
 				C9676BE82BAAAB79000A4114 /* PosePickUseCase.swift in Sources */,
 				C9FD20FA2BC51AC200C23E25 /* CoordinatorLoginDelegate.swift in Sources */,
 				C91A265F2B8788F900F1193E /* MyPoseCoordinator.swift in Sources */,
