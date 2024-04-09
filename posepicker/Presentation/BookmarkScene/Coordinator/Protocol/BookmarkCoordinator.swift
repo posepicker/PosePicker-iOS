@@ -8,5 +8,5 @@
 import Foundation
 
 protocol BookmarkCoordinator: Coordinator {
-    
+    func presentBookmarkDetail(viewModel: BookmarkFeedCellViewModel)
 }
