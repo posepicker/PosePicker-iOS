@@ -62,6 +62,8 @@ final class BookmarkViewModel {
         input.bookmarkButtonTapEvent
             .subscribe(onNext: { [weak self] in
                 self?.bookmarkUseCase.bookmarkContent(poseId: $0.0, currentChecked: $0.1)
+                guard let coordinator = self?.coordinator else { return }
+                coordinator.bookmarkBindingDelegate?.coordinatorBookmarkModified(childCoordinator: coordinator, poseId: $0.0)
             })
             .disposed(by: disposeBag)
         
