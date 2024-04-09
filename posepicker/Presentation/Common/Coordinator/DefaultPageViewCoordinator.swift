@@ -86,8 +86,9 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
     }
     
     func pushMyPage() {
-        let mypageViewController = MyPageViewController()
-        self.navigationController.pushViewController(mypageViewController, animated: true)
+        let mypageCoordinator = DefaultMyPageCoordinator(self.navigationController)
+        self.childCoordinators.append(mypageCoordinator)
+        mypageCoordinator.start()
     }
     
     func pushBookmarkPage() -> Observable<LoginPopUpView.SocialLogin> {
