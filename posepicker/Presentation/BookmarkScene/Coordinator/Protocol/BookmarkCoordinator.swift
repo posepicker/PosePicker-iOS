@@ -8,5 +8,6 @@
 import Foundation
 
 protocol BookmarkCoordinator: Coordinator {
+    var bookmarkBindingDelegate: CoordinatorBookmarkBindingDelegate? { get set }
     func presentBookmarkDetail(viewModel: BookmarkFeedCellViewModel)
 }
