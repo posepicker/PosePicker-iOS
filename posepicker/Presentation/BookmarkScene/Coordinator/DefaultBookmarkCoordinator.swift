@@ -8,11 +8,12 @@
 import UIKit
 
 final class DefaultBookmarkCoordinator: BookmarkCoordinator {
+    weak var loginDelegate: CoordinatorLoginDelegate?
     weak var finishDelegate: CoordinatorFinishDelegate?
     var navigationController: UINavigationController
     var bookmarkViewController: BookMarkViewController
     var childCoordinators: [Coordinator] = []
-    var type: CoordinatorType = .posetalk
+    var type: CoordinatorType = .bookmark
     
     required init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -45,23 +46,6 @@ final class DefaultBookmarkCoordinator: BookmarkCoordinator {
         )
         self.navigationController.present(bookmarkDetailViewController, animated: true)
     }
-    
-//    func presentPoseDetail(viewModel: PoseFeedPhotoCellViewModel) {
-//        let poseDetailViewController = PoseDetailViewController()
-//        poseDetailViewController.viewModel = PoseDetailViewModel(
-//            coordinator: self,
-//            posefeedDetailUseCase: DefaultPoseFeedDetailUseCase(
-//                posefeedDetailRepository:
-//                    DefaultPoseFeedDetailRepository(
-//                        networkService: DefaultNetworkService()
-//                    ),
-//                poseId: viewModel.poseId.value
-//            ),
-//            bindViewModel: viewModel
-//        )
-//        
-//        self.navigationController.present(poseDetailViewController, animated: true)
-//    }
 }
 
 extension DefaultBookmarkCoordinator {
