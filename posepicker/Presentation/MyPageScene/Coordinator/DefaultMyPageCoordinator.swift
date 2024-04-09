@@ -20,7 +20,11 @@ final class DefaultMyPageCoordinator: MyPageCoordinator {
     }
     
     func start() {
-        
+        self.myPageViewController.viewModel = MyPageViewModel(
+            coordinator: self,
+            myPageUseCase: DefaultMyPageUseCase()
+        )
+        self.navigationController.pushViewController(myPageViewController, animated: true)
     }
     
 }
