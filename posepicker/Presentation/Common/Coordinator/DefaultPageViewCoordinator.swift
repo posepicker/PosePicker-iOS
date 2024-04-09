@@ -93,6 +93,9 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
     func pushBookmarkPage() -> Observable<LoginPopUpView.SocialLogin> {
         if UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn) {
             let bookmarkCoordinator = DefaultBookmarkCoordinator(self.navigationController)
+            if let posefeedCoordinator = self.findCoordinator(type: .posefeed) as? DefaultPoseFeedCoordinator {
+                bookmarkCoordinator.bookmarkBindingDelegate = posefeedCoordinator
+            }
             self.childCoordinators.append(bookmarkCoordinator)
             bookmarkCoordinator.start()
             return .empty()
