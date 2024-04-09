@@ -9,5 +9,6 @@ import Foundation
 import RxSwift
 
 protocol BookmarkRepository {
-    func fetchBookmarkContents() -> Observable<[BookmarkFeedCellViewModel]>
+    func fetchBookmarkContents(pageNumber: Int, pageSize: Int) -> Observable<[BookmarkFeedCellViewModel]>
+    func isLastContents() -> Observable<Bool>
 }
