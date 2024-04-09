@@ -267,11 +267,7 @@ final class PoseFeedViewModel {
                     guard let item = item else { return }
                     if UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn) {
                         // API요청 보내기
-                        if item.bookmarkCheck.value {
-                            owner.posefeedUseCase.bookmarkContent(poseId: item.poseId.value, checked: false)
-                        } else {
-                            owner.posefeedUseCase.bookmarkContent(poseId: item.poseId.value, checked: true)
-                        }
+                        owner.posefeedUseCase.bookmarkContent(poseId: item.poseId.value, currentChecked: item.bookmarkCheck.value)
                         item.bookmarkCheck.accept(!item.bookmarkCheck.value)
                     } else {
                         // 로그인 화면 present
