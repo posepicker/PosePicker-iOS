@@ -1061,9 +1061,9 @@
 		C93851282BB41CC700E597C1 /* Coordinator */ = {
 			isa = PBXGroup;
 			children = (
+				C938512B2BB41CE300E597C1 /* DefaultPoseFeedCoordinator.swift */,
 				C9FD20FB2BC53DDA00C23E25 /* Delegate */,
 				C96C9B602BBD216000AC2921 /* Protocol */,
-				C938512B2BB41CE300E597C1 /* DefaultPoseFeedCoordinator.swift */,
 			);
 			path = Coordinator;
 			sourceTree = "<group>";
