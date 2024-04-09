@@ -170,3 +170,11 @@ extension DefaultPoseFeedCoordinator: CoordinatorFinishDelegate {
         }
     }
 }
+
+extension DefaultPoseFeedCoordinator: CoordinatorBookmarkBindingDelegate {
+    func coordinatorBookmarkModified(childCoordinator: any Coordinator, poseId: Int) {
+        if childCoordinator.type == .bookmark {
+            posefeedViewController.bookmarkBindingEvent.onNext(poseId)
+        }
+    }
+}
