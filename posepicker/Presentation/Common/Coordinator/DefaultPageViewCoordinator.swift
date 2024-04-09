@@ -92,9 +92,9 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
     
     func pushBookmarkPage() -> Observable<LoginPopUpView.SocialLogin> {
         if UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn) {
-            let bookmarkViewController = BookMarkViewController()
-            bookmarkViewController.viewModel = BookMarkViewModel()
-            self.navigationController.pushViewController(bookmarkViewController, animated: true)
+            let bookmarkCoordinator = DefaultBookmarkCoordinator(self.navigationController)
+            self.childCoordinators.append(bookmarkCoordinator)
+            bookmarkCoordinator.start()
             return .empty()
         } else {
             return showLoginFlow()
