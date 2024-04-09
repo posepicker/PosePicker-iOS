@@ -152,3 +152,13 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
             .onNext(RegisteredFilterCellViewModel(title: tag))
     }
 }
+
+extension DefaultPoseFeedCoordinator: CoordinatorFinishDelegate {
+    func coordinatorDidFinish(childCoordinator: any Coordinator) {
+        self.childCoordinators = childCoordinators.filter({ $0.type != childCoordinator.type })
+        
+        if childCoordinator.type == .posefeed {
+            navigationController.viewControllers.removeAll()
+        }
+    }
+}
