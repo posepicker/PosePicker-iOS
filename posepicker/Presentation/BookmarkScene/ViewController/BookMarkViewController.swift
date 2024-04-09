@@ -44,6 +44,7 @@ class BookMarkViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     private let viewDidLoadEvent = PublishSubject<Void>()
     private let bookmarkContentSizes = BehaviorRelay<[CGSize]>(value: [])
+    private let bookmarkButtonTapEvent = PublishSubject<(Int, Bool)>()
     
     // MARK: - Life Cycles
     override func viewDidLoad() {
@@ -103,7 +104,8 @@ class BookMarkViewController: BaseViewController, UIGestureRecognizerDelegate {
     override func bindViewModel() {
         let input = BookmarkViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent,
-            bookmarkCellTapEvent: bookmarkCollectionView.rx.modelSelected(BookmarkFeedCellViewModel.self).asObservable()
+            bookmarkCellTapEvent: bookmarkCollectionView.rx.modelSelected(BookmarkFeedCellViewModel.self).asObservable(),
+            bookmarkButtonTapEvent: bookmarkButtonTapEvent
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
@@ -183,9 +185,17 @@ private extension BookMarkViewController {
     func configureOutput(_ output: BookmarkViewModel.Output?) {
         output?.bookmarkContents
             .asDriver()
-            .drive(bookmarkCollectionView.rx.items(cellIdentifier: BookmarkFeedCell.identifier, cellType: BookmarkFeedCell.self)) { _, viewModel, cell in
+            .drive(bookmarkCollectionView.rx.items(cellIdentifier: BookmarkFeedCell.identifier, cellType: BookmarkFeedCell.self)) { [weak self] _, viewModel, cell in
+                guard let self = self else { return }
                 cell.disposeBag = DisposeBag()
                 cell.bind(to: viewModel)
+                cell.bookmarkButton.rx.tap
+                    .map { viewModel.poseId.value }
+                    .subscribe(onNext: {
+                        self.bookmarkButtonTapEvent.onNext(($0, viewModel.bookmarkCheck.value))
+                        viewModel.bookmarkCheck.accept(!viewModel.bookmarkCheck.value)
+                    })
+                    .disposed(by: self.disposeBag)
             }
             .disposed(by: disposeBag)
         
