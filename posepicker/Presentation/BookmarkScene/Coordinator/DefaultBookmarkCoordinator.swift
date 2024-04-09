@@ -20,7 +20,15 @@ final class DefaultBookmarkCoordinator: BookmarkCoordinator {
     }
     
     func start() {
-        
+        bookmarkViewController.viewModel = BookmarkViewModel(
+            coordinator: self,
+            bookmarkUseCase: DefaultBookmarkUseCase(
+                bookmarkRepository: DefaultBookmarkRepository(
+                    networkService: DefaultNetworkService()
+                )
+            )
+        )
+        self.navigationController.pushViewController(self.bookmarkViewController, animated: true)
     }
 }
 
