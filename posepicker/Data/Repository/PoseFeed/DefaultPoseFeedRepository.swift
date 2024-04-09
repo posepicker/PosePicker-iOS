@@ -52,8 +52,8 @@ final class DefaultPoseFeedRepository: PoseFeedRepository {
     }
     
     // true 리턴되어야 정상 응답처리된 것
-    func bookmarkContent(poseId: Int, checked: Bool) -> Observable<Bool> {
-        if checked {
+    func bookmarkContent(poseId: Int, currentChecked: Bool) -> Observable<Bool> {
+        if currentChecked {
             // 등록된 북마크 지우기
             // 응답으로 포즈아이디 -1
             return networkService
