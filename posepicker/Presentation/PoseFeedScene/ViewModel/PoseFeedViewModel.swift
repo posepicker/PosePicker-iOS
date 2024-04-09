@@ -29,6 +29,7 @@ final class PoseFeedViewModel {
         let filterTagTapEvent: Observable<RegisteredFilterCellViewModel>
         let posefeedPhotoCellTapEvent: Observable<PoseFeedPhotoCellViewModel>
         let dismissPoseDetailEvent: Observable<RegisteredFilterCellViewModel>
+        let bookmarkBindingEvent: Observable<Int>
     }
     
     struct Output {
@@ -248,6 +249,26 @@ final class PoseFeedViewModel {
                 guard let coordinator = owner.coordinator else { return }
                 coordinator.loginDelegate?.coordinatorLoginCompleted(childCoordinator: coordinator)
                 output.refreshEvent.onNext(())
+            })
+            .disposed(by: disposeBag)
+        
+        input.bookmarkBindingEvent
+            .subscribe(onNext: { [weak self] poseId in
+                guard let self = self else { return }
+                let filteredValue = self.posefeedUseCase.feedContents.value[0].items
+                let recommendedValue = self.posefeedUseCase.feedContents.value[1].items
+                
+                if let viewModel = filteredValue.first(where: {
+                    $0.poseId.value == poseId
+                }) {
+                    viewModel.bookmarkCheck.accept(!viewModel.bookmarkCheck.value)
+                }
+                
+                if let viewModel = recommendedValue.first(where: {
+                    $0.poseId.value == poseId
+                }) {
+                    viewModel.bookmarkCheck.accept(!viewModel.bookmarkCheck.value)
+                }
             })
             .disposed(by: disposeBag)
         
