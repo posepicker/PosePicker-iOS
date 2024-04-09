@@ -8,5 +8,5 @@
 import Foundation
 
 protocol MyPageCoordinator: Coordinator {
-    
+    func pushWebView(webView: WebViewList)
 }
