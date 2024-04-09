@@ -18,6 +18,7 @@ final class DefaultBookmarkUseCase: BookmarkUseCase {
     var bookmarkContents = BehaviorRelay<[BookmarkFeedCellViewModel]>(value: [])
     var contentLoaded = PublishSubject<Void>()
     var isLastPage = BehaviorRelay<Bool>(value: false)
+    var bookmarkTaskCompleted = PublishSubject<Bool>()
     
     init(bookmarkRepository: BookmarkRepository) {
         self.bookmarkRepository = bookmarkRepository
@@ -50,6 +51,14 @@ final class DefaultBookmarkUseCase: BookmarkUseCase {
                     owner.contentSizes.accept(owner.contentSizes.value + [newSizeImage.size])
                 }
         })
+            .disposed(by: disposeBag)
+    }
+    
+    func bookmarkContent(poseId: Int, currentChecked: Bool) {
+        self.bookmarkRepository.bookmarkContent(poseId: poseId, currentChecked: currentChecked)
+            .subscribe(onNext: { [weak self] in
+                self?.bookmarkTaskCompleted.onNext($0)
+            })
             .disposed(by: disposeBag)
     }
     
