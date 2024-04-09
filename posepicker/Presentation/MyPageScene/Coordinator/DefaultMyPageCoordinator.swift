@@ -27,12 +27,43 @@ final class DefaultMyPageCoordinator: MyPageCoordinator {
         self.navigationController.pushViewController(myPageViewController, animated: true)
     }
     
-}
-
-extension DefaultMyPageCoordinator {
-    func coordinatorDidFinish(childCoordinator: Coordinator) {
-        self.childCoordinators = self.childCoordinators
-            .filter({ $0.type != childCoordinator.type })
-        childCoordinator.navigationController.popToRootViewController(animated: true)
+    func pushWebView(webView: WebViewList) {
+        var mypageWebviewVC: MypageWebViewController!
+        print(webView)
+        switch webView {
+        case .notice:
+            mypageWebviewVC = MypageWebViewController(
+                urlString: webView.rawValue,
+                pageTitle: "공지사항"
+            )
+            
+        case .faq:
+            mypageWebviewVC = MypageWebViewController(
+                urlString: webView.rawValue,
+                pageTitle: "자주 묻는 질문"
+            )
+        case .sns:
+            mypageWebviewVC = MypageWebViewController(
+                urlString: webView.rawValue,
+                pageTitle: "포즈피드 공식 SNS"
+            )
+        case .serviceInquiry:
+            mypageWebviewVC = MypageWebViewController(
+                urlString: webView.rawValue,
+                pageTitle: "문의하기"
+            )
+        case .serviceInformation:
+            mypageWebviewVC = MypageWebViewController(
+                urlString: webView.rawValue,
+                pageTitle: "이용약관"
+            )
+        case .privacyInformation:
+            mypageWebviewVC = MypageWebViewController(
+                urlString: webView.rawValue,
+                pageTitle: "개인정보 처리방침"
+            )
+        }
+        
+        self.navigationController.pushViewController(mypageWebviewVC, animated: true)
     }
 }
