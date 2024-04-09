@@ -97,6 +97,7 @@ class PoseFeedViewController: BaseViewController {
     private let filteredContentSizes = BehaviorRelay<[CGSize]>(value: [])
     private let recommendedContentSizes = BehaviorRelay<[CGSize]>(value: [])
     let viewDidLoadEvent = PublishSubject<Void>()
+    let bookmarkBindingEvent = PublishSubject<Int>()
     private let infiniteScrollEvent = PublishSubject<Void>()
     let dismissFilterModalEvent = PublishSubject<[RegisteredFilterCellViewModel]>()
     let dismissPoseDetailEvent = PublishSubject<RegisteredFilterCellViewModel>()
@@ -259,7 +260,8 @@ class PoseFeedViewController: BaseViewController {
             dismissFilterModalEvent: dismissFilterModalEvent,
             filterTagTapEvent: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(),
             posefeedPhotoCellTapEvent: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self).asObservable(),
-            dismissPoseDetailEvent: dismissPoseDetailEvent
+            dismissPoseDetailEvent: dismissPoseDetailEvent,
+            bookmarkBindingEvent: bookmarkBindingEvent
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
