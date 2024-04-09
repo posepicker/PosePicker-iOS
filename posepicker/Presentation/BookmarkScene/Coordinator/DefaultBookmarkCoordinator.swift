@@ -48,12 +48,23 @@ final class DefaultBookmarkCoordinator: BookmarkCoordinator {
         )
         self.navigationController.present(bookmarkDetailViewController, animated: true)
     }
-}
+    
+    func presentClipboardCompleted(poseId: Int) {
+        let popupVC = PopUpViewController(isLoginPopUp: false, isChoice: false)
+        popupVC.modalTransitionStyle = .crossDissolve
+        popupVC.modalPresentationStyle = .overFullScreen
+        let popupView = popupVC.popUpView as! PopUpView
+        popupView.alertText.accept("링크가 복사되었습니다.")
+        self.navigationController.presentedViewController?.present(popupVC, animated: true)
+    }
+    
+    func moveToExternalApp(url: URL) {
+        UIApplication.shared.open(url)
+    }
 
-extension DefaultBookmarkCoordinator {
-    func coordinatorDidFinish(childCoordinator: Coordinator) {
-        self.childCoordinators = self.childCoordinators
-            .filter({ $0.type != childCoordinator.type })
-        childCoordinator.navigationController.popToRootViewController(animated: true)
+    func dismissPoseDetail(tag: String) {
+//        self.navigationController.dismiss(animated: true)
+//        self.bookmarkViewController.dismissPoseDetailEvent
+//            .onNext(RegisteredFilterCellViewModel(title: tag))
     }
 }
