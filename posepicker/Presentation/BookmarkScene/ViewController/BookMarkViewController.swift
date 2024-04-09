@@ -36,16 +36,19 @@ class BookMarkViewController: BaseViewController, UIGestureRecognizerDelegate {
         }
     
     // MARK: - Properties
-    var viewModel: BookMarkViewModel?
+    var viewModel: BookmarkViewModel?
     
-    let viewDidLoadTrigger = PublishSubject<Void>()
+//    let viewDidLoadTrigger = PublishSubject<Void>()
     let nextPageTrigger = PublishSubject<Void>()
     let bookmarkCheckObservable = PublishSubject<(Int, Bool)>()
+    
+    private let viewDidLoadEvent = PublishSubject<Void>()
+    private let bookmarkContentSizes = BehaviorRelay<[CGSize]>(value: [])
     
     // MARK: - Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
-        viewDidLoadTrigger.onNext(())
+        viewDidLoadEvent.onNext(())
     }
     
     // MARK: - Functions
@@ -98,6 +101,11 @@ class BookMarkViewController: BaseViewController, UIGestureRecognizerDelegate {
     }
     
     override func bindViewModel() {
+        let input = BookmarkViewModel.Input(
+            viewDidLoadEvent: viewDidLoadEvent
+        )
+        
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
 //        let input = BookMarkViewModel.Input(viewDidLoadTrigger: viewDidLoadTrigger, nextPageTrigger: nextPageTrigger, bookmarkSelection: bookmarkCollectionView.rx.modelSelected(BookmarkFeedCellViewModel.self), bookmarkFromPoseId: bookmarkCheckObservable)
 //        let output = viewModel.transform(input: input)
 //        
@@ -153,9 +161,9 @@ class BookMarkViewController: BaseViewController, UIGestureRecognizerDelegate {
 
 extension BookMarkViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        if collectionView == bookmarkCollectionView {
-//            return viewModel.bookmarkContentSizes.value[indexPath.item]
-//        }
+        if collectionView == bookmarkCollectionView {
+            return bookmarkContentSizes.value[indexPath.item]
+        }
         return CGSize(width: 60, height: 30)
     }
 }
@@ -163,7 +171,24 @@ extension BookMarkViewController: UICollectionViewDelegateFlowLayout {
 
 extension BookMarkViewController: PinterestLayoutDelegate {
     func collectionView(_ collectionView: UICollectionView, heightForPhotoAtIndexPath indexPath: IndexPath) -> CGFloat {
-        return 0
-//        return viewModel.bookmarkContentSizes.value[indexPath.item].height
+        return bookmarkContentSizes.value[indexPath.item].height
+    }
+}
+
+private extension BookMarkViewController {
+    func configureOutput(_ output: BookmarkViewModel.Output?) {
+        output?.bookmarkContents
+            .asDriver()
+            .drive(bookmarkCollectionView.rx.items(cellIdentifier: BookmarkFeedCell.identifier, cellType: BookmarkFeedCell.self)) { _, viewModel, cell in
+                cell.disposeBag = DisposeBag()
+                cell.bind(to: viewModel)
+            }
+            .disposed(by: disposeBag)
+        
+        output?.bookmarkContentSizes
+            .subscribe(onNext: { [weak self] in
+                self?.bookmarkContentSizes.accept($0)
+            })
+            .disposed(by: disposeBag)
     }
 }
