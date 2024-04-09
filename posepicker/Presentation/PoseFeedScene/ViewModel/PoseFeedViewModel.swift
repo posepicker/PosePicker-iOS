@@ -13,10 +13,12 @@ import RxDataSources
 final class PoseFeedViewModel {
     weak var coordinator: PoseFeedCoordinator?
     private var posefeedUseCase: PoseFeedUseCase
+    private var commonUseCase: CommonUseCase
     
-    init(coordinator: PoseFeedCoordinator?, posefeedUseCase: PoseFeedUseCase) {
+    init(coordinator: PoseFeedCoordinator?, posefeedUseCase: PoseFeedUseCase, commonUseCase: CommonUseCase) {
         self.coordinator = coordinator
         self.posefeedUseCase = posefeedUseCase
+        self.commonUseCase = commonUseCase
     }
     
     struct Input {
@@ -239,6 +241,14 @@ final class PoseFeedViewModel {
             })
             .disposed(by: disposeBag)
         
+        self.commonUseCase.loginCompleted
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, _) in
+                guard let coordinator = owner.coordinator else { return }
+                coordinator.loginDelegate?.coordinatorLoginCompleted(childCoordinator: coordinator)
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
     
@@ -264,7 +274,19 @@ final class PoseFeedViewModel {
                         }
                         item.bookmarkCheck.accept(!item.bookmarkCheck.value)
                     } else {
-//                        owner.presentLoginPopUp.onNext(())
+                        // 로그인 화면 present
+                        guard let coordinator = owner.coordinator else { return }
+                        coordinator.loginDelegate?.coordinatorLoginRequested(childCoordinator: coordinator)
+                            .subscribe(onNext: {
+                                switch $0 {
+                                case .apple:
+                                    guard let idToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.idToken) else { return }
+                                    owner.commonUseCase.loginWithApple(idToken: idToken)
+                                case .kakao:
+                                    owner.commonUseCase.loginWithKakao()
+                                }
+                            })
+                            .disposed(by: disposeBag)
                     }
                 }
                 .disposed(by: cell.disposeBag)
