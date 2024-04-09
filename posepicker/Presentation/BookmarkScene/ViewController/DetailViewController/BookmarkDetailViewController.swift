@@ -102,6 +102,11 @@ class BookmarkDetailViewController: BaseViewController {
     
     private let viewDidLoadEvent = PublishSubject<Void>()
     
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewDidLoadEvent.onNext(())
+    }
+    
     // MARK: - Functions
     override func render() {
         self.view.addSubViews([navigationBar, scrollView, shareButtonGroup, loadingIndicator])
@@ -182,7 +187,8 @@ class BookmarkDetailViewController: BaseViewController {
 
         scrollView.subviews.first!.addSubView(secureView)
         secureView.snp.makeConstraints { make in
-            make.top.leading.trailing.bottom.equalToSuperview()
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(imageSourceButton.snp.bottom)
         }
         
         secureView.addSubview(imageButton)
@@ -192,7 +198,11 @@ class BookmarkDetailViewController: BaseViewController {
     }
     override func bindViewModel() {
         let input = BookmarkDetailViewModel.Input(
-            viewDidLoadEvent: viewDidLoadEvent
+            viewDidLoadEvent: viewDidLoadEvent,
+            kakaoShareButtonTapEvent: kakaoShareButton.rx.tap.asObservable(),
+            linkShareButtonTapEvent: linkShareButton.rx.tap.asObservable(),
+            imageSourceButtonTapEvent: imageSourceButton.rx.tap.asObservable(),
+            poseTagTapEvent: tagCollectionView.rx.modelSelected(BookmarkDetailTagCellViewModel.self).asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         configureOutput(output)
@@ -304,6 +314,39 @@ private extension BookmarkDetailViewController {
             .asDriver(onErrorJustReturn: nil)
             .drive(onNext: { [weak self] in
                 self?.imageButton.setImage($0, for: .normal)
+            })
+            .disposed(by: disposeBag)
+        
+        output?.source
+            .asDriver(onErrorJustReturn: "")
+            .drive(onNext: { [weak self] in
+                if !$0.isEmpty {
+                    self?.imageSourceButton.isHidden = false
+                    self?.imageSourceButton.configuration?.attributedTitle = AttributedString($0 + "↗", attributes: AttributeContainer([NSAttributedString.Key.font : UIFont.pretendard(.medium, ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.textBrand]))
+                } else {
+                    self?.imageSourceButton.isHidden = true
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output?.tagItems
+            .asDriver()
+            .drive(tagCollectionView.rx.items(cellIdentifier: BookmarkDetailTagCell.identifier, cellType: BookmarkDetailTagCell.self)) { _, viewModel, cell in
+                cell.disposeBag = DisposeBag()
+                cell.bind(to: viewModel)
+            }
+            .disposed(by: disposeBag)
+        
+        output?.isLoading
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                if $0 {
+                    self?.kakaoShareButton.isEnabled = false
+                    self?.loadingIndicator.isHidden = false
+                } else {
+                    self?.kakaoShareButton.isEnabled = true
+                    self?.loadingIndicator.isHidden = true
+                }
             })
             .disposed(by: disposeBag)
     }
