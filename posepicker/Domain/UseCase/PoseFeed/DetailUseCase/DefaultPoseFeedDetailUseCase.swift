@@ -1,5 +1,5 @@
 //
-//  DefaultPoseFeedDetailUseCase.swift
+//  DefaultPoseDetailUseCase.swift
 //  posepicker
 //
 //  Created by 박경준 on 4/7/24.
@@ -9,17 +9,17 @@ import Foundation
 import RxSwift
 import RxRelay
 
-final class DefaultPoseFeedDetailUseCase: PoseFeedDetailUseCase {
+final class DefaultPoseDetailUseCase: PoseDetailUseCase {
     
     private var disposeBag = DisposeBag()
-    private let posefeedDetailRepository: PoseFeedDetailRepository
+    private let poseDetailRepository: PoseDetailRepository
     private let poseId: Int
     
-    init(posefeedDetailRepository: PoseFeedDetailRepository, poseId: Int) {
-        self.posefeedDetailRepository = posefeedDetailRepository
+    init(poseDetailRepository: PoseDetailRepository, poseId: Int) {
+        self.poseDetailRepository = poseDetailRepository
         self.poseId = poseId
         
-        self.posefeedDetailRepository
+        self.poseDetailRepository
             .fetchPoseInfo(poseId: self.poseId)
             .subscribe(self.pose)
             .disposed(by: self.disposeBag)

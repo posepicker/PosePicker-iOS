@@ -1,5 +1,5 @@
 //
-//  DefaultPoseFeedDetailRepository.swift
+//  DefaultPoseDetailRepository.swift
 //  posepicker
 //
 //  Created by 박경준 on 4/7/24.
@@ -8,7 +8,7 @@
 import Foundation
 import RxSwift
 
-final class DefaultPoseFeedDetailRepository: PoseFeedDetailRepository {
+final class DefaultPoseDetailRepository: PoseDetailRepository {
     
     let networkService: NetworkService
     
