@@ -96,7 +96,7 @@ class PoseFeedViewController: BaseViewController {
     var viewModel: PoseFeedViewModel?
     private let filteredContentSizes = BehaviorRelay<[CGSize]>(value: [])
     private let recommendedContentSizes = BehaviorRelay<[CGSize]>(value: [])
-    private let viewDidLoadEvent = PublishSubject<Void>()
+    let viewDidLoadEvent = PublishSubject<Void>()
     private let infiniteScrollEvent = PublishSubject<Void>()
     let dismissFilterModalEvent = PublishSubject<[RegisteredFilterCellViewModel]>()
     let dismissPoseDetailEvent = PublishSubject<RegisteredFilterCellViewModel>()
