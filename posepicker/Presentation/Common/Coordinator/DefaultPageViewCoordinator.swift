@@ -145,7 +145,7 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
             posetalkCoordinator.start()
         case .posefeed:
             let posefeedCoordinator = DefaultPoseFeedCoordinator(pageviewNavigationController)
-            posefeedCoordinator.finishDelegate = self
+            posefeedCoordinator.loginDelegate = self
             self.childCoordinators.append(posefeedCoordinator)
             posefeedCoordinator.start()
         default:
@@ -163,6 +163,22 @@ extension DefaultPageViewCoordinator: CoordinatorFinishDelegate {
         } else if childCoordinator.type == .mypage {
             self.navigationController.viewControllers.removeAll()
             self.finishDelegate?.coordinatorDidFinish(childCoordinator: self)
+        }
+    }
+}
+
+extension DefaultPageViewCoordinator: CoordinatorLoginDelegate {
+    func coordinatorLoginRequested(childCoordinator: any Coordinator) -> Observable<LoginPopUpView.SocialLogin> {
+        if childCoordinator.type == .posefeed {
+            return showLoginFlow()
+        } else {
+            return .empty()
+        }
+    }
+    
+    func coordinatorLoginCompleted(childCoordinator: any Coordinator) {
+        if childCoordinator.type == .posefeed {
+            self.dismissLoginPopUp()
         }
     }
 }
