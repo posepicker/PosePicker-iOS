@@ -11,7 +11,7 @@ import RxRelay
 import RxSwift
 
 final class CommonViewModel {
-    private weak var coordinator: PageViewCoordinator?
+    weak var coordinator: PageViewCoordinator?
     private let commonUseCase: CommonUseCase
     
     struct Input {
