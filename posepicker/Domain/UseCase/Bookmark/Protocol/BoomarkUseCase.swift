@@ -6,7 +6,14 @@
 //
 
 import Foundation
+import RxRelay
+import RxSwift
 
 protocol BookmarkUseCase {
+    var bookmarkContents: BehaviorRelay<[BookmarkFeedCellViewModel]> { get set }
+    var contentSizes: BehaviorRelay<[CGSize]> { get set }
+    var isLastPage: BehaviorRelay<Bool> { get set }
+    var contentLoaded: PublishSubject<Void> { get set }
     
+    func fetchFeedContents(pageNumber: Int, pageSize: Int)
 }
