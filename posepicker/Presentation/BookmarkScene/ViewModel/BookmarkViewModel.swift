@@ -21,6 +21,7 @@ final class BookmarkViewModel {
     struct Input {
         let viewDidLoadEvent: Observable<Void>
         let bookmarkCellTapEvent: Observable<BookmarkFeedCellViewModel>
+        let bookmarkButtonTapEvent: Observable<(Int, Bool)>
     }
     
     struct Output {
@@ -54,6 +55,13 @@ final class BookmarkViewModel {
         input.bookmarkCellTapEvent
             .subscribe(onNext: { [weak self] in
                 self?.coordinator?.presentBookmarkDetail(viewModel: $0)
+            })
+            .disposed(by: disposeBag)
+        
+        // 북마크 탭 이후 포즈피드 데이터 바인딩
+        input.bookmarkButtonTapEvent
+            .subscribe(onNext: { [weak self] in
+                self?.bookmarkUseCase.bookmarkContent(poseId: $0.0, currentChecked: $0.1)
             })
             .disposed(by: disposeBag)
         
