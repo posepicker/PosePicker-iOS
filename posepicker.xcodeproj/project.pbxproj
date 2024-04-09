@@ -226,12 +226,13 @@
 		C9DEE4192BBFDFB200C9C495 /* PoseFeedFilterViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE4182BBFDFB200C9C495 /* PoseFeedFilterViewModelTests.swift */; };
 		C9DEE41C2BBFE02400C9C495 /* FilterUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE41B2BBFE02400C9C495 /* FilterUseCaseTests.swift */; };
 		C9DEE4202BC0481600C9C495 /* PoseDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE41F2BC0481600C9C495 /* PoseDetailViewModel.swift */; };
+		C9FD20F32BC4CC8B00C23E25 /* BookmarkDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD20F22BC4CC8B00C23E25 /* BookmarkDetailViewModel.swift */; };
 		C9FDBDEC2B2835E10045AA54 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9FDBDEB2B2835E10045AA54 /* RxSwift */; };
 		C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */; };
 		C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */; };
 		C9FDBDF62B28AE140045AA54 /* BookmarkDetailTagCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF52B28AE140045AA54 /* BookmarkDetailTagCellViewModel.swift */; };
 		C9FDBDF82B28AE240045AA54 /* BookmarkDetailTagCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF72B28AE240045AA54 /* BookmarkDetailTagCell.swift */; };
-		C9FDBDFA2B28AE5E0045AA54 /* BookmarkDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF92B28AE5E0045AA54 /* BookmarkDetailViewModel.swift */; };
+		C9FDBDFA2B28AE5E0045AA54 /* BookmarkDetailViewModeltest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF92B28AE5E0045AA54 /* BookmarkDetailViewModeltest.swift */; };
 		C9FDBDFC2B28AE6B0045AA54 /* BookmarkDetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDFB2B28AE6B0045AA54 /* BookmarkDetailViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -455,11 +456,12 @@
 		C9DEE41B2BBFE02400C9C495 /* FilterUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FilterUseCaseTests.swift; sourceTree = "<group>"; };
 		C9DEE41F2BC0481600C9C495 /* PoseDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseDetailViewModel.swift; sourceTree = "<group>"; };
 		C9E6025A2B16DA270098BC96 /* posepicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = posepicker.entitlements; sourceTree = "<group>"; };
+		C9FD20F22BC4CC8B00C23E25 /* BookmarkDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkResponse.swift; sourceTree = "<group>"; };
 		C9FDBDF52B28AE140045AA54 /* BookmarkDetailTagCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailTagCellViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDF72B28AE240045AA54 /* BookmarkDetailTagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailTagCell.swift; sourceTree = "<group>"; };
-		C9FDBDF92B28AE5E0045AA54 /* BookmarkDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailViewModel.swift; sourceTree = "<group>"; };
+		C9FDBDF92B28AE5E0045AA54 /* BookmarkDetailViewModeltest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailViewModeltest.swift; sourceTree = "<group>"; };
 		C9FDBDFB2B28AE6B0045AA54 /* BookmarkDetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1582,6 +1584,7 @@
 		C9AF36BF2BC3DF7E00629B63 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
+				C9FD20F12BC4CC5C00C23E25 /* DetailViewModel */,
 				C9AF36C62BC3E12800629B63 /* BookmarkViewModel.swift */,
 			);
 			path = ViewModel;
@@ -1590,6 +1593,7 @@
 		C9AF36C02BC3DF8300629B63 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				C9FD20F02BC4CC5300C23E25 /* DetailViewController */,
 				C94FD2842AE39612003777EB /* BookMarkViewController.swift */,
 			);
 			path = ViewController;
@@ -2003,12 +2007,27 @@
 			path = DetailViewModel;
 			sourceTree = "<group>";
 		};
+		C9FD20F02BC4CC5300C23E25 /* DetailViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C9FDBDFB2B28AE6B0045AA54 /* BookmarkDetailViewController.swift */,
+			);
+			path = DetailViewController;
+			sourceTree = "<group>";
+		};
+		C9FD20F12BC4CC5C00C23E25 /* DetailViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C9FD20F22BC4CC8B00C23E25 /* BookmarkDetailViewModel.swift */,
+			);
+			path = DetailViewModel;
+			sourceTree = "<group>";
+		};
 		C9FDBDF32B28ADD50045AA54 /* BookmarkDetail */ = {
 			isa = PBXGroup;
 			children = (
 				C9FDBDF42B28ADFB0045AA54 /* Cell */,
-				C9FDBDF92B28AE5E0045AA54 /* BookmarkDetailViewModel.swift */,
-				C9FDBDFB2B28AE6B0045AA54 /* BookmarkDetailViewController.swift */,
+				C9FDBDF92B28AE5E0045AA54 /* BookmarkDetailViewModeltest.swift */,
 			);
 			path = BookmarkDetail;
 			sourceTree = "<group>";
@@ -2316,6 +2335,7 @@
 				C96C9A822BB5020400AC2921 /* UIPageViewController+Rx.swift in Sources */,
 				C9AF36C32BC3DFFA00629B63 /* DefaultBookmarkCoordinator.swift in Sources */,
 				C9DC2F992AEA28E300D5170D /* PoseFeedFilterCell.swift in Sources */,
+				C9FD20F32BC4CC8B00C23E25 /* BookmarkDetailViewModel.swift in Sources */,
 				C91E184D2B99E484009611C3 /* ReportViewController.swift in Sources */,
 				C91E18442B99B300009611C3 /* UINavigationController+.swift in Sources */,
 				C903E54A2B05BCA300BD004F /* PopUpViewController.swift in Sources */,
@@ -2359,7 +2379,7 @@
 				C91FF3642BAC002700096E25 /* DefaultPoseTalkUseCase.swift in Sources */,
 				C94FD2812AE39603003777EB /* PoseTalkViewController.swift in Sources */,
 				C91FF3502BAAD11C00096E25 /* DefaultUserRepository.swift in Sources */,
-				C9FDBDFA2B28AE5E0045AA54 /* BookmarkDetailViewModel.swift in Sources */,
+				C9FDBDFA2B28AE5E0045AA54 /* BookmarkDetailViewModeltest.swift in Sources */,
 				C96C9A8E2BB5425700AC2921 /* CommonUseCase.swift in Sources */,
 				883132972B08EF9100DAA5A7 /* PoseDetailTagCell.swift in Sources */,
 				C9FDBDFC2B28AE6B0045AA54 /* BookmarkDetailViewController.swift in Sources */,
