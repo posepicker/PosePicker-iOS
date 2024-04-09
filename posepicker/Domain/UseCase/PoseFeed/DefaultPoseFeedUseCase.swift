@@ -23,6 +23,7 @@ final class DefaultPoseFeedUseCase: PoseFeedUseCase {
     var recommendSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
     var isLastPage = BehaviorRelay<Bool>(value: false)
     var contentLoaded = PublishSubject<Void>()
+    var bookmarkTaskCompleted = PublishSubject<Bool>()
     
     func fetchFeedContents(peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int) {
         if pageNumber == 0 {
@@ -65,7 +66,14 @@ final class DefaultPoseFeedUseCase: PoseFeedUseCase {
                 }
             })
             .disposed(by: disposeBag)
-        
+    }
+    
+    func bookmarkContent(poseId: Int, checked: Bool) {
+        self.posefeedRepository.bookmarkContent(poseId: poseId, checked: checked)
+            .subscribe(onNext: { [weak self] in
+                self?.bookmarkTaskCompleted.onNext($0)
+            })
+            .disposed(by: disposeBag)
     }
     
     /// 필터링 & 추천 둘다 마지막 페이지면 무한스크롤 더 이상 호출할 필요 없음
