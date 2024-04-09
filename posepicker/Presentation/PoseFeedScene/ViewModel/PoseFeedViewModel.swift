@@ -229,6 +229,16 @@ final class PoseFeedViewModel {
             })
             .disposed(by: disposeBag)
         
+        posefeedUseCase.bookmarkTaskCompleted
+            .subscribe(onNext: {
+                if $0 {
+                    print("북마크 등록 완료")
+                } else {
+                    print("북마크 체크 아이디값 관련 확인필요")
+                }
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
     
@@ -245,14 +255,14 @@ final class PoseFeedViewModel {
                 .withUnretained(self)
                 .subscribe { [weak item] (owner, _) in
                     guard let item = item else { return }
-                    if true {
+                    if UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn) {
                         // API요청 보내기
-//                        if item.bookmarkCheck.value {
-//                            owner.bookmarkRemoveButtonTapped.onNext(item.poseId.value)
-//                        } else {
-//                            owner.bookmarkButtonTapped.onNext(item.poseId.value)
-//                        }
-//                        item.bookmarkCheck.accept(!item.bookmarkCheck.value)
+                        if item.bookmarkCheck.value {
+                            owner.posefeedUseCase.bookmarkContent(poseId: item.poseId.value, checked: false)
+                        } else {
+                            owner.posefeedUseCase.bookmarkContent(poseId: item.poseId.value, checked: true)
+                        }
+                        item.bookmarkCheck.accept(!item.bookmarkCheck.value)
                     } else {
 //                        owner.presentLoginPopUp.onNext(())
                     }
