@@ -189,6 +189,10 @@ class BookmarkDetailViewController: BaseViewController {
         }
     }
     override func bindViewModel() {
+        let input = BookmarkDetailViewModel.Input(
+        )
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        configureOutput(output)
 //        let input = BookmarkDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap, bookmarkButtonTapped: bookmarkButton.rx.tap)
 //        
 //        let output = viewModel.transform(input: input)
@@ -288,5 +292,11 @@ class BookmarkDetailViewController: BaseViewController {
     @objc
     func closeButtonTapped() {
         self.dismiss(animated: true)
+    }
+}
+
+private extension BookmarkDetailViewController {
+    func configureOutput(_ output: BookmarkDetailViewModel.Output?) {
+        
     }
 }
