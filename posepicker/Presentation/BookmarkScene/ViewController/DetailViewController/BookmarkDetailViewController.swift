@@ -100,6 +100,8 @@ class BookmarkDetailViewController: BaseViewController {
     
     var viewModel: BookmarkDetailViewModel?
     
+    private let viewDidLoadEvent = PublishSubject<Void>()
+    
     // MARK: - Functions
     override func render() {
         self.view.addSubViews([navigationBar, scrollView, shareButtonGroup, loadingIndicator])
@@ -190,6 +192,7 @@ class BookmarkDetailViewController: BaseViewController {
     }
     override func bindViewModel() {
         let input = BookmarkDetailViewModel.Input(
+            viewDidLoadEvent: viewDidLoadEvent
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         configureOutput(output)
@@ -297,6 +300,11 @@ class BookmarkDetailViewController: BaseViewController {
 
 private extension BookmarkDetailViewController {
     func configureOutput(_ output: BookmarkDetailViewModel.Output?) {
-        
+        output?.image
+            .asDriver(onErrorJustReturn: nil)
+            .drive(onNext: { [weak self] in
+                self?.imageButton.setImage($0, for: .normal)
+            })
+            .disposed(by: disposeBag)
     }
 }
