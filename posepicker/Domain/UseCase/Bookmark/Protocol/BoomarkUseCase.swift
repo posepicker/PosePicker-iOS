@@ -14,6 +14,8 @@ protocol BookmarkUseCase {
     var contentSizes: BehaviorRelay<[CGSize]> { get set }
     var isLastPage: BehaviorRelay<Bool> { get set }
     var contentLoaded: PublishSubject<Void> { get set }
+    var bookmarkTaskCompleted: PublishSubject<Bool> { get set }
     
     func fetchFeedContents(pageNumber: Int, pageSize: Int)
+    func bookmarkContent(poseId: Int, currentChecked: Bool)
 }
