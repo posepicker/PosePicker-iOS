@@ -177,4 +177,10 @@ extension DefaultPoseFeedCoordinator: CoordinatorBookmarkBindingDelegate {
             posefeedViewController.bookmarkBindingEvent.onNext(poseId)
         }
     }
+    
+    func coordinatorBookmarkSetAndDismissed(childCoordinator: any Coordinator, tag: String) {
+        if childCoordinator.type == .bookmark {
+            posefeedViewController.dismissPoseDetailEvent.onNext(RegisteredFilterCellViewModel(title: tag))
+        }
+    }
 }
