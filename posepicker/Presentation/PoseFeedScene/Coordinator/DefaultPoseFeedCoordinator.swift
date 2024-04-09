@@ -11,10 +11,12 @@ import RxRelay
 
 final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
     weak var finishDelegate: CoordinatorFinishDelegate?
+    weak var loginDelegate: CoordinatorLoginDelegate?
+    
     var navigationController: UINavigationController
     var posefeedViewController: PoseFeedViewController
     var childCoordinators: [Coordinator] = []
-    var type: CoordinatorType = .posetalk
+    var type: CoordinatorType = .posefeed
     
     required init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -27,6 +29,12 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
             posefeedUseCase: DefaultPoseFeedUseCase(
                 posefeedRepository: DefaultPoseFeedRepository(
                     networkService: DefaultNetworkService()
+                )
+            ),
+            commonUseCase: DefaultCommonUseCase(
+                userRepository: DefaultUserRepository(
+                    networkService: DefaultNetworkService(),
+                    keychainService: DefaultKeychainService()
                 )
             )
         )
@@ -158,7 +166,7 @@ extension DefaultPoseFeedCoordinator: CoordinatorFinishDelegate {
         self.childCoordinators = childCoordinators.filter({ $0.type != childCoordinator.type })
         
         if childCoordinator.type == .posefeed {
-            navigationController.viewControllers.removeAll()
+//            navigationController.viewControllers.removeAll()
         }
     }
 }
