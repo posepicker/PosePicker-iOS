@@ -165,8 +165,8 @@
 		C99D53B72B1EDCB8007DEE9B /* BookmarkEmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D53B62B1EDCB8007DEE9B /* BookmarkEmptyView.swift */; };
 		C9AF36962BC2E46600629B63 /* PoseFeedDetailUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36952BC2E46600629B63 /* PoseFeedDetailUseCase.swift */; };
 		C9AF36982BC2E52000629B63 /* PoseFeedDetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36972BC2E52000629B63 /* PoseFeedDetailRepository.swift */; };
-		C9AF369C2BC2E64B00629B63 /* DefaultPoseFeedDetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF369B2BC2E64B00629B63 /* DefaultPoseFeedDetailRepository.swift */; };
-		C9AF369F2BC2E8AA00629B63 /* DefaultPoseFeedDetailUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF369E2BC2E8AA00629B63 /* DefaultPoseFeedDetailUseCase.swift */; };
+		C9AF369C2BC2E64B00629B63 /* DefaultPoseDetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF369B2BC2E64B00629B63 /* DefaultPoseDetailRepository.swift */; };
+		C9AF369F2BC2E8AA00629B63 /* DefaultPoseDetailUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF369E2BC2E8AA00629B63 /* DefaultPoseDetailUseCase.swift */; };
 		C9AF36A22BC2EB1300629B63 /* PoseInfoDTO.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36A12BC2EB1300629B63 /* PoseInfoDTO.swift */; };
 		C9AF36A92BC3BA5100629B63 /* MyPageViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36A82BC3BA5100629B63 /* MyPageViewModel.swift */; };
 		C9AF36AC2BC3BA7F00629B63 /* MyPageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36AB2BC3BA7F00629B63 /* MyPageCoordinator.swift */; };
@@ -227,6 +227,7 @@
 		C9DEE41C2BBFE02400C9C495 /* FilterUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE41B2BBFE02400C9C495 /* FilterUseCaseTests.swift */; };
 		C9DEE4202BC0481600C9C495 /* PoseDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DEE41F2BC0481600C9C495 /* PoseDetailViewModel.swift */; };
 		C9FD20F32BC4CC8B00C23E25 /* BookmarkDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD20F22BC4CC8B00C23E25 /* BookmarkDetailViewModel.swift */; };
+		C9FD20F52BC4D0E000C23E25 /* BookmarkDetailUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD20F42BC4D0E000C23E25 /* BookmarkDetailUseCase.swift */; };
 		C9FDBDEC2B2835E10045AA54 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9FDBDEB2B2835E10045AA54 /* RxSwift */; };
 		C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */; };
 		C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */; };
@@ -388,8 +389,8 @@
 		C9AF36942BC2E2EF00629B63 /* posepicker.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = posepicker.xcconfig; sourceTree = "<group>"; };
 		C9AF36952BC2E46600629B63 /* PoseFeedDetailUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedDetailUseCase.swift; sourceTree = "<group>"; };
 		C9AF36972BC2E52000629B63 /* PoseFeedDetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedDetailRepository.swift; sourceTree = "<group>"; };
-		C9AF369B2BC2E64B00629B63 /* DefaultPoseFeedDetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseFeedDetailRepository.swift; sourceTree = "<group>"; };
-		C9AF369E2BC2E8AA00629B63 /* DefaultPoseFeedDetailUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseFeedDetailUseCase.swift; sourceTree = "<group>"; };
+		C9AF369B2BC2E64B00629B63 /* DefaultPoseDetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseDetailRepository.swift; sourceTree = "<group>"; };
+		C9AF369E2BC2E8AA00629B63 /* DefaultPoseDetailUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseDetailUseCase.swift; sourceTree = "<group>"; };
 		C9AF36A12BC2EB1300629B63 /* PoseInfoDTO.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseInfoDTO.swift; sourceTree = "<group>"; };
 		C9AF36A82BC3BA5100629B63 /* MyPageViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewModel.swift; sourceTree = "<group>"; };
 		C9AF36AB2BC3BA7F00629B63 /* MyPageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageCoordinator.swift; sourceTree = "<group>"; };
@@ -457,6 +458,7 @@
 		C9DEE41F2BC0481600C9C495 /* PoseDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseDetailViewModel.swift; sourceTree = "<group>"; };
 		C9E6025A2B16DA270098BC96 /* posepicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = posepicker.entitlements; sourceTree = "<group>"; };
 		C9FD20F22BC4CC8B00C23E25 /* BookmarkDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailViewModel.swift; sourceTree = "<group>"; };
+		C9FD20F42BC4D0E000C23E25 /* BookmarkDetailUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailUseCase.swift; sourceTree = "<group>"; };
 		C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkResponse.swift; sourceTree = "<group>"; };
 		C9FDBDF52B28AE140045AA54 /* BookmarkDetailTagCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailTagCellViewModel.swift; sourceTree = "<group>"; };
@@ -1464,7 +1466,7 @@
 		C9AF369A2BC2E53300629B63 /* DetailRepository */ = {
 			isa = PBXGroup;
 			children = (
-				C9AF369B2BC2E64B00629B63 /* DefaultPoseFeedDetailRepository.swift */,
+				C9AF369B2BC2E64B00629B63 /* DefaultPoseDetailRepository.swift */,
 			);
 			path = DetailRepository;
 			sourceTree = "<group>";
@@ -1472,7 +1474,7 @@
 		C9AF369D2BC2E89600629B63 /* DetailUseCase */ = {
 			isa = PBXGroup;
 			children = (
-				C9AF369E2BC2E8AA00629B63 /* DefaultPoseFeedDetailUseCase.swift */,
+				C9AF369E2BC2E8AA00629B63 /* DefaultPoseDetailUseCase.swift */,
 			);
 			path = DetailUseCase;
 			sourceTree = "<group>";
@@ -1541,6 +1543,7 @@
 			isa = PBXGroup;
 			children = (
 				C9AF36B32BC3BB8700629B63 /* BoomarkUseCase.swift */,
+				C9FD20F42BC4D0E000C23E25 /* BookmarkDetailUseCase.swift */,
 			);
 			path = Protocol;
 			sourceTree = "<group>";
@@ -2281,12 +2284,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				C9AF369F2BC2E8AA00629B63 /* DefaultPoseFeedDetailUseCase.swift in Sources */,
+				C9AF369F2BC2E8AA00629B63 /* DefaultPoseDetailUseCase.swift in Sources */,
 				C9DEE4002BBD51F400C9C495 /* PoseFeedPhotoCellViewModel.swift in Sources */,
 				C91FF34E2BAABD2300096E25 /* UserRepository.swift in Sources */,
 				C9042E5C2B0B043400BB4182 /* FrameCountTags.swift in Sources */,
 				C99D53B32B1EDA22007DEE9B /* BookmarkFeedCell.swift in Sources */,
 				C938511A2BB3E1B600E597C1 /* PoseTalkCoordinator.swift in Sources */,
+				C9FD20F52BC4D0E000C23E25 /* BookmarkDetailUseCase.swift in Sources */,
 				8851477F2AF9490C00DCDD4E /* PinterestLayout.swift in Sources */,
 				C9C8908E2AE1073F0010240A /* BaseCollectionViewCell.swift in Sources */,
 				C9676BEC2BAAAC68000A4114 /* PoseInfo.swift in Sources */,
@@ -2367,7 +2371,7 @@
 				C903E54C2B05C13B00BD004F /* PopUpView.swift in Sources */,
 				C94FD29B2AE3AC3E003777EB /* UIView+.swift in Sources */,
 				C9DEE4142BBFCC9300C9C495 /* PoseFeedFilterUseCase.swift in Sources */,
-				C9AF369C2BC2E64B00629B63 /* DefaultPoseFeedDetailRepository.swift in Sources */,
+				C9AF369C2BC2E64B00629B63 /* DefaultPoseDetailRepository.swift in Sources */,
 				880E75592AEA8BE2007FAD5A /* EmptyBookmarkView.swift in Sources */,
 				C9DC2F902AEA1D5F00D5170D /* PoseFeedFilterViewController.swift in Sources */,
 				C91FF3562BAB267D00096E25 /* NetworkService.swift in Sources */,
