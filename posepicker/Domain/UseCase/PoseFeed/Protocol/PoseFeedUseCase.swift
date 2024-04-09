@@ -19,6 +19,8 @@ protocol PoseFeedUseCase {
     var recommendSectionContentSizes: BehaviorRelay<[CGSize]> { get set }
     var isLastPage: BehaviorRelay<Bool> { get set }
     var contentLoaded: PublishSubject<Void> { get set }
+    var bookmarkTaskCompleted: PublishSubject<Bool> { get set }
     
     func fetchFeedContents(peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int)
+    func bookmarkContent(poseId: Int, checked: Bool)
 }
