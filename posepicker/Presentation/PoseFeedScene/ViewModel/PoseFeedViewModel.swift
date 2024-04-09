@@ -39,6 +39,7 @@ final class PoseFeedViewModel {
         let filteredSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
         let recommendedSectionContentSizes = BehaviorRelay<[CGSize]>(value: [])
         let registeredTagItems = BehaviorRelay<[RegisteredFilterCellViewModel]>(value: [])
+        let refreshEvent = PublishSubject<Void>()
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -246,6 +247,7 @@ final class PoseFeedViewModel {
             .subscribe(onNext: { (owner, _) in
                 guard let coordinator = owner.coordinator else { return }
                 coordinator.loginDelegate?.coordinatorLoginCompleted(childCoordinator: coordinator)
+                output.refreshEvent.onNext(())
             })
             .disposed(by: disposeBag)
         

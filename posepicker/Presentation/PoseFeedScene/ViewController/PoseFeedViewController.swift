@@ -522,6 +522,10 @@ private extension PoseFeedViewController {
             }
             .disposed(by: disposeBag)
         
-        
+        output.refreshEvent
+            .subscribe(onNext: { [weak self] in
+                self?.viewDidLoadEvent.onNext(())
+            })
+            .disposed(by: disposeBag)
     }
 }
