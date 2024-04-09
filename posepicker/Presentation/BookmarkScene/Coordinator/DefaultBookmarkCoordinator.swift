@@ -63,8 +63,11 @@ final class DefaultBookmarkCoordinator: BookmarkCoordinator {
     }
 
     func dismissPoseDetail(tag: String) {
-//        self.navigationController.dismiss(animated: true)
-//        self.bookmarkViewController.dismissPoseDetailEvent
-//            .onNext(RegisteredFilterCellViewModel(title: tag))
+        self.navigationController.dismiss(animated: true)
+        bookmarkBindingDelegate?.coordinatorBookmarkSetAndDismissed(
+            childCoordinator: self,
+            tag: tag
+        )
+        self.navigationController.popViewController(animated: true)
     }
 }
