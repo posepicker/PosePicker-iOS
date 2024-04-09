@@ -10,6 +10,8 @@ import UIKit
 final class DefaultBookmarkCoordinator: BookmarkCoordinator {
     weak var loginDelegate: CoordinatorLoginDelegate?
     weak var finishDelegate: CoordinatorFinishDelegate?
+    weak var bookmarkBindingDelegate: CoordinatorBookmarkBindingDelegate?
+    
     var navigationController: UINavigationController
     var bookmarkViewController: BookMarkViewController
     var childCoordinators: [Coordinator] = []
