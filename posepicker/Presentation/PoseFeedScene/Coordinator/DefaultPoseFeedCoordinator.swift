@@ -159,6 +159,16 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
         self.posefeedViewController.dismissPoseDetailEvent
             .onNext(RegisteredFilterCellViewModel(title: tag))
     }
+    
+    func presentPoseUploadGuideline() {
+        let navigationVC = UINavigationController()
+        navigationVC.modalTransitionStyle = .crossDissolve
+        navigationVC.modalPresentationStyle = .overFullScreen
+        
+        let myposeCoordinator = DefaultMyPoseCoordinator(self.navigationController)
+        self.childCoordinators.append(myposeCoordinator)
+        myposeCoordinator.start()
+    }
 }
 
 extension DefaultPoseFeedCoordinator: CoordinatorFinishDelegate {
@@ -182,12 +192,5 @@ extension DefaultPoseFeedCoordinator: CoordinatorBookmarkBindingDelegate {
         if childCoordinator.type == .bookmark {
             posefeedViewController.dismissPoseDetailEvent.onNext(RegisteredFilterCellViewModel(title: tag))
         }
-    }
-    
-    func presentPoseUploadGuideline() {
-        let guidelineView = MyPoseGuidelineViewController()
-        guidelineView.modalTransitionStyle = .crossDissolve
-        guidelineView.modalPresentationStyle = .overFullScreen
-        self.navigationController.present(guidelineView, animated: true)
     }
 }
