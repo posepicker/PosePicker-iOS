@@ -10,16 +10,31 @@ import UIKit
 final class DefaultMyPoseCoordinator: MyPoseCoordinator {
     weak var finishDelegate: CoordinatorFinishDelegate?
     var navigationController: UINavigationController
-    var bookmarkViewController: BookMarkViewController
+    var myPoseGuidelineViewController: MyPoseGuidelineViewController
     var childCoordinators: [Coordinator] = []
-    var type: CoordinatorType = .bookmark
+    var type: CoordinatorType = .mypose
     
     required init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
-        self.bookmarkViewController = BookMarkViewController()
+        self.myPoseGuidelineViewController = MyPoseGuidelineViewController()
     }
     
     func start() {
-        let myposeViewController = MyPoseViewController(registeredImage: nil)
+        myPoseGuidelineViewController.viewModel = MyPoseGuidelineViewModel(coordinator: self)
+        
+        myPoseGuidelineViewController.modalTransitionStyle = .crossDissolve
+        myPoseGuidelineViewController.modalPresentationStyle = .overFullScreen
+        
+        self.navigationController.present(myPoseGuidelineViewController, animated: true)
+    }
+    
+    func pushGuideline() {
+        let webview: WebViewList = .serviceInformation
+        let guidelineView = MypageWebViewController(
+            urlString: webview.rawValue,
+            pageTitle: "가이드라인"
+        )
+        
+        self.navigationController.presentedViewController?.present(guidelineView, animated: true)
     }
 }
