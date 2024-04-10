@@ -144,44 +144,11 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
         
         if let email = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
             emailLabel.text = email
-            adjustLoginUI(isLoggedIn: true)
         } else {
             emailLabel.text = ""
-            adjustLoginUI(isLoggedIn: false)
         }
         
-        
-        loginButton.rx.tap.asDriver()
-            .drive(onNext: { [unowned self] in
-                
-                let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
-                popUpVC.modalTransitionStyle = .crossDissolve
-                popUpVC.modalPresentationStyle = .overFullScreen
-                self.present(popUpVC, animated: true)
-                
-//                popUpVC.appleIdentityToken
-//                    .compactMap { $0 }
-//                    .subscribe(onNext: { [unowned self] in
-//                        self.appleIdentityTokenTrigger.onNext($0)
-//                    })
-//                    .disposed(by: self.disposeBag)
-//                
-//                popUpVC.email
-//                    .compactMap { $0 }
-//                    .subscribe(onNext: { [unowned self] in
-//                        self.kakaoEmailTrigger.onNext($0)
-//                    })
-//                    .disposed(by: disposeBag)
-//                
-//                popUpVC.kakaoId
-//                    .compactMap { $0 }
-//                    .subscribe(onNext: { [unowned self] in
-//                        self.kakaoIdTrigger.onNext($0)
-//                    })
-//                    .disposed(by: disposeBag)
-                
-            })
-            .disposed(by: disposeBag)
+        adjustLoginUI(isLoggedIn: UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn))
         
 //        serviceUsageInquiryButton.rx.tap.asDriver()
 //            .drive(onNext: { [unowned self] in
@@ -403,11 +370,13 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             serviceInquiryButtonTapEvent: serviceUsageInquiryButton.rx.tap.asObservable(),
             serviceInformationButtonTapEvent: serviceInformationButton.rx.tap.asObservable(),
             privacyInformationButtonTapEvent: privacyInformationButton.rx.tap.asObservable(),
-            logoutButtonTapEventTapEvent: logoutButton.rx.tap.asObservable(),
-            signoutButtonTapEventTapEvent: signoutButton.rx.tap.asObservable()
+            logoutButtonTapEvent: logoutButton.rx.tap.asObservable(),
+            signoutButtonTapEvent: signoutButton.rx.tap.asObservable(),
+            loginButtonTapEvent: loginButton.rx.tap.asObservable()
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        configureOutput(output)
 //        let input = MyPageViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), logoutButtonTapped: logoutTrigger, revokeButtonTapped: revokeTrigger)
 //        let output = viewModel.transform(input: input)
 //        
@@ -552,5 +521,26 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
     @objc
     func backButtonTapped() {
         navigationController?.popViewController(animated: true)
+    }
+}
+
+private extension MyPageViewController {
+    func configureOutput(_ output: MyPageViewModel.Output?) {
+        output?.refreshLoginState
+            .asDriver(onErrorJustReturn: false)
+            .drive(onNext: { [weak self] in
+                self?.adjustLoginUI(isLoggedIn: $0)
+                
+                if let email = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
+                    self?.emailLabel.text = email
+                }
+                
+                if $0 {
+                    // 로그인 완료 토스트 띄우기
+                } else {
+                    // 로그아웃 토스트 띄우기
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }
