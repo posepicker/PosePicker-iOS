@@ -78,7 +78,7 @@ final class DefaultMyPageCoordinator: MyPageCoordinator {
     }
     
     func presentLogoutPopup(disposeBag: DisposeBag) -> Observable<LoginPopUpView.SocialLogin?> {
-        let loginConfirmed = BehaviorRelay<LoginPopUpView.SocialLogin?>(value: nil)
+        let logoutConfirmed = BehaviorRelay<LoginPopUpView.SocialLogin?>(value: nil)
         
         let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: true, isLabelNeeded: true)
         popupViewController.modalTransitionStyle = .crossDissolve
@@ -102,15 +102,68 @@ final class DefaultMyPageCoordinator: MyPageCoordinator {
                 guard let self = self else { return }
                 if let socialLogin = UserDefaults.standard.string(forKey: K.SocialLogin.socialLogin),
                    socialLogin == K.SocialLogin.kakao {
-                    loginConfirmed.accept(.kakao)
+                    logoutConfirmed.accept(.kakao)
                 } else {
-                    loginConfirmed.accept(.apple)
+                    logoutConfirmed.accept(.apple)
                 }
                 self.loginDelegate?.coordinatorLoginCompleted(childCoordinator: self)
             })
             .disposed(by: disposeBag)
 
         self.navigationController.present(popupViewController, animated: true)
-        return loginConfirmed.asObservable()
+        return logoutConfirmed.asObservable()
+    }
+    
+    func pushRevokeQuestionView() {
+        let revokeVC = UserRevokeViewController()
+        revokeVC.viewModel = UserRevokeViewModel(
+            coordinator: self,
+            commonUseCase: DefaultCommonUseCase(
+                userRepository: DefaultUserRepository(
+                    networkService: DefaultNetworkService(),
+                    keychainService: DefaultKeychainService()
+                )
+            )
+        )
+        self.navigationController.pushViewController(revokeVC, animated: true)
+    }
+    
+    func presentRevokeConfirmPopup(disposeBag: DisposeBag) -> Observable<LoginPopUpView.SocialLogin?> {
+        let revokeConfirmed = BehaviorRelay<LoginPopUpView.SocialLogin?>(value: nil)
+        
+        let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: true, isLabelNeeded: true, isSignout: true)
+        popupViewController.modalTransitionStyle = .crossDissolve
+        popupViewController.modalPresentationStyle = .overFullScreen
+        let popupView = popupViewController.popUpView as! PopUpView
+        popupView.alertMainLabel.text = "서비스 탈퇴"
+        popupView.alertText.accept("탈퇴시 올려주신 포즈는\n자동으로 삭제되지 않습니다.\n정말 탈퇴하시겠어요?")
+        popupView.confirmButton.setTitle("탈퇴", for: .normal)
+        popupView.cancelButton.setTitle("취소", for: .normal)
+
+        popupView.confirmButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                if let socialLogin = UserDefaults.standard.string(forKey: K.SocialLogin.socialLogin),
+                   socialLogin == K.SocialLogin.kakao {
+                    revokeConfirmed.accept(.kakao)
+                } else {
+                    revokeConfirmed.accept(.apple)
+                }
+            })
+            .disposed(by: disposeBag)
+
+        popupView.cancelButton.rx.tap.asDriver()
+            .drive(onNext: { [weak self] in
+                self?.navigationController.dismiss(animated: true)
+            })
+            .disposed(by: disposeBag)
+
+        self.navigationController.present(popupViewController, animated: true)
+        
+        return revokeConfirmed.asObservable()
+    }
+    
+    func popRevokeView() {
+        self.navigationController.popViewController(animated: true)
     }
 }
