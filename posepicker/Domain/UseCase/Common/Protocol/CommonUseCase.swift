@@ -14,5 +14,5 @@ protocol CommonUseCase {
     func loginWithKakao()
     func loginWithApple(idToken: String)
     func logout(with: LoginPopUpView.SocialLogin)
-    func revoke()
+    func revoke(with: LoginPopUpView.SocialLogin, reason: String)
 }
