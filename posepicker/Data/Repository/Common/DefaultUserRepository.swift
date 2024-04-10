@@ -87,7 +87,7 @@ final class DefaultUserRepository: UserRepository {
             }
     }
     
-    func logout(accessToken: String, refreshToken: String) -> Observable<MeaninglessResponse> {
+    func logout(accessToken: String, refreshToken: String) -> Observable<LogoutResponse> {
         networkService.requestSingle(
             .logout(
                 accessToken: accessToken,
@@ -96,7 +96,7 @@ final class DefaultUserRepository: UserRepository {
             .flatMapLatest { response in
                 UserDefaults.standard.setValue(false, forKey: K.SocialLogin.isLoggedIn)
                 UserDefaults.standard.removeObject(forKey: K.SocialLogin.socialLogin)
-                return BehaviorRelay<MeaninglessResponse>(value: response).asObservable()
+                return BehaviorRelay<LogoutResponse>(value: response).asObservable()
             }
     }
     
