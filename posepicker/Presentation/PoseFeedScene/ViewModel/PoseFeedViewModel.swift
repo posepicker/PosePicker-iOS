@@ -54,6 +54,10 @@ final class PoseFeedViewModel {
             .subscribe(onNext: { [weak self] in
                 output.isLoading.accept(true)
                 currentPage.accept(0)
+                apiRequestParameters.accept(["전체", "전체"])
+                output.filteredSectionContentSizes.accept([])
+                output.recommendedSectionContentSizes.accept([])
+                output.registeredTagItems.accept([])
                 self?.posefeedUseCase.fetchFeedContents(peopleCount: apiRequestParameters.value[0], frameCount: apiRequestParameters.value[1], filterTags: [], pageNumber: 0)
             })
             .disposed(by: disposeBag)
