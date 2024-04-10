@@ -261,7 +261,8 @@ class PoseFeedViewController: BaseViewController {
             filterTagTapEvent: filterCollectionView.rx.modelSelected(RegisteredFilterCellViewModel.self).asObservable(),
             posefeedPhotoCellTapEvent: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self).asObservable(),
             dismissPoseDetailEvent: dismissPoseDetailEvent,
-            bookmarkBindingEvent: bookmarkBindingEvent
+            bookmarkBindingEvent: bookmarkBindingEvent,
+            poseUploadButtonTapEvent: poseUploadButton.rx.tap.asObservable()
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
