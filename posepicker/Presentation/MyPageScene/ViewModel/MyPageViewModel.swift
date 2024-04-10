@@ -113,6 +113,12 @@ final class MyPageViewModel {
             })
             .disposed(by: disposeBag)
         
+        input.signoutButtonTapEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.pushRevokeQuestionView()
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
 }
