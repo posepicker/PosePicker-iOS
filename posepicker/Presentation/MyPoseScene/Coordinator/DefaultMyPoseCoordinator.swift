@@ -37,4 +37,14 @@ final class DefaultMyPoseCoordinator: MyPoseCoordinator {
         
         self.navigationController.presentedViewController?.present(guidelineView, animated: true)
     }
+    
+    func presentImageLoadFailedPopup() {
+        // 이미지를 불러오는데 실패
+        let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: false)
+        popupViewController.modalTransitionStyle = .crossDissolve
+        popupViewController.modalPresentationStyle = .overFullScreen
+        let popupView = popupViewController.popUpView as! PopUpView
+        popupView.alertText.accept("이미지를 불러오는 데 실패했습니다.")
+        self.navigationController.presentedViewController?.present(popupViewController, animated: true)
+    }
 }

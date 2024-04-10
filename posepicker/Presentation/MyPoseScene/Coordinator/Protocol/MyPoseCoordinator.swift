@@ -9,4 +9,5 @@ import Foundation
 
 protocol MyPoseCoordinator: Coordinator {
     func pushGuideline()
+    func presentImageLoadFailedPopup()
 }
