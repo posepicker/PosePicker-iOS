@@ -115,8 +115,7 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Properties
     var viewModel: MyPageViewModel?
-//    var coordinator: RootCoordinator
-    
+
     let appleIdentityTokenTrigger = PublishSubject<String>()
     let kakaoEmailTrigger = PublishSubject<String>()
     let kakaoIdTrigger = PublishSubject<Int64>()
@@ -149,109 +148,6 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
         }
         
         adjustLoginUI(isLoggedIn: UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn))
-        
-//        serviceUsageInquiryButton.rx.tap.asDriver()
-//            .drive(onNext: { [unowned self] in
-//                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: true)
-//                popupViewController.modalTransitionStyle = .crossDissolve
-//                popupViewController.modalPresentationStyle = .overFullScreen
-//                let popupView = popupViewController.popUpView as! PopUpView
-//                popupView.alertText.accept("문의사항을 남기시겠습니까?")
-//                
-//                popupView.confirmButton.rx.tap.asDriver()
-//                    .drive(onNext: { [weak self] in
-////                        self?.coordinator.pushWebView(urlString: "https://litt.ly/posepicker", pageTitle: "문의하기")
-//                        popupViewController.dismiss(animated: true)
-//                    })
-//                    .disposed(by: self.disposeBag)
-//                
-//                popupView.cancelButton.rx.tap.asDriver()
-//                    .drive(onNext: {
-//                        popupViewController.dismiss(animated: true)
-//                    })
-//                    .disposed(by: self.disposeBag)
-//                
-//                self.present(popupViewController, animated: true)
-//            })
-//            .disposed(by: disposeBag)
-        
-//        noticeButton.rx.tap.asDriver()
-//            .drive(onNext: { [weak self] in
-////                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/fde248040bed45f68fbfa3004e2c4856", pageTitle: "공지사항")
-//            })
-//            .disposed(by: disposeBag)
-        
-//        faqButton.rx.tap.asDriver()
-//            .drive(onNext: { [weak self] in
-////                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/cc71decc2e534ae6abb195bb10a501c0", pageTitle: "자주 묻는 질문")
-//            })
-//            .disposed(by: disposeBag)
-        
-//        snsButton.rx.tap.asDriver()
-//            .drive(onNext: { [weak self] in
-////                self?.coordinator.pushWebView(urlString: "https://www.instagram.com/posepicker?utm_source=ig_web_button_share_sheet&igsh=ZDNlZDc0MzIxNw==", pageTitle: "포즈피커 공식 SNS")
-//            })
-//            .disposed(by: disposeBag)
-        
-//        serviceInformationButton.rx.tap.asDriver()
-//            .drive(onNext: { [weak self] in
-////                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/3113eb146abb4b5c809070c3f01380da", pageTitle: "이용약관")
-//            })
-//            .disposed(by: disposeBag)
-        
-//        privacyInforationButton.rx.tap.asDriver()
-//            .drive(onNext: { [weak self] in
-////                self?.coordinator.pushWebView(urlString: "https://shineshine.notion.site/75e98a2462824b839a9c37473a6afbd5", pageTitle: "개인정보 처리방침")
-//            })
-//            .disposed(by: disposeBag)
-        
-//        logoutButton.rx.tap.asDriver()
-//            .drive(onNext: { [unowned self] in
-//                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: true, isLabelNeeded: true)
-//                popupViewController.modalTransitionStyle = .crossDissolve
-//                popupViewController.modalPresentationStyle = .overFullScreen
-//                let popupView = popupViewController.popUpView as! PopUpView
-//                popupView.alertMainLabel.text = "로그아웃"
-//                popupView.alertText.accept("북마크는 로그인 시에만 유지되어요.\n정말 로그아웃하시겠어요?")
-//                popupView.confirmButton.setTitle("로그인 유지", for: .normal)
-//                popupView.cancelButton.setTitle("로그아웃", for: .normal)
-//                
-//                popupView.confirmButton.rx.tap.asDriver()
-//                    .drive(onNext: { [weak self] in
-//                        self?.dismiss(animated: true)
-//                    })
-//                    .disposed(by: disposeBag)
-//                
-//                // 현재 로그인된 계정이 카카오인지 모름
-//                // 토큰 삭제는 뷰모델에서 이루어짐
-//                popupView.cancelButton.rx.tap.asDriver()
-//                    .drive(onNext: { [weak self] in
-//                        guard let self = self else { return }
-//                        if let socialLogin = UserDefaults.standard.string(forKey: K.SocialLogin.socialLogin),
-//                           socialLogin == K.SocialLogin.kakao {
-//                            UserApi.shared.rx.logout()
-//                                .subscribe(onCompleted: {
-//                                    print("kakao logout completed")
-//                                })
-//                                .disposed(by: self.disposeBag)
-//                        }
-//
-//                        self.logoutTrigger.onNext(())
-//                        self.loginStateTrigger.onNext(())
-//                        self.dismiss(animated: true)
-//                    })
-//                    .disposed(by: disposeBag)
-//                
-//                self.present(popupViewController, animated: true)
-//            })
-//            .disposed(by: disposeBag)
-        
-//        signoutButton.rx.tap.asDriver()
-//            .drive(onNext: { [unowned self] in
-//                let revokeVC = UserRevokeViewController()
-//                self.navigationController?.pushViewController(revokeVC, animated: true)
-//            })
-//            .disposed(by: disposeBag)
         
         setBottomBorder()
     }
