@@ -227,16 +227,8 @@ extension MyPoseGuidelineViewController: PHPickerViewControllerDelegate {
                         self?.loadingIndicator.isHidden = true
 //                        self?.navigationController?.pushViewController(MyPoseViewController(registeredImage: image as? UIImage), animated: true)
                     } else {
-                        
-                        self?.imageLoadFailedEvent.onNext(())
-                        // 이미지를 불러오는데 실패
-                        let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: false)
-                        popupViewController.modalTransitionStyle = .crossDissolve
-                        popupViewController.modalPresentationStyle = .overFullScreen
-                        let popupView = popupViewController.popUpView as! PopUpView
-                        popupView.alertText.accept("이미지를 불러오는 데 실패했습니다.")
                         self?.loadingIndicator.isHidden = true
-                        self?.present(popupViewController, animated: true)
+                        self?.imageLoadFailedEvent.onNext(())
                     }
                 }
             }
