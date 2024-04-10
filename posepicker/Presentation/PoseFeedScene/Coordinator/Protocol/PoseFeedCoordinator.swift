@@ -18,4 +18,5 @@ protocol PoseFeedCoordinator: Coordinator {
     func presentClipboardCompleted(poseId: Int)
     func moveToExternalApp(url: URL)
     func dismissPoseDetail(tag: String)
+    func presentPoseUploadGuideline()
 }
