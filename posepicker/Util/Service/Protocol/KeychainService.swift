@@ -18,7 +18,7 @@ protocol KeychainService {
 extension KeychainService {
     func saveToken(_ token: Token) {
         save(key: K.Parameters.accessToken, value: token.accessToken, itemClass: .password)
-        save(key: K.Parameters.refreshToken, value: token.accessToken, itemClass: .password)
+        save(key: K.Parameters.refreshToken, value: token.refreshToken, itemClass: .password)
     }
     
     func updateToken(_ token: Token) {
