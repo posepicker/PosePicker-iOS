@@ -67,9 +67,9 @@ class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate 
         RadioButton(title: "기타 입력"),
     ]
     
-    var selectedReason: String = ""
+    private let revokeReason = BehaviorRelay<String>(value: "")
     
-    let loginStateTrigger = PublishSubject<Void>() // 로그인 취소되면 UI 복구목적
+    var viewModel: UserRevokeViewModel?
     
     // MARK: - Functions
     override func render() {
@@ -132,7 +132,7 @@ class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate 
                         self.textView.isHidden = true
                     }
                     
-                    self.selectedReason = self.radioGroup[index].title
+                    self.revokeReason.accept(self.radioGroup[index].title)
                     self.resetButtonUI()
                     self.revokeButton.status.accept(.defaultStatus)
                     button.isCurrent = true
@@ -146,13 +146,23 @@ class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate 
     }
     
     override func bindViewModel() {
+        let input = UserRevokeViewModel.Input(
+            revokeButtonTapEvent: revokeButton.rx.tap.asObservable(),
+            revokeCancelButtonTapEvent: cancelButton.rx.tap.asObservable(),
+            revokeReason: revokeReason
+        )
+        
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        configureOutput(output)
+        
+        
         textView.rx.text.orEmpty
             .scan("") { [weak self] (previous, new) -> String in
                 if new.count > 40 {
-                    self?.selectedReason = previous ?? String(new.prefix(40))
+                    self?.revokeReason.accept(previous ?? String(new.prefix(40)))
                     return previous ?? String(new.prefix(40))
                 } else {
-                    self?.selectedReason = new
+                    self?.revokeReason.accept(new)
                     return new
                 }
             }
@@ -176,54 +186,6 @@ class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate 
                     owner.textView.text = "어떤 점이 당신을 떠나게 만들었나요?"
                     owner.textView.textColor = .iconDisabled
                 }
-            })
-            .disposed(by: disposeBag)
-        
-        revokeButton.rx.tap.asDriver()
-            .drive(onNext: { [unowned self] in
-                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: true, isLabelNeeded: true, isSignout: true)
-                popupViewController.modalTransitionStyle = .crossDissolve
-                popupViewController.modalPresentationStyle = .overFullScreen
-                let popupView = popupViewController.popUpView as! PopUpView
-                popupView.alertMainLabel.text = "서비스 탈퇴"
-                popupView.alertText.accept("탈퇴시 올려주신 포즈는\n자동으로 삭제되지 않습니다.\n정말 탈퇴하시겠어요?")
-                popupView.confirmButton.setTitle("탈퇴", for: .normal)
-                popupView.cancelButton.setTitle("취소", for: .normal)
-
-                popupView.confirmButton.rx.tap.asDriver()
-                    .drive(onNext: { [weak self] in
-                        guard let self = self else { return }
-                        if let socialLogin = UserDefaults.standard.string(forKey: K.SocialLogin.socialLogin),
-                           socialLogin == K.SocialLogin.kakao {
-                            UserApi.shared.rx.unlink()
-                                .subscribe(onCompleted: {
-                                    print("kakao unlink completed")
-                                })
-                                .disposed(by: self.disposeBag)
-                        }
-
-                        guard let mypageVC = self.navigationController?.viewControllers[1] as? MyPageViewController else { return }
-                        popupViewController.dismiss(animated: true)
-                        
-                        self.navigationController?.popViewController(animated: true) {
-                            mypageVC.revokeTrigger.onNext(self.selectedReason)
-                        }
-                    })
-                    .disposed(by: disposeBag)
-
-                popupView.cancelButton.rx.tap.asDriver()
-                    .drive(onNext: { [weak self] in
-                        self?.dismiss(animated: true)
-                    })
-                    .disposed(by: disposeBag)
-
-                self.present(popupViewController, animated: true)
-            })
-            .disposed(by: disposeBag)
-        
-        cancelButton.rx.tap.asDriver()
-            .drive(onNext: { [weak self] in
-                self?.navigationController?.popViewController(animated: true)
             })
             .disposed(by: disposeBag)
     }
@@ -263,5 +225,11 @@ class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate 
             self.buttonGroupStackView.transform = .identity
             self.textView.transform = .identity
         }
+    }
+}
+
+private extension UserRevokeViewController {
+    func configureOutput(_ output: UserRevokeViewModel.Output?) {
+        
     }
 }
