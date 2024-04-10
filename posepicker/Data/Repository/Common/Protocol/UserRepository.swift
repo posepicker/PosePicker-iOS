@@ -30,7 +30,7 @@ protocol UserRepository {
     func logout(
         accessToken: String,        // 액세스 토큰
         refreshToken: String        // 리프레시 토큰
-    ) -> Observable<MeaninglessResponse>
+    ) -> Observable<LogoutResponse>
     
     // MARK: - 탈퇴
     func deleteUserInfo(
