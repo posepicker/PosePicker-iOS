@@ -34,6 +34,14 @@ final class MyPoseGuidelineViewModel {
             })
             .disposed(by: disposeBag)
         
+        input.imageLoadCompletedEvent
+        
+        input.imageLoadFailedEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.presentImageLoadFailedPopup()
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
 }
