@@ -10,6 +10,7 @@ import Foundation
 final class DefaultKeychainService: KeychainService {
     func save(key: String, value: String, itemClass: ItemClass = .password) {
         try? KeychainManager.shared.saveItem(value, itemClass: itemClass, key: key)
+        try? KeychainManager.shared.updateItem(with: value, ofClass: itemClass, key: key)
     }
     
     func update(key: String, value: String, itemClass: ItemClass = .password) {
