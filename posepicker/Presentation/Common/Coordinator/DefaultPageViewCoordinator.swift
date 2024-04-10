@@ -87,6 +87,7 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
     
     func pushMyPage() {
         let mypageCoordinator = DefaultMyPageCoordinator(self.navigationController)
+        mypageCoordinator.loginDelegate = self
         self.childCoordinators.append(mypageCoordinator)
         mypageCoordinator.start()
     }
@@ -173,7 +174,8 @@ extension DefaultPageViewCoordinator: CoordinatorFinishDelegate {
 
 extension DefaultPageViewCoordinator: CoordinatorLoginDelegate {
     func coordinatorLoginRequested(childCoordinator: any Coordinator) -> Observable<LoginPopUpView.SocialLogin> {
-        if childCoordinator.type == .posefeed {
+        if childCoordinator.type == .posefeed ||
+           childCoordinator.type == .mypage {
             return showLoginFlow()
         } else {
             return .empty()
@@ -181,7 +183,8 @@ extension DefaultPageViewCoordinator: CoordinatorLoginDelegate {
     }
     
     func coordinatorLoginCompleted(childCoordinator: any Coordinator) {
-        if childCoordinator.type == .posefeed {
+        if childCoordinator.type == .posefeed ||
+           childCoordinator.type == .mypage {
             self.dismissLoginPopUp()
         }
     }
