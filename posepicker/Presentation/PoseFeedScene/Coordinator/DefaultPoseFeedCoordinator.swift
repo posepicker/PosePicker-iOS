@@ -183,4 +183,11 @@ extension DefaultPoseFeedCoordinator: CoordinatorBookmarkBindingDelegate {
             posefeedViewController.dismissPoseDetailEvent.onNext(RegisteredFilterCellViewModel(title: tag))
         }
     }
+    
+    func presentPoseUploadGuideline() {
+        let guidelineView = MyPoseGuidelineViewController()
+        guidelineView.modalTransitionStyle = .crossDissolve
+        guidelineView.modalPresentationStyle = .overFullScreen
+        self.navigationController.present(guidelineView, animated: true)
+    }
 }
