@@ -5,9 +5,10 @@
 //  Created by 박경준 on 4/10/24.
 //
 
-import Foundation
+import UIKit
 
 protocol MyPoseCoordinator: Coordinator {
     func pushGuideline()
     func presentImageLoadFailedPopup()
+    func pushMyPoseView(image: UIImage?)
 }
