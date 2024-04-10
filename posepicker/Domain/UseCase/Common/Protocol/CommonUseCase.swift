@@ -13,4 +13,6 @@ protocol CommonUseCase {
     
     func loginWithKakao()
     func loginWithApple(idToken: String)
+    func logout(with: LoginPopUpView.SocialLogin)
+    func revoke()
 }

@@ -7,6 +7,10 @@
 
 import Foundation
 import RxSwift
+import KakaoSDKAuth
+import KakaoSDKUser
+import KakaoSDKCommon
+import RxKakaoSDKUser
 
 final class DefaultCommonUseCase: CommonUseCase {
     private let userRepository: UserRepository
@@ -37,5 +41,29 @@ final class DefaultCommonUseCase: CommonUseCase {
             .disposed(by: disposeBag)
     }
     
+    func logout(with: LoginPopUpView.SocialLogin) {
+        guard let accessToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.accessToken),
+              let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.refreshToken) else {
+            return
+        }
+        userRepository.logout(accessToken: accessToken, refreshToken: refreshToken)
+            .subscribe(onNext: { [weak self] in
+                if $0.status >= 200 && $0.status <= 300 {
+                    self?.loginCompleted.onNext(())
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        if with == .kakao {
+            UserApi.shared.rx.logout()
+                .subscribe(onCompleted: {
+                    print("kakao logout completed")
+                })
+                .disposed(by: disposeBag)
+        }
+    }
     
+    func revoke() {
+        
+    }
 }
