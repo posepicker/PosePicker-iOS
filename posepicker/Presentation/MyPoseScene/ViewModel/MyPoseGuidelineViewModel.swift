@@ -35,6 +35,10 @@ final class MyPoseGuidelineViewModel {
             .disposed(by: disposeBag)
         
         input.imageLoadCompletedEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.pushMyPoseView(image: $0)
+            })
+            .disposed(by: disposeBag)
         
         input.imageLoadFailedEvent
             .subscribe(onNext: { [weak self] in
