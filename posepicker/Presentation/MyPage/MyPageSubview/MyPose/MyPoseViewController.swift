@@ -92,7 +92,7 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
     override func configUI() {
         view.backgroundColor = .bgWhite
         
-        let backButton = UIBarButtonItem(image: ImageLiteral.imgArrowBack24.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(backButtonTapped))
+        let backButton = UIBarButtonItem(image: ImageLiteral.imgClose24.withRenderingMode(.alwaysOriginal), style: .plain, target: self, action: #selector(backButtonTapped))
         self.navigationItem.leftBarButtonItem = backButton
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         
@@ -273,7 +273,7 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
     // MARK: - Objc Functions
     @objc
     func backButtonTapped() {
-        navigationController?.popViewController(animated: true)
+        self.dismiss(animated: true)
     }
 }
 
