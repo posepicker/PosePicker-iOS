@@ -7,6 +7,7 @@
 
 import UIKit
 import PhotosUI
+import RxSwift
 
 class MyPoseGuidelineViewController: BaseViewController {
     
@@ -85,6 +86,12 @@ class MyPoseGuidelineViewController: BaseViewController {
             $0.isHidden = true
             $0.color = .mainViolet
         }
+    
+    // MARK: - Properties
+    var viewModel: MyPoseGuidelineViewModel?
+    
+    private let imageLoadCompletedEvent = PublishSubject<UIImage?>()
+    private let imageLoadFailedEvent = PublishSubject<Void>()
     
     // MARK: - Functions
     override func render() {
@@ -184,6 +191,15 @@ class MyPoseGuidelineViewController: BaseViewController {
             .disposed(by: disposeBag)
     }
     
+    override func bindViewModel() {
+        let input = MyPoseGuidelineViewModel.Input(
+            guidelineCheckButtonTapEvent: guidelineCheckButton.rx.tap.asObservable(),
+            imageLoadCompletedEvent: imageLoadCompletedEvent,
+            imageLoadFailedEvent: imageLoadFailedEvent
+        )
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         let touch = touches.first!
         let location = touch.location(in: self.view)
@@ -206,11 +222,13 @@ extension MyPoseGuidelineViewController: PHPickerViewControllerDelegate {
            itemProvider.canLoadObject(ofClass: UIImage.self) {
             itemProvider.loadObject(ofClass: UIImage.self) { image, error in
                 DispatchQueue.main.async { [weak self] in
-                    if let image = image {
+                    if let image = image as? UIImage {
+                        self?.imageLoadCompletedEvent.onNext(image)
                         self?.loadingIndicator.isHidden = true
-                        self?.navigationController?.pushViewController(MyPoseViewController(registeredImage: image as? UIImage), animated: true)
+//                        self?.navigationController?.pushViewController(MyPoseViewController(registeredImage: image as? UIImage), animated: true)
                     } else {
                         
+                        self?.imageLoadFailedEvent.onNext(())
                         // 이미지를 불러오는데 실패
                         let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: false)
                         popupViewController.modalTransitionStyle = .crossDissolve
