@@ -12,4 +12,7 @@ protocol MyPageCoordinator: Coordinator {
     var loginDelegate: CoordinatorLoginDelegate? { get set }
     func pushWebView(webView: WebViewList)
     func presentLogoutPopup(disposeBag: DisposeBag) -> Observable<LoginPopUpView.SocialLogin?>
+    func pushRevokeQuestionView()
+    func presentRevokeConfirmPopup(disposeBag: DisposeBag) -> Observable<LoginPopUpView.SocialLogin?>
+    func popRevokeView()
 }
