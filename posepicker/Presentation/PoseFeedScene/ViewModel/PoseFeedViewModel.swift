@@ -30,6 +30,7 @@ final class PoseFeedViewModel {
         let posefeedPhotoCellTapEvent: Observable<PoseFeedPhotoCellViewModel>
         let dismissPoseDetailEvent: Observable<RegisteredFilterCellViewModel>
         let bookmarkBindingEvent: Observable<Int>
+        let poseUploadButtonTapEvent: Observable<Void>
     }
     
     struct Output {
@@ -272,6 +273,27 @@ final class PoseFeedViewModel {
                     $0.poseId.value == poseId
                 }) {
                     viewModel.bookmarkCheck.accept(!viewModel.bookmarkCheck.value)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        input.poseUploadButtonTapEvent
+            .subscribe(onNext: { [weak self] in
+                if UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn) {
+                    self?.coordinator?.presentPoseUploadGuideline()
+                } else {
+                    guard let coordinator = self?.coordinator else { return }
+                    coordinator.loginDelegate?.coordinatorLoginRequested(childCoordinator: coordinator)
+                        .subscribe(onNext: { [weak self] in
+                            switch $0 {
+                            case .apple:
+                                guard let idToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.idToken) else { return }
+                                self?.commonUseCase.loginWithApple(idToken: idToken)
+                            case .kakao:
+                                self?.commonUseCase.loginWithKakao()
+                            }
+                        })
+                        .disposed(by: disposeBag)
                 }
             })
             .disposed(by: disposeBag)
