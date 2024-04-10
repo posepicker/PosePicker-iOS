@@ -234,6 +234,7 @@
 		C9FD21042BC624B700C23E25 /* UserRevokeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD21032BC624B700C23E25 /* UserRevokeViewModel.swift */; };
 		C9FD21092BC6C70700C23E25 /* DefaultMyPoseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD21082BC6C70600C23E25 /* DefaultMyPoseCoordinator.swift */; };
 		C9FD210B2BC6C71100C23E25 /* MyPoseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD210A2BC6C71100C23E25 /* MyPoseCoordinator.swift */; };
+		C9FD210F2BC6DACB00C23E25 /* MyPoseGuidelineViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD210E2BC6DACB00C23E25 /* MyPoseGuidelineViewModel.swift */; };
 		C9FDBDEC2B2835E10045AA54 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9FDBDEB2B2835E10045AA54 /* RxSwift */; };
 		C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */; };
 		C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */; };
@@ -471,6 +472,7 @@
 		C9FD21032BC624B700C23E25 /* UserRevokeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRevokeViewModel.swift; sourceTree = "<group>"; };
 		C9FD21082BC6C70600C23E25 /* DefaultMyPoseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMyPoseCoordinator.swift; sourceTree = "<group>"; };
 		C9FD210A2BC6C71100C23E25 /* MyPoseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseCoordinator.swift; sourceTree = "<group>"; };
+		C9FD210E2BC6DACB00C23E25 /* MyPoseGuidelineViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseGuidelineViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkResponse.swift; sourceTree = "<group>"; };
 		C9FDBDF52B28AE140045AA54 /* BookmarkDetailTagCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailTagCellViewModel.swift; sourceTree = "<group>"; };
@@ -1163,7 +1165,6 @@
 				C91A26652B88517700F1193E /* MyPosePages */,
 				C95DD3752B8710B1005ACE84 /* MyPoseViewModel.swift */,
 				C95DD3772B8710BF005ACE84 /* MyPoseViewController.swift */,
-				C95DD3792B8711F4005ACE84 /* MyPoseGuidelineViewController.swift */,
 				C91A265E2B8788F900F1193E /* MyPoseCoordinatortest.swift */,
 			);
 			path = MyPose;
@@ -2079,6 +2080,8 @@
 			isa = PBXGroup;
 			children = (
 				C9FD21062BC6C6E600C23E25 /* Coordinator */,
+				C9FD210C2BC6DA5200C23E25 /* ViewController */,
+				C9FD210D2BC6DAA600C23E25 /* ViewModel */,
 			);
 			path = MyPoseScene;
 			sourceTree = "<group>";
@@ -2098,6 +2101,22 @@
 				C9FD210A2BC6C71100C23E25 /* MyPoseCoordinator.swift */,
 			);
 			path = Protocol;
+			sourceTree = "<group>";
+		};
+		C9FD210C2BC6DA5200C23E25 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+				C95DD3792B8711F4005ACE84 /* MyPoseGuidelineViewController.swift */,
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		C9FD210D2BC6DAA600C23E25 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+				C9FD210E2BC6DACB00C23E25 /* MyPoseGuidelineViewModel.swift */,
+			);
+			path = ViewModel;
 			sourceTree = "<group>";
 		};
 		C9FDBDF32B28ADD50045AA54 /* BookmarkDetail */ = {
@@ -2519,6 +2538,7 @@
 				C94FD28D2AE39646003777EB /* BookmarkViewModeltest.swift in Sources */,
 				C9DC2FAA2AECAD4500D5170D /* RegisteredFilterCellViewModel.swift in Sources */,
 				C9042E6B2B0D7CB000BB4182 /* LoginPopUpView.swift in Sources */,
+				C9FD210F2BC6DACB00C23E25 /* MyPoseGuidelineViewModel.swift in Sources */,
 				C9C890A02AE109610010240A /* User.swift in Sources */,
 				C9DC2FA32AEA564D00D5170D /* UIScreen+.swift in Sources */,
 				C91FF3582BAB275A00096E25 /* DefaultNetworkService.swift in Sources */,
