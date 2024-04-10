@@ -491,7 +491,7 @@ private extension PoseFeedViewController {
             .asDriver(onErrorJustReturn: false)
             .drive(onNext: { [weak self] in
                 if $0 {
-                    self?.poseFeedCollectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: true)
+                    self?.poseFeedCollectionView.setContentOffset(CGPoint(x: 0, y: 0), animated: false)
                 }
             })
             .disposed(by: disposeBag)
