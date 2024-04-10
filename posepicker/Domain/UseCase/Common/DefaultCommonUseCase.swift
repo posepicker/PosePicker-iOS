@@ -63,7 +63,31 @@ final class DefaultCommonUseCase: CommonUseCase {
         }
     }
     
-    func revoke() {
+    
+    func revoke(with: LoginPopUpView.SocialLogin, reason: String) {
+        guard let accessToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.accessToken),
+              let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.refreshToken) else {
+            return
+        }
         
+        userRepository.deleteUserInfo(
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+            withdrawalReason: reason
+        )
+        .subscribe(onNext: { [weak self] in
+            if $0.status >= 200 && $0.status <= 300 {
+                self?.loginCompleted.onNext(())
+            }
+        })
+        .disposed(by: disposeBag)
+        
+        if with == .kakao {
+            UserApi.shared.rx.unlink()
+                .subscribe(onCompleted: {
+                    print("카카오 탈퇴 완료")
+                })
+                .disposed(by: disposeBag)
+        }
     }
 }
