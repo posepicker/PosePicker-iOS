@@ -47,4 +47,11 @@ final class DefaultMyPoseCoordinator: MyPoseCoordinator {
         popupView.alertText.accept("이미지를 불러오는 데 실패했습니다.")
         self.navigationController.presentedViewController?.present(popupViewController, animated: true)
     }
+    
+    func pushMyPoseView(image: UIImage?) {
+        let myposeViewController = MyPoseViewController(registeredImage: image)
+        let navigationController = UINavigationController(rootViewController: myposeViewController)
+        navigationController.modalPresentationStyle = .overFullScreen
+        self.navigationController.presentedViewController?.present(navigationController, animated: true)
+    }
 }
