@@ -225,7 +225,6 @@ extension MyPoseGuidelineViewController: PHPickerViewControllerDelegate {
                     if let image = image as? UIImage {
                         self?.imageLoadCompletedEvent.onNext(image)
                         self?.loadingIndicator.isHidden = true
-//                        self?.navigationController?.pushViewController(MyPoseViewController(registeredImage: image as? UIImage), animated: true)
                     } else {
                         self?.loadingIndicator.isHidden = true
                         self?.imageLoadFailedEvent.onNext(())
