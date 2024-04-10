@@ -186,6 +186,15 @@ extension DefaultPageViewCoordinator: CoordinatorLoginDelegate {
         if childCoordinator.type == .posefeed ||
            childCoordinator.type == .mypage {
             self.dismissLoginPopUp()
+            
+            if let posefeedCoordinator = self.findCoordinator(type: .posefeed) as? DefaultPoseFeedCoordinator {
+                
+                if !UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn) {
+                    KeychainManager.shared.removeAll()
+                }
+                
+                posefeedCoordinator.posefeedViewController.viewDidLoadEvent.onNext(())
+            }
         }
     }
 }
