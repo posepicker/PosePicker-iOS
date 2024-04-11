@@ -114,49 +114,6 @@ class CommonViewController: BaseViewController {
                 self?.segmentControl.updateUnderlineViewWidth()
             })
             .disposed(by: self.disposeBag)
-        
-//        header.menuButton.rx.tap.asDriver()
-//            .drive(onNext: { [weak self] in
-//                self.coordinator.push(page: .myPage)
-//            })
-//            .disposed(by: disposeBag)
-        
-        header.bookMarkButton.rx.tap.asDriver()
-            .drive(onNext: { [unowned self] in
-                /// 로그인 되어 있으면 coordinator.push
-                /// 로그인 되어 있지 않으면 로그인뷰 팝업
-//                if AppCoordinator.loginState {
-//                    self.coordinator.push(page: .bookmark)
-//                } else {
-//                    let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
-//                    popUpVC.modalTransitionStyle = .crossDissolve
-//                    popUpVC.modalPresentationStyle = .overFullScreen
-//                    self.present(popUpVC, animated: true)
-//                    
-//                    // 토큰 세팅
-//                    popUpVC.appleIdentityToken
-//                        .compactMap { $0 }
-//                        .subscribe(onNext: { [unowned self] in
-//                            self.appleIdentityTokenTrigger.onNext($0)
-//                        })
-//                        .disposed(by: self.disposeBag)
-//                    
-//                    popUpVC.email
-//                        .compactMap { $0 }
-//                        .subscribe(onNext: { [unowned self] in
-//                            self.kakaoEmailTrigger.onNext($0)
-//                        })
-//                        .disposed(by: disposeBag)
-//                    
-//                    popUpVC.kakaoId
-//                        .compactMap { $0 }
-//                        .subscribe(onNext: { [unowned self] in
-//                            self.kakaoIdTrigger.onNext($0)
-//                        })
-//                        .disposed(by: disposeBag)
-//                }
-            })
-            .disposed(by: disposeBag)
     }
     
     override func bindViewModel() {
@@ -168,19 +125,6 @@ class CommonViewController: BaseViewController {
         )
         let output = self.viewModel?.transform(from: input, disposeBag: disposeBag)
         configureOutput(output)
-        
-//        let input = RootViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger))
-//        
-//        let output = viewModel.transform(input: input)
-//
-//        output.dismissLoginView
-//            .subscribe(onNext: { [unowned self] in
-//                guard let popupVC = self.presentedViewController as? PopUpViewController,
-//                      let _ = popupVC.popUpView as? LoginPopUpView else { return }
-//                self.loginCompletedTrigger.onNext(())
-//                self.dismiss(animated: true)
-//            })
-//            .disposed(by: disposeBag)
     }
 }
 
