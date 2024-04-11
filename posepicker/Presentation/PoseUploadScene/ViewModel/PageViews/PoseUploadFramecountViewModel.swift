@@ -18,6 +18,7 @@ final class PoseUploadFramecountViewModel {
     struct Input {
         let nextButtonTapEvent: Observable<Void>
         let expandButtonTapEvent: Observable<(CGPoint, UIImage?)>
+        let selectedFrameCount: Observable<String>
     }
     
     struct Output {
@@ -36,6 +37,12 @@ final class PoseUploadFramecountViewModel {
         input.expandButtonTapEvent
             .subscribe(onNext: { [weak self] (origin, image) in
                 self?.coordinator?.presentImageExpand(origin: origin, image: image)
+            })
+            .disposed(by: disposeBag)
+        
+        input.selectedFrameCount
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.framecount.accept($0)
             })
             .disposed(by: disposeBag)
         
