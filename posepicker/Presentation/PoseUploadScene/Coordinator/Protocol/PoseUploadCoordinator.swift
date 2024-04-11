@@ -8,14 +8,14 @@
 import UIKit
 
 protocol PoseUploadCoordinator: Coordinator {
-    var pageViewController: UIPageViewController? { get set }
+    var pageViewController: UIPageViewController { get set }
     func pushGuideline()
     func presentImageLoadFailedPopup()
     func pushPoseUploadView(image: UIImage?)
 
-    func selectPage(_ page: PageViewType)
+    func selectPage(_ page: PoseUploadPages)
     func setSelectedIndex(_ index: Int)
-    func currentPage() -> PageViewType?
+    func currentPage() -> PoseUploadPages?
     func viewControllerBefore() -> UIViewController?
     func viewControllerAfter() -> UIViewController?
 }
