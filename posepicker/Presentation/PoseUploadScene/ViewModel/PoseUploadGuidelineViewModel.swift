@@ -36,7 +36,7 @@ final class MyPoseGuidelineViewModel {
         
         input.imageLoadCompletedEvent
             .subscribe(onNext: { [weak self] in
-                self?.coordinator?.pushMyPoseView(image: $0)
+                self?.coordinator?.pushPoseUploadView(image: $0)
             })
             .disposed(by: disposeBag)
         
