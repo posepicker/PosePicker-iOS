@@ -11,7 +11,7 @@ import Alamofire
 import RxSwift
 import RxCocoa
 
-class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
+class PoseUploadViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Subviews
     
@@ -60,7 +60,7 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     var apiSession: APIService = APISession()
     
-    
+    var viewModel: PoseUploadViewModel?
     
     // MARK: - Initialization
     init(registeredImage: UIImage?) {
@@ -279,7 +279,7 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
     }
 }
 
-extension MyPoseViewController: UIPageViewControllerDelegate {
+extension PoseUploadViewController: UIPageViewControllerDelegate {
     func pageViewController(
         _ pageViewController: UIPageViewController,
         didFinishAnimating finished: Bool,
@@ -298,7 +298,7 @@ extension MyPoseViewController: UIPageViewControllerDelegate {
     }
 }
 
-extension MyPoseViewController: UIPageViewControllerDataSource {
+extension PoseUploadViewController: UIPageViewControllerDataSource {
     
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
         guard let index = self.viewControllers.firstIndex(of: viewController),
