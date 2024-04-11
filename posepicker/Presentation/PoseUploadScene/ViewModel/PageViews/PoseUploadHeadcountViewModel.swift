@@ -28,7 +28,7 @@ final class PoseUploadHeadcountViewModel {
         
         input.nextButtonTapEvent
             .subscribe(onNext: { [weak self] in
-                self?.coordinator?.selectPage(.framecount)
+                self?.coordinator?.setSelectedIndex(1)
             })
             .disposed(by: disposeBag)
         

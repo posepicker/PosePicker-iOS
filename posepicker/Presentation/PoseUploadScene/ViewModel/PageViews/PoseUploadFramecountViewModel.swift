@@ -16,7 +16,7 @@ final class PoseUploadFramecountViewModel {
     }
     
     struct Input {
-        
+        let nextButtonTapEvent: Observable<Void>
     }
     
     struct Output {
@@ -25,6 +25,13 @@ final class PoseUploadFramecountViewModel {
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        
+        input.nextButtonTapEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.setSelectedIndex(2)
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
 }
