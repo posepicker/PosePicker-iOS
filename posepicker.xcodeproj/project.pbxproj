@@ -240,6 +240,10 @@
 		C9FD211A2BC7922100C23E25 /* PoseUploadFramecountViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD21192BC7922100C23E25 /* PoseUploadFramecountViewModel.swift */; };
 		C9FD211C2BC7922E00C23E25 /* PoseUploadTagViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD211B2BC7922E00C23E25 /* PoseUploadTagViewModel.swift */; };
 		C9FD211E2BC7923600C23E25 /* PoseUploadImageSourceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD211D2BC7923600C23E25 /* PoseUploadImageSourceViewModel.swift */; };
+		C9FD21222BC7C6E600C23E25 /* PoseUploadUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD21212BC7C6E500C23E25 /* PoseUploadUseCase.swift */; };
+		C9FD21242BC7C6EE00C23E25 /* DefaultPoseUploadUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD21232BC7C6EE00C23E25 /* DefaultPoseUploadUseCase.swift */; };
+		C9FD21282BC7C76C00C23E25 /* DefaultPoseUploadRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD21272BC7C76C00C23E25 /* DefaultPoseUploadRepository.swift */; };
+		C9FD212A2BC7C77700C23E25 /* PoseUploadRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD21292BC7C77700C23E25 /* PoseUploadRepository.swift */; };
 		C9FDBDEC2B2835E10045AA54 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9FDBDEB2B2835E10045AA54 /* RxSwift */; };
 		C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */; };
 		C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */; };
@@ -483,6 +487,10 @@
 		C9FD21192BC7922100C23E25 /* PoseUploadFramecountViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadFramecountViewModel.swift; sourceTree = "<group>"; };
 		C9FD211B2BC7922E00C23E25 /* PoseUploadTagViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadTagViewModel.swift; sourceTree = "<group>"; };
 		C9FD211D2BC7923600C23E25 /* PoseUploadImageSourceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadImageSourceViewModel.swift; sourceTree = "<group>"; };
+		C9FD21212BC7C6E500C23E25 /* PoseUploadUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadUseCase.swift; sourceTree = "<group>"; };
+		C9FD21232BC7C6EE00C23E25 /* DefaultPoseUploadUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseUploadUseCase.swift; sourceTree = "<group>"; };
+		C9FD21272BC7C76C00C23E25 /* DefaultPoseUploadRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseUploadRepository.swift; sourceTree = "<group>"; };
+		C9FD21292BC7C77700C23E25 /* PoseUploadRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadRepository.swift; sourceTree = "<group>"; };
 		C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkResponse.swift; sourceTree = "<group>"; };
 		C9FDBDF52B28AE140045AA54 /* BookmarkDetailTagCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailTagCellViewModel.swift; sourceTree = "<group>"; };
@@ -804,6 +812,7 @@
 				C91FF3512BAAD6F800096E25 /* PoseTalk */,
 				C9DEE3F62BBD321300C9C495 /* PoseFeed */,
 				C9AF36B52BC3BBAB00629B63 /* Bookmark */,
+				C9FD21252BC7C74200C23E25 /* PoseUpload */,
 			);
 			path = Repository;
 			sourceTree = "<group>";
@@ -1192,6 +1201,7 @@
 				C96C9B632BBD2AA600AC2921 /* PoseFeed */,
 				C9AF36AF2BC3BB2800629B63 /* Bookmark */,
 				C9AF36C82BC3E1A400629B63 /* MyPage */,
+				C9FD211F2BC7C6CF00C23E25 /* PoseUpload */,
 			);
 			path = UseCase;
 			sourceTree = "<group>";
@@ -2150,6 +2160,40 @@
 			path = PageViews;
 			sourceTree = "<group>";
 		};
+		C9FD211F2BC7C6CF00C23E25 /* PoseUpload */ = {
+			isa = PBXGroup;
+			children = (
+				C9FD21232BC7C6EE00C23E25 /* DefaultPoseUploadUseCase.swift */,
+				C9FD21202BC7C6D800C23E25 /* Protocol */,
+			);
+			path = PoseUpload;
+			sourceTree = "<group>";
+		};
+		C9FD21202BC7C6D800C23E25 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				C9FD21212BC7C6E500C23E25 /* PoseUploadUseCase.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
+		C9FD21252BC7C74200C23E25 /* PoseUpload */ = {
+			isa = PBXGroup;
+			children = (
+				C9FD21262BC7C75E00C23E25 /* Protocol */,
+				C9FD21272BC7C76C00C23E25 /* DefaultPoseUploadRepository.swift */,
+			);
+			path = PoseUpload;
+			sourceTree = "<group>";
+		};
+		C9FD21262BC7C75E00C23E25 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				C9FD21292BC7C77700C23E25 /* PoseUploadRepository.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
 		C9FDBDF32B28ADD50045AA54 /* BookmarkDetail */ = {
 			isa = PBXGroup;
 			children = (
@@ -2429,6 +2473,7 @@
 				C9DC2F962AEA284900D5170D /* UICollectionView+.swift in Sources */,
 				C91A26672B88521200F1193E /* PoseUploadHeadcountViewController.swift in Sources */,
 				C9D0C40B2BA4501C004A3940 /* Functions.swift in Sources */,
+				C9FD212A2BC7C77700C23E25 /* PoseUploadRepository.swift in Sources */,
 				C903E53C2AF8C1BD00BD004F /* UIImageView+.swift in Sources */,
 				C94FD29F2AE3AF4F003777EB /* UnderlineSegmentControl.swift in Sources */,
 				880E75342AE67CC4007FAD5A /* BasicSelection.swift in Sources */,
@@ -2442,6 +2487,7 @@
 				C938512C2BB41CE300E597C1 /* DefaultPoseFeedCoordinator.swift in Sources */,
 				C916730E2B5E526D0092661B /* ImagePopUpViewController.swift in Sources */,
 				C94FD2772AE38E82003777EB /* DefaultAppCoordinator.swift in Sources */,
+				C9FD21282BC7C76C00C23E25 /* DefaultPoseUploadRepository.swift in Sources */,
 				C9AF36A92BC3BA5100629B63 /* MyPageViewModel.swift in Sources */,
 				C94FD2752AE38E26003777EB /* RootViewController.swift in Sources */,
 				C9FD20FD2BC53E0300C23E25 /* CoordinatorBookmarkBindingDelegate.swift in Sources */,
@@ -2495,6 +2541,7 @@
 				C938512A2BB41CD900E597C1 /* PoseFeedCoordinator.swift in Sources */,
 				C9FD21152BC78F8600C23E25 /* PoseUploadPages.swift in Sources */,
 				C95DD37A2B8711F4005ACE84 /* PoseUploadGuidelineViewController.swift in Sources */,
+				C9FD21242BC7C6EE00C23E25 /* DefaultPoseUploadUseCase.swift in Sources */,
 				C91FF36F2BAD88D600096E25 /* Coordinator.swift in Sources */,
 				C903E54C2B05C13B00BD004F /* PopUpView.swift in Sources */,
 				C94FD29B2AE3AC3E003777EB /* UIView+.swift in Sources */,
@@ -2574,6 +2621,7 @@
 				C94FD28D2AE39646003777EB /* BookmarkViewModeltest.swift in Sources */,
 				C9DC2FAA2AECAD4500D5170D /* RegisteredFilterCellViewModel.swift in Sources */,
 				C9042E6B2B0D7CB000BB4182 /* LoginPopUpView.swift in Sources */,
+				C9FD21222BC7C6E600C23E25 /* PoseUploadUseCase.swift in Sources */,
 				C9FD210F2BC6DACB00C23E25 /* PoseUploadGuidelineViewModel.swift in Sources */,
 				C9C890A02AE109610010240A /* User.swift in Sources */,
 				C9DC2FA32AEA564D00D5170D /* UIScreen+.swift in Sources */,
