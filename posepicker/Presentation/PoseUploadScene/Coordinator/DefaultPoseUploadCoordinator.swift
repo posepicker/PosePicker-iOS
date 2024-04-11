@@ -11,6 +11,7 @@ import RxRelay
 final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
     weak var finishDelegate: CoordinatorFinishDelegate?
     var navigationController: UINavigationController
+    var inputCompleted: Bool = false
     var poseUploadNavigationController: UINavigationController?
     var myPoseGuidelineViewController: MyPoseGuidelineViewController
     var currentIndexFromView = BehaviorRelay<Int>(value: 0)
@@ -76,6 +77,8 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
                 animated: true
             )
         }
+        
+        
     }
     
     func presentImageExpand(origin: CGPoint, image: UIImage?) {
@@ -120,7 +123,17 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
         if currentIndex == controllers.count - 1 {
             return nil
         }
+        
+        if currentIndex == 2 && !inputCompleted {
+            return nil
+        }
+        
         return controllers[currentIndex + 1]
+    }
+    
+    func refreshDataSource() {
+        self.pageViewController.dataSource = nil
+        self.pageViewController.dataSource = self.poseUploadViewController
     }
     
     private func createViewControllers(image: UIImage?) {
