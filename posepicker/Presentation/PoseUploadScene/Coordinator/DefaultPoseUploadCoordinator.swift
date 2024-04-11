@@ -6,12 +6,14 @@
 //
 
 import UIKit
+import RxRelay
 
 final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
     weak var finishDelegate: CoordinatorFinishDelegate?
     var navigationController: UINavigationController
     var poseUploadNavigationController: UINavigationController?
     var myPoseGuidelineViewController: MyPoseGuidelineViewController
+    var currentIndexFromView = BehaviorRelay<Int>(value: 0)
     var poseUploadViewController: PoseUploadViewController?
     var pageViewController: UIPageViewController
     var childCoordinators: [Coordinator] = []
@@ -79,7 +81,7 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
     
     func selectPage(_ page: PoseUploadPages) {
         guard let currentIndex = currentPage()?.pageOrderNumber() else { return }
-        
+        self.currentIndexFromView.accept(currentIndex)
         self.pageViewController.setViewControllers([controllers[page.pageOrderNumber()]], direction: currentIndex <= page.pageOrderNumber() ? .forward : .reverse, animated: true)
     }
     
@@ -88,6 +90,7 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
               let currentIndex = currentPage()?.pageOrderNumber() else {
             return
         }
+        self.currentIndexFromView.accept(currentIndex)
         
         self.pageViewController.setViewControllers([controllers[page.pageOrderNumber()]], direction: currentIndex <= page.pageOrderNumber() ? .forward : .reverse, animated: true)
     }
@@ -104,7 +107,7 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
         if currentIndex == 0 {
             return nil
         }
-        
+        self.currentIndexFromView.accept(currentIndex)
         return controllers[currentIndex - 1]
     }
     
@@ -113,6 +116,7 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
         if currentIndex == controllers.count - 1 {
             return nil
         }
+        self.currentIndexFromView.accept(currentIndex)
         return controllers[currentIndex + 1]
     }
     
