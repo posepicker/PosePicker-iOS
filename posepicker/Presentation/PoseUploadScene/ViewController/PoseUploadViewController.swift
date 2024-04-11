@@ -255,5 +255,13 @@ private extension PoseUploadViewController {
         output?.pageTransitionEvent
             .bind(to: currentPage)
             .disposed(by: disposeBag)
+        
+        output?.selectedSegmentIndex
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.buttons[$0].isCurrent = true
+                self?.setButtonUI()
+            })
+            .disposed(by: disposeBag)
     }
 }
