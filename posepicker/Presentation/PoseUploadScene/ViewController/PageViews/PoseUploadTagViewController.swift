@@ -131,6 +131,7 @@ class PoseUploadTagViewController: BaseViewController {
     let tagItems = BehaviorRelay<[PoseFeedFilterCellViewModel]>(value: [])
     let tagItemsFromTextField = BehaviorRelay<[PoseFeedFilterCellViewModel]>(value: [])
     let selectedTagCount = BehaviorRelay<Int>(value: 0)
+    let selectedTags = BehaviorRelay<[String]>(value: [])
     
     var viewModel: PoseUploadTagViewModel?
     
@@ -412,13 +413,19 @@ class PoseUploadTagViewController: BaseViewController {
             .flatMapLatest { [weak self] items, itemsFromTextfield -> Observable<Bool> in
                 let combinedItems = items + itemsFromTextfield
                 var count = 0
+                
+                var selectedItemsList: [String] = []
+                
                 combinedItems.forEach { item in
                     if item.isSelected.value {
                         count += 1
                         // 카운트 10개 이상인 경우 숫자변경 X
                         self?.selectedTagCount.accept(count)
+                        selectedItemsList += [item.title.value]
                     }
                 }
+                self?.selectedTags.accept(selectedItemsList)
+                
                 self?.tagCountLabel.text = count >= 10 ? "(10/10)" : "(\(count)/10)"
                 self?.inputCompleted.accept(count >= 3)
                 return BehaviorRelay<Bool>(value: count >= 10).asObservable()
@@ -454,7 +461,8 @@ class PoseUploadTagViewController: BaseViewController {
                 let absoluteOrigin = self.registeredImageView.superview?.convert(self.registeredImageView.frame.origin, to: nil) ?? CGPoint(x: 0, y: 0)
                 return Observable.just((absoluteOrigin, self.registeredImage))
             },
-            inputCompleted: inputCompleted.asObservable()
+            inputCompleted: inputCompleted.asObservable(),
+            selectedTags: selectedTags.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         configureOutput(output)
