@@ -87,7 +87,7 @@ enum APIRouter: URLRequestConvertible {
         case .retrievePoseDetail(let poseId):
             return "/api/pose/\(poseId)"
         case .uploadPose:
-            return "/api/pose/"
+            return "/api/pose"
         case .appleLogin:
             return "/api/users/login/ios/apple"
         case .kakaoLogin:
