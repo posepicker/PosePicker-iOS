@@ -10,15 +10,17 @@ import UIKit
 final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
     weak var finishDelegate: CoordinatorFinishDelegate?
     var navigationController: UINavigationController
+    var poseUploadNavigationController: UINavigationController?
     var myPoseGuidelineViewController: MyPoseGuidelineViewController
     var poseUploadViewController: PoseUploadViewController?
-    var pageViewController: UIPageViewController?
+    var pageViewController: UIPageViewController
     var childCoordinators: [Coordinator] = []
     var type: CoordinatorType = .mypose
-    var controllers: [UINavigationController] = []
+    var controllers: [UIViewController] = []
     
     required init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
+        self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
         self.myPoseGuidelineViewController = MyPoseGuidelineViewController()
     }
     
@@ -52,72 +54,94 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
     }
     
     func pushPoseUploadView(image: UIImage?) {
-        let poseUploadViewController = PoseUploadViewController(registeredImage: image)
+        let poseUploadViewController = PoseUploadViewController(
+            pageViewController: self.pageViewController,
+            registeredImage: image
+        )
         poseUploadViewController.viewModel = PoseUploadViewModel(coordinator: self)
+        self.poseUploadViewController = poseUploadViewController
         
-        self.pageViewController = poseUploadViewController.pageViewController
+        self.createViewControllers(image: image)
+        self.configurePageViewController(with: self.controllers)
         
-        let navigationController = UINavigationController(rootViewController: poseUploadViewController)
-        navigationController.modalPresentationStyle = .overFullScreen
-        self.navigationController.presentedViewController?.present(navigationController, animated: true)
+        self.poseUploadNavigationController = UINavigationController(rootViewController: self.poseUploadViewController!)
+        self.poseUploadNavigationController?.modalPresentationStyle = .overFullScreen
+        
+        self.navigationController.dismiss(animated: true) { [weak self] in
+            guard let self = self else { return }
+            self.navigationController.present(
+                self.poseUploadNavigationController!,
+                animated: true
+            )
+        }
+        
     }
     
-    func selectPage(_ page: PageViewType) {
-        <#code#>
+    func selectPage(_ page: PoseUploadPages) {
+        guard let currentIndex = currentPage()?.pageOrderNumber() else { return }
+        
+        self.pageViewController.setViewControllers([controllers[page.pageOrderNumber()]], direction: currentIndex <= page.pageOrderNumber() ? .forward : .reverse, animated: true)
     }
     
     func setSelectedIndex(_ index: Int) {
-        <#code#>
+        guard let page = PoseUploadPages(index: index),
+              let currentIndex = currentPage()?.pageOrderNumber() else {
+            return
+        }
+        
+        self.pageViewController.setViewControllers([controllers[page.pageOrderNumber()]], direction: currentIndex <= page.pageOrderNumber() ? .forward : .reverse, animated: true)
     }
     
-    func currentPage() -> PageViewType? {
-        <#code#>
+    func currentPage() -> PoseUploadPages? {
+        guard let viewController = pageViewController.viewControllers?.first as? UIViewController,
+              let page = PoseUploadPages(viewController) else { return .headcount }
+        
+        return page
     }
     
     func viewControllerBefore() -> UIViewController? {
-        <#code#>
+        guard let currentIndex = currentPage()?.pageOrderNumber() else { return nil }
+        if currentIndex == 0 {
+            return nil
+        }
+        
+        return controllers[currentIndex - 1]
     }
     
     func viewControllerAfter() -> UIViewController? {
-        <#code#>
+        guard let currentIndex = currentPage()?.pageOrderNumber() else { return nil }
+        if currentIndex == controllers.count - 1 {
+            return nil
+        }
+        return controllers[currentIndex + 1]
     }
     
-    private func createViewControllers() {
-        let pages: [PageViewType] = [.posepick, .posetalk, .posefeed]
-        controllers = pages.map({
-            self.createPageViewNavigationController(of: $0)
-        })
-        self.configurePageViewController(with: controllers)
+    private func createViewControllers(image: UIImage?) {
+        let poseUploadHeadcountVC = PoseUploadHeadcountViewController(registeredImage: image)
+        poseUploadHeadcountVC.viewModel = PoseUploadHeadcountViewModel(coordinator: self)
+        
+        let poseUploadFramecountVC = PoseUploadFramecountViewController(registeredImage: image)
+        poseUploadFramecountVC.viewModel = PoseUploadFramecountViewModel(coordinator: self)
+        
+        let poseUploadTagVC = PoseUploadTagViewController(registeredImage: image)
+        poseUploadTagVC.viewModel = PoseUploadTagViewModel(coordinator: self)
+        
+        let poseUploadImageSourceVC = PoseUploadImageSourceViewController()
+        poseUploadImageSourceVC.viewModel = PoseUploadImageSourceViewModel(coordinator: self)
+        
+        self.controllers = [
+            poseUploadHeadcountVC,
+            poseUploadFramecountVC,
+            poseUploadTagVC,
+            poseUploadImageSourceVC
+        ]
     }
     
     private func configurePageViewController(with pageViewControllers: [UIViewController]) {
         guard let poseUploadViewController = self.poseUploadViewController else { return }
-        self.pageViewController?.delegate = poseUploadViewController
-        self.pageViewController?.dataSource = poseUploadViewController
-        self.pageViewController?.setViewControllers([pageViewControllers[0]], direction: .forward, animated: true)
-        self.navigationController.pushViewController(poseUploadViewController, animated: true)
-    }
-    
-    private func startPageViewCoordinator(of page: PageViewType, to pageviewNavigationController: UINavigationController) {
-        switch page {
-        case .posepick:
-            self.navigationController.push
-            let posepickCoordinator = DefaultPosePickCoordinator(pageviewNavigationController)
-            posepickCoordinator.finishDelegate = self
-            self.childCoordinators.append(posepickCoordinator)
-            posepickCoordinator.start()
-        case .posetalk:
-            let posetalkCoordinator = DefaultPoseTalkCoordinator(pageviewNavigationController)
-            posetalkCoordinator.finishDelegate = self
-            self.childCoordinators.append(posetalkCoordinator)
-            posetalkCoordinator.start()
-        case .posefeed:
-            let posefeedCoordinator = DefaultPoseFeedCoordinator(pageviewNavigationController)
-            posefeedCoordinator.loginDelegate = self
-            self.childCoordinators.append(posefeedCoordinator)
-            posefeedCoordinator.start()
-        default:
-            break
-        }
+        self.pageViewController.delegate = poseUploadViewController
+        self.pageViewController.dataSource = poseUploadViewController
+        self.pageViewController.setViewControllers([pageViewControllers[0]], direction: .forward, animated: true)
+        self.poseUploadNavigationController?.pushViewController(poseUploadViewController, animated: true)
     }
 }
