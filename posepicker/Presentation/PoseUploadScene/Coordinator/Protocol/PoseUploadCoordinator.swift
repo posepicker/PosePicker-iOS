@@ -14,6 +14,7 @@ protocol PoseUploadCoordinator: Coordinator {
     func pushGuideline()
     func presentImageLoadFailedPopup()
     func pushPoseUploadView(image: UIImage?)
+    func presentImageExpand(origin: CGPoint, image: UIImage?)
 
     func selectPage(_ page: PoseUploadPages)
     func setSelectedIndex(_ index: Int)
