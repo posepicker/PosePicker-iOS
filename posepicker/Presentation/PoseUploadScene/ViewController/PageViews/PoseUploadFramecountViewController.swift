@@ -66,6 +66,7 @@ class PoseUploadFramecountViewController: BaseViewController {
     let registeredImage: UIImage?
     let selectedFrameCount = BehaviorRelay<String>(value: "1컷")
     var viewModel: PoseUploadFramecountViewModel?
+    
     // MARK: - Initialization
     init(registeredImage: UIImage?) {
         self.registeredImage = registeredImage
@@ -177,7 +178,22 @@ class PoseUploadFramecountViewController: BaseViewController {
             .disposed(by: disposeBag)
     }
     
+    override func bindViewModel() {
+        let input = PoseUploadFramecountViewModel.Input(
+            nextButtonTapEvent: nextButton.rx.tap.asObservable()
+        )
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        configureOutput(output)
+    }
+    
     func resetButtonUI() {
         framecountButtons.forEach { $0.isCurrent = false }
+    }
+}
+
+
+private extension PoseUploadFramecountViewController {
+    func configureOutput(_ output: PoseUploadFramecountViewModel.Output?) {
+        
     }
 }
