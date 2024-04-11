@@ -212,7 +212,9 @@ class MyPoseGuidelineViewController: BaseViewController {
 extension MyPoseGuidelineViewController: PHPickerViewControllerDelegate {
     func picker(_ picker: PHPickerViewController, didFinishPicking results: [PHPickerResult]) {
         
-        picker.dismiss(animated: true)
+        picker.dismiss(animated: true) { [weak self] in
+            self?.loadingIndicator.isHidden = true
+        }
         
         loadingIndicator.isHidden = false
         
@@ -224,9 +226,7 @@ extension MyPoseGuidelineViewController: PHPickerViewControllerDelegate {
                 DispatchQueue.main.async { [weak self] in
                     if let image = image as? UIImage {
                         self?.imageLoadCompletedEvent.onNext(image)
-                        self?.loadingIndicator.isHidden = true
                     } else {
-                        self?.loadingIndicator.isHidden = true
                         self?.imageLoadFailedEvent.onNext(())
                     }
                 }
