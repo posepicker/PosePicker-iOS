@@ -7,6 +7,8 @@
 
 import UIKit
 import RxSwift
+import RxRelay
+import RxCocoa
 
 final class PoseUploadTagViewModel {
     weak var coordinator: PoseUploadCoordinator?
@@ -18,10 +20,10 @@ final class PoseUploadTagViewModel {
     struct Input {
         let nextButtonTapEvent: Observable<Void>
         let expandButtonTapEvent: Observable<(CGPoint, UIImage?)>
+        let inputCompleted: Observable<Bool>
     }
     
     struct Output {
-        
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -36,6 +38,13 @@ final class PoseUploadTagViewModel {
         input.expandButtonTapEvent
             .subscribe(onNext: { [weak self] (origin, image) in
                 self?.coordinator?.presentImageExpand(origin: origin, image: image)
+            })
+            .disposed(by: disposeBag)
+        
+        input.inputCompleted
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.refreshDataSource()
+                self?.coordinator?.inputCompleted = $0
             })
             .disposed(by: disposeBag)
         
