@@ -18,6 +18,7 @@ final class PoseUploadHeadcountViewModel {
     struct Input {
         let nextButtonTapEvent: Observable<Void>
         let expandButtonTapEvent: Observable<(CGPoint, UIImage?)>
+        let selectedHeadCount: Observable<String>
     }
     
     struct Output {
@@ -36,6 +37,12 @@ final class PoseUploadHeadcountViewModel {
         input.expandButtonTapEvent
             .subscribe(onNext: { [weak self] (origin, image) in
                 self?.coordinator?.presentImageExpand(origin: origin, image: image)
+            })
+            .disposed(by: disposeBag)
+        
+        input.selectedHeadCount
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.headcount.accept($0)
             })
             .disposed(by: disposeBag)
         
