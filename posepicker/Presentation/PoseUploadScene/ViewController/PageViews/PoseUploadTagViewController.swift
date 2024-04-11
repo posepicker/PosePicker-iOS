@@ -469,7 +469,7 @@ class PoseUploadTagViewController: BaseViewController {
     }
 }
 
-extension MyPoseTagViewController: UICollectionViewDelegateFlowLayout {
+extension PoseUploadTagViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 60, height: 30)
     }

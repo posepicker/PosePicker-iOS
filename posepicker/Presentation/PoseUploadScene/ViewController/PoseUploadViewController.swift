@@ -36,10 +36,10 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
     let registeredImage: UIImage?
     
     lazy var viewControllers: [UIViewController] = [
-        MyPoseHeadcountViewController(registeredImage: self.registeredImage),
-        MyPoseFramecountViewController(registeredImage: self.registeredImage),
-        MyPoseTagViewController(registeredImage: self.registeredImage),
-        MyPoseImageSourceViewController(),
+        PoseUploadHeadcountViewController(registeredImage: self.registeredImage),
+        PoseUploadFramecountViewController(registeredImage: self.registeredImage),
+        PoseUploadTagViewController(registeredImage: self.registeredImage),
+        PoseUploadImageSourceViewController(),
     ]
     
     var currentPage: Int = 0 {
@@ -115,7 +115,7 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
         
         /// 마이포즈 태그 입력 완료여부에 따라 마이포즈 이미지 출처 뷰로 이동시킬지 말지 판단
         /// 세그먼트 & 페이징 관련 로직
-        if let myposeTagViewController = viewControllers[2] as? MyPoseTagViewController {
+        if let myposeTagViewController = viewControllers[2] as? PoseUploadTagViewController {
             myposeTagViewController.inputCompleted.asDriver()
                 .drive(onNext: { [weak self] in
                     self?.pageViewController.dataSource = nil
@@ -136,7 +136,7 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
             guard let self = self else { return }
             switch index {
             case 0:
-                guard let myposeHeadVC = vc as? MyPoseHeadcountViewController else { return }
+                guard let myposeHeadVC = vc as? PoseUploadHeadcountViewController else { return }
                 myposeHeadVC.nextButton.rx.tap
                     .asDriver()
                     .drive(onNext: { [weak self] in
@@ -144,7 +144,7 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
                     })
                     .disposed(by: self.disposeBag)
             case 1:
-                guard let myposeFrameVC = vc as? MyPoseFramecountViewController else { return }
+                guard let myposeFrameVC = vc as? PoseUploadFramecountViewController else { return }
                 myposeFrameVC.nextButton.rx.tap
                     .asDriver()
                     .drive(onNext: { [weak self] in
@@ -152,7 +152,7 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
                     })
                     .disposed(by: self.disposeBag)
             case 2:
-                guard let myposeTagVC = vc as? MyPoseTagViewController else { return }
+                guard let myposeTagVC = vc as? PoseUploadTagViewController else { return }
                 myposeTagVC.nextButton.rx.tap
                     .asDriver()
                     .drive(onNext: { [weak self] in
@@ -160,7 +160,7 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
                     })
                     .disposed(by: self.disposeBag)
             case 3:
-                guard let myposeImageSourceVC = vc as? MyPoseImageSourceViewController else { return }
+                guard let myposeImageSourceVC = vc as? PoseUploadImageSourceViewController else { return }
                 myposeImageSourceVC.nextButton.rx.tap
                     .asDriver()
                     .drive(onNext: {
@@ -197,10 +197,10 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     // 입력 최종 완료 후 API통신을 위한 객체
     override func bindViewModel() {
-        guard let headcountVC = viewControllers[0] as? MyPoseHeadcountViewController,
-              let framecountVC = viewControllers[1] as? MyPoseFramecountViewController,
-              let tagVC = viewControllers[2] as? MyPoseTagViewController,
-              let imageSourceVC = viewControllers[3] as? MyPoseImageSourceViewController else {
+        guard let headcountVC = viewControllers[0] as? PoseUploadHeadcountViewController,
+              let framecountVC = viewControllers[1] as? PoseUploadFramecountViewController,
+              let tagVC = viewControllers[2] as? PoseUploadTagViewController,
+              let imageSourceVC = viewControllers[3] as? PoseUploadImageSourceViewController else {
             return
         }
         
@@ -290,7 +290,7 @@ extension MyPoseViewController: UIPageViewControllerDelegate {
               let index = viewControllers.firstIndex(of: viewController) else { return }
         
         // 마이포즈 태그 입력이 안끝났으면 이미지 출처 페이지로 슬라이드 이동하는 동작 막기
-        if let myposeTagVC = viewControllers[2] as? MyPoseTagViewController,
+        if let myposeTagVC = viewControllers[2] as? PoseUploadTagViewController,
            !myposeTagVC.inputCompleted.value && index == 3 {
             return
         }
@@ -310,7 +310,7 @@ extension MyPoseViewController: UIPageViewControllerDataSource {
         guard let index = self.viewControllers.firstIndex(of: viewController),
               index + 1 < viewControllers.count else { return nil }
         
-        if let myposeTagVC = viewControllers[2] as? MyPoseTagViewController,
+        if let myposeTagVC = viewControllers[2] as? PoseUploadTagViewController,
            !myposeTagVC.inputCompleted.value && index == 2 {
             return nil
         }
