@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 import RxRelay
 
 final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
@@ -20,6 +21,12 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
     var childCoordinators: [Coordinator] = []
     var type: CoordinatorType = .mypose
     var controllers: [UIViewController] = []
+    
+    var headcount = BehaviorRelay<String>(value: "")
+    var framecount = BehaviorRelay<String>(value: "")
+    var tags = BehaviorRelay<String>(value: "")
+    var sourceURL = BehaviorRelay<String>(value: "")
+    var registeredImage = BehaviorRelay<UIImage?>(value: nil)
     
     required init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -57,11 +64,15 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
     }
     
     func pushPoseUploadView(image: UIImage?) {
+        self.registeredImage.accept(image)
+        
         let poseUploadViewController = PoseUploadViewController(
             pageViewController: self.pageViewController,
             registeredImage: image
         )
-        poseUploadViewController.viewModel = PoseUploadViewModel(coordinator: self)
+        poseUploadViewController.viewModel = PoseUploadViewModel(
+            coordinator: self
+        )
         self.poseUploadViewController = poseUploadViewController
         
         self.createViewControllers(image: image)
@@ -136,6 +147,31 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
         self.pageViewController.dataSource = self.poseUploadViewController
     }
     
+    func observeSavePose(disposeBag: DisposeBag) -> Observable<(UIImage?, String, String, String, String)> {
+        return Observable.combineLatest(
+            registeredImage,
+            headcount,
+            framecount,
+            tags,
+            sourceURL
+        )
+    }
+    
+    func presentSavePoseCompletedView(image: UIImage?, pose: PoseInfo) {
+        let detailVC = PoseDetailViewController()
+        detailVC.viewModel = PoseDetailViewModel(
+            coordinator: nil,
+            poseDetailUseCase: DefaultPoseDetailUseCase(
+                poseDetailRepository: DefaultPoseDetailRepository(
+                    networkService: DefaultNetworkService()),
+                poseId: pose.poseId
+            ),
+            bindViewModel: .init(image: image, poseId: pose.poseId, bookmarkCheck: false)
+        )
+        detailVC.navigationBar.isHidden = true
+        self.navigationController.presentedViewController?.present(detailVC, animated: true)
+    }
+    
     private func createViewControllers(image: UIImage?) {
         let poseUploadHeadcountVC = PoseUploadHeadcountViewController(registeredImage: image)
         poseUploadHeadcountVC.viewModel = PoseUploadHeadcountViewModel(coordinator: self)
@@ -147,7 +183,14 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
         poseUploadTagVC.viewModel = PoseUploadTagViewModel(coordinator: self)
         
         let poseUploadImageSourceVC = PoseUploadImageSourceViewController()
-        poseUploadImageSourceVC.viewModel = PoseUploadImageSourceViewModel(coordinator: self)
+        poseUploadImageSourceVC.viewModel = PoseUploadImageSourceViewModel(
+            coordinator: self,
+            poseUploadUseCase: DefaultPoseUploadUseCase(
+                poseUploadRepository: DefaultPoseUploadRepository(
+                    networkService: DefaultNetworkService()
+                )
+            )
+        )
         
         self.controllers = [
             poseUploadHeadcountVC,
