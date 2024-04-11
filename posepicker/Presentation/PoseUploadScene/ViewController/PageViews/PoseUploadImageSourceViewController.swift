@@ -7,7 +7,7 @@
 
 import UIKit
 
-class MyPoseImageSourceViewController: BaseViewController {
+class PoseUploadImageSourceViewController: BaseViewController {
     // MARK: - Subviews
     let mainLabel = UILabel()
         .then {

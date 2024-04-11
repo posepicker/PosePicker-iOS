@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class MyPoseTagViewController: BaseViewController {
+class PoseUploadTagViewController: BaseViewController {
     // MARK: - Subviews
     let scrollView = UIScrollView()
         .then { sv in

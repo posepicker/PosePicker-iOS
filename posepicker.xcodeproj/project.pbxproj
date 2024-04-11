@@ -53,10 +53,10 @@
 		C9188B272B909E78004B9C45 /* MyPoseCustomTagCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9188B262B909E78004B9C45 /* MyPoseCustomTagCellViewModel.swift */; };
 		C91A265F2B8788F900F1193E /* MyPoseCoordinatortest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A265E2B8788F900F1193E /* MyPoseCoordinatortest.swift */; };
 		C91A26642B87975900F1193E /* CircleSegmentButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A26632B87975900F1193E /* CircleSegmentButton.swift */; };
-		C91A26672B88521200F1193E /* MyPoseHeadcountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A26662B88521200F1193E /* MyPoseHeadcountViewController.swift */; };
-		C91A26692B88522700F1193E /* MyPoseFramecountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A26682B88522700F1193E /* MyPoseFramecountViewController.swift */; };
-		C91A266B2B88524200F1193E /* MyPoseTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A266A2B88524200F1193E /* MyPoseTagViewController.swift */; };
-		C91A266D2B88525200F1193E /* MyPoseImageSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A266C2B88525200F1193E /* MyPoseImageSourceViewController.swift */; };
+		C91A26672B88521200F1193E /* PoseUploadHeadcountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A26662B88521200F1193E /* PoseUploadHeadcountViewController.swift */; };
+		C91A26692B88522700F1193E /* PoseUploadFramecountViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A26682B88522700F1193E /* PoseUploadFramecountViewController.swift */; };
+		C91A266B2B88524200F1193E /* PoseUploadTagViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A266A2B88524200F1193E /* PoseUploadTagViewController.swift */; };
+		C91A266D2B88525200F1193E /* PoseUploadImageSourceViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A266C2B88525200F1193E /* PoseUploadImageSourceViewController.swift */; };
 		C91A266F2B88899300F1193E /* MyPoseSelectButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91A266E2B88899300F1193E /* MyPoseSelectButton.swift */; };
 		C91E18442B99B300009611C3 /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91E18432B99B300009611C3 /* UINavigationController+.swift */; };
 		C91E184B2B99C22A009611C3 /* PoseDetailMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91E184A2B99C22A009611C3 /* PoseDetailMoreViewController.swift */; };
@@ -305,10 +305,10 @@
 		C9188B262B909E78004B9C45 /* MyPoseCustomTagCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseCustomTagCellViewModel.swift; sourceTree = "<group>"; };
 		C91A265E2B8788F900F1193E /* MyPoseCoordinatortest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseCoordinatortest.swift; sourceTree = "<group>"; };
 		C91A26632B87975900F1193E /* CircleSegmentButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CircleSegmentButton.swift; sourceTree = "<group>"; };
-		C91A26662B88521200F1193E /* MyPoseHeadcountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseHeadcountViewController.swift; sourceTree = "<group>"; };
-		C91A26682B88522700F1193E /* MyPoseFramecountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseFramecountViewController.swift; sourceTree = "<group>"; };
-		C91A266A2B88524200F1193E /* MyPoseTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseTagViewController.swift; sourceTree = "<group>"; };
-		C91A266C2B88525200F1193E /* MyPoseImageSourceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseImageSourceViewController.swift; sourceTree = "<group>"; };
+		C91A26662B88521200F1193E /* PoseUploadHeadcountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadHeadcountViewController.swift; sourceTree = "<group>"; };
+		C91A26682B88522700F1193E /* PoseUploadFramecountViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadFramecountViewController.swift; sourceTree = "<group>"; };
+		C91A266A2B88524200F1193E /* PoseUploadTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadTagViewController.swift; sourceTree = "<group>"; };
+		C91A266C2B88525200F1193E /* PoseUploadImageSourceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadImageSourceViewController.swift; sourceTree = "<group>"; };
 		C91A266E2B88899300F1193E /* MyPoseSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseSelectButton.swift; sourceTree = "<group>"; };
 		C91E18432B99B300009611C3 /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
 		C91E184A2B99C22A009611C3 /* PoseDetailMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseDetailMoreViewController.swift; sourceTree = "<group>"; };
@@ -739,10 +739,6 @@
 			children = (
 				C9188B232B909E4D004B9C45 /* Cell */,
 				C9C4D2002B8F6A4100FF9363 /* Subviews */,
-				C91A26662B88521200F1193E /* MyPoseHeadcountViewController.swift */,
-				C91A26682B88522700F1193E /* MyPoseFramecountViewController.swift */,
-				C91A266A2B88524200F1193E /* MyPoseTagViewController.swift */,
-				C91A266C2B88525200F1193E /* MyPoseImageSourceViewController.swift */,
 			);
 			path = MyPosePages;
 			sourceTree = "<group>";
@@ -2104,6 +2100,7 @@
 		C9FD210C2BC6DA5200C23E25 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
+				C9FD21122BC76E4C00C23E25 /* PageViews */,
 				C95DD3792B8711F4005ACE84 /* PoseUploadGuidelineViewController.swift */,
 				C95DD3772B8710BF005ACE84 /* PoseUploadViewController.swift */,
 			);
@@ -2117,6 +2114,17 @@
 				C9FD21102BC76D4300C23E25 /* PoseUploadViewModel.swift */,
 			);
 			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C9FD21122BC76E4C00C23E25 /* PageViews */ = {
+			isa = PBXGroup;
+			children = (
+				C91A26662B88521200F1193E /* PoseUploadHeadcountViewController.swift */,
+				C91A26682B88522700F1193E /* PoseUploadFramecountViewController.swift */,
+				C91A266A2B88524200F1193E /* PoseUploadTagViewController.swift */,
+				C91A266C2B88525200F1193E /* PoseUploadImageSourceViewController.swift */,
+			);
+			path = PageViews;
 			sourceTree = "<group>";
 		};
 		C9FDBDF32B28ADD50045AA54 /* BookmarkDetail */ = {
@@ -2395,7 +2403,7 @@
 				880E754F2AE6C188007FAD5A /* Pose.swift in Sources */,
 				C9DEE4102BBFCBB000C9C495 /* PoseFeedFilterViewModel.swift in Sources */,
 				C9DC2F962AEA284900D5170D /* UICollectionView+.swift in Sources */,
-				C91A26672B88521200F1193E /* MyPoseHeadcountViewController.swift in Sources */,
+				C91A26672B88521200F1193E /* PoseUploadHeadcountViewController.swift in Sources */,
 				C9D0C40B2BA4501C004A3940 /* Functions.swift in Sources */,
 				C903E53C2AF8C1BD00BD004F /* UIImageView+.swift in Sources */,
 				C94FD29F2AE3AF4F003777EB /* UnderlineSegmentControl.swift in Sources */,
@@ -2484,7 +2492,7 @@
 				C96C9A8E2BB5425700AC2921 /* CommonUseCase.swift in Sources */,
 				883132972B08EF9100DAA5A7 /* PoseDetailTagCell.swift in Sources */,
 				C9FDBDFC2B28AE6B0045AA54 /* BookmarkDetailViewController.swift in Sources */,
-				C91A26692B88522700F1193E /* MyPoseFramecountViewController.swift in Sources */,
+				C91A26692B88522700F1193E /* PoseUploadFramecountViewController.swift in Sources */,
 				C9C890522AE103A10010240A /* AppDelegate.swift in Sources */,
 				C91A26642B87975900F1193E /* CircleSegmentButton.swift in Sources */,
 				C9DEE4162BBFCCB100C9C495 /* DefaultPoseFeedFilterUseCase.swift in Sources */,
@@ -2499,7 +2507,7 @@
 				C91FF3762BAD897900096E25 /* PageViewCoordinator.swift in Sources */,
 				C9FD20FF2BC590E700C23E25 /* WebViewList.swift in Sources */,
 				C9AF36CD2BC3E1C400629B63 /* MyPageUseCase.swift in Sources */,
-				C91A266D2B88525200F1193E /* MyPoseImageSourceViewController.swift in Sources */,
+				C91A266D2B88525200F1193E /* PoseUploadImageSourceViewController.swift in Sources */,
 				C93851232BB3F55000E597C1 /* CommonViewModel.swift in Sources */,
 				C91E18502B99ECC1009611C3 /* RadioButton.swift in Sources */,
 				C9AF36982BC2E52000629B63 /* PoseFeedDetailRepository.swift in Sources */,
@@ -2523,7 +2531,7 @@
 				880E75522AE6C275007FAD5A /* Data+.swift in Sources */,
 				C96C9A9A2BB5C52500AC2921 /* DefaultPosePickRepository.swift in Sources */,
 				C9D0C4082BA4172C004A3940 /* UserRevokeViewController.swift in Sources */,
-				C91A266B2B88524200F1193E /* MyPoseTagViewController.swift in Sources */,
+				C91A266B2B88524200F1193E /* PoseUploadTagViewController.swift in Sources */,
 				C91FF3622BAC001E00096E25 /* PoseTalkUseCase.swift in Sources */,
 				C9DC2F942AEA282700D5170D /* LeftAlignedCollectionViewFlowLayout.swift in Sources */,
 				C9AF36CA2BC3E1B000629B63 /* DefaultMyPageUseCase.swift in Sources */,

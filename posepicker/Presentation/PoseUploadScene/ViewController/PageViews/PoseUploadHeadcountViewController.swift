@@ -8,7 +8,7 @@
 import UIKit
 import RxCocoa
 
-class MyPoseHeadcountViewController: BaseViewController {
+class PoseUploadHeadcountViewController: BaseViewController {
     
     // MARK: - Subviews
     let scrollView = UIScrollView()
