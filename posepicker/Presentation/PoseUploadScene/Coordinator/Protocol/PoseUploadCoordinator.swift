@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 import RxRelay
 
 protocol PoseUploadCoordinator: Coordinator {
@@ -16,6 +17,12 @@ protocol PoseUploadCoordinator: Coordinator {
     func presentImageLoadFailedPopup()
     func pushPoseUploadView(image: UIImage?)
     func presentImageExpand(origin: CGPoint, image: UIImage?)
+    
+    var headcount: BehaviorRelay<String> { get set }
+    var framecount: BehaviorRelay<String> { get set }
+    var tags: BehaviorRelay<String> { get set }
+    var sourceURL: BehaviorRelay<String> { get set }
+    var registeredImage: BehaviorRelay<UIImage?> { get set }
 
     func selectPage(_ page: PoseUploadPages)
     func setSelectedIndex(_ index: Int)
@@ -23,4 +30,7 @@ protocol PoseUploadCoordinator: Coordinator {
     func viewControllerBefore() -> UIViewController?
     func viewControllerAfter() -> UIViewController?
     func refreshDataSource()
+    
+    func observeSavePose(disposeBag: DisposeBag) -> Observable<(UIImage?, String, String, String, String)>
+    func presentSavePoseCompletedView(image: UIImage?, pose: PoseInfo)
 }
