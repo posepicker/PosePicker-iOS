@@ -128,6 +128,18 @@ class PoseUploadImageSourceViewController: BaseViewController {
         
     }
     
+    override func bindViewModel() {
+        let input = PoseUploadImageSourceViewModel.Input(
+            sourceURL: urlTextField.rx.text.asObservable(),
+            submitButtonTapEvent: nextButton.rx.tap.asObservable()
+        )
+        
+        _ = viewModel?.transform(
+            input: input,
+            disposeBag: disposeBag
+        )
+    }
+    
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         urlTextField.endEditing(true)
     }
