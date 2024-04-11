@@ -258,9 +258,21 @@ private extension PoseUploadViewController {
         
         output?.selectedSegmentIndex
             .asDriver()
-            .drive(onNext: { [weak self] in
-                self?.buttons[$0].isCurrent = true
-                self?.setButtonUI()
+            .drive(onNext: { [weak self] pageIndex in
+                self?.buttons[pageIndex].isCurrent = true
+                self?.buttons.enumerated().forEach { (index, button) in
+                    if index <= pageIndex {
+                        UIView.animate(withDuration: 0.1) {
+                            button.isCurrent = true
+                        }
+                    }
+                    
+                    if index > pageIndex {
+                        UIView.animate(withDuration: 0.1) {
+                            button.isCurrent = false
+                        }
+                    }
+                }
             })
             .disposed(by: disposeBag)
     }
