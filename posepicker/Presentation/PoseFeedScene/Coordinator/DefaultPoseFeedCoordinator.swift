@@ -165,7 +165,7 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
         navigationVC.modalTransitionStyle = .crossDissolve
         navigationVC.modalPresentationStyle = .overFullScreen
         
-        let myposeCoordinator = DefaultMyPoseCoordinator(self.navigationController)
+        let myposeCoordinator = DefaultPoseUploadCoordinator(self.navigationController)
         self.childCoordinators.append(myposeCoordinator)
         myposeCoordinator.start()
     }
