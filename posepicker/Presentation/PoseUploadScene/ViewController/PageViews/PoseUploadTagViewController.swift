@@ -132,6 +132,8 @@ class PoseUploadTagViewController: BaseViewController {
     let tagItemsFromTextField = BehaviorRelay<[PoseFeedFilterCellViewModel]>(value: [])
     let selectedTagCount = BehaviorRelay<Int>(value: 0)
     
+    var viewModel: PoseUploadTagViewModel?
+    
     // MARK: - Initialization
     init(registeredImage: UIImage?) {
         self.registeredImage = registeredImage

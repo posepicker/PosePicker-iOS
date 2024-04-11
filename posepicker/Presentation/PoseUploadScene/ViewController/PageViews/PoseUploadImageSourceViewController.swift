@@ -70,6 +70,8 @@ class PoseUploadImageSourceViewController: BaseViewController {
     
     // MARK: - Properties
     
+    var viewModel: PoseUploadImageSourceViewModel?
+    
     // MARK: - Functions
     
     override func render() {

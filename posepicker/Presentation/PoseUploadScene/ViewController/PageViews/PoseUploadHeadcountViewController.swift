@@ -65,6 +65,7 @@ class PoseUploadHeadcountViewController: BaseViewController {
     // MARK: - Properties
     let registeredImage: UIImage?
     let selectedHeadCount = BehaviorRelay<String>(value: "1인")
+    var viewModel: PoseUploadHeadcountViewModel?
     
     // MARK: - Initialization
     init(registeredImage: UIImage?) {

@@ -65,7 +65,7 @@ class PoseUploadFramecountViewController: BaseViewController {
     // MARK: - Properties
     let registeredImage: UIImage?
     let selectedFrameCount = BehaviorRelay<String>(value: "1컷")
-    
+    var viewModel: PoseUploadFramecountViewModel?
     // MARK: - Initialization
     init(registeredImage: UIImage?) {
         self.registeredImage = registeredImage
