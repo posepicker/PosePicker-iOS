@@ -24,6 +24,7 @@ final class PoseUploadViewModel {
     
     struct Output {
         let pageTransitionEvent = PublishRelay<Int>()
+        let selectedSegmentIndex = BehaviorRelay<Int>(value: 0)
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -45,6 +46,14 @@ final class PoseUploadViewModel {
                 coordinator.setSelectedIndex($0)
             })
             .disposed(by: disposeBag)
+        
+        if let coordinator = self.coordinator {
+            coordinator.currentIndexFromView
+                .subscribe(onNext: {
+                    output.selectedSegmentIndex.accept($0)
+                })
+                .disposed(by: disposeBag)
+        }
         
         return output
     }
