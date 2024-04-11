@@ -81,14 +81,36 @@ class PoseUploadViewController: BaseViewController, UIGestureRecognizerDelegate 
             button.rx.tap
                 .subscribe(onNext: {
                     UIView.animate(withDuration: 0.1) {
-                        self.setButtonUI()
                         button.isCurrent = true
                         self.currentPage.accept(index)
+                        self.setButtonUI()
                     }
                 })
                 .disposed(by: self.disposeBag)
         }
         buttons[0].isCurrent = true
+        
+        currentPage
+            .asDriver()
+            .drive(onNext: { [weak self] _ in
+                self?.setButtonUI()
+            })
+            .disposed(by: disposeBag)
+        
+//        segmentControl.rx.selectedSegmentIndex.asDriver()
+//            .drive(onNext: { [weak self] in
+//                self?.currentPage.accept($0)
+//                self?.segmentControl.updateUnderlineViewWidth()
+//            })
+//            .disposed(by: disposeBag)
+//        
+//        currentPage
+//            .asDriver()
+//            .drive(onNext: { [weak self] in
+//                self?.segmentControl.selectedSegmentIndex = $0
+//                self?.segmentControl.updateUnderlineViewWidth()
+//            })
+//            .disposed(by: self.disposeBag)
         
 //        /// 마이포즈 태그 입력 완료여부에 따라 마이포즈 이미지 출처 뷰로 이동시킬지 말지 판단
 //        /// 세그먼트 & 페이징 관련 로직
