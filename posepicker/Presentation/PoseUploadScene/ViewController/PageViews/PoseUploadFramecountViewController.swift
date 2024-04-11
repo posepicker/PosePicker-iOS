@@ -186,7 +186,8 @@ class PoseUploadFramecountViewController: BaseViewController {
                 guard let self = self else { return .empty() }
                 let absoluteOrigin = self.registeredImageView.superview?.convert(self.registeredImageView.frame.origin, to: nil) ?? CGPoint(x: 0, y: 0)
                 return Observable.just((absoluteOrigin, self.registeredImage))
-            }
+            },
+            selectedFrameCount: selectedFrameCount.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         configureOutput(output)
