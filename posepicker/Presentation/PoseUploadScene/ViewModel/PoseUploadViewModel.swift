@@ -11,7 +11,6 @@ import RxRelay
 
 final class PoseUploadViewModel {
     weak var coordinator: PoseUploadCoordinator?
-//    private let bookmarkUseCase: BookmarkUseCase
     
     init(coordinator: PoseUploadCoordinator?) {
         self.coordinator = coordinator
