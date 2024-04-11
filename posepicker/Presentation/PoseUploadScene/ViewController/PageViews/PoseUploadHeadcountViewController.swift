@@ -180,6 +180,13 @@ class PoseUploadHeadcountViewController: BaseViewController {
             .disposed(by: disposeBag)
     }
     
+    override func bindViewModel() {
+        let input = PoseUploadHeadcountViewModel.Input(
+            nextButtonTapEvent: nextButton.rx.tap.asObservable()
+        )
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+    }
+    
     func resetButtonUI() {
         headcountButtons.forEach { $0.isCurrent = false }
     }
