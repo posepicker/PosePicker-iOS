@@ -7,6 +7,7 @@
 
 import UIKit
 import RxCocoa
+import RxSwift
 
 class PoseUploadHeadcountViewController: BaseViewController {
     
@@ -170,7 +171,6 @@ class PoseUploadHeadcountViewController: BaseViewController {
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
                 let absoluteOrigin: CGPoint? = self.registeredImageView.superview?.convert(self.registeredImageView.frame.origin, to: nil) ?? CGPoint(x: 0, y: 0)
-                print(self.registeredImageView.frame.origin)
                 let frame = CGRectMake(absoluteOrigin?.x ?? 0, absoluteOrigin?.y ?? 0, 120, 160)
                 let vc = MyPoseImageDetailViewController(registeredImage: self.registeredImage, frame: frame)
                 vc.modalTransitionStyle = .crossDissolve
@@ -178,11 +178,17 @@ class PoseUploadHeadcountViewController: BaseViewController {
                 self.present(vc, animated: true)
             })
             .disposed(by: disposeBag)
+        
     }
     
     override func bindViewModel() {
         let input = PoseUploadHeadcountViewModel.Input(
-            nextButtonTapEvent: nextButton.rx.tap.asObservable()
+            nextButtonTapEvent: nextButton.rx.tap.asObservable(),
+            expandButtonTapEvent: expandButton.rx.tap.flatMapLatest { [weak self] _ -> Observable<(CGPoint, UIImage?)> in
+                guard let self = self else { return .empty() }
+                let absoluteOrigin = self.registeredImageView.superview?.convert(self.registeredImageView.frame.origin, to: nil) ?? CGPoint(x: 0, y: 0)
+                return Observable.just((absoluteOrigin, self.registeredImage))
+            }
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
     }

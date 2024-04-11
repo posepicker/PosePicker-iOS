@@ -7,6 +7,7 @@
 
 import UIKit
 import RxCocoa
+import RxSwift
 
 class PoseUploadFramecountViewController: BaseViewController {
 
@@ -180,7 +181,12 @@ class PoseUploadFramecountViewController: BaseViewController {
     
     override func bindViewModel() {
         let input = PoseUploadFramecountViewModel.Input(
-            nextButtonTapEvent: nextButton.rx.tap.asObservable()
+            nextButtonTapEvent: nextButton.rx.tap.asObservable(),
+            expandButtonTapEvent: expandButton.rx.tap.flatMapLatest { [weak self] _ -> Observable<(CGPoint, UIImage?)> in
+                guard let self = self else { return .empty() }
+                let absoluteOrigin = self.registeredImageView.superview?.convert(self.registeredImageView.frame.origin, to: nil) ?? CGPoint(x: 0, y: 0)
+                return Observable.just((absoluteOrigin, self.registeredImage))
+            }
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         configureOutput(output)
