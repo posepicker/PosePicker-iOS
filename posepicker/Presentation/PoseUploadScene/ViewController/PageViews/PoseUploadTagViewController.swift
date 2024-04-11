@@ -445,6 +445,13 @@ class PoseUploadTagViewController: BaseViewController {
                 }
             })
             .disposed(by: disposeBag)
+        
+        
+        let input = PoseUploadTagViewModel.Input(
+            nextButtonTapEvent: nextButton.rx.tap.asObservable()
+        )
+        let output = viewModel?.transform(input: input, disposeBag: disposeBag)
+        configureOutput(output)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
@@ -474,5 +481,11 @@ class PoseUploadTagViewController: BaseViewController {
 extension PoseUploadTagViewController: UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 60, height: 30)
+    }
+}
+
+private extension PoseUploadTagViewController {
+    func configureOutput(_ output: PoseUploadTagViewModel.Output?) {
+        
     }
 }
