@@ -7,7 +7,7 @@
 
 import UIKit
 
-final class DefaultMyPoseCoordinator: MyPoseCoordinator {
+final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
     weak var finishDelegate: CoordinatorFinishDelegate?
     var navigationController: UINavigationController
     var myPoseGuidelineViewController: MyPoseGuidelineViewController

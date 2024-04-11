@@ -60,6 +60,8 @@ class MyPoseViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     var apiSession: APIService = APISession()
     
+    
+    
     // MARK: - Initialization
     init(registeredImage: UIImage?) {
         self.registeredImage = registeredImage

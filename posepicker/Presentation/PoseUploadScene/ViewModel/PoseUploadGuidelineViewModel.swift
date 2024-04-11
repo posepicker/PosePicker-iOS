@@ -9,9 +9,9 @@ import UIKit
 import RxSwift
 
 final class MyPoseGuidelineViewModel {
-    weak var coordinator: MyPoseCoordinator?
+    weak var coordinator: PoseUploadCoordinator?
     
-    init(coordinator: MyPoseCoordinator?) {
+    init(coordinator: PoseUploadCoordinator?) {
         self.coordinator = coordinator
     }
     
