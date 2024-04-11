@@ -21,6 +21,7 @@ final class PoseUploadTagViewModel {
         let nextButtonTapEvent: Observable<Void>
         let expandButtonTapEvent: Observable<(CGPoint, UIImage?)>
         let inputCompleted: Observable<Bool>
+        let selectedTags: Observable<[String]>
     }
     
     struct Output {
@@ -45,6 +46,17 @@ final class PoseUploadTagViewModel {
             .subscribe(onNext: { [weak self] in
                 self?.coordinator?.refreshDataSource()
                 self?.coordinator?.inputCompleted = $0
+            })
+            .disposed(by: disposeBag)
+        
+        input.selectedTags
+            .map { tagArray in
+                var string = ""
+                tagArray.forEach { string += "\($0)," }
+                return string
+            }
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.tags.accept($0)
             })
             .disposed(by: disposeBag)
         
