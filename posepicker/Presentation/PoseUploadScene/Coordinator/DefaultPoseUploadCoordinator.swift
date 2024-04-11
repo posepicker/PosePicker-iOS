@@ -48,9 +48,11 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
         self.navigationController.presentedViewController?.present(popupViewController, animated: true)
     }
     
-    func pushMyPoseView(image: UIImage?) {
-        let myposeViewController = MyPoseViewController(registeredImage: image)
-        let navigationController = UINavigationController(rootViewController: myposeViewController)
+    func pushPoseUploadView(image: UIImage?) {
+        let poseUploadViewController = PoseUploadViewController(registeredImage: image)
+        poseUploadViewController.viewModel = PoseUploadViewModel(coordinator: self)
+        
+        let navigationController = UINavigationController(rootViewController: poseUploadViewController)
         navigationController.modalPresentationStyle = .overFullScreen
         self.navigationController.presentedViewController?.present(navigationController, animated: true)
     }

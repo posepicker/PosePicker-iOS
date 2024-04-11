@@ -10,5 +10,5 @@ import UIKit
 protocol PoseUploadCoordinator: Coordinator {
     func pushGuideline()
     func presentImageLoadFailedPopup()
-    func pushMyPoseView(image: UIImage?)
+    func pushPoseUploadView(image: UIImage?)
 }
