@@ -91,6 +91,16 @@ class PoseFeedViewController: BaseViewController {
             $0.layer.zPosition = 999
         }
     
+    let loginToast = Toast(title: "로그인 되었습니다!")
+        .then {
+            $0.layer.zPosition = 999
+        }
+    
+    let poseUploadToast = Toast(title: "포즈 업로드가 완료되었습니다!")
+        .then {
+            $0.layer.zPosition = 999
+        }
+    
     // MARK: - Properties
     
     var viewModel: PoseFeedViewModel?
@@ -101,6 +111,7 @@ class PoseFeedViewController: BaseViewController {
     private let infiniteScrollEvent = PublishSubject<Void>()
     let dismissFilterModalEvent = PublishSubject<[RegisteredFilterCellViewModel]>()
     let dismissPoseDetailEvent = PublishSubject<RegisteredFilterCellViewModel>()
+    let poseUploadCompleteEvent = PublishSubject<Void>()
 //    private let nextPageRequestTrigger = PublishSubject<PoseFeedViewModel.RequestState>()
 //    private let modalDismissWithTag = PublishSubject<String>() // 상세 페이지에서 태그 tap과 함께 dismiss 트리거
 //    private let registerButtonTapped = PublishSubject<Void>()
@@ -123,7 +134,7 @@ class PoseFeedViewController: BaseViewController {
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([filterButton, filterDivider, filterCollectionView, poseFeedCollectionView, supplementLabel, loadingIndicator, poseUploadButton, reportToast])
+        view.addSubViews([filterButton, filterDivider, filterCollectionView, poseFeedCollectionView, supplementLabel, loadingIndicator, poseUploadButton, reportToast, loginToast, poseUploadToast])
         
         filterButton.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(8)
@@ -162,6 +173,18 @@ class PoseFeedViewController: BaseViewController {
         }
         
         reportToast.snp.makeConstraints { make in
+            make.bottom.equalTo(view).offset(46)
+            make.leading.trailing.equalToSuperview().inset(24)
+            make.height.equalTo(46)
+        }
+        
+        loginToast.snp.makeConstraints { make in
+            make.bottom.equalTo(view).offset(46)
+            make.leading.trailing.equalToSuperview().inset(24)
+            make.height.equalTo(46)
+        }
+        
+        poseUploadToast.snp.makeConstraints { make in
             make.bottom.equalTo(view).offset(46)
             make.leading.trailing.equalToSuperview().inset(24)
             make.height.equalTo(46)
@@ -528,6 +551,56 @@ private extension PoseFeedViewController {
         output.refreshEvent
             .subscribe(onNext: { [weak self] in
                 self?.viewDidLoadEvent.onNext(())
+            })
+            .disposed(by: disposeBag)
+        
+        output.loginCompleted
+            .asDriver(onErrorJustReturn: ())
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.loginToast.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.view).offset(-60)
+                }
+                UIView.animate(withDuration: 0.2) {
+                    self.view.layoutIfNeeded()
+                    self.loginToast.layer.opacity = 1
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.loginToast.snp.updateConstraints { make in
+                        make.bottom.equalTo(self.view).offset(46)
+                    }
+                    
+                    UIView.animate(withDuration: 0.2) {
+                        self.view.layoutIfNeeded()
+                        self.loginToast.layer.opacity = 0
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        poseUploadCompleteEvent
+            .asDriver(onErrorJustReturn: ())
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.poseUploadToast.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.view).offset(-60)
+                }
+                UIView.animate(withDuration: 0.2) {
+                    self.view.layoutIfNeeded()
+                    self.poseUploadToast.layer.opacity = 1
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.poseUploadToast.snp.updateConstraints { make in
+                        make.bottom.equalTo(self.view).offset(46)
+                    }
+                    
+                    UIView.animate(withDuration: 0.2) {
+                        self.view.layoutIfNeeded()
+                        self.poseUploadToast.layer.opacity = 0
+                    }
+                }
             })
             .disposed(by: disposeBag)
     }
