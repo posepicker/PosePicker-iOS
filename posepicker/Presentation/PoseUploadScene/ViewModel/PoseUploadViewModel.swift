@@ -24,6 +24,7 @@ final class PoseUploadViewModel {
     struct Output {
         let pageTransitionEvent = PublishRelay<Int>()
         let selectedSegmentIndex = BehaviorRelay<Int>(value: 0)
+        let isMovableToImageSourceView = BehaviorRelay<Bool>(value: false)
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -50,6 +51,12 @@ final class PoseUploadViewModel {
             coordinator.currentIndexFromView
                 .subscribe(onNext: {
                     output.selectedSegmentIndex.accept($0)
+                })
+                .disposed(by: disposeBag)
+            
+            coordinator.inputCompleted
+                .subscribe(onNext: {
+                    output.isMovableToImageSourceView.accept($0)
                 })
                 .disposed(by: disposeBag)
         }
