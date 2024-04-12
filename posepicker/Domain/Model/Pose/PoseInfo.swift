@@ -7,13 +7,34 @@
 
 import Foundation
 
+//"poseInfo" : {
+//  "source" : null,
+//  "poseId" : 615,
+//  "bookmarkCheck" : false,
+//  "imageKey" : "https:\/\/posepicker-image.s3.ap-northeast-2.amazonaws.com\/51ce9ee8d0c0b87537d4bf13c1ffaea7d715dfe9a1ae5835a6f2af65f5800e84.jpg",
+//  "sourceUrl" : null,
+//  "peopleCount" : 4,
+//  "tagAttributes" : null,
+//  "frameCount" : 1,
+//  "updatedAt" : null,
+//  "createdAt" : null,
+//  "user" : {
+//    "email" : "rudwns3927@nate.com",
+//    "uid" : 3178979511,
+//    "nickname" : "nickname",
+//    "loginType" : "kakao",
+//    "iosId" : null
+//  }
+//}
+//}
+
 struct PoseInfo: Codable {
     let createdAt: String?
     let frameCount: Int
     let imageKey: String
     let peopleCount: Int
     let poseId: Int
-    let source: String
+    let source: String?
     let sourceUrl: String?
     let tagAttributes: String?
     let updatedAt: String?
@@ -55,7 +76,7 @@ struct PoseInfo: Codable {
         self.imageKey = try container.decode(String.self, forKey: .imageKey)
         self.peopleCount = try container.decode(Int.self, forKey: .peopleCount)
         self.poseId = try container.decode(Int.self, forKey: .poseId)
-        self.source = try container.decode(String.self, forKey: .source)
+        self.source = try container.decodeIfPresent(String.self, forKey: .source)
         self.sourceUrl = try container.decodeIfPresent(String.self, forKey: .sourceUrl)
         self.tagAttributes = try container.decodeIfPresent(String.self, forKey: .tagAttributes)
         self.updatedAt = try container.decodeIfPresent(String.self, forKey: .updatedAt)
