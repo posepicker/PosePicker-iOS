@@ -169,6 +169,15 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
         self.childCoordinators.append(myposeCoordinator)
         myposeCoordinator.start()
     }
+    
+    func presentShowMoreModal(poseId: Int) {
+        let modalVC = PoseDetailMoreViewController(poseId: poseId)
+        if let sheet = modalVC.sheetPresentationController {
+            sheet.detents = [.custom(resolver: {_ in 180})]
+            sheet.preferredCornerRadius = 20
+        }
+        self.navigationController.presentedViewController?.present(modalVC, animated: true)
+    }
 }
 
 extension DefaultPoseFeedCoordinator: CoordinatorFinishDelegate {
