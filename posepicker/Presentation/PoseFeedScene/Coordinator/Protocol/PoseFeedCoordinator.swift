@@ -20,4 +20,6 @@ protocol PoseFeedCoordinator: Coordinator {
     func dismissPoseDetail(tag: String)
     func presentPoseUploadGuideline()
     func presentShowMoreModal(poseId: Int)
+    func dismissShowMoreModal()
+    func presentReportView(poseId: Int)
 }
