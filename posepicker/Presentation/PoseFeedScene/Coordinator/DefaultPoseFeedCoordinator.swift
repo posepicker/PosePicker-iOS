@@ -173,10 +173,22 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
     func presentShowMoreModal(poseId: Int) {
         let modalVC = PoseDetailMoreViewController(poseId: poseId)
         if let sheet = modalVC.sheetPresentationController {
-            sheet.detents = [.custom(resolver: {_ in 180})]
+            sheet.detents = [.custom(resolver: {_ in 132})]
             sheet.preferredCornerRadius = 20
         }
         self.navigationController.presentedViewController?.present(modalVC, animated: true)
+    }
+    
+    func dismissShowMoreModal() {
+        self.navigationController.presentedViewController?.dismiss(animated: true)
+    }
+    
+    func presentReportView(poseId: Int) {
+        let reportVC = ReportViewController(poseId: poseId)
+        let navigationVC = UINavigationController(rootViewController: reportVC)
+        navigationVC.modalPresentationStyle = .overFullScreen
+        navigationVC.modalTransitionStyle = .coverVertical
+        self.navigationController.presentedViewController?.present(navigationVC, animated: true)
     }
 }
 
