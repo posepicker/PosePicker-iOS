@@ -334,21 +334,9 @@ class PoseDetailViewController: BaseViewController {
     }
     
     /// 북마크 API 연동
-    @objc
-    func bookmarkButtonTapped() {
-        
-    }
+    @objc func bookmarkButtonTapped() { }
     
-    @objc
-    func showMoreButtonTapped() {
-//        let modalVC = PoseDetailMoreViewController(poseId: viewModel.poseDetailData.poseInfo.poseId)
-//        if let sheet = modalVC.sheetPresentationController {
-//            sheet.detents = [.custom { _ in 180}]
-//            sheet.preferredCornerRadius = 20
-//        }
-//        
-//        self.present(modalVC, animated: true)
-    }
+    @objc func showMoreButtonTapped() { }
 }
 
 private extension PoseDetailViewController {
