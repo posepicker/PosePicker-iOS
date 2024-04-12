@@ -34,9 +34,9 @@ class PoseUploadViewController: BaseViewController, UIGestureRecognizerDelegate 
 
     var isLoading = BehaviorRelay<Bool>(value: false)
     
-    var apiSession: APIService = APISession()
-    
     var viewModel: PoseUploadViewModel?
+    
+    private let checkTagInputCompleted = BehaviorRelay<Bool>(value: false)
     
     // MARK: - Initialization
     init(pageViewController: UIPageViewController, registeredImage: UIImage?) {
@@ -80,6 +80,9 @@ class PoseUploadViewController: BaseViewController, UIGestureRecognizerDelegate 
             
             button.rx.tap
                 .subscribe(onNext: {
+                    if index == 3 &&                     !self.checkTagInputCompleted.value {
+                        return
+                    }
                     UIView.animate(withDuration: 0.1) {
                         button.isCurrent = true
                         self.currentPage.accept(index)
@@ -96,102 +99,6 @@ class PoseUploadViewController: BaseViewController, UIGestureRecognizerDelegate 
                 self?.setButtonUI()
             })
             .disposed(by: disposeBag)
-        
-//        segmentControl.rx.selectedSegmentIndex.asDriver()
-//            .drive(onNext: { [weak self] in
-//                self?.currentPage.accept($0)
-//                self?.segmentControl.updateUnderlineViewWidth()
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        currentPage
-//            .asDriver()
-//            .drive(onNext: { [weak self] in
-//                self?.segmentControl.selectedSegmentIndex = $0
-//                self?.segmentControl.updateUnderlineViewWidth()
-//            })
-//            .disposed(by: self.disposeBag)
-        
-//        /// 마이포즈 태그 입력 완료여부에 따라 마이포즈 이미지 출처 뷰로 이동시킬지 말지 판단
-//        /// 세그먼트 & 페이징 관련 로직
-//        if let myposeTagViewController = viewControllers[2] as? PoseUploadTagViewController {
-//            myposeTagViewController.inputCompleted.asDriver()
-//                .drive(onNext: { [weak self] in
-//                    self?.pageViewController.dataSource = nil
-//                    self?.pageViewController.dataSource = self
-//                    if $0 {
-//                        self?.buttons[3].isEnabled = true
-//                        // self?.buttons[3].backgroundColor = .gray100
-//                        // self?.buttons[3].setTitleColor(.violet600, for: .normal)
-//                    } else {
-//                        self?.buttons[3].isEnabled = false
-//                        // self?.buttons[3].setTitleColor(.textWhite, for: .disabled)
-//                    }
-//                })
-//                .disposed(by: disposeBag)
-//        }
-//        
-//        viewControllers.enumerated().forEach { [weak self] index, vc in
-//            guard let self = self else { return }
-//            switch index {
-//            case 0:
-//                guard let myposeHeadVC = vc as? PoseUploadHeadcountViewController else { return }
-//                myposeHeadVC.nextButton.rx.tap
-//                    .asDriver()
-//                    .drive(onNext: { [weak self] in
-//                        self?.currentPage = 1
-//                    })
-//                    .disposed(by: self.disposeBag)
-//            case 1:
-//                guard let myposeFrameVC = vc as? PoseUploadFramecountViewController else { return }
-//                myposeFrameVC.nextButton.rx.tap
-//                    .asDriver()
-//                    .drive(onNext: { [weak self] in
-//                        self?.currentPage = 2
-//                    })
-//                    .disposed(by: self.disposeBag)
-//            case 2:
-//                guard let myposeTagVC = vc as? PoseUploadTagViewController else { return }
-//                myposeTagVC.nextButton.rx.tap
-//                    .asDriver()
-//                    .drive(onNext: { [weak self] in
-//                        self?.currentPage = 3
-//                    })
-//                    .disposed(by: self.disposeBag)
-//            case 3:
-//                guard let myposeImageSourceVC = vc as? PoseUploadImageSourceViewController else { return }
-//                myposeImageSourceVC.nextButton.rx.tap
-//                    .asDriver()
-//                    .drive(onNext: {
-//                        // 데이터 업로드 API 통신
-//                        print("API 통신중..")
-//                    })
-//                    .disposed(by: disposeBag)
-//                
-//                isLoading
-//                    .map { !$0 }
-//                    .bind(to: myposeImageSourceVC.loadingIndicator.rx.isHidden)
-//                    .disposed(by: disposeBag)
-//                
-//                isLoading.asDriver()
-//                    .drive(onNext: { loading in
-//                        if loading {
-//                            myposeImageSourceVC.loadingIndicator.isHidden = false
-//                            myposeImageSourceVC.nextButton.setTitle("", for: .normal)
-//                        } else {
-//                            myposeImageSourceVC.loadingIndicator.isHidden = true
-//                            myposeImageSourceVC.nextButton.setTitle("업로드", for: .normal)
-//                        }
-//                    })
-//                    .disposed(by: disposeBag)
-//            default:
-//                return
-//            }
-//        }
-//        
-//        // 로딩 인디케이터
-//        
-        
     }
     
     // 입력 최종 완료 후 API통신을 위한 객체
@@ -273,6 +180,13 @@ private extension PoseUploadViewController {
                         }
                     }
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        output?.isMovableToImageSourceView
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.checkTagInputCompleted.accept($0)
             })
             .disposed(by: disposeBag)
     }
