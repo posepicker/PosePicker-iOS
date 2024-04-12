@@ -17,7 +17,7 @@ final class DefaultPoseUploadUseCase: PoseUploadUseCase {
         self.poseUploadRepository = poseUploadRepository
     }
     
-    var uploadCompletedEvent = PublishSubject<PoseInfo>()
+    var uploadCompletedEvent = PublishSubject<Pose>()
     
     func savePose(
         image: UIImage?,
