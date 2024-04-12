@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 
 protocol PoseUploadUseCase {
-    var uploadCompletedEvent: PublishSubject<PoseInfo> { get set }
+    var uploadCompletedEvent: PublishSubject<Pose> { get set }
     
     func savePose(
         image: UIImage?,
