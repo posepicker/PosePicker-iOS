@@ -22,7 +22,7 @@ final class DefaultPoseUploadRepository: PoseUploadRepository {
         source: String,
         sourceUrl: String,
         tag: String
-    ) -> Observable<PoseInfo> {
+    ) -> Observable<Pose> {
         networkService
             .requestMultipartSingle(
                 .uploadPose(
@@ -35,7 +35,7 @@ final class DefaultPoseUploadRepository: PoseUploadRepository {
                 )
             )
             .asObservable()
-            .flatMapLatest { (response: PoseInfo) -> Observable<PoseInfo> in
+            .flatMapLatest { (response: Pose) -> Observable<Pose> in
                 return Observable.just(response)
             }
     }
