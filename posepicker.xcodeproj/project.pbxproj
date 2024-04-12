@@ -244,6 +244,7 @@
 		C9FD21242BC7C6EE00C23E25 /* DefaultPoseUploadUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD21232BC7C6EE00C23E25 /* DefaultPoseUploadUseCase.swift */; };
 		C9FD21282BC7C76C00C23E25 /* DefaultPoseUploadRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD21272BC7C76C00C23E25 /* DefaultPoseUploadRepository.swift */; };
 		C9FD212A2BC7C77700C23E25 /* PoseUploadRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD21292BC7C77700C23E25 /* PoseUploadRepository.swift */; };
+		C9FD212C2BC7FD0A00C23E25 /* MockPoseDetailUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD212B2BC7FD0A00C23E25 /* MockPoseDetailUseCase.swift */; };
 		C9FDBDEC2B2835E10045AA54 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9FDBDEB2B2835E10045AA54 /* RxSwift */; };
 		C9FDBDF02B2880790045AA54 /* RootViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */; };
 		C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */; };
@@ -491,6 +492,7 @@
 		C9FD21232BC7C6EE00C23E25 /* DefaultPoseUploadUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseUploadUseCase.swift; sourceTree = "<group>"; };
 		C9FD21272BC7C76C00C23E25 /* DefaultPoseUploadRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseUploadRepository.swift; sourceTree = "<group>"; };
 		C9FD21292BC7C77700C23E25 /* PoseUploadRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadRepository.swift; sourceTree = "<group>"; };
+		C9FD212B2BC7FD0A00C23E25 /* MockPoseDetailUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPoseDetailUseCase.swift; sourceTree = "<group>"; };
 		C9FDBDEF2B2880790045AA54 /* RootViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RootViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkResponse.swift; sourceTree = "<group>"; };
 		C9FDBDF52B28AE140045AA54 /* BookmarkDetailTagCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailTagCellViewModel.swift; sourceTree = "<group>"; };
@@ -1502,6 +1504,7 @@
 			isa = PBXGroup;
 			children = (
 				C9AF369E2BC2E8AA00629B63 /* DefaultPoseDetailUseCase.swift */,
+				C9FD212B2BC7FD0A00C23E25 /* MockPoseDetailUseCase.swift */,
 			);
 			path = DetailUseCase;
 			sourceTree = "<group>";
@@ -2588,6 +2591,7 @@
 				C9AF36B12BC3BB3D00629B63 /* DefaultBookmarkUseCase.swift in Sources */,
 				C91FF3782BAD8A3100096E25 /* Pages.swift in Sources */,
 				C93851272BB4152700E597C1 /* DefaultPosePickCoordinator.swift in Sources */,
+				C9FD212C2BC7FD0A00C23E25 /* MockPoseDetailUseCase.swift in Sources */,
 				880E75372AE67DC8007FAD5A /* BasicButton.swift in Sources */,
 				C96C9B682BBD2ACB00AC2921 /* PoseFeedUseCase.swift in Sources */,
 				C9C8909D2AE107BC0010240A /* UIColor+.swift in Sources */,
