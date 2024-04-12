@@ -553,7 +553,6 @@
 		8803ADB72B04FAEF00185933 /* PoseDetail */ = {
 			isa = PBXGroup;
 			children = (
-				C91E18492B99C216009611C3 /* Modal */,
 				883132952B08ECED00DAA5A7 /* Cell */,
 				8803ADBA2B04FB4100185933 /* PoseDetailViewModeltest.swift */,
 			);
@@ -2034,6 +2033,7 @@
 			isa = PBXGroup;
 			children = (
 				8803ADB82B04FB0D00185933 /* PoseDetailViewController.swift */,
+				C91E18492B99C216009611C3 /* Modal */,
 			);
 			path = DetailViewController;
 			sourceTree = "<group>";
