@@ -45,7 +45,7 @@ final class PoseUploadTagViewModel {
         input.inputCompleted
             .subscribe(onNext: { [weak self] in
                 self?.coordinator?.refreshDataSource()
-                self?.coordinator?.inputCompleted = $0
+                self?.coordinator?.inputCompleted.accept($0)
             })
             .disposed(by: disposeBag)
         
