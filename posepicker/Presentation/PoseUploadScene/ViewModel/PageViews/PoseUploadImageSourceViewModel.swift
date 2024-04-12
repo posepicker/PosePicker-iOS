@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxRelay
 
 final class PoseUploadImageSourceViewModel {
     weak var coordinator: PoseUploadCoordinator?
@@ -23,7 +24,7 @@ final class PoseUploadImageSourceViewModel {
     }
     
     struct Output {
-        
+        let isLoading = BehaviorRelay<Bool>(value: false)
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -42,7 +43,14 @@ final class PoseUploadImageSourceViewModel {
                 return coordinator.observeSavePose(disposeBag: disposeBag)
             }
             .subscribe(onNext: { [weak self] (image, headcount, framecount, tags, sourceURL) in
-                self?.poseUploadUseCase.savePose(image: image, frameCount: "1", peopleCount: "4", source: "", sourceUrl: sourceURL, tag: tags)
+                output.isLoading.accept(true)
+                var headcount = headcount
+                var framecount = framecount
+                _ = headcount.removeLast()
+                _ = framecount.removeLast()
+                self?.poseUploadUseCase.savePose(image: image, frameCount: framecount, peopleCount: headcount, source: "", sourceUrl: sourceURL, tag: tags)
+            }, onError: { _ in
+                output.isLoading.accept(false)
             })
             .disposed(by: disposeBag)
         
@@ -50,6 +58,7 @@ final class PoseUploadImageSourceViewModel {
             .uploadCompletedEvent
             .subscribe(onNext: { [weak self] in
                 print("등록 완료된 포즈",$0)
+                output.isLoading.accept(false)
                 self?.coordinator?.presentPoseSaveCompletedToast()
             })
             .disposed(by: disposeBag)
