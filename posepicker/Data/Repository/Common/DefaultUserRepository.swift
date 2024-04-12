@@ -148,6 +148,7 @@ final class DefaultUserRepository: UserRepository {
     ///             1-2-2. 앱으로 로그인 불가능하면 웹으로 로그인 시도, **이메일 & 카카오 아이디 담아서 리턴**
     private func loadKakaoInfo() -> Observable<(String, Int64)> {
         if (AuthApi.hasToken()) {
+            // AccessTokenInfo
             return self.fetchKakaoAccessTokenInfo()
                 .flatMapLatest { [weak self] _ -> Observable<User> in
                     guard let self = self else { return Observable<User>.empty() }
@@ -216,6 +217,28 @@ final class DefaultUserRepository: UserRepository {
     /// failure case로 분류된 경우 카카오톡 어플로 로그인 다시 시도
     private func fetchKakaoAccessTokenInfo() -> Observable<AccessTokenInfo> {
         return UserApi.shared.rx.accessTokenInfo().asObservable()
+            .catch { error in
+                if let sdkError = error as? SdkError,
+                   sdkError.isInvalidTokenError() == true {
+                    if UserApi.isKakaoTalkLoginAvailable() {
+                        UserApi.shared.loginWithKakaoTalk { _, _ in }
+                    } else {
+                        UserApi.shared.loginWithKakaoAccount { _, _ in }
+                    }
+                }
+                return .empty()
+            }
+            .retry(when: { error in
+                error.scan(into: 0, accumulator: { attempts, error in
+                    let max = 1
+                    if let sdkError = error as? SdkError,
+                       sdkError.isInvalidTokenError() {
+                        if attempts < max {
+                            throw SdkError.AuthFailed(reason: .InvalidGrant, errorInfo: nil)
+                        }
+                    }
+                })
+            })
     }
     
     /// 토큰 유효성 검사 이후 카카오 서버에 등록된 사용자 정보 가져오기
