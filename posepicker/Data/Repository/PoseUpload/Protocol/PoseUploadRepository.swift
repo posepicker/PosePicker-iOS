@@ -16,5 +16,5 @@ protocol PoseUploadRepository {
         source: String,
         sourceUrl: String,
         tag: String
-    ) -> Observable<PoseInfo>
+    ) -> Observable<Pose>
 }
