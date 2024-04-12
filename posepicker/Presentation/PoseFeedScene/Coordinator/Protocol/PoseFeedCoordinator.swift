@@ -19,4 +19,5 @@ protocol PoseFeedCoordinator: Coordinator {
     func moveToExternalApp(url: URL)
     func dismissPoseDetail(tag: String)
     func presentPoseUploadGuideline()
+    func presentShowMoreModal(poseId: Int)
 }
