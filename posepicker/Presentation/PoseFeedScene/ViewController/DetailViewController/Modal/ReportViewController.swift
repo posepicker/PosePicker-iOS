@@ -66,6 +66,8 @@ class ReportViewController: BaseViewController {
     
     var selectedReason: String = ""
     
+    var viewModel: ReportViewModel?
+    
     // MARK: - Initialization
     
     init(poseId: Int) {
@@ -161,7 +163,7 @@ class ReportViewController: BaseViewController {
                 popupView.confirmButton.rx.tap
                     .asDriver()
                     .drive(onNext: { [weak self] in
-//                        guard let self = self else { return }
+                        guard let self = self else { return }
 //                        let defaults = UserDefaults.standard
 //                        defaults.set(self.selectedReason, forKey: "\(self.poseId)")
 //                        popupVC.dismiss(animated: true) {
