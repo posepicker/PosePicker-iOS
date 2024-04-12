@@ -12,7 +12,7 @@ import RxRelay
 final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
     weak var finishDelegate: CoordinatorFinishDelegate?
     var navigationController: UINavigationController
-    var inputCompleted: Bool = false
+    var inputCompleted = BehaviorRelay<Bool>(value: false)
     var poseUploadNavigationController: UINavigationController?
     var myPoseGuidelineViewController: MyPoseGuidelineViewController
     var currentIndexFromView = BehaviorRelay<Int>(value: 0)
@@ -135,7 +135,7 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
             return nil
         }
         
-        if currentIndex == 2 && !inputCompleted {
+        if currentIndex == 2 && !inputCompleted.value {
             return nil
         }
         
