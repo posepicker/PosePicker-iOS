@@ -32,5 +32,5 @@ protocol PoseUploadCoordinator: Coordinator {
     func refreshDataSource()
     
     func observeSavePose(disposeBag: DisposeBag) -> Observable<(UIImage?, String, String, String, String)>
-    func presentSavePoseCompletedView(image: UIImage?, pose: PoseInfo)
+    func presentPoseSaveCompletedToast()
 }
