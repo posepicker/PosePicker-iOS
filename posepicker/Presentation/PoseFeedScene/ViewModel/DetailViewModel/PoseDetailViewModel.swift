@@ -31,6 +31,7 @@ final class PoseDetailViewModel {
         let linkShareButtonTapEvent: Observable<Void>
         let imageSourceButtonTapEvent: Observable<Void>
         let poseTagTapEvent: Observable<PoseDetailTagCellViewModel>
+        let showMoreButtonTapEvent: Observable<Void>
     }
     
     struct Output {
@@ -142,6 +143,13 @@ final class PoseDetailViewModel {
         input.poseTagTapEvent
             .subscribe(onNext: { [weak self] in
                 self?.coordinator?.dismissPoseDetail(tag: $0.title.value)
+            })
+            .disposed(by: disposeBag)
+        
+        input.showMoreButtonTapEvent
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.coordinator?.presentShowMoreModal(poseId: self.bindViewModel.poseId.value)
             })
             .disposed(by: disposeBag)
         
