@@ -42,20 +42,17 @@ final class PoseUploadImageSourceViewModel {
                 return coordinator.observeSavePose(disposeBag: disposeBag)
             }
             .subscribe(onNext: { [weak self] (image, headcount, framecount, tags, sourceURL) in
-                self?.coordinator?.presentSavePoseCompletedView(image: image, pose: .init(createdAt: nil, frameCount: 4, imageKey: "", peopleCount: 4, poseId: 551, source: "@gangggjuninggg", sourceUrl: sourceURL, tagAttributes: "친구,가족,자연스러움", updatedAt: nil, bookmarkCheck: nil, poseUploadUser: .init(uid: 0, nickname: "", email: "", loginType: "", iosId: nil)))
-//                self?.poseUploadUseCase
-//                    .savePose(
-//                        image: image,
-//                        frameCount: framecount,
-//                        peopleCount: headcount,
-//                        source: "",
-//                        sourceUrl: sourceURL,
-//                        tag: tags
-//                    )
+                self?.poseUploadUseCase.savePose(image: image, frameCount: "1", peopleCount: "4", source: "", sourceUrl: sourceURL, tag: tags)
             })
             .disposed(by: disposeBag)
         
-        
+        poseUploadUseCase
+            .uploadCompletedEvent
+            .subscribe(onNext: { [weak self] in
+                print("등록 완료된 포즈",$0)
+                self?.coordinator?.presentPoseSaveCompletedToast()
+            })
+            .disposed(by: disposeBag)
         
         return output
     }
