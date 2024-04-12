@@ -134,13 +134,32 @@ class PoseUploadImageSourceViewController: BaseViewController {
             submitButtonTapEvent: nextButton.rx.tap.asObservable()
         )
         
-        _ = viewModel?.transform(
+        let output = viewModel?.transform(
             input: input,
             disposeBag: disposeBag
         )
+        
+        configureOutput(output)
     }
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         urlTextField.endEditing(true)
+    }
+}
+
+private extension PoseUploadImageSourceViewController {
+    func configureOutput(_ output: PoseUploadImageSourceViewModel.Output?) {
+        output?.isLoading
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.loadingIndicator.isHidden = !$0
+                self?.nextButton.isEnabled = !$0
+                if $0 {
+                    self?.nextButton.setTitle("", for: .normal)
+                } else {
+                    self?.nextButton.setTitle("업로드", for: .normal)
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }
