@@ -157,19 +157,10 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
         )
     }
     
-    func presentSavePoseCompletedView(image: UIImage?, pose: PoseInfo) {
-        let detailVC = PoseDetailViewController()
-        detailVC.viewModel = PoseDetailViewModel(
-            coordinator: nil,
-            poseDetailUseCase: DefaultPoseDetailUseCase(
-                poseDetailRepository: DefaultPoseDetailRepository(
-                    networkService: DefaultNetworkService()),
-                poseId: pose.poseId
-            ),
-            bindViewModel: .init(image: image, poseId: pose.poseId, bookmarkCheck: false)
-        )
-        detailVC.navigationBar.isHidden = true
-        self.navigationController.presentedViewController?.present(detailVC, animated: true)
+    func presentPoseSaveCompletedToast() {
+        self.navigationController.dismiss(animated: true)
+        guard let posefeedVC = self.navigationController.viewControllers.first as? PoseFeedViewController else { return }
+        posefeedVC.poseUploadCompleteEvent.onNext(())
     }
     
     private func createViewControllers(image: UIImage?) {
