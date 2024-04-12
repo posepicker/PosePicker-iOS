@@ -178,12 +178,6 @@ class PoseDetailViewController: BaseViewController {
         navigationBar.standardAppearance.backgroundColor = .bgWhite
         navigationBar.standardAppearance.shadowColor = nil
         
-//        let sourceText = viewModel.poseDetailData.poseInfo.source
-//        if !sourceText.isEmpty {
-//            imageSourceButton.configuration?.attributedTitle = AttributedString(sourceText + "↗", attributes: AttributeContainer([NSAttributedString.Key.font : UIFont.pretendard(.medium, ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.textBrand]))
-//        } else {
-//            imageSourceButton.isHidden = true
-//        }
         // 캡처시 이미지 덮기
         guard let secureView = SecureField().secureContainer else { return }
 
@@ -205,7 +199,8 @@ class PoseDetailViewController: BaseViewController {
             kakaoShareButtonTapEvent: kakaoShareButton.rx.tap.asObservable(),
             linkShareButtonTapEvent: linkShareButton.rx.tap.asObservable(),
             imageSourceButtonTapEvent: imageSourceButton.rx.tap.asObservable(),
-            poseTagTapEvent: tagCollectionView.rx.modelSelected(PoseDetailTagCellViewModel.self).asObservable()
+            poseTagTapEvent: tagCollectionView.rx.modelSelected(PoseDetailTagCellViewModel.self).asObservable(),
+            showMoreButtonTapEvent: showMoreButton.rx.tap.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
