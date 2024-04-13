@@ -114,16 +114,11 @@ final class DefaultMyPageCoordinator: MyPageCoordinator {
         return logoutConfirmed.asObservable()
     }
     
-    func pushRevokeQuestionView() {
+    func pushRevokeQuestionView(commonUseCase: CommonUseCase) {
         let revokeVC = UserRevokeViewController()
         revokeVC.viewModel = UserRevokeViewModel(
             coordinator: self,
-            commonUseCase: DefaultCommonUseCase(
-                userRepository: DefaultUserRepository(
-                    networkService: DefaultNetworkService(),
-                    keychainService: DefaultKeychainService()
-                )
-            )
+            commonUseCase: commonUseCase
         )
         self.navigationController.pushViewController(revokeVC, animated: true)
     }
@@ -149,6 +144,7 @@ final class DefaultMyPageCoordinator: MyPageCoordinator {
                 } else {
                     revokeConfirmed.accept(.apple)
                 }
+                self.navigationController.dismiss(animated: true)
             })
             .disposed(by: disposeBag)
 
