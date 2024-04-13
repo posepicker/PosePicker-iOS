@@ -35,8 +35,7 @@ final class PoseDetailMoreViewModel {
         
         input.reportButtonTapEvent
             .subscribe(onNext: { [weak self] in
-                print("present tap!!",$0)
-//                self?.coordinator
+                self?.coordinator?.presentReportView(poseId: $0)
             })
             .disposed(by: disposeBag)
         
