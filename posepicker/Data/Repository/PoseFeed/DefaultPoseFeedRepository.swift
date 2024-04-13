@@ -36,9 +36,13 @@ final class DefaultPoseFeedRepository: PoseFeedRepository {
             .flatMapLatest { (owner, filteredContents: FilteredPose) -> Observable<[Section<PoseFeedPhotoCellViewModel>]> in
                 owner.isLastFilteredContentsObservable.accept(filteredContents.filteredContents?.last ?? true)
                 owner.isLastRecommendedContentsObservable.accept(filteredContents.recommendedContents?.last ?? true)
+                
+                let filteredContentsExceptReportedData = owner.checkReportData(posefeed: filteredContents.filteredContents?.content ?? [])
+                let recommendedContentsExceptReportedData = owner.checkReportData(posefeed: filteredContents.recommendedContents?.content ?? [])
+                
                 return Observable.combineLatest(
-                    owner.cacheItem(for: filteredContents.filteredContents?.content ?? []),
-                    owner.cacheItem(for: filteredContents.recommendedContents?.content ?? [])
+                    owner.cacheItem(for: filteredContentsExceptReportedData),
+                    owner.cacheItem(for: recommendedContentsExceptReportedData)
                 )
                 .flatMapLatest { filterSection, recommendSection in
                     let relay = BehaviorRelay<[Section<PoseFeedPhotoCellViewModel>]>(value: [
@@ -115,6 +119,30 @@ final class DefaultPoseFeedRepository: PoseFeedRepository {
         }
         
         return viewModelObservable.skip(while: { $0.count < contents.count }).asObservable()
+    }
+    
+    private func checkReportData(posefeed: [Pose]) -> [Pose] {
+        var newPoseFeed = posefeed
+        var allReportIds: [String] = []
+        var posefeedIndicies: [Int] = []
+
+        let dict = UserDefaults.standard.dictionaryRepresentation()
+
+        for key in dict.keys {
+            allReportIds.append(key)
+        }
+
+        newPoseFeed.enumerated().forEach { index, posepick in
+            if allReportIds.contains(where: { reportId in
+                return reportId == "\(posepick.poseInfo.poseId)"
+            }) {
+                posefeedIndicies.append(index)
+            }
+        }
+
+        newPoseFeed.remove(atOffsets: IndexSet(posefeedIndicies))
+
+        return newPoseFeed
     }
 }
 
