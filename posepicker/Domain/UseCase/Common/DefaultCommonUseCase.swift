@@ -11,6 +11,7 @@ import KakaoSDKAuth
 import KakaoSDKUser
 import KakaoSDKCommon
 import RxKakaoSDKUser
+import Alamofire
 
 final class DefaultCommonUseCase: CommonUseCase {
     private let userRepository: UserRepository
@@ -18,7 +19,9 @@ final class DefaultCommonUseCase: CommonUseCase {
     private let disposeBag = DisposeBag()
     
     var loginCompleted = PublishSubject<Void>()
-
+    var logoutCompleted = PublishSubject<Void>()
+    var revokeCompleted = PublishSubject<Void>()
+    
     // 외부에서 목업 키체인 서비스 객체를 주입할 수 있어야됨
     init(userRepository: UserRepository) {
         self.userRepository = userRepository
@@ -49,7 +52,7 @@ final class DefaultCommonUseCase: CommonUseCase {
         userRepository.logout(accessToken: accessToken, refreshToken: refreshToken)
             .subscribe(onNext: { [weak self] in
                 if $0.status >= 200 && $0.status <= 300 {
-                    self?.loginCompleted.onNext(())
+                    self?.logoutCompleted.onNext(())
                 }
             })
             .disposed(by: disposeBag)
@@ -75,9 +78,15 @@ final class DefaultCommonUseCase: CommonUseCase {
             refreshToken: refreshToken,
             withdrawalReason: reason
         )
+        .catchAndReturn(MeaninglessResponse(entity: "", message: "", redirect: "", status: 500))
         .subscribe(onNext: { [weak self] in
+            // 500에러 디버깅 필요..
             if $0.status >= 200 && $0.status <= 300 {
-                self?.loginCompleted.onNext(())
+                self?.revokeCompleted.onNext(())
+            }
+            
+            if $0.status == 500 {
+                self?.revokeCompleted.onNext(())
             }
         })
         .disposed(by: disposeBag)
