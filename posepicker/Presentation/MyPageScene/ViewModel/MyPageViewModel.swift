@@ -34,6 +34,7 @@ final class MyPageViewModel {
     
     struct Output {
         let refreshLoginState = PublishSubject<Bool>()
+        let revokeCompleted = PublishSubject<Void>()
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -97,7 +98,23 @@ final class MyPageViewModel {
             .subscribe(onNext: { [weak self] in
                 guard let coordinator = self?.coordinator else { return }
                 self?.coordinator?.loginDelegate?.coordinatorLoginCompleted(childCoordinator: coordinator)
-                output.refreshLoginState.onNext(UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn))
+                output.refreshLoginState.onNext(true)
+            })
+            .disposed(by: disposeBag)
+        
+        self.commonUseCase
+            .logoutCompleted
+            .subscribe(onNext: { [weak self] in
+                guard let coordinator = self?.coordinator else { return }
+                self?.coordinator?.loginDelegate?.coordinatorLoginCompleted(childCoordinator: coordinator)
+                output.refreshLoginState.onNext(false)
+            })
+            .disposed(by: disposeBag)
+        
+        self.commonUseCase
+            .revokeCompleted
+            .subscribe(onNext: {
+                output.revokeCompleted.onNext(())
             })
             .disposed(by: disposeBag)
         
@@ -115,7 +132,8 @@ final class MyPageViewModel {
         
         input.signoutButtonTapEvent
             .subscribe(onNext: { [weak self] in
-                self?.coordinator?.pushRevokeQuestionView()
+                guard let self = self else { return }
+                self.coordinator?.pushRevokeQuestionView(commonUseCase: self.commonUseCase)
             })
             .disposed(by: disposeBag)
         
