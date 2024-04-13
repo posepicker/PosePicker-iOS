@@ -67,7 +67,8 @@ final class PoseDetailViewModel {
         self.poseDetailUseCase
             .source
             .subscribe(onNext: {
-                output.source.accept($0)
+                let string = $0.trimmingCharacters(in: .whitespaces)
+                output.source.accept(string)
             })
             .disposed(by: disposeBag)
         
@@ -125,7 +126,7 @@ final class PoseDetailViewModel {
                 return sourceURL
             }
             .map {
-                return URL(string: "https://" + $0)
+                return URL(string: $0)
             }
             .compactMap { $0 }
             .subscribe(onNext: { [weak self] in
