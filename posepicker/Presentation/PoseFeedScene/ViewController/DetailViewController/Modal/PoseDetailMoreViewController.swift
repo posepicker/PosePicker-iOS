@@ -107,7 +107,11 @@ class PoseDetailMoreViewController: BaseViewController {
     override func bindViewModel() {
         let input = PoseDetailMoreViewModel.Input(
             closeButtonTapEvent: closeButton.rx.tap.asObservable(),
-            reportButtonTapEvent: reportButton.rx.tap.flatMapLatest { Observable.just(self.poseId) }
+            reportButtonTapEvent: reportButton.rx.tap
+                .flatMapLatest { [weak self] _ -> Observable<Int> in
+                    guard let self = self else  { return .empty() }
+                    return Observable.just(self.poseId)
+                }
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
@@ -115,10 +119,7 @@ class PoseDetailMoreViewController: BaseViewController {
     }
     
     // MARK: - Objc Functions
-    @objc
-    func closeButtonTapped() {
-        self.dismiss(animated: true)
-    }
+    @objc func closeButtonTapped() { }
 }
 
 private extension PoseDetailMoreViewController {
