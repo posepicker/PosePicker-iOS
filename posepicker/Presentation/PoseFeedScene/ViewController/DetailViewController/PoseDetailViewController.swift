@@ -174,6 +174,8 @@ class PoseDetailViewController: BaseViewController {
     }
     
     override func configUI() {
+        bookmarkButton.isHidden = true
+        
         self.navigationController?.isNavigationBarHidden = true
         view.backgroundColor = .bgWhite
         
