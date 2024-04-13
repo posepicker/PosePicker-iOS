@@ -26,9 +26,9 @@ final class DefaultPoseDetailUseCase: PoseDetailUseCase {
     }
     
     var tagItems = BehaviorRelay<[String]>(value: [])
-    var sourceUrl = PublishSubject<String>()
+    var sourceUrl = BehaviorRelay<String>(value: "")
     var pose = PublishSubject<Pose>()
-    var source = PublishSubject<String>()
+    var source = BehaviorRelay<String>(value: "")
     
     func getTagsFromPoseInfo() {
         pose
@@ -44,16 +44,15 @@ final class DefaultPoseDetailUseCase: PoseDetailUseCase {
         pose
             .compactMap { $0.poseInfo.sourceUrl }
             .subscribe(onNext: { [weak self] in
-                self?.sourceUrl.onNext($0)
+                self?.sourceUrl.accept($0)
             })
             .disposed(by: self.disposeBag)
     }
     
     func getSourceFromPoseInfo() {
         pose
-            .compactMap { $0.poseInfo.source }
             .subscribe(onNext: { [weak self] in
-                self?.source.onNext($0)
+                self?.source.accept($0.poseInfo.source ?? "")
             })
             .disposed(by: disposeBag)
     }
