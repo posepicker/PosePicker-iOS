@@ -123,7 +123,7 @@ class PoseFeedViewController: BaseViewController {
 //    
 //    private let tagDeleteConfirmed = PublishSubject<RegisteredFilterCellViewModel>()
 //    
-    private let reportCompletedTrigger = PublishSubject<Void>()
+    let reportCompletedTrigger = PublishSubject<Void>()
     
     // MARK: - Life Cycles
     override func viewDidLoad() {
@@ -431,7 +431,6 @@ class PoseFeedViewController: BaseViewController {
 //        
         reportCompletedTrigger.asDriver(onErrorJustReturn: ())
             .drive(onNext: { [weak self] in
-                print("REPORT COMPLETED!!")
                 guard let self = self else { return }
                 self.reportToast.snp.updateConstraints { make in
                     make.bottom.equalTo(self.view).offset(-60)
@@ -583,6 +582,7 @@ private extension PoseFeedViewController {
             .asDriver(onErrorJustReturn: ())
             .drive(onNext: { [weak self] in
                 guard let self = self else { return }
+                self.viewDidLoadEvent.onNext(())
                 self.poseUploadToast.snp.updateConstraints { make in
                     make.bottom.equalTo(self.view).offset(-60)
                 }
