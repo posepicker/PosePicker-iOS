@@ -12,8 +12,8 @@ import RxRelay
 final class MockPoseDetailUseCase: PoseDetailUseCase {
     var pose = PublishSubject<Pose>()
     var tagItems = BehaviorRelay<[String]>(value: [])
-    var sourceUrl = PublishSubject<String>()
-    var source = PublishSubject<String>()
+    var sourceUrl = BehaviorRelay<String>(value: "")
+    var source = BehaviorRelay<String>(value: "")
     
     var poseValue: PoseInfo
     var tagItemsValue: [String]
@@ -32,11 +32,11 @@ final class MockPoseDetailUseCase: PoseDetailUseCase {
     }
     
     func getSourceURLFromPoseInfo() {
-        sourceUrl.onNext(sourceURLValue)
+        sourceUrl.accept(sourceURLValue)
     }
     
     func getSourceFromPoseInfo() {
-        source.onNext(poseValue.source ?? "")
+        source.accept(poseValue.source ?? "")
     }
     
     
