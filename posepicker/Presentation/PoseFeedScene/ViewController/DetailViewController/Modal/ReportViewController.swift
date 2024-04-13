@@ -164,21 +164,21 @@ class ReportViewController: BaseViewController {
                     .asDriver()
                     .drive(onNext: { [weak self] in
                         guard let self = self else { return }
-//                        let defaults = UserDefaults.standard
-//                        defaults.set(self.selectedReason, forKey: "\(self.poseId)")
-//                        popupVC.dismiss(animated: true) {
-//                            // 포즈피드까지 이동
-//                            // 태그 새로고침
-//                            let navigation = self.view.window!.rootViewController as? UINavigationController
-//                            let rootVC = navigation?.viewControllers.first as? CommonViewController
-//                            let rootNavigationVC = rootVC?.viewControllers[2] as? UINavigationController
-//                            let posefeedVC = rootNavigationVC?.viewControllers.first as? PoseFeedViewController
-//                            posefeedVC?.tagResetTrigger.onNext(())
-//                            
-//                            self.view.window!.rootViewController?.dismiss(animated: true) {
-//                                posefeedVC?.reportCompletedTrigger.onNext(())
-//                            }
-//                        }
+                        let defaults = UserDefaults.standard
+                        defaults.set(self.selectedReason, forKey: "\(self.poseId)")
+                        popupVC.dismiss(animated: true) {
+                            // 포즈피드까지 이동
+                            // 태그 새로고침
+                            let navigation = self.view.window!.rootViewController as? UINavigationController
+                            let rootVC = navigation?.viewControllers.first as? CommonViewController
+                            let posefeedNavigationVC = rootVC?.pageViewController.viewControllers?.first as? UINavigationController
+                            let posefeedVC = posefeedNavigationVC?.viewControllers.first as? PoseFeedViewController
+                            posefeedVC?.viewDidLoadEvent.onNext(())
+                            self.view.window!.rootViewController?.dismiss(animated: true) {
+                                posefeedVC?.reportCompletedTrigger.onNext(())
+                            }
+                            posefeedNavigationVC?.dismiss(animated: true)
+                        }
                     })
                     .disposed(by: disposeBag)
                 
