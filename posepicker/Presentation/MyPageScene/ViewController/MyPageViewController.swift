@@ -126,10 +126,6 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     // MARK: - Life Cycles
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-    }
-    
     // MARK: - Functions
     override func configUI() {
         self.navigationController?.navigationBar.titleTextAttributes = [.foregroundColor: UIColor.textPrimary]
@@ -425,16 +421,86 @@ private extension MyPageViewController {
         output?.refreshLoginState
             .asDriver(onErrorJustReturn: false)
             .drive(onNext: { [weak self] in
-                self?.adjustLoginUI(isLoggedIn: $0)
+                // 로그인 완료 토스트 띄우기
+                guard let self = self else { return }
+                self.adjustLoginUI(isLoggedIn: $0)
                 
                 if let email = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
-                    self?.emailLabel.text = email
+                    self.emailLabel.text = email
                 }
                 
                 if $0 {
-                    // 로그인 완료 토스트 띄우기
+                    self.loginToast.snp.updateConstraints { make in
+                        make.bottom.equalTo(self.view).offset(-60)
+                    }
+                    
+                    UIView.animate(withDuration: 0.2) {
+                        self.view.layoutIfNeeded()
+                        self.loginToast.isHidden = false
+                        self.loginToast.layer.opacity = 1
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        self.loginToast.snp.updateConstraints { make in
+                            make.bottom.equalTo(self.view).offset(46)
+                        }
+                        
+                        UIView.animate(withDuration: 0.2) {
+                            self.view.layoutIfNeeded()
+                            self.loginToast.layer.opacity = 0
+                        }
+                    }
                 } else {
                     // 로그아웃 토스트 띄우기
+                    self.logoutToast.snp.updateConstraints { make in
+                        make.bottom.equalTo(self.view).offset(-60)
+                    }
+                    
+                    UIView.animate(withDuration: 0.2) {
+                        self.view.layoutIfNeeded()
+                        self.logoutToast.isHidden = false
+                        self.logoutToast.layer.opacity = 1
+                    }
+                    
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                        self.logoutToast.snp.updateConstraints { make in
+                            make.bottom.equalTo(self.view).offset(46)
+                        }
+                        
+                        UIView.animate(withDuration: 0.2) {
+                            self.view.layoutIfNeeded()
+                            self.logoutToast.layer.opacity = 0
+                        }
+                    }
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output?.revokeCompleted
+            .asDriver(onErrorJustReturn: ())
+            .drive(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.adjustLoginUI(isLoggedIn: false)
+                
+                self.revokeToast.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.view).offset(-60)
+                }
+                
+                UIView.animate(withDuration: 0.2) {
+                    self.view.layoutIfNeeded()
+                    self.revokeToast.isHidden = false
+                    self.revokeToast.layer.opacity = 1
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.revokeToast.snp.updateConstraints { make in
+                        make.bottom.equalTo(self.view).offset(46)
+                    }
+                    
+                    UIView.animate(withDuration: 0.2) {
+                        self.view.layoutIfNeeded()
+                        self.revokeToast.layer.opacity = 0
+                    }
                 }
             })
             .disposed(by: disposeBag)
