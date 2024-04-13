@@ -42,6 +42,10 @@ class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate 
     let cancelButton = PosePickButton(status: .defaultStatus, isFill: false, position: .none, buttonTitle: "계속 쓸래요", image: nil)
     
     let revokeButton = PosePickButton(status: .disabled, isFill: true, position: .none, buttonTitle: "탈퇴할래요", image: nil)
+        .then {
+            $0.setTitle("탈퇴할래요", for: .normal)
+            $0.setTitle("", for: .disabled)
+        }
     
     let textView = UITextView()
         .then {
@@ -67,13 +71,20 @@ class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate 
         RadioButton(title: "기타 입력"),
     ]
     
+    let loadingIndicator = UIActivityIndicatorView(style: .large)
+        .then {
+            $0.isHidden = true
+            $0.startAnimating()
+            $0.color = .iconWhite
+        }
+    
     private let revokeReason = BehaviorRelay<String>(value: "")
     
     var viewModel: UserRevokeViewModel?
     
     // MARK: - Functions
     override func render() {
-        self.view.addSubViews([mainLabel, buttonGroupStackView, cancelButton, revokeButton, textView])
+        self.view.addSubViews([mainLabel, buttonGroupStackView, cancelButton, revokeButton, textView, loadingIndicator])
         
         mainLabel.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(UIScreen.main.isLongerThan800pt ? 64 : 20)
@@ -112,6 +123,10 @@ class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate 
             make.leading.trailing.equalToSuperview().inset(20)
             make.height.equalTo(76)
             make.bottom.equalTo(revokeButton.snp.top).offset(-20).priority(UIScreen.main.isLongerThan800pt ? .low : .high)
+        }
+        
+        loadingIndicator.snp.makeConstraints { make in
+            make.center.equalTo(revokeButton)
         }
     }
     
@@ -230,6 +245,17 @@ class UserRevokeViewController: BaseViewController, UIGestureRecognizerDelegate 
 
 private extension UserRevokeViewController {
     func configureOutput(_ output: UserRevokeViewModel.Output?) {
-        
+        output?.isLoading
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                if $0 {
+                    self?.revokeButton.isEnabled = false
+                    self?.loadingIndicator.isHidden = false
+                } else {
+                    self?.revokeButton.isEnabled = true
+                    self?.loadingIndicator.isHidden = true
+                }
+            })
+            .disposed(by: disposeBag)
     }
 }
