@@ -25,7 +25,7 @@ final class UserRevokeViewModel {
     }
     
     struct Output {
-        
+        let isLoading = BehaviorRelay<Bool>(value: false)
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -39,18 +39,27 @@ final class UserRevokeViewModel {
             }
             .compactMap { $0 }
             .subscribe(onNext: { [weak self] in
+                output.isLoading.accept(true)
                 switch $0 {
                 case .apple:
                     self?.commonUseCase.revoke(with: .apple, reason: input.revokeReason.value)
                 case .kakao:
                     self?.commonUseCase.revoke(with: .kakao, reason: input.revokeReason.value)
                 }
+                self?.coordinator?.popRevokeView()
             })
             .disposed(by: disposeBag)
         
         input.revokeCancelButtonTapEvent
             .subscribe(onNext: { [weak self] in
                 self?.coordinator?.popRevokeView()
+            })
+            .disposed(by: disposeBag)
+        
+        self.commonUseCase
+            .revokeCompleted
+            .subscribe(onNext: {
+                output.isLoading.accept(false)
             })
             .disposed(by: disposeBag)
         
