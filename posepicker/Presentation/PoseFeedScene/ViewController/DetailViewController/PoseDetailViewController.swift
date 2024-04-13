@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxCocoa
 
 class PoseDetailViewController: BaseViewController {
 
@@ -56,7 +57,7 @@ class PoseDetailViewController: BaseViewController {
             $0.contentMode = .scaleAspectFill
         }
     
-    let tagCollectionView: UICollectionView = {
+    lazy var tagCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 8
@@ -66,6 +67,7 @@ class PoseDetailViewController: BaseViewController {
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.backgroundColor = .bgWhite
         cv.register(PoseDetailTagCell.self, forCellWithReuseIdentifier: PoseDetailTagCell.identifier)
+        cv.rx.setDelegate(self).disposed(by: disposeBag)
         return cv
     }()
     
@@ -323,8 +325,7 @@ class PoseDetailViewController: BaseViewController {
 //                self.dismiss(animated: true)
 //            })
 //            .disposed(by: disposeBag)
-//        
-//        tagCollectionView.updateCollectionViewHeight()
+//
     }
     
     // MARK: - Objc Functions
@@ -380,5 +381,11 @@ private extension PoseDetailViewController {
                 }
             })
             .disposed(by: disposeBag)
+    }
+}
+
+extension PoseDetailViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 20, height: 32)
     }
 }
