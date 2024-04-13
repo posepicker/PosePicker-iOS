@@ -123,7 +123,7 @@ class PoseFeedViewController: BaseViewController {
 //    
 //    private let tagDeleteConfirmed = PublishSubject<RegisteredFilterCellViewModel>()
 //    
-//    private let reportCompletedTrigger = PublishSubject<Void>()
+    private let reportCompletedTrigger = PublishSubject<Void>()
     
     // MARK: - Life Cycles
     override func viewDidLoad() {
@@ -429,32 +429,32 @@ class PoseFeedViewController: BaseViewController {
 //            })
 //            .disposed(by: disposeBag)
 //        
-//        reportCompletedTrigger.asDriver(onErrorJustReturn: ())
-//            .drive(onNext: { [weak self] in
-//                print("REPORT COMPLETED!!")
-//                guard let self = self else { return }
-//                self.reportToast.snp.updateConstraints { make in
-//                    make.bottom.equalTo(self.view).offset(-60)
-//                }
-//                
-//                UIView.animate(withDuration: 0.2) {
-//                    self.view.layoutIfNeeded()
-//                    self.reportToast.layer.opacity = 1
-//                }
-//                
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//                    self.reportToast.snp.updateConstraints { make in
-//                        make.bottom.equalTo(self.view).offset(46)
-//                    }
-//                    
-//                    UIView.animate(withDuration: 0.2) {
-//                        self.view.layoutIfNeeded()
-//                        self.reportToast.layer.opacity = 0
-//                    }
-//                }
-//                
-//            })
-//            .disposed(by: disposeBag)
+        reportCompletedTrigger.asDriver(onErrorJustReturn: ())
+            .drive(onNext: { [weak self] in
+                print("REPORT COMPLETED!!")
+                guard let self = self else { return }
+                self.reportToast.snp.updateConstraints { make in
+                    make.bottom.equalTo(self.view).offset(-60)
+                }
+                
+                UIView.animate(withDuration: 0.2) {
+                    self.view.layoutIfNeeded()
+                    self.reportToast.layer.opacity = 1
+                }
+                
+                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
+                    self.reportToast.snp.updateConstraints { make in
+                        make.bottom.equalTo(self.view).offset(46)
+                    }
+                    
+                    UIView.animate(withDuration: 0.2) {
+                        self.view.layoutIfNeeded()
+                        self.reportToast.layer.opacity = 0
+                    }
+                }
+                
+            })
+            .disposed(by: disposeBag)
     }
     
     // MARK: - Objc Functions
