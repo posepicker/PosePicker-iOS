@@ -94,7 +94,7 @@ final class DefaultPoseFeedRepository: PoseFeedRepository {
                     if let image = value?.images?.first {
                         let viewModel = PoseFeedPhotoCellViewModel(
                             image: image,
-                            poseId: pose.poseInfo.poseId,
+                            poseId: pose.poseInfo.poseId ?? 0,
                             bookmarkCheck: pose.poseInfo.bookmarkCheck ?? false
                         )
                         viewModelObservable.accept(viewModelObservable.value + [viewModel])
@@ -104,7 +104,7 @@ final class DefaultPoseFeedRepository: PoseFeedRepository {
                             case .success(let downloaded):
                                 let viewModel = PoseFeedPhotoCellViewModel(
                                     image: downloaded.image,
-                                    poseId: pose.poseInfo.poseId,
+                                    poseId: pose.poseInfo.poseId ?? 0,
                                     bookmarkCheck: pose.poseInfo.bookmarkCheck ?? false)
                                 viewModelObservable.accept(viewModelObservable.value + [viewModel])
                             case .failure:
