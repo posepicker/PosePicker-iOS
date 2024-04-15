@@ -14,11 +14,13 @@ final class MockPoseDetailUseCase: PoseDetailUseCase {
     var tagItems = BehaviorRelay<[String]>(value: [])
     var sourceUrl = BehaviorRelay<String>(value: "")
     var source = BehaviorRelay<String>(value: "")
+    var bookmarkTaskCompleted = PublishSubject<Bool>()
     
     var poseValue: PoseInfo
     var tagItemsValue: [String]
     var sourceURLValue: String
     var sourceValue: String
+    
     
     init(poseValue: PoseInfo, tagItemsValue: [String], sourceURLValue: String, sourceValue: String) {
         self.poseValue = poseValue
@@ -39,5 +41,7 @@ final class MockPoseDetailUseCase: PoseDetailUseCase {
         source.accept(poseValue.source ?? "")
     }
     
-    
+    func bookmarkContent(poseId: Int, currentChecked: Bool) {
+        bookmarkTaskCompleted.onNext(true)
+    }
 }
