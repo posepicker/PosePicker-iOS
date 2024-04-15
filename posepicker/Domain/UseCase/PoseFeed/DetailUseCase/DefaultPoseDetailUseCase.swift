@@ -29,6 +29,7 @@ final class DefaultPoseDetailUseCase: PoseDetailUseCase {
     var sourceUrl = BehaviorRelay<String>(value: "")
     var pose = PublishSubject<Pose>()
     var source = BehaviorRelay<String>(value: "")
+    var bookmarkTaskCompleted = PublishSubject<Bool>()
     
     func getTagsFromPoseInfo() {
         pose
@@ -53,6 +54,14 @@ final class DefaultPoseDetailUseCase: PoseDetailUseCase {
         pose
             .subscribe(onNext: { [weak self] in
                 self?.source.accept($0.poseInfo.source ?? "")
+            })
+            .disposed(by: disposeBag)
+    }
+    
+    func bookmarkContent(poseId: Int, currentChecked: Bool) {
+        self.poseDetailRepository.bookmarkContent(poseId: poseId, currentChecked: currentChecked)
+            .subscribe(onNext: { [weak self] in
+                self?.bookmarkTaskCompleted.onNext($0)
             })
             .disposed(by: disposeBag)
     }
