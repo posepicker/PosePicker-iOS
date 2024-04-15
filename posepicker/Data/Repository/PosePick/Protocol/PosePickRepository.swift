@@ -9,5 +9,5 @@ import UIKit
 import RxSwift
 
 protocol PosePickRepository {
-    func fetchPoseImage(peopleCount: Int) -> Observable<UIImage>
+    func fetchPoseImage(peopleCount: Int) -> Observable<UIImage?>
 }
