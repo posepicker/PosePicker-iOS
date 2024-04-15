@@ -48,7 +48,7 @@ final class PosePickUseCaseTests: XCTestCase {
         MockURLProtocol.responseWithDTO(type: .cacheImage)
         
         self.scheduler.createColdObservable([
-            .next(10, ())
+            .next(0, ())
         ])
         .subscribe(onNext: { [weak self] in
             self?.posepickUseCase

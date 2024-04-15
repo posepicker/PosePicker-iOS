@@ -12,6 +12,12 @@ import RxRelay
 @testable import posepicker
 
 final class MockPoseFeedUseCase: PoseFeedUseCase {
+    var bookmarkTaskCompleted = PublishSubject<Bool>()
+    
+    func bookmarkContent(poseId: Int, currentChecked: Bool) {
+        return
+    }
+    
     
     var feedContents = BehaviorRelay<[Section<PoseFeedPhotoCellViewModel>]>(value: [])
     

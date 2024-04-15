@@ -6,10 +6,18 @@
 //
 
 import UIKit
+import RxSwift
 @testable import posepicker
-@testable import PosePickerUseCaseTests
 
 final class MockPageViewCoordinator: PageViewCoordinator {
+    func pushBookmarkPage() -> Observable<posepicker.LoginPopUpView.SocialLogin> {
+        return .empty()
+    }
+    
+    func dismissLoginPopUp() {
+        return
+    }
+    
     weak var finishDelegate: CoordinatorFinishDelegate?
     var navigationController: UINavigationController
     var childCoordinators: [Coordinator] = []

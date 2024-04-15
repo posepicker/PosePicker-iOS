@@ -50,8 +50,9 @@ final class CommonViewTest: XCTestCase {
         
          self.input = CommonViewModel.Input(
              pageviewTransitionDelegateEvent: pageviewTransitionDelegateEvent.asObservable(),
-             myPageButtonTapped: mypageButtonTapped.asObservable(),
-             currentPage: currentPage.asObservable()
+             myPageButtonTapEvent: mypageButtonTapped.asObservable(),
+             currentPage: currentPage.asObservable(),
+             bookmarkButtonTapEvent: .empty()
          )
         
          self.output = self.viewModel.transform(

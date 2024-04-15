@@ -11,6 +11,10 @@ import RxSwift
 @testable import posepicker
 
 final class MockPoseFeedRepository: PoseFeedRepository {
+    func bookmarkContent(poseId: Int, currentChecked: Bool) -> RxSwift.Observable<Bool> {
+        return .empty()
+    }
+    
     func fetchFeedContents(peopleCount: String, frameCount: String, filterTags: [String], pageNumber: Int) -> Observable<[Section<PoseFeedPhotoCellViewModel>]> {
         return Observable.just([
             Section(header: "", items: [

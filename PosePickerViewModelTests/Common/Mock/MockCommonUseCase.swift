@@ -6,9 +6,24 @@
 //
 
 import Foundation
+import RxSwift
 @testable import posepicker
 
 final class MockCommonUseCase: CommonUseCase {
+    var loginCompleted = PublishSubject<Void>()
+    
+    var logoutCompleted = PublishSubject<Void>()
+    
+    var revokeCompleted = PublishSubject<Void>()
+    
+    func logout(with: posepicker.LoginPopUpView.SocialLogin) {
+        return
+    }
+    
+    func revoke(with: posepicker.LoginPopUpView.SocialLogin, reason: String) {
+        return
+    }
+    
     func loginWithKakao() {
         print("카카오 로그인 완료")
     }

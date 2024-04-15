@@ -11,6 +11,10 @@ import RxSwift
 @testable import posepicker
 
 final class MockUserRepository: UserRepository {
+    func logout(accessToken: String, refreshToken: String) -> RxSwift.Observable<posepicker.LogoutResponse> {
+        return .empty()
+    }
+    
     func loginWithKakao() -> Observable<PosePickerUser> {
         return Observable<PosePickerUser>.empty()
     }

@@ -12,21 +12,21 @@ import XCTest
 @testable import posepicker
 
 final class MockPosePickRepository: PosePickRepository {
+    func fetchPoseImage(peopleCount: Int) -> Observable<UIImage?> {
+        return Observable.just("TEST URL.com")
+            .withUnretained(self)
+            .flatMapLatest { (owner, imageURL) -> Observable<UIImage?> in
+                return owner.cacheItem(for: imageURL)
+            }
+    }
+    
     let imageDownloader: ImageDownloader
     
     init(imageDownloader: ImageDownloader = ImageDownloader.default) {
         self.imageDownloader = imageDownloader
     }
     
-    func fetchPoseImage(peopleCount: Int) -> Observable<UIImage> {
-        return Observable.just("TEST URL.com")
-            .withUnretained(self)
-            .flatMapLatest { (owner, imageURL) -> Observable<UIImage> in
-                return owner.cacheItem(for: imageURL)
-            }
-    }
-    
-    private func cacheItem(for imageURL: String) -> Observable<UIImage> {
+    private func cacheItem(for imageURL: String) -> Observable<UIImage?> {
         return Observable.create { observer in
             ImageCache.default.retrieveImageInDiskCache(forKey: imageURL) { [weak self] result in
                 guard let self = self else { return }

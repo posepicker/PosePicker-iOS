@@ -24,7 +24,13 @@ final class PoseFeedViewModelTests: XCTestCase {
         self.posefeedUseCase = MockPoseFeedUseCase()
         self.viewModel = PoseFeedViewModel(
             coordinator: nil,
-            posefeedUseCase: self.posefeedUseCase
+            posefeedUseCase: self.posefeedUseCase, 
+            commonUseCase: DefaultCommonUseCase(
+                userRepository: DefaultUserRepository(
+                    networkService: DefaultNetworkService(),
+                    keychainService: DefaultKeychainService()
+                )
+            )
         )
         self.disposeBag = DisposeBag()
     }
@@ -49,7 +55,10 @@ final class PoseFeedViewModelTests: XCTestCase {
             filterButtonTapEvent: .empty(),
             dismissFilterModalEvent: .empty(),
             filterTagTapEvent: .empty(),
-            posefeedPhotoCellTapEvent: .empty()
+            posefeedPhotoCellTapEvent: .empty(),
+            dismissPoseDetailEvent: .empty(),
+            bookmarkBindingEvent: .empty(),
+            poseUploadButtonTapEvent: .empty()
         )
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
         
@@ -125,9 +134,12 @@ final class PoseFeedViewModelTests: XCTestCase {
             viewDidLoadEvent: .empty(),
             infiniteScrollEvent: .empty(),
             filterButtonTapEvent: .empty(),
-            dismissFilterModalEvent: dismissModalEventObservable.asObservable(),
+            dismissFilterModalEvent: .empty(),
             filterTagTapEvent: .empty(),
-            posefeedPhotoCellTapEvent: .empty()
+            posefeedPhotoCellTapEvent: .empty(),
+            dismissPoseDetailEvent: .empty(),
+            bookmarkBindingEvent: .empty(),
+            poseUploadButtonTapEvent: .empty()
         )
         
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
@@ -168,9 +180,12 @@ final class PoseFeedViewModelTests: XCTestCase {
             viewDidLoadEvent: .empty(),
             infiniteScrollEvent: .empty(),
             filterButtonTapEvent: .empty(),
-            dismissFilterModalEvent: dismissModalEventObservable.asObservable(),
+            dismissFilterModalEvent: .empty(),
             filterTagTapEvent: .empty(),
-            posefeedPhotoCellTapEvent: .empty()
+            posefeedPhotoCellTapEvent: .empty(),
+            dismissPoseDetailEvent: .empty(),
+            bookmarkBindingEvent: .empty(),
+            poseUploadButtonTapEvent: .empty()
         )
         
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
