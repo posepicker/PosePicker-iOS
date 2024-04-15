@@ -310,6 +310,7 @@
 		C91A266A2B88524200F1193E /* PoseUploadTagViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadTagViewController.swift; sourceTree = "<group>"; };
 		C91A266C2B88525200F1193E /* PoseUploadImageSourceViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadImageSourceViewController.swift; sourceTree = "<group>"; };
 		C91A266E2B88899300F1193E /* MyPoseSelectButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseSelectButton.swift; sourceTree = "<group>"; };
+		C91C53252BCCFBF300C5C28F /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C91E18432B99B300009611C3 /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
 		C91E184A2B99C22A009611C3 /* PoseDetailMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseDetailMoreViewController.swift; sourceTree = "<group>"; };
 		C91E184C2B99E484009611C3 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
@@ -1715,6 +1716,7 @@
 				C9C890BE2AE1107B0010240A /* ImageLiteral.swift */,
 				C9C8905F2AE103A30010240A /* Info.plist */,
 				C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */,
+				C91C53252BCCFBF300C5C28F /* PrivacyInfo.xcprivacy */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
