@@ -174,8 +174,6 @@ class PoseDetailViewController: BaseViewController {
     }
     
     override func configUI() {
-        bookmarkButton.isHidden = true
-        
         self.navigationController?.isNavigationBarHidden = true
         view.backgroundColor = .bgWhite
         
@@ -204,130 +202,12 @@ class PoseDetailViewController: BaseViewController {
             linkShareButtonTapEvent: linkShareButton.rx.tap.asObservable(),
             imageSourceButtonTapEvent: imageSourceButton.rx.tap.asObservable(),
             poseTagTapEvent: tagCollectionView.rx.modelSelected(PoseDetailTagCellViewModel.self).asObservable(),
-            showMoreButtonTapEvent: showMoreButton.rx.tap.asObservable()
+            showMoreButtonTapEvent: showMoreButton.rx.tap.asObservable(),
+            bookmarkButtonTapEvent: bookmarkButton.rx.tap.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
         configureOutput(output)
-//        let input = PoseDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap, bookmarkButtonTapped: bookmarkButton.rx.tap, appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger))
-//        
-//        let output = viewModel.transform(input: input)
-//        
-//        output.imageSourceLink
-//            .compactMap { $0 }
-//            .subscribe(onNext: {
-//                UIApplication.shared.open($0)
-//            })
-//            .disposed(by: disposeBag)
-//    
-//        output.image.asDriver(onErrorJustReturn: nil)
-//            .drive(onNext: { [weak self] in
-//                self?.imageButton.setImage($0, for: .normal)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        imageButton.rx.tap.asDriver()
-//            .drive(onNext: { [weak self] in
-//                guard let retrievedImage = self?.imageButton.imageView?.image else { return }
-//                let vc = ImagePopUpViewController(mainImage: retrievedImage)
-//                vc.modalTransitionStyle = .crossDissolve
-//                vc.modalPresentationStyle = .overFullScreen
-//                self?.present(vc, animated: true)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.popupPresent
-//            .drive(onNext: { [unowned self] in
-//                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: false)
-//                popupViewController.modalTransitionStyle = .crossDissolve
-//                popupViewController.modalPresentationStyle = .overFullScreen
-//                let popupView = popupViewController.popUpView as! PopUpView
-//                popupView.alertText.accept("링크가 복사되었습니다.")
-//                self.present(popupViewController, animated: true)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.tagItems
-//            .drive(tagCollectionView.rx.items(cellIdentifier: PoseDetailTagCell.identifier, cellType: PoseDetailTagCell.self)) { _, viewModel, cell in
-//                cell.disposeBag = DisposeBag()
-//                cell.bind(to: viewModel)
-//            }
-//            .disposed(by: disposeBag)
-//        
-//        tagCollectionView.rx.modelSelected(PoseDetailTagCellViewModel.self)
-//            .flatMapLatest { $0.title }
-//            .subscribe(onNext: { [unowned self] in
-//                self.coordinator.dismissPoseDetailWithTagSelection(tag: $0)
-//                self.dismiss(animated: true)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.isLoading.asDriver(onErrorJustReturn: false)
-//            .drive(onNext: { [unowned self] in
-//                if $0 {
-//                    self.kakaoShareButton.isEnabled = false
-//                    self.loadingIndicator.isHidden = false
-//                } else {
-//                    self.kakaoShareButton.isEnabled = true
-//                    self.loadingIndicator.isHidden = true
-//                }
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.bookmarkCheck
-//            .compactMap { $0 }
-//            .drive(onNext: { [weak self] in
-//                guard let self = self else { return }
-//                if $0 {
-//                    self.bookmarkButton.image = ImageLiteral.imgBookmarkFill24.withTintColor(.iconDefault, renderingMode: .alwaysOriginal)
-//                    self.coordinator.triggerBookmarkFromPoseId(poseId: self.viewModel.poseDetailData.poseInfo.poseId, bookmarkCheck: true)
-//                } else {
-//                    self.bookmarkButton.image = ImageLiteral.imgBookmarkOff24.withTintColor(.iconDefault, renderingMode: .alwaysOriginal)
-//                    self.coordinator.triggerBookmarkFromPoseId(poseId: self.viewModel.poseDetailData.poseInfo.poseId, bookmarkCheck: false)
-//                }
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.loginPopUpPresent.asDriver(onErrorJustReturn: ())
-//            .drive(onNext: { [weak self] in
-//                guard let self = self else { return }
-//                
-//                let popUpVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
-//                popUpVC.modalTransitionStyle = .crossDissolve
-//                popUpVC.modalPresentationStyle = .overFullScreen
-//                self.present(popUpVC, animated: true)
-//                
-//                popUpVC.appleIdentityToken
-//                    .compactMap { $0 }
-//                    .subscribe(onNext: { [unowned self] in
-//                        self.appleIdentityTokenTrigger.onNext($0)
-//                    })
-//                    .disposed(by: self.disposeBag)
-//                
-//                popUpVC.email
-//                    .compactMap { $0 }
-//                    .subscribe(onNext: { [unowned self] in
-//                        self.kakaoEmailTrigger.onNext($0)
-//                    })
-//                    .disposed(by: self.disposeBag)
-//                
-//                popUpVC.kakaoId
-//                    .compactMap { $0 }
-//                    .subscribe(onNext: { [unowned self] in
-//                        self.kakaoIdTrigger.onNext($0)
-//                    })
-//                    .disposed(by: self.disposeBag)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.dismissLoginView
-//            .subscribe(onNext: { [unowned self] in
-//                guard let popupVC = self.presentedViewController as? PopUpViewController,
-//                      let _ = popupVC.popUpView as? LoginPopUpView else { return }
-//                self.dismiss(animated: true)
-//            })
-//            .disposed(by: disposeBag)
-//
     }
     
     // MARK: - Objc Functions
@@ -380,6 +260,17 @@ private extension PoseDetailViewController {
                 } else {
                     self?.kakaoShareButton.isEnabled = true
                     self?.loadingIndicator.isHidden = true
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output?.bookmarkChecked
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                if $0 {
+                    self?.bookmarkButton.image = ImageLiteral.imgBookmarkFill24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault)
+                } else {
+                    self?.bookmarkButton.image = ImageLiteral.imgBookmarkOff24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault)
                 }
             })
             .disposed(by: disposeBag)
