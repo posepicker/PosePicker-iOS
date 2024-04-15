@@ -28,8 +28,9 @@ final class DefaultBookmarkRepository: BookmarkRepository {
             .asObservable()
             .withUnretained(self)
             .flatMapLatest { (owner, contents: PoseFeed) -> Observable<[BookmarkFeedCellViewModel]> in
+                let contentsExceptReportedData = owner.checkReportData(posefeed: contents.content)
                 owner.isLastContentsObservable.accept(contents.last)
-                return owner.cacheItem(for: contents.content)
+                return owner.cacheItem(for: contentsExceptReportedData)
             }
             .flatMapLatest { filterSection in
                 let relay = BehaviorRelay<[BookmarkFeedCellViewModel]>(value: filterSection)
@@ -102,5 +103,30 @@ final class DefaultBookmarkRepository: BookmarkRepository {
         }
         
         return viewModelObservable.skip(while: { $0.count < contents.count }).asObservable()
+    }
+    
+    private func checkReportData(posefeed: [Pose]) -> [Pose] {
+        var newPoseFeed = posefeed
+        var allReportIds: [String] = []
+        var posefeedIndicies: [Int] = []
+
+        let dict = UserDefaults.standard.dictionaryRepresentation()
+
+        for key in dict.keys {
+            allReportIds.append(key)
+        }
+
+        newPoseFeed.enumerated().forEach { index, posepick in
+            guard let poseId = posepick.poseInfo.poseId else { return }
+            if allReportIds.contains(where: { reportId in
+                return reportId == "\(poseId)"
+            }) {
+                posefeedIndicies.append(index)
+            }
+        }
+
+        newPoseFeed.remove(atOffsets: IndexSet(posefeedIndicies))
+
+        return newPoseFeed
     }
 }
