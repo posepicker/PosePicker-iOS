@@ -133,8 +133,9 @@ final class DefaultPoseFeedRepository: PoseFeedRepository {
         }
 
         newPoseFeed.enumerated().forEach { index, posepick in
+            guard let poseId = posepick.poseInfo.poseId else { return }
             if allReportIds.contains(where: { reportId in
-                return reportId == "\(posepick.poseInfo.poseId)"
+                return reportId == "\(poseId)"
             }) {
                 posefeedIndicies.append(index)
             }
