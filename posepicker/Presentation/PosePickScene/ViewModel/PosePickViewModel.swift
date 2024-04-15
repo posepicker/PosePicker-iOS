@@ -34,6 +34,7 @@ final class PosePickViewModel {
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
         let selectedPeopleCount = BehaviorRelay<Int>(value: 0)
+        let maxRetryValue = BehaviorRelay<Int>(value: 0)
         
         /// 1. 선택 인원 수 바인딩
         input.selectedPeopleCount
@@ -52,10 +53,12 @@ final class PosePickViewModel {
         
         /// 3. 유스케이스에 세팅 완료된 데이터 바인딩
         /// 애니메이션 진행중이면 로티와 이미지뷰 히든속성이 교체되면 안됨. 로티 그대로 유지
+        /// max retry값 추가하기
         Observable.combineLatest(input.isAnimating, self.posepickUseCase.poseImage)
             .subscribe(onNext: { (isAnimating, image) in
                 guard let image = image else {
-                    if !isAnimating {
+                    if !isAnimating && maxRetryValue.value < 5 {
+                        maxRetryValue.accept(maxRetryValue.value + 1)
                         output.lottieImageHidden.accept(false)
                         output.animate.onNext(())
                     }
@@ -63,6 +66,7 @@ final class PosePickViewModel {
                 }
                 
                 if !isAnimating {
+                    maxRetryValue.accept(0)
                     output.lottieImageHidden.accept(true)
                     output.poseImage.accept(image)
                 }
