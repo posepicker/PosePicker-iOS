@@ -9,7 +9,7 @@ import UIKit
 import RxSwift
 import SnapKit
 
-class MyPoseImageDetailViewController: BaseViewController {
+class PoseUploadImageDetailViewController: BaseViewController {
 
     // MARK: - Subviews
     lazy var imageView = UIImageViewWithDismissNotification(image: self.registeredImage)

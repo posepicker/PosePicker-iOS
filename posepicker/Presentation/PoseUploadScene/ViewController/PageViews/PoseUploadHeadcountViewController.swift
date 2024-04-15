@@ -172,7 +172,7 @@ class PoseUploadHeadcountViewController: BaseViewController {
                 guard let self = self else { return }
                 let absoluteOrigin: CGPoint? = self.registeredImageView.superview?.convert(self.registeredImageView.frame.origin, to: nil) ?? CGPoint(x: 0, y: 0)
                 let frame = CGRectMake(absoluteOrigin?.x ?? 0, absoluteOrigin?.y ?? 0, 120, 160)
-                let vc = MyPoseImageDetailViewController(registeredImage: self.registeredImage, frame: frame)
+                let vc = PoseUploadImageDetailViewController(registeredImage: self.registeredImage, frame: frame)
                 vc.modalTransitionStyle = .crossDissolve
                 vc.modalPresentationStyle = .overFullScreen
                 self.present(vc, animated: true)

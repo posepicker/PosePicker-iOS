@@ -94,7 +94,7 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
     
     func presentImageExpand(origin: CGPoint, image: UIImage?) {
         let frame = CGRectMake(origin.x, origin.y, 120, 160)
-        let vc = MyPoseImageDetailViewController(registeredImage: image, frame: frame)
+        let vc = PoseUploadImageDetailViewController(registeredImage: image, frame: frame)
         vc.modalTransitionStyle = .crossDissolve
         vc.modalPresentationStyle = .overFullScreen
         self.navigationController.present(vc, animated: true)
