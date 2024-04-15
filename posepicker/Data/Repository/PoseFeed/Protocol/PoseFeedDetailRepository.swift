@@ -10,4 +10,5 @@ import RxSwift
 
 protocol PoseDetailRepository {
     func fetchPoseInfo(poseId: Int) -> Observable<Pose>
+    func bookmarkContent(poseId: Int, currentChecked: Bool) -> Observable<Bool>
 }
