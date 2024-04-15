@@ -32,6 +32,7 @@ final class PoseDetailViewModel {
         let imageSourceButtonTapEvent: Observable<Void>
         let poseTagTapEvent: Observable<PoseDetailTagCellViewModel>
         let showMoreButtonTapEvent: Observable<Void>
+        let bookmarkButtonTapEvent: Observable<Void>
     }
     
     struct Output {
@@ -39,6 +40,7 @@ final class PoseDetailViewModel {
         let tagItems = BehaviorRelay<[PoseDetailTagCellViewModel]>(value: [])
         let source = PublishRelay<String>()
         let isLoading = BehaviorRelay<Bool>(value: false)
+        let bookmarkChecked = BehaviorRelay<Bool>(value: false)
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -151,6 +153,20 @@ final class PoseDetailViewModel {
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
                 self.coordinator?.presentShowMoreModal(poseId: self.bindViewModel.poseId.value)
+            })
+            .disposed(by: disposeBag)
+        
+        input.bookmarkButtonTapEvent
+            .subscribe(onNext: { [weak self] in
+                guard let self = self else { return }
+                self.poseDetailUseCase.bookmarkContent(poseId: self.bindViewModel.poseId.value, currentChecked: self.bindViewModel.bookmarkCheck.value)
+                self.bindViewModel.bookmarkCheck.accept(!self.bindViewModel.bookmarkCheck.value)
+            })
+            .disposed(by: disposeBag)
+        
+        self.bindViewModel.bookmarkCheck
+            .subscribe(onNext: {
+                output.bookmarkChecked.accept($0)
             })
             .disposed(by: disposeBag)
         
