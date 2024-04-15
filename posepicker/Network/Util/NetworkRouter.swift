@@ -87,7 +87,7 @@ enum APIRouter: URLRequestConvertible {
         case .retrievePoseDetail(let poseId):
             return "/api/pose/\(poseId)"
         case .uploadPose:
-            return "/api/pose/"
+            return "/api/pose"
         case .appleLogin:
             return "/api/users/login/ios/apple"
         case .kakaoLogin:
@@ -146,6 +146,9 @@ enum APIRouter: URLRequestConvertible {
             return [
                 K.Parameters.idToken: idToken
             ]
+        /// authCode: token
+        /// uid: kakaoId
+        /// email: email
         case .kakaoLogin(let authCode, let email, let kakaoId):
             return [
                 K.Parameters.email: email,
@@ -244,12 +247,12 @@ enum APIRouter: URLRequestConvertible {
             if let size = image?.getSizeIn(.megabyte),
                size >= 10 {
                 let compressedImage = image?.compressTo(9)
-                if let imgData = compressedImage?.pngData() {
-                    multipartFormData.append(imgData, withName: K.Parameters.file, fileName: "\(image.hashValue).png", mimeType: "image/png")
+                if let imgData = compressedImage?.jpegData(compressionQuality: 1) {
+                    multipartFormData.append(imgData, withName: K.Parameters.file, fileName: "\(image.hashValue).jpg", mimeType: "image/jpg")
                 }
             } else {
-                if let imgData = image?.pngData() {
-                    multipartFormData.append(imgData, withName: K.Parameters.file, fileName: "\(image.hashValue).png", mimeType: "image/png")
+                if let imgData = image?.jpegData(compressionQuality: 1) {
+                    multipartFormData.append(imgData, withName: K.Parameters.file, fileName: "\(image.hashValue).jpg", mimeType: "image/jpg")
                 }
             }
         default: ()

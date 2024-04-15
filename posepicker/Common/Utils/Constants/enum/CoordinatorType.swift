@@ -9,6 +9,6 @@ import Foundation
 
 enum CoordinatorType {
     case app, login, pageview
-    case posepick, posetalk, posefeed, mypose
+    case posepick, posetalk, posefeed, mypose, bookmark
     case mypage
 }

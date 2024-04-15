@@ -5,7 +5,7 @@
 //  Created by 박경준 on 3/22/24.
 //
 
-import Foundation
+import UIKit
 
 enum PageViewType: String, CaseIterable {
     case posepick
@@ -19,6 +19,15 @@ enum PageViewType: String, CaseIterable {
         case 0: self = .posepick
         case 1: self = .posetalk
         case 2: self = .posefeed
+        default: return nil
+        }
+    }
+    
+    init?(_ viewController: UIViewController) {
+        switch viewController {
+        case viewController as? PosePickViewController: self = .posepick
+        case viewController as? PoseTalkViewController: self = .posetalk
+        case viewController as? PoseFeedViewController: self = .posefeed
         default: return nil
         }
     }

@@ -41,6 +41,8 @@ class PinterestLayout: UICollectionViewFlowLayout {
     // 2. 콜렉션 뷰가 처음 초기화되거나 뷰가 변경될 떄 실행됩니다. 이 메서드에서 레이아웃을
     //    미리 계산하여 메모리에 적재하고, 필요할 때마다 효율적으로 접근할 수 있도록 구현해야 합니다.
     override func prepare() {
+        if self.collectionView?.numberOfSections ?? 0 == 0 { return }
+        
         cache.removeAll()
         contentHeight = 0
         guard let collectionView = collectionView, cache.isEmpty else { return }

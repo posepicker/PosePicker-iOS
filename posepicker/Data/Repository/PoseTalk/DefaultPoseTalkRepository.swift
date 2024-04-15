@@ -11,9 +11,9 @@ import RxSwift
 
 // 네트워크 객체 주입
 final class DefaultPoseTalkRepository: PoseTalkRepository {
-    let networkService: DefaultNetworkService
+    let networkService: NetworkService
     
-    init(networkService: DefaultNetworkService) {
+    init(networkService: NetworkService) {
         self.networkService = networkService
     }
     

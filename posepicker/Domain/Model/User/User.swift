@@ -20,3 +20,9 @@ struct MeaninglessResponse: Codable {
     let redirect: String
     let status: Int
 }
+
+struct LogoutResponse: Codable {
+    let entity: String
+    let message: String
+    let status: Int
+}

@@ -14,13 +14,19 @@ import RxKakaoSDKAuth
 import KakaoSDKAuth
 import RxKakaoSDKCommon
 import RxSwift
+import Kingfisher
 
 @main
 class AppDelegate: UIResponder, UIApplicationDelegate {
     
     var window: UIWindow?
+    var appCoordinator: AppCoordinator?
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
+        
+        // 캐시 한계설정
+        ImageCache.default.memoryStorage.config.countLimit = 70
+        ImageCache.default.diskStorage.config.sizeLimit = 1000 * 1024 * 1024
         
         /// 카카오 셋업
         if let kakaoKey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_KEY") as? String {
@@ -28,10 +34,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         /// SmartLook 셋업
-        if let smartlookProjectKey = Bundle.main.object(forInfoDictionaryKey: "SMARTLOOK_PROJECT_KEY") as? String {
-            Smartlook.instance.preferences.projectKey = smartlookProjectKey
-            Smartlook.instance.start()
-        }
+//        if let smartlookProjectKey = Bundle.main.object(forInfoDictionaryKey: "SMARTLOOK_PROJECT_KEY") as? String {
+//            Smartlook.instance.preferences.projectKey = smartlookProjectKey
+//            Smartlook.instance.start()
+//        }
         
 //        if let smartlookProjectKey = ProcessInfo.processInfo.environment["SMARTLOOK_PROJECT_KEY"] {
 //            Smartlook.instance.preferences.projectKey = smartlookProjectKey
@@ -39,7 +45,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         
         /// Firebase 셋업
-        FirebaseApp.configure()
+//        FirebaseApp.configure()
 
         
         window = UIWindow(frame: UIScreen.main.bounds)
@@ -49,13 +55,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationController.isNavigationBarHidden = true
         
         window.rootViewController = navigationController
-        
-        let appCoordinator = AppCoordinator(navigationController: navigationController)
-        let rootCoordinator = RootCoordinator(navigationController: navigationController)
-        appCoordinator.childCoordinators.append(rootCoordinator)
-        appCoordinator.childCoordinators.first!.start()
+        window.makeKeyAndVisible()
         
         window.makeKeyAndVisible()
+        
+        self.appCoordinator = DefaultAppCoordinator(navigationController)
+        self.appCoordinator?.start()
         
         return true
     }

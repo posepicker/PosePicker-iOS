@@ -8,13 +8,14 @@
 import Foundation
 
 import RxSwift
+import KakaoSDKUser
+import KakaoSDKAuth
+
 
 protocol UserRepository {
     // MARK: - 카카오 로그인 to 포즈피커
+    
     func loginWithKakao(
-        email: String,              // 이메일
-        accessToken: String,        // 액세스 토큰
-        refreshToken: String        // 리프레시 토큰
     ) -> Observable<PosePickerUser>
     
     // MARK: - 애플 로그인 to 포즈피커
@@ -29,7 +30,7 @@ protocol UserRepository {
     func logout(
         accessToken: String,        // 액세스 토큰
         refreshToken: String        // 리프레시 토큰
-    ) -> Observable<MeaninglessResponse>
+    ) -> Observable<LogoutResponse>
     
     // MARK: - 탈퇴
     func deleteUserInfo(

@@ -54,6 +54,7 @@ struct K {
         
         static let apple = "apple"
         static let kakao = "kakao"
+        static let isLoggedIn = "isLoggedIn"
     }
     
     /// 헤더 필드
