@@ -29,7 +29,7 @@ class ReportViewController: BaseViewController {
             $0.attributedText = attributedText
         }
     
-    let closeButton = UIBarButtonItem(image: ImageLiteral.imgClose24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault), style: .plain, target: self, action: #selector(closeButtonTapped))
+    lazy var closeButton = UIBarButtonItem(image: ImageLiteral.imgClose24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault), style: .plain, target: self, action: #selector(closeButtonTapped))
     
     lazy var buttonGroupStackView = UIStackView(arrangedSubviews: self.radioGroup)
         .then {
@@ -237,7 +237,7 @@ class ReportViewController: BaseViewController {
     // MARK: - Objc Functions
     @objc
     func closeButtonTapped() {
-        self.dismiss(animated: true)
+        self.navigationController?.dismiss(animated: true)
     }
     
     @objc
