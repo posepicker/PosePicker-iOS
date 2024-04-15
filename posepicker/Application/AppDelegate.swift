@@ -28,14 +28,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ImageCache.default.memoryStorage.config.countLimit = 70
         ImageCache.default.diskStorage.config.sizeLimit = 1000 * 1024 * 1024
         
-//        KeychainManager.shared.removeAll()
-        
-//        try? KeychainManager.shared.saveItem("eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiI4NTIzMzE2NjIiLCJleHAiOjE3MDc0NzA3OTl9.nGH0Qi6neY99nr98VTAxvKqzUl-yUlv1MNMuxrwNyfaYK8bePeb5czXZtU4_QrUwpsGqWWkIJXSIn-GGO6jTVA", itemClass: .password, key: K.Parameters.accessToken)
-//        try? KeychainManager.shared.saveItem("eyJhbGciOiJIUzUxMiJ9.eyJleHAiOjE3MDg2NzY3OTl9.VFv1yQun1qRz6lo3n7XggsRCHKPwxVxasTearjACNvEXNq4wjmT4f6FPZRE0k5GREHyaqES-45xDHJ-VSC3Vow", itemClass: .password, key: K.Parameters.refreshToken)
-
-        
-//        UserDefaults.standard.setValue(false, forKey: K.SocialLogin.isLoggedIn)
-        
         /// 카카오 셋업
         if let kakaoKey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_KEY") as? String {
             RxKakaoSDK.initSDK(appKey: kakaoKey)
@@ -64,11 +56,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         window.rootViewController = navigationController
         window.makeKeyAndVisible()
-        
-//        let appCoordinator = AppCoordinator(navigationController: navigationController)
-//        let rootCoordinator = RootCoordinator(navigationController: navigationController)
-//        appCoordinator.childCoordinators.append(rootCoordinator)
-//        appCoordinator.childCoordinators.first!.start()
         
         window.makeKeyAndVisible()
         
