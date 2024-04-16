@@ -45,12 +45,6 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
         self.configurePageViewController(with: controllers)
     }
     
-    func selectPage(_ page: PageViewType) {
-        guard let currentIndex = currentPage()?.pageOrderNumber() else { return }
-        
-        self.pageViewController.setViewControllers([controllers[page.pageOrderNumber()]], direction: currentIndex <= page.pageOrderNumber() ? .forward : .reverse, animated: true)
-    }
-    
     func setSelectedIndex(_ index: Int) {
         guard let page = PageViewType(index: index),
               let currentIndex = currentPage()?.pageOrderNumber() else { return }
