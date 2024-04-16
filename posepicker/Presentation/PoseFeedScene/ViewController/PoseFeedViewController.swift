@@ -106,23 +106,12 @@ class PoseFeedViewController: BaseViewController {
     var viewModel: PoseFeedViewModel?
     private let filteredContentSizes = BehaviorRelay<[CGSize]>(value: [])
     private let recommendedContentSizes = BehaviorRelay<[CGSize]>(value: [])
+    private let infiniteScrollEvent = PublishSubject<Void>()
     let viewDidLoadEvent = PublishSubject<Void>()
     let bookmarkBindingEvent = PublishSubject<Int>()
-    private let infiniteScrollEvent = PublishSubject<Void>()
     let dismissFilterModalEvent = PublishSubject<[RegisteredFilterCellViewModel]>()
     let dismissPoseDetailEvent = PublishSubject<RegisteredFilterCellViewModel>()
     let poseUploadCompleteEvent = PublishSubject<Void>()
-//    private let nextPageRequestTrigger = PublishSubject<PoseFeedViewModel.RequestState>()
-//    private let modalDismissWithTag = PublishSubject<String>() // 상세 페이지에서 태그 tap과 함께 dismiss 트리거
-//    private let registerButtonTapped = PublishSubject<Void>()
-//    private let tagResetTrigger = PublishSubject<Void>()
-//    
-//    private let appleIdentityTokenTrigger = PublishSubject<String>()
-//    private let kakaoEmailTrigger = PublishSubject<String>()
-//    private let kakaoIdTrigger = PublishSubject<Int64>()
-//    
-//    private let tagDeleteConfirmed = PublishSubject<RegisteredFilterCellViewModel>()
-//    
     let reportCompletedTrigger = PublishSubject<Void>()
     
     // MARK: - Life Cycles
