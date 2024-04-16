@@ -24,7 +24,7 @@ final class MyPageViewModel {
         let noticeButtonTapEvent: Observable<Void>
         let faqButtonTapEvent: Observable<Void>
         let snsButtonTapEvent: Observable<Void>
-//        let serviceInquiryButtonTapEvent: Observable<Void>
+        let serviceInquiryButtonTapEvent: Observable<Void>
         let serviceInformationButtonTapEvent: Observable<Void>
         let privacyInformationButtonTapEvent: Observable<Void>
         let logoutButtonTapEvent: Observable<Void>
@@ -58,11 +58,11 @@ final class MyPageViewModel {
             })
             .disposed(by: disposeBag)
         
-//        input.serviceInquiryButtonTapEvent
-//            .subscribe(onNext: { [weak self] in
-//                self?.coordinator?.pushWebView(webView: .serviceInquiry)
-//            })
-//            .disposed(by: disposeBag)
+        input.serviceInquiryButtonTapEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.pushWebView(webView: .serviceInquiry)
+            })
+            .disposed(by: disposeBag)
         
         input.serviceInformationButtonTapEvent
             .subscribe(onNext: { [weak self] in

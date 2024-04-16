@@ -58,10 +58,10 @@ final class DefaultMyPageCoordinator: MyPageCoordinator {
                 pageTitle: "포즈피드 공식 SNS"
             )
         case .serviceInquiry:
-            mypageWebviewVC = MypageWebViewController(
-                urlString: webView.rawValue,
-                pageTitle: "문의하기"
-            )
+            if let url = URL(string: "https://litt.ly/posepicker") {
+                UIApplication.shared.open(url)
+            }
+            return
         case .serviceInformation:
             mypageWebviewVC = MypageWebViewController(
                 urlString: webView.rawValue,

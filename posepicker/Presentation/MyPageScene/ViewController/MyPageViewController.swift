@@ -72,12 +72,12 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             $0.setTitle("포즈피커 공식 SNS", for: .normal)
         }
     
-//    let serviceUsageInquiryButton = UIButton(type: .system)
-//        .then {
-//            $0.setTitleColor(.textPrimary, for: .normal)
-//            $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
-//            $0.setTitle("문의하기", for: .normal)
-//        }
+    let serviceUsageInquiryButton = UIButton(type: .system)
+        .then {
+            $0.setTitleColor(.textPrimary, for: .normal)
+            $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
+            $0.setTitle("문의하기", for: .normal)
+        }
     
     let serviceInformationButton = UIButton(type: .system)
         .then {
@@ -149,7 +149,7 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
     }
     
     override func render() {
-        view.addSubViews([loginButton, loginLogo, loginLogoStar, loginTitle, loginSubTitle, emailLabel, noticeButton, faqButton, snsButton, /*serviceUsageInquiryButton,*/ serviceInformationButton, privacyInformationButton, logoutButton, signoutButton, loginToast, logoutToast, revokeToast])
+        view.addSubViews([loginButton, loginLogo, loginLogoStar, loginTitle, loginSubTitle, emailLabel, noticeButton, faqButton, snsButton, serviceUsageInquiryButton, serviceInformationButton, privacyInformationButton, logoutButton, signoutButton, loginToast, logoutToast, revokeToast])
         
         loginButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12)
@@ -202,15 +202,15 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             make.height.equalTo(24)
         }
         
-//        serviceUsageInquiryButton.snp.makeConstraints { make in
-//            make.leading.equalTo(snsButton)
-//            make.top.equalTo(snsButton.snp.bottom).offset(24)
-//            make.height.equalTo(24)
-//        }
+        serviceUsageInquiryButton.snp.makeConstraints { make in
+            make.leading.equalTo(snsButton)
+            make.top.equalTo(snsButton.snp.bottom).offset(24)
+            make.height.equalTo(24)
+        }
         
         serviceInformationButton.snp.makeConstraints { make in
-            make.leading.equalTo(/*serviceUsageInquiryButton*/snsButton)
-            make.top.equalTo(/*serviceUsageInquiryButton*/snsButton.snp.bottom).offset(36)
+            make.leading.equalTo(serviceUsageInquiryButton)
+            make.top.equalTo(serviceUsageInquiryButton.snp.bottom).offset(36)
             make.height.equalTo(24)
         }
         
@@ -259,7 +259,7 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             noticeButtonTapEvent: noticeButton.rx.tap.asObservable(),
             faqButtonTapEvent: faqButton.rx.tap.asObservable(),
             snsButtonTapEvent: snsButton.rx.tap.asObservable(),
-//            serviceInquiryButtonTapEvent: serviceUsageInquiryButton.rx.tap.asObservable(),
+            serviceInquiryButtonTapEvent: serviceUsageInquiryButton.rx.tap.asObservable(),
             serviceInformationButtonTapEvent: serviceInformationButton.rx.tap.asObservable(),
             privacyInformationButtonTapEvent: privacyInformationButton.rx.tap.asObservable(),
             logoutButtonTapEvent: logoutButton.rx.tap.asObservable(),
@@ -269,114 +269,6 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         configureOutput(output)
-//        let input = MyPageViewModel.Input(appleIdentityTokenTrigger: appleIdentityTokenTrigger, kakaoLoginTrigger: Observable.combineLatest(kakaoEmailTrigger, kakaoIdTrigger), logoutButtonTapped: logoutTrigger, revokeButtonTapped: revokeTrigger)
-//        let output = viewModel.transform(input: input)
-//        
-//        // 로그인할때
-//        output.dismissLoginView
-//            .subscribe(onNext: { [unowned self] in
-//                if let popupVC = self.presentedViewController as? PopUpViewController {
-//                    // 로그인할때
-//                    if let _ = popupVC.popUpView as? LoginPopUpView {
-//                        self.dismiss(animated: true) {
-//                            self.loginToast.snp.updateConstraints { make in
-//                                make.bottom.equalTo(self.view).offset(-60)
-//                            }
-//                            
-//                            UIView.animate(withDuration: 0.2) {
-//                                self.view.layoutIfNeeded()
-//                                self.loginToast.layer.opacity = 1
-//                            }
-//                            
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//                                self.loginToast.snp.updateConstraints { make in
-//                                    make.bottom.equalTo(self.view).offset(46)
-//                                }
-//                                
-//                                UIView.animate(withDuration: 0.2) {
-//                                    self.view.layoutIfNeeded()
-//                                    self.loginToast.layer.opacity = 0
-//                                }
-//                            }
-//                        }
-//                        self.loginStateTrigger.onNext(())
-//                    } else if let popupView = popupVC.popUpView as? PopUpView,
-//                              popupView.alertMainLabel.text! == "로그아웃" {
-//                        self.dismiss(animated: true) {
-//                            self.logoutToast.snp.updateConstraints { make in
-//                                make.bottom.equalTo(self.view).offset(-60)
-//                            }
-//                            
-//                            UIView.animate(withDuration: 0.2) {
-//                                self.view.layoutIfNeeded()
-//                                self.logoutToast.isHidden = false
-//                                self.logoutToast.layer.opacity = 1
-//                            }
-//                            
-//                            DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//                                self.logoutToast.snp.updateConstraints { make in
-//                                    make.bottom.equalTo(self.view).offset(46)
-//                                }
-//                                
-//                                UIView.animate(withDuration: 0.2) {
-//                                    self.view.layoutIfNeeded()
-//                                    self.logoutToast.layer.opacity = 0
-//                                }
-//                            }
-//                        }
-//                        self.loginStateTrigger.onNext(())
-//                    }
-//                    
-//                }
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        loginStateTrigger.asDriver(onErrorJustReturn: ())
-//            .drive(onNext: { [weak self] in
-//                
-//                // 로그인 상태 새로고침
-//                if let email = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.email) {
-//                    self?.emailLabel.text = email
-//                    self?.adjustLoginUI(isLoggedIn: true)
-//                } else {
-//                    self?.adjustLoginUI(isLoggedIn: false)
-//                }
-//                
-//                guard let navigationVC = self?.coordinator.rootViewController.viewControllers.last as? UINavigationController,
-//                      let posefeedVC = navigationVC.viewControllers.first as? PoseFeedViewController else { return }
-//                self?.coordinator.posefeedCoordinator.poseFeedFilterViewController.detailViewDismissTrigger.onNext(())
-//                posefeedVC.tagResetTrigger.onNext(())
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.revokeToastTrigger
-//            .asDriver(onErrorJustReturn: ())
-//            .drive(onNext: { [weak self] in
-//                guard let self = self else { return }
-//                self.revokeToast.snp.updateConstraints { make in
-//                    make.bottom.equalTo(self.view).offset(-60)
-//                }
-//                
-//                UIView.animate(withDuration: 0.2) {
-//                    self.view.layoutIfNeeded()
-//                    self.revokeToast.isHidden = false
-//                    self.revokeToast.layer.opacity = 1
-//                }
-//                
-//                DispatchQueue.main.asyncAfter(deadline: .now() + 3) {
-//                    self.revokeToast.snp.updateConstraints { make in
-//                        make.bottom.equalTo(self.view).offset(46)
-//                    }
-//                    
-//                    UIView.animate(withDuration: 0.2) {
-//                        self.view.layoutIfNeeded()
-//                        self.revokeToast.layer.opacity = 0
-//                    }
-//                }
-//                
-//                self.loginStateTrigger.onNext(())
-//            })
-//            .disposed(by: disposeBag)
     }
     
     func setBottomBorder() {
