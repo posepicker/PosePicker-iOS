@@ -10,7 +10,6 @@ import RxSwift
 
 protocol PageViewCoordinator: Coordinator {
     var pageViewController: UIPageViewController { get set }
-    func selectPage(_ page: PageViewType)
     func setSelectedIndex(_ index: Int)
     func currentPage() -> PageViewType?
     func viewControllerBefore() -> UIViewController?
