@@ -103,6 +103,12 @@ class PosePickButton: UIButton {
                 }
             })
             .disposed(by: disposeBag)
+
+        self.rx.tap.asDriver()
+            .drive(onNext: { [unowned self] in
+                self.status.accept(.pressed)
+            })
+            .disposed(by: disposeBag)
         
         self.rx.controlEvent(.touchDown).asDriver()
             .drive(onNext: { [unowned self] in
