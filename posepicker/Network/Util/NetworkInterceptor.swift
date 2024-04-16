@@ -13,7 +13,7 @@ import UIKit
 
 class APIInterceptor: RequestInterceptor {
     var disposeBag = DisposeBag()
-    var apiSession: APIService = APISession()
+    var apiSession: NetworkService = DefaultNetworkService()
     
     func adapt(_ urlRequest: URLRequest, for session: Session, completion: @escaping (Result<URLRequest, Error>) -> Void) {
         

@@ -12,12 +12,7 @@
 		880E75302AE60937007FAD5A /* UIImage+.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E752F2AE60937007FAD5A /* UIImage+.swift */; };
 		880E75342AE67CC4007FAD5A /* BasicSelection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75332AE67CC4007FAD5A /* BasicSelection.swift */; };
 		880E75372AE67DC8007FAD5A /* BasicButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75362AE67DC8007FAD5A /* BasicButton.swift */; };
-		880E753C2AE6BE3A007FAD5A /* BindableViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E753B2AE6BE3A007FAD5A /* BindableViewModel.swift */; };
-		880E753E2AE6BE59007FAD5A /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E753D2AE6BE59007FAD5A /* Service.swift */; };
-		880E75402AE6BF2F007FAD5A /* ServicePose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E753F2AE6BF2F007FAD5A /* ServicePose.swift */; };
-		880E75422AE6BF4B007FAD5A /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75412AE6BF4B007FAD5A /* APIService.swift */; };
 		880E75452AE6BFA3007FAD5A /* Alamofire in Frameworks */ = {isa = PBXBuildFile; productRef = 880E75442AE6BFA3007FAD5A /* Alamofire */; };
-		880E75472AE6BFBC007FAD5A /* APISession.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75462AE6BFBC007FAD5A /* APISession.swift */; };
 		880E75492AE6BFE3007FAD5A /* NetworkEventLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E75482AE6BFE3007FAD5A /* NetworkEventLogger.swift */; };
 		880E754D2AE6C06E007FAD5A /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E754C2AE6C06E007FAD5A /* Constants.swift */; };
 		880E754F2AE6C188007FAD5A /* Pose.swift in Sources */ = {isa = PBXBuildFile; fileRef = 880E754E2AE6C188007FAD5A /* Pose.swift */; };
@@ -195,7 +190,6 @@
 		C9D0C4032B9C4BFC004A3940 /* SecureField.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0C4022B9C4BFC004A3940 /* SecureField.swift */; };
 		C9D0C4062BA2D228004A3940 /* Toast.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0C4052BA2D228004A3940 /* Toast.swift */; };
 		C9D0C4082BA4172C004A3940 /* UserRevokeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0C4072BA4172C004A3940 /* UserRevokeViewController.swift */; };
-		C9D0C40B2BA4501C004A3940 /* Functions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D0C40A2BA4501C004A3940 /* Functions.swift */; };
 		C9DC2F902AEA1D5F00D5170D /* PoseFeedFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F8F2AEA1D5F00D5170D /* PoseFeedFilterViewController.swift */; };
 		C9DC2F942AEA282700D5170D /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F932AEA282600D5170D /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		C9DC2F962AEA284900D5170D /* UICollectionView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F952AEA284900D5170D /* UICollectionView+.swift */; };
@@ -270,11 +264,6 @@
 		880E752F2AE60937007FAD5A /* UIImage+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIImage+.swift"; sourceTree = "<group>"; };
 		880E75332AE67CC4007FAD5A /* BasicSelection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicSelection.swift; sourceTree = "<group>"; };
 		880E75362AE67DC8007FAD5A /* BasicButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicButton.swift; sourceTree = "<group>"; };
-		880E753B2AE6BE3A007FAD5A /* BindableViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BindableViewModel.swift; sourceTree = "<group>"; };
-		880E753D2AE6BE59007FAD5A /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
-		880E753F2AE6BF2F007FAD5A /* ServicePose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ServicePose.swift; sourceTree = "<group>"; };
-		880E75412AE6BF4B007FAD5A /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
-		880E75462AE6BFBC007FAD5A /* APISession.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APISession.swift; sourceTree = "<group>"; };
 		880E75482AE6BFE3007FAD5A /* NetworkEventLogger.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkEventLogger.swift; sourceTree = "<group>"; };
 		880E754C2AE6C06E007FAD5A /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		880E754E2AE6C188007FAD5A /* Pose.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pose.swift; sourceTree = "<group>"; };
@@ -435,7 +424,6 @@
 		C9D0C4022B9C4BFC004A3940 /* SecureField.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SecureField.swift; sourceTree = "<group>"; };
 		C9D0C4052BA2D228004A3940 /* Toast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Toast.swift; sourceTree = "<group>"; };
 		C9D0C4072BA4172C004A3940 /* UserRevokeViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserRevokeViewController.swift; sourceTree = "<group>"; };
-		C9D0C40A2BA4501C004A3940 /* Functions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Functions.swift; sourceTree = "<group>"; };
 		C9DC2F8F2AEA1D5F00D5170D /* PoseFeedFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterViewController.swift; sourceTree = "<group>"; };
 		C9DC2F932AEA282600D5170D /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		C9DC2F952AEA284900D5170D /* UICollectionView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+.swift"; sourceTree = "<group>"; };
@@ -576,32 +564,6 @@
 			path = Shared;
 			sourceTree = "<group>";
 		};
-		880E75382AE6BDFB007FAD5A /* API */ = {
-			isa = PBXGroup;
-			children = (
-				880E75412AE6BF4B007FAD5A /* APIService.swift */,
-				880E75462AE6BFBC007FAD5A /* APISession.swift */,
-			);
-			path = API;
-			sourceTree = "<group>";
-		};
-		880E75392AE6BE05007FAD5A /* Services */ = {
-			isa = PBXGroup;
-			children = (
-				880E753D2AE6BE59007FAD5A /* Service.swift */,
-				880E753F2AE6BF2F007FAD5A /* ServicePose.swift */,
-			);
-			path = Services;
-			sourceTree = "<group>";
-		};
-		880E753A2AE6BE2B007FAD5A /* Foundation */ = {
-			isa = PBXGroup;
-			children = (
-				880E753B2AE6BE3A007FAD5A /* BindableViewModel.swift */,
-			);
-			path = Foundation;
-			sourceTree = "<group>";
-		};
 		880E754A2AE6C03D007FAD5A /* Constants */ = {
 			isa = PBXGroup;
 			children = (
@@ -625,24 +587,6 @@
 				8851477E2AF9490C00DCDD4E /* PinterestLayout.swift */,
 			);
 			path = PinterestLayout;
-			sourceTree = "<group>";
-		};
-		88E1D6B92B1E232B00DB8BF6 /* Utils */ = {
-			isa = PBXGroup;
-			children = (
-				880E754A2AE6C03D007FAD5A /* Constants */,
-				C9D0C4092BA45012004A3940 /* Functions */,
-				88E1D6BA2B1E233C00DB8BF6 /* KeychainManager */,
-			);
-			path = Utils;
-			sourceTree = "<group>";
-		};
-		88E1D6BA2B1E233C00DB8BF6 /* KeychainManager */ = {
-			isa = PBXGroup;
-			children = (
-				88E1D6BB2B1E234A00DB8BF6 /* KeychainManager.swift */,
-			);
-			path = KeychainManager;
 			sourceTree = "<group>";
 		};
 		88EA81EE2AF69BB900020DEA /* User */ = {
@@ -740,6 +684,16 @@
 				883132962B08EF9100DAA5A7 /* PoseDetailTagCell.swift */,
 			);
 			path = DetailView;
+			sourceTree = "<group>";
+		};
+		C91C53282BCE4E0000C5C28F /* Keychain */ = {
+			isa = PBXGroup;
+			children = (
+				88E1D6BB2B1E234A00DB8BF6 /* KeychainManager.swift */,
+				C96C9A932BB572D400AC2921 /* DefaultKeychainService.swift */,
+				C96C9AA52BB63E5100AC2921 /* Protocol */,
+			);
+			path = Keychain;
 			sourceTree = "<group>";
 		};
 		C91E18422B99B2EC009611C3 /* UINavigationController */ = {
@@ -1203,9 +1157,12 @@
 		C96C9AA32BB63E2800AC2921 /* Util */ = {
 			isa = PBXGroup;
 			children = (
+				C9C890862AE106FA0010240A /* Base */,
+				C94FD29C2AE3AF1E003777EB /* Component */,
 				C96C9B4F2BBA868000AC2921 /* Mock */,
+				880E754A2AE6C03D007FAD5A /* Constants */,
 				C96C9AA42BB63E2E00AC2921 /* Service */,
-				C96C9A932BB572D400AC2921 /* DefaultKeychainService.swift */,
+				C9C8909A2AE107A40010240A /* Extensions */,
 			);
 			path = Util;
 			sourceTree = "<group>";
@@ -1213,7 +1170,7 @@
 		C96C9AA42BB63E2E00AC2921 /* Service */ = {
 			isa = PBXGroup;
 			children = (
-				C96C9AA52BB63E5100AC2921 /* Protocol */,
+				C91C53282BCE4E0000C5C28F /* Keychain */,
 			);
 			path = Service;
 			sourceTree = "<group>";
@@ -1600,19 +1557,16 @@
 		C9C890502AE103A10010240A /* posepicker */ = {
 			isa = PBXGroup;
 			children = (
+				C9E6025A2B16DA270098BC96 /* posepicker.entitlements */,
+				C9C8905C2AE103A30010240A /* LaunchScreen.storyboard */,
 				C96C9AA32BB63E2800AC2921 /* Util */,
 				C9676BE32BAAAB39000A4114 /* Domain */,
 				C91FF3452BAAB66600096E25 /* Data */,
 				C91FF3532BAB262F00096E25 /* Network */,
-				C9E6025A2B16DA270098BC96 /* posepicker.entitlements */,
 				C9C890812AE103C10010240A /* Application */,
-				C9C890842AE106EF0010240A /* Common */,
 				C971A6792B2008870078EF2B /* Configs */,
-				C9C8909A2AE107A40010240A /* Extensions */,
 				C9C890A32AE109D80010240A /* Presentation */,
-				C9C890A72AE10A280010240A /* Networking */,
 				C9C890AA2AE10A3D0010240A /* Resources */,
-				C9C8905C2AE103A30010240A /* LaunchScreen.storyboard */,
 			);
 			path = posepicker;
 			sourceTree = "<group>";
@@ -1623,16 +1577,6 @@
 				C9C890512AE103A10010240A /* AppDelegate.swift */,
 			);
 			path = Application;
-			sourceTree = "<group>";
-		};
-		C9C890842AE106EF0010240A /* Common */ = {
-			isa = PBXGroup;
-			children = (
-				88E1D6B92B1E232B00DB8BF6 /* Utils */,
-				C94FD29C2AE3AF1E003777EB /* Component */,
-				C9C890862AE106FA0010240A /* Base */,
-			);
-			path = Common;
 			sourceTree = "<group>";
 		};
 		C9C890862AE106FA0010240A /* Base */ = {
@@ -1698,16 +1642,6 @@
 			path = Presentation;
 			sourceTree = "<group>";
 		};
-		C9C890A72AE10A280010240A /* Networking */ = {
-			isa = PBXGroup;
-			children = (
-				880E75382AE6BDFB007FAD5A /* API */,
-				880E75392AE6BE05007FAD5A /* Services */,
-				880E753A2AE6BE2B007FAD5A /* Foundation */,
-			);
-			path = Networking;
-			sourceTree = "<group>";
-		};
 		C9C890AA2AE10A3D0010240A /* Resources */ = {
 			isa = PBXGroup;
 			children = (
@@ -1752,14 +1686,6 @@
 				C9D0C4052BA2D228004A3940 /* Toast.swift */,
 			);
 			path = Toast;
-			sourceTree = "<group>";
-		};
-		C9D0C4092BA45012004A3940 /* Functions */ = {
-			isa = PBXGroup;
-			children = (
-				C9D0C40A2BA4501C004A3940 /* Functions.swift */,
-			);
-			path = Functions;
 			sourceTree = "<group>";
 		};
 		C9DC2F912AEA27F600D5170D /* UICollectionView */ = {
@@ -2331,7 +2257,6 @@
 				8851477F2AF9490C00DCDD4E /* PinterestLayout.swift in Sources */,
 				C9C8908E2AE1073F0010240A /* BaseCollectionViewCell.swift in Sources */,
 				C9676BEC2BAAAC68000A4114 /* PoseInfo.swift in Sources */,
-				880E75472AE6BFBC007FAD5A /* APISession.swift in Sources */,
 				C91E184B2B99C22A009611C3 /* PoseDetailMoreViewController.swift in Sources */,
 				880E755B2AF296E7007FAD5A /* PoseTalk.swift in Sources */,
 				C9FD211E2BC7923600C23E25 /* PoseUploadImageSourceViewModel.swift in Sources */,
@@ -2341,7 +2266,6 @@
 				C9DEE4102BBFCBB000C9C495 /* PoseFeedFilterViewModel.swift in Sources */,
 				C9DC2F962AEA284900D5170D /* UICollectionView+.swift in Sources */,
 				C91A26672B88521200F1193E /* PoseUploadHeadcountViewController.swift in Sources */,
-				C9D0C40B2BA4501C004A3940 /* Functions.swift in Sources */,
 				C9FD212A2BC7C77700C23E25 /* PoseUploadRepository.swift in Sources */,
 				C903E53C2AF8C1BD00BD004F /* UIImageView+.swift in Sources */,
 				C94FD29F2AE3AF4F003777EB /* UnderlineSegmentControl.swift in Sources */,
@@ -2351,7 +2275,6 @@
 				883132992B08EF9E00DAA5A7 /* PoseDetailTagCellViewModel.swift in Sources */,
 				C91FF3742BAD894000096E25 /* AppCoordinator.swift in Sources */,
 				C9188B272B909E78004B9C45 /* MyPoseCustomTagCellViewModel.swift in Sources */,
-				880E75422AE6BF4B007FAD5A /* APIService.swift in Sources */,
 				C96C9A942BB572D400AC2921 /* DefaultKeychainService.swift in Sources */,
 				C938512C2BB41CE300E597C1 /* DefaultPoseFeedCoordinator.swift in Sources */,
 				C916730E2B5E526D0092661B /* ImagePopUpViewController.swift in Sources */,
@@ -2394,7 +2317,6 @@
 				C94FD2AB2AE8CEEB003777EB /* Button.swift in Sources */,
 				C91FF36C2BAD87DB00096E25 /* CoordinatorType.swift in Sources */,
 				C9FD21042BC624B700C23E25 /* UserRevokeViewModel.swift in Sources */,
-				880E753E2AE6BE59007FAD5A /* Service.swift in Sources */,
 				C9C0CDCE2AF353AB0041E423 /* ToolTip.swift in Sources */,
 				C938511C2BB3E1D100E597C1 /* DefaultPoseTalkCoordinator.swift in Sources */,
 				C9C890C52AE11BAB0010240A /* UIFont+.swift in Sources */,
@@ -2434,7 +2356,6 @@
 				C903E5472B01F51F00BD004F /* PoseFeedEmptyView.swift in Sources */,
 				C96C9A922BB5727900AC2921 /* KeychainService.swift in Sources */,
 				C9DEE3FB2BBD323200C9C495 /* DefaultPoseFeedRepository.swift in Sources */,
-				880E75402AE6BF2F007FAD5A /* ServicePose.swift in Sources */,
 				C9FD212F2BC8F6EE00C23E25 /* ReportViewModel.swift in Sources */,
 				880E75562AE6C2F7007FAD5A /* NetworkInterceptor.swift in Sources */,
 				88EA81F12AF69BD700020DEA /* PoseFeed.swift in Sources */,
@@ -2477,7 +2398,6 @@
 				C91A266F2B88899300F1193E /* MyPoseSelectButton.swift in Sources */,
 				C990AB1E2B5BF52600567AA3 /* String+.swift in Sources */,
 				C9FD211C2BC7922E00C23E25 /* PoseUploadTagViewModel.swift in Sources */,
-				880E753C2AE6BE3A007FAD5A /* BindableViewModel.swift in Sources */,
 				C9DC2FA62AEB6E1800D5170D /* FilterTags.swift in Sources */,
 				C9D0C4062BA2D228004A3940 /* Toast.swift in Sources */,
 				C9AF36962BC2E46600629B63 /* PoseFeedDetailUseCase.swift in Sources */,
