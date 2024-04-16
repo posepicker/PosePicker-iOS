@@ -36,7 +36,6 @@ final class CommonViewModel {
             .subscribe(onNext: { [weak self] in
                 guard let self = self,
                       let coordinator = self.coordinator else {return}
-                coordinator.selectPage(coordinator.currentPage() ?? .posepick)
                 output.pageTransitionEvent.accept(coordinator.currentPage()?.pageOrderNumber() ?? 0)
             })
             .disposed(by: disposeBag)
