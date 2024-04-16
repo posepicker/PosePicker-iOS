@@ -28,6 +28,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         ImageCache.default.memoryStorage.config.countLimit = 70
         ImageCache.default.diskStorage.config.sizeLimit = 1000 * 1024 * 1024
         
+        if !UserDefaults.standard.bool(forKey: "hasRunBefore") {
+             // Remove Keychain items here
+            KeychainManager.shared.removeAll()
+             // Update the flag indicator
+            UserDefaults.standard.set(true, forKey: "hasRunBefore")
+        }
+        
         /// 카카오 셋업
         if let kakaoKey = Bundle.main.object(forInfoDictionaryKey: "KAKAO_NATIVE_KEY") as? String {
             RxKakaoSDK.initSDK(appKey: kakaoKey)
