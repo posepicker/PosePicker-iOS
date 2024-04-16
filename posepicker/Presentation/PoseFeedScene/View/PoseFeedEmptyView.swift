@@ -25,7 +25,7 @@ class PoseFeedEmptyView: UICollectionReusableView {
             $0.textAlignment = .center
             $0.textColor = .textTertiary
             $0.font = .pretendard(.regular, ofSize: 16)
-            $0.text = "찾고 싶은 포즈를 저희에게 알려주세요."
+            $0.text = "포즈를 직접 업로드 해보세요."
         }
     
     let linkButton = PosePickButton(status: .defaultStatus, isFill: true, position: .none, buttonTitle: "문의사항 남기기", image: nil)
