@@ -72,12 +72,12 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             $0.setTitle("포즈피커 공식 SNS", for: .normal)
         }
     
-    let serviceUsageInquiryButton = UIButton(type: .system)
-        .then {
-            $0.setTitleColor(.textPrimary, for: .normal)
-            $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
-            $0.setTitle("문의하기", for: .normal)
-        }
+//    let serviceUsageInquiryButton = UIButton(type: .system)
+//        .then {
+//            $0.setTitleColor(.textPrimary, for: .normal)
+//            $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
+//            $0.setTitle("문의하기", for: .normal)
+//        }
     
     let serviceInformationButton = UIButton(type: .system)
         .then {
@@ -149,7 +149,7 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
     }
     
     override func render() {
-        view.addSubViews([loginButton, loginLogo, loginLogoStar, loginTitle, loginSubTitle, emailLabel, noticeButton, faqButton, snsButton, serviceUsageInquiryButton, serviceInformationButton, privacyInformationButton, logoutButton, signoutButton, loginToast, logoutToast, revokeToast])
+        view.addSubViews([loginButton, loginLogo, loginLogoStar, loginTitle, loginSubTitle, emailLabel, noticeButton, faqButton, snsButton, /*serviceUsageInquiryButton,*/ serviceInformationButton, privacyInformationButton, logoutButton, signoutButton, loginToast, logoutToast, revokeToast])
         
         loginButton.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide.snp.top).offset(12)
@@ -202,15 +202,15 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             make.height.equalTo(24)
         }
         
-        serviceUsageInquiryButton.snp.makeConstraints { make in
-            make.leading.equalTo(snsButton)
-            make.top.equalTo(snsButton.snp.bottom).offset(24)
-            make.height.equalTo(24)
-        }
+//        serviceUsageInquiryButton.snp.makeConstraints { make in
+//            make.leading.equalTo(snsButton)
+//            make.top.equalTo(snsButton.snp.bottom).offset(24)
+//            make.height.equalTo(24)
+//        }
         
         serviceInformationButton.snp.makeConstraints { make in
-            make.leading.equalTo(serviceUsageInquiryButton)
-            make.top.equalTo(serviceUsageInquiryButton.snp.bottom).offset(36)
+            make.leading.equalTo(/*serviceUsageInquiryButton*/snsButton)
+            make.top.equalTo(/*serviceUsageInquiryButton*/snsButton.snp.bottom).offset(36)
             make.height.equalTo(24)
         }
         
@@ -259,7 +259,7 @@ class MyPageViewController: BaseViewController, UIGestureRecognizerDelegate {
             noticeButtonTapEvent: noticeButton.rx.tap.asObservable(),
             faqButtonTapEvent: faqButton.rx.tap.asObservable(),
             snsButtonTapEvent: snsButton.rx.tap.asObservable(),
-            serviceInquiryButtonTapEvent: serviceUsageInquiryButton.rx.tap.asObservable(),
+//            serviceInquiryButtonTapEvent: serviceUsageInquiryButton.rx.tap.asObservable(),
             serviceInformationButtonTapEvent: serviceInformationButton.rx.tap.asObservable(),
             privacyInformationButtonTapEvent: privacyInformationButton.rx.tap.asObservable(),
             logoutButtonTapEvent: logoutButton.rx.tap.asObservable(),
