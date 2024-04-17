@@ -96,11 +96,15 @@ final class PoseFeedViewModelTests: XCTestCase {
         
         XCTAssertEqual(filteredContentSizesCountObserver.events, [
             .next(0, 0),
+            .next(0, 0),
+            .next(0, 0),
             .next(0, 5),
             .next(1, 10)
         ])
         
         XCTAssertEqual(recommendedContentSizesCountObserver.events, [
+            .next(0, 0),
+            .next(0, 0),
             .next(0, 0),
             .next(0, 5),
             .next(1, 10)
