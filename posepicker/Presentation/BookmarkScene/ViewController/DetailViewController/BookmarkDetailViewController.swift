@@ -60,12 +60,7 @@ class BookmarkDetailViewController: BaseViewController {
             $0.contentMode = .scaleAspectFill
         }
     
-//    let imageView = UIImageView()
-//        .then {
-//            $0.contentMode = .scaleAspectFill
-//        }
-    
-    let tagCollectionView: UICollectionView = {
+    lazy var tagCollectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         layout.scrollDirection = .vertical
         layout.minimumInteritemSpacing = 8
@@ -74,6 +69,7 @@ class BookmarkDetailViewController: BaseViewController {
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.register(BookmarkDetailTagCell.self, forCellWithReuseIdentifier: BookmarkDetailTagCell.identifier)
+        cv.delegate = self
         return cv
     }()
     
@@ -170,17 +166,10 @@ class BookmarkDetailViewController: BaseViewController {
     
     override func configUI() {
         self.navigationController?.isNavigationBarHidden = true
-        view.backgroundColor = .bgWhite
+        self.view.backgroundColor = .bgWhite
         
         navigationBar.standardAppearance.backgroundColor = .bgWhite
         navigationBar.standardAppearance.shadowColor = nil
-        
-//        let sourceText = viewModel.poseDetailData.poseInfo.source
-//        if !sourceText.isEmpty {
-//            imageSourceButton.configuration?.attributedTitle = AttributedString(sourceText + "↗", attributes: AttributeContainer([NSAttributedString.Key.font : UIFont.pretendard(.medium, ofSize: 14), NSAttributedString.Key.foregroundColor: UIColor.textBrand]))
-//        } else {
-//            imageSourceButton.isHidden = true
-//        }
         
         // 캡처시 이미지 덮기
         guard let secureView = SecureField().secureContainer else { return }
@@ -206,99 +195,6 @@ class BookmarkDetailViewController: BaseViewController {
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         configureOutput(output)
-//        let input = BookmarkDetailViewModel.Input(imageSourceButtonTapped: imageSourceButton.rx.tap, linkShareButtonTapped: linkShareButton.rx.tap, kakaoShareButtonTapped: kakaoShareButton.rx.tap, bookmarkButtonTapped: bookmarkButton.rx.tap)
-//        
-//        let output = viewModel.transform(input: input)
-//        
-//        output.imageSourceLink
-//            .compactMap { $0 }
-//            .subscribe(onNext: {
-//                UIApplication.shared.open($0)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.image.asDriver(onErrorJustReturn: nil)
-//            .drive(onNext: { [weak self] in
-//                self?.imageButton.setImage($0, for: .normal)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        imageButton.rx.tap.asDriver()
-//            .drive(onNext: { [weak self] in
-//                guard let retrievedImage = self?.imageButton.imageView?.image else { return }
-//                let vc = ImagePopUpViewController(mainImage: retrievedImage)
-//                vc.modalTransitionStyle = .crossDissolve
-//                vc.modalPresentationStyle = .overFullScreen
-//                self?.present(vc, animated: true)
-//            })
-//        
-//        output.popupPresent
-//            .drive(onNext: { [unowned self] in
-//                let popupViewController = PopUpViewController(isLoginPopUp: false, isChoice: false)
-//                popupViewController.modalTransitionStyle = .crossDissolve
-//                popupViewController.modalPresentationStyle = .overFullScreen
-//                let popupView = popupViewController.popUpView as! PopUpView
-//                popupView.alertText.accept("링크가 복사되었습니다.")
-//                self.present(popupViewController, animated: true)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.tagItems
-//            .drive(tagCollectionView.rx.items(cellIdentifier: BookmarkDetailTagCell.identifier, cellType: BookmarkDetailTagCell.self)) { _, viewModel, cell in
-//                cell.disposeBag = DisposeBag()
-//                cell.bind(to: viewModel)
-//            }
-//            .disposed(by: disposeBag)
-//        
-//        output.dismissDetailView
-//            .subscribe(onNext: { [unowned self] in
-//                guard let navigationVC = self.presentingViewController as? UINavigationController,
-//                      let bookmarkVC = navigationVC.viewControllers.last as? BookMarkViewController else { return }
-//                bookmarkVC.viewDidLoadTrigger.onNext(())
-//                self.dismiss(animated: true)
-//            })
-//            .disposed(by: disposeBag)
-//
-//        tagCollectionView.rx.modelSelected(BookmarkDetailTagCellViewModel.self)
-//            .flatMapLatest { $0.title }
-//            .subscribe(onNext: { [unowned self] in
-//                self.coordinator.dismissBookmarkDetailWithTagSelection(tag: $0)
-//                self.dismiss(animated: true)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.isLoading.asDriver(onErrorJustReturn: false)
-//            .drive(onNext: { [unowned self] in
-//                if $0 {
-//                    self.kakaoShareButton.isEnabled = false
-//                    self.loadingIndicator.isHidden = false
-//                } else {
-//                    self.kakaoShareButton.isEnabled = true
-//                    self.loadingIndicator.isHidden = true
-//                }
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.bookmarkCheck
-//            .compactMap { $0 }
-//            .drive(onNext: { [weak self] in
-//                guard let self = self else { return }
-//                guard let navVC = self.presentingViewController as? UINavigationController,
-//                      let bookmarkVC = navVC.viewControllers.last as? BookMarkViewController else { return }
-//                
-//                if $0 {
-//                    self.bookmarkButton.image = ImageLiteral.imgBookmarkFill24.withTintColor(.iconDefault, renderingMode: .alwaysOriginal)
-//                    self.coordinator.triggerBookmarkFromPoseId(poseId: self.viewModel.poseDetailData.poseInfo.poseId, bookmarkCheck: true)
-//                    bookmarkVC.bookmarkCheckObservable.onNext((self.viewModel.poseDetailData.poseInfo.poseId, true))
-//                } else {
-//                    self.bookmarkButton.image = ImageLiteral.imgBookmarkOff24.withTintColor(.iconDefault, renderingMode: .alwaysOriginal)
-//                    self.coordinator.triggerBookmarkFromPoseId(poseId: self.viewModel.poseDetailData.poseInfo.poseId, bookmarkCheck: false)
-//                    bookmarkVC.bookmarkCheckObservable.onNext((self.viewModel.poseDetailData.poseInfo.poseId, false))
-//                }
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        tagCollectionView.updateCollectionViewHeight()
     }
     
     // MARK: - Objc Functions
@@ -349,5 +245,11 @@ private extension BookmarkDetailViewController {
                 }
             })
             .disposed(by: disposeBag)
+    }
+}
+
+extension BookmarkDetailViewController: UICollectionViewDelegateFlowLayout {
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 20, height: 32)
     }
 }
