@@ -5,7 +5,7 @@
 
 *포토부스에서 고민하는 당신을 위한 포즈추천 서비스*
 
-<a href="https://www.posepicker.site/pick">Website</a> |  <a href='https://www.instagram.com/posepicker/'>Instagram</a> | <a href='https://github.com/pose-picker'>Github</a> | <a href='https://litt.ly/posepicker'>Feedback</a>
+<a href="https://apps.apple.com/kr/app/%ED%8F%AC%EC%A6%88%ED%94%BC%EC%BB%A4-%EB%84%A4%EC%BB%B7%EC%82%AC%EC%A7%84-%ED%8F%AC%EC%A6%88%EC%B6%94%EC%B2%9C/id6474260471">AppStore</a> | <a href="https://www.posepicker.site/pick">Website</a> |  <a href='https://www.instagram.com/posepicker/'>Instagram</a> | <a href='https://github.com/pose-picker'>Github</a> | <a href='https://litt.ly/posepicker'>Feedback</a>
 
 <br/>
 
