@@ -30,6 +30,16 @@ final class DefaultPoseFeedUseCase: PoseFeedUseCase {
             filterSectionContentSizes.accept([])
             recommendSectionContentSizes.accept([])
         }
+        
+        Observable.combineLatest(
+            self.posefeedRepository.isLastFilteredContents(),
+            self.posefeedRepository.isLastRecommendContents()
+        )
+        .subscribe(onNext: { [weak self] (isLastFilteredContents, isLastRecommendedContents) in
+            self?.isLastPage.accept(isLastFilteredContents && isLastRecommendedContents)
+        })
+        .disposed(by: disposeBag)
+        
         self.posefeedRepository
             .fetchFeedContents(peopleCount: peopleCount, frameCount: frameCount, filterTags: filterTags, pageNumber: pageNumber)
             .withUnretained(self)
@@ -42,8 +52,6 @@ final class DefaultPoseFeedUseCase: PoseFeedUseCase {
                     contents[1].items += sectionItems[1].items
                     owner.feedContents.accept(contents)
                 }
-                
-                owner.checkIsLastPage() // 포즈피드 데이터 업데이트 이후 페이지 마지막 여부 업데이트
                 
                 // 필터링 섹션 이미지 사이즈
                 sectionItems[0].items.forEach { viewModel in
@@ -74,18 +82,6 @@ final class DefaultPoseFeedUseCase: PoseFeedUseCase {
                 self?.bookmarkTaskCompleted.onNext($0)
             })
             .disposed(by: disposeBag)
-    }
-    
-    /// 필터링 & 추천 둘다 마지막 페이지면 무한스크롤 더 이상 호출할 필요 없음
-    private func checkIsLastPage() {
-        Observable.combineLatest(
-            self.posefeedRepository.isLastFilteredContents(),
-            self.posefeedRepository.isLastRecommendContents()
-        )
-        .subscribe(onNext: { [weak self] (isLastFilteredContents, isLastRecommendedContents) in
-            self?.isLastPage.accept(isLastFilteredContents && isLastRecommendedContents)
-        })
-        .disposed(by: disposeBag)
     }
     
     private func newSizeImageWidthDownloadedResource(image: UIImage) -> UIImage {
