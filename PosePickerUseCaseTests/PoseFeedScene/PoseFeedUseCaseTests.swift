@@ -86,6 +86,8 @@ final class PoseFeedUseCaseTests: XCTestCase {
             .next(1, 2)
         ])
         
+        /// 이미지가 nil일때 (다운로드 실패한 경우)
+        /// 사이즈 옵저버블에서 아무것도 방출하지 않게 된다
         XCTAssertEqual(recommendedContentSizesObserver.events, [
             .next(0, 0),
             .next(0, 0),
@@ -97,6 +99,15 @@ final class PoseFeedUseCaseTests: XCTestCase {
     func test_라스트페이지_여부_체크() {
         let isLastPageTestObserver = self.scheduler.createObserver(Bool.self)
         
+        self.scheduler.createColdObservable([
+            .next(0, ())
+        ])
+        .subscribe(onNext: {
+            self.posefeedUseCase
+                .fetchFeedContents(peopleCount: "", frameCount: "", filterTags: [], pageNumber: 0)
+        })
+        .disposed(by: disposeBag)
+        
         self.posefeedUseCase
             .isLastPage
             .subscribe(isLastPageTestObserver)
@@ -106,7 +117,8 @@ final class PoseFeedUseCaseTests: XCTestCase {
         
         // 하드코딩 옵저버블 - 필터 데이터는 마지막 페이지 아닌데, 추천 데이터는 마지막 페이지일때 최종적으로 false 리턴
         XCTAssertEqual(isLastPageTestObserver.events, [
-            .next(0, false)
+            .next(0, false),
+            .next(0, true)
         ])
     }
     
