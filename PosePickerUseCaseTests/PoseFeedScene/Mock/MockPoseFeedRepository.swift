@@ -14,6 +14,11 @@ final class MockPoseFeedRepository: PoseFeedRepository {
     private var sectionItems = [
         Section(header: "", items: [
             PoseFeedPhotoCellViewModel(
+                image: nil,
+                poseId: 100,
+                bookmarkCheck: true
+            ),
+            PoseFeedPhotoCellViewModel(
                 image: ImageLiteral.imgInfo24,
                 poseId: 1,
                 bookmarkCheck: true
@@ -22,6 +27,11 @@ final class MockPoseFeedRepository: PoseFeedRepository {
         Section(header: "", items: [
             PoseFeedPhotoCellViewModel(
                 image: ImageLiteral.imgInfo24,
+                poseId: 3,
+                bookmarkCheck: true
+            ),
+            PoseFeedPhotoCellViewModel(
+                image: nil,
                 poseId: 2,
                 bookmarkCheck: true
             )
@@ -51,7 +61,7 @@ final class MockPoseFeedRepository: PoseFeedRepository {
     }
     
     func isLastFilteredContents() -> Observable<Bool> {
-        return Observable.just(false)
+        return Observable.just(true)
     }
     
     func isLastRecommendContents() -> Observable<Bool> {
