@@ -34,7 +34,19 @@ struct PoseInfo: Codable {
         case user
     }
     
-    init(createdAt: String?, frameCount: Int, imageKey: String, peopleCount: Int, poseId: Int, source: String, sourceUrl: String, tagAttributes: String?, updatedAt: String?, bookmarkCheck: Bool?, poseUploadUser: PoseUploadUser) {
+    init(
+        createdAt: String?,
+        frameCount: Int?,
+        imageKey: String,
+        peopleCount: Int?,
+        poseId: Int?,
+        source: String?,
+        sourceUrl: String?,
+        tagAttributes: String?,
+        updatedAt: String?,
+        bookmarkCheck: Bool?,
+        poseUploadUser: PoseUploadUser?
+    ) {
         self.createdAt = createdAt
         self.frameCount = frameCount
         self.imageKey = imageKey
