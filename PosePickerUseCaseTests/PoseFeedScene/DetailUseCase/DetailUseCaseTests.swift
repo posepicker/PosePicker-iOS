@@ -73,9 +73,10 @@ final class DetailUseCaseTests: XCTestCase {
             .next(0, "@gangjuninggg")
         ])
         
+        // HTTPS prefix 붙여서 URL 방출
         XCTAssertEqual(sourceURLObserver.events, [
             .next(0, ""),
-            .next(0, "www.instagram.URL")
+            .next(0, "https://www.instagram.URL")
         ])
     }
     
