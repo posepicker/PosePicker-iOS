@@ -50,9 +50,7 @@ final class PoseDetailViewModel {
         
         input.viewDidLoadEvent
             .subscribe(onNext: { [weak self] in
-                self?.poseDetailUseCase.getSourceURLFromPoseInfo()
-                self?.poseDetailUseCase.getTagsFromPoseInfo()
-                self?.poseDetailUseCase.getSourceFromPoseInfo()
+                self?.poseDetailUseCase.getPoseInfo()
             })
             .disposed(by: disposeBag)
         
