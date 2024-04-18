@@ -18,11 +18,6 @@ final class DefaultPoseDetailUseCase: PoseDetailUseCase {
     init(poseDetailRepository: PoseDetailRepository, poseId: Int) {
         self.poseDetailRepository = poseDetailRepository
         self.poseId = poseId
-        
-        self.poseDetailRepository
-            .fetchPoseInfo(poseId: self.poseId)
-            .subscribe(self.pose)
-            .disposed(by: self.disposeBag)
     }
     
     var tagItems = BehaviorRelay<[String]>(value: [])
@@ -31,31 +26,20 @@ final class DefaultPoseDetailUseCase: PoseDetailUseCase {
     var source = BehaviorRelay<String>(value: "")
     var bookmarkTaskCompleted = PublishSubject<Bool>()
     
-    func getTagsFromPoseInfo() {
-        pose
-            .compactMap { $0.poseInfo.tagAttributes }
-            .map { $0.split(separator: ",").map { String($0) }}
-            .subscribe(onNext: { [weak self] in
-                self?.tagItems.accept($0)
-            })
-            .disposed(by: disposeBag)
-    }
-    
-    func getSourceURLFromPoseInfo() {
-        pose
-            .compactMap { $0.poseInfo.sourceUrl }
-            .subscribe(onNext: { [weak self] in
-                self?.sourceUrl.accept($0)
+    func getPoseInfo() {
+        self.poseDetailRepository
+            .fetchPoseInfo(poseId: self.poseId)
+            .subscribe(onNext: { [weak self] pose in
+                let tagAttributes = pose.poseInfo.tagAttributes ?? ""
+                self?.tagItems.accept(tagAttributes.split(separator: ",").map { String($0) })
+                
+                let sourceURL = pose.poseInfo.sourceUrl ?? ""
+                self?.sourceUrl.accept(sourceURL)
+                
+                let source = pose.poseInfo.source ?? ""
+                self?.source.accept(source)
             })
             .disposed(by: self.disposeBag)
-    }
-    
-    func getSourceFromPoseInfo() {
-        pose
-            .subscribe(onNext: { [weak self] in
-                self?.source.accept($0.poseInfo.source ?? "")
-            })
-            .disposed(by: disposeBag)
     }
     
     func bookmarkContent(poseId: Int, currentChecked: Bool) {
