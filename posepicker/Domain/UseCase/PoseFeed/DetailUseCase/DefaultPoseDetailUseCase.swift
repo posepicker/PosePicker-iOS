@@ -33,8 +33,13 @@ final class DefaultPoseDetailUseCase: PoseDetailUseCase {
                 let tagAttributes = pose.poseInfo.tagAttributes ?? ""
                 self?.tagItems.accept(tagAttributes.split(separator: ",").map { String($0) })
                 
-                let sourceURL = pose.poseInfo.sourceUrl ?? ""
-                self?.sourceUrl.accept(sourceURL)
+                var sourceURL = pose.poseInfo.sourceUrl ?? ""
+                
+                if String(sourceURL.prefix(5)) == "https" {
+                    self?.sourceUrl.accept(sourceURL)
+                } else {
+                    self?.sourceUrl.accept("https://" + sourceURL)
+                }
                 
                 let source = pose.poseInfo.source ?? ""
                 self?.source.accept(source)
