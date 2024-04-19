@@ -115,6 +115,7 @@
 		C94FD2A72AE3B282003777EB /* Pretendard-SemiBold.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890BA2AE110660010240A /* Pretendard-SemiBold.otf */; };
 		C94FD2A82AE3B282003777EB /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890BD2AE110660010240A /* Pretendard-Thin.otf */; };
 		C94FD2AB2AE8CEEB003777EB /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2AA2AE8CEEB003777EB /* Button.swift */; };
+		C956D3282BD2575900CBB451 /* CoordinatorTooltipDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C956D3272BD2575900CBB451 /* CoordinatorTooltipDelegate.swift */; };
 		C95DD3782B8710BF005ACE84 /* PoseUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95DD3772B8710BF005ACE84 /* PoseUploadViewController.swift */; };
 		C95DD37A2B8711F4005ACE84 /* PoseUploadGuidelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95DD3792B8711F4005ACE84 /* PoseUploadGuidelineViewController.swift */; };
 		C9676BE82BAAAB79000A4114 /* PosePickUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9676BE72BAAAB79000A4114 /* PosePickUseCase.swift */; };
@@ -350,6 +351,7 @@
 		C94FD29A2AE3AC3E003777EB /* UIView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+.swift"; sourceTree = "<group>"; };
 		C94FD29E2AE3AF4F003777EB /* UnderlineSegmentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentControl.swift; sourceTree = "<group>"; };
 		C94FD2AA2AE8CEEB003777EB /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
+		C956D3272BD2575900CBB451 /* CoordinatorTooltipDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorTooltipDelegate.swift; sourceTree = "<group>"; };
 		C95DD3772B8710BF005ACE84 /* PoseUploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadViewController.swift; sourceTree = "<group>"; };
 		C95DD3792B8711F4005ACE84 /* PoseUploadGuidelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadGuidelineViewController.swift; sourceTree = "<group>"; };
 		C9676BE72BAAAB79000A4114 /* PosePickUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickUseCase.swift; sourceTree = "<group>"; };
@@ -924,6 +926,7 @@
 			children = (
 				C91FF3712BAD891600096E25 /* CoordinatorFinishDelegate.swift */,
 				C9FD20F92BC51AC200C23E25 /* CoordinatorLoginDelegate.swift */,
+				C956D3272BD2575900CBB451 /* CoordinatorTooltipDelegate.swift */,
 			);
 			path = Delegate;
 			sourceTree = "<group>";
@@ -2384,6 +2387,7 @@
 				C91FF3562BAB267D00096E25 /* NetworkService.swift in Sources */,
 				88D5C4812B027B0A0045C081 /* Section.swift in Sources */,
 				880E752D2AE60499007FAD5A /* Header.swift in Sources */,
+				C956D3282BD2575900CBB451 /* CoordinatorTooltipDelegate.swift in Sources */,
 				C99D53B72B1EDCB8007DEE9B /* BookmarkEmptyView.swift in Sources */,
 				C9DEE3F92BBD322800C9C495 /* PoseFeedRepository.swift in Sources */,
 				C9188B252B909E6A004B9C45 /* MyPoseCustomTagCell.swift in Sources */,
