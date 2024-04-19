@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import RxSwift
 
 /// 툴팁 생성과 함께 폴리곤 위치 trailing으로 지정 필요
 class ToolTip: UIView {
@@ -42,7 +43,8 @@ class ToolTip: UIView {
     let polygonImage = UIImageView(image: ImageLiteral.imgPolygon)
     
     // MARK: - Properties
-
+    var disposeBag = DisposeBag()
+    
     // MARK: - Initialization
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -86,7 +88,11 @@ class ToolTip: UIView {
     }
     
     func configUI() {
-        
+        self.closeButton.rx.tap
+            .subscribe(onNext: { [weak self] in
+                self?.isHidden = true
+            })
+            .disposed(by: disposeBag)
     }
 
 }
