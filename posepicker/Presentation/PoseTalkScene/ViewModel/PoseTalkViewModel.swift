@@ -15,6 +15,7 @@ class PoseTalkViewModel {
     private let posetalkUseCase: PoseTalkUseCase
     
     init(coordinator: PoseTalkCoordinator?, posetalkUseCase: PoseTalkUseCase) {
+        self.coordinator = coordinator
         self.posetalkUseCase = posetalkUseCase
     }
     
@@ -27,6 +28,9 @@ class PoseTalkViewModel {
     struct Input {
         let poseTalkButtonTapped: ControlEvent<Void>
         let isAnimating: BehaviorRelay<Bool>
+        let tooltipButtonTapEvent: Observable<Void>
+        let viewDidLoadEvent: Observable<Void>
+        let viewDidDisappearEvent: Observable<Void>
     }
     
     struct Output {
@@ -36,6 +40,25 @@ class PoseTalkViewModel {
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         self.configureInput(input, disposeBag: disposeBag)
+        
+        input.tooltipButtonTapEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.toggleTooltip()
+            })
+            .disposed(by: disposeBag)
+        
+        input.viewDidLoadEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.addTooltip()
+            })
+            .disposed(by: disposeBag)
+        
+        input.viewDidDisappearEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.removeTooltip()
+            })
+            .disposed(by: disposeBag)
+        
         return createOutput(from: input, disposeBag: disposeBag)
     }
 
