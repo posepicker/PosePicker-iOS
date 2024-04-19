@@ -9,6 +9,7 @@ import UIKit
 
 final class DefaultPoseTalkCoordinator: PoseTalkCoordinator {
     weak var finishDelegate: CoordinatorFinishDelegate?
+    weak var tooltipDelegate: CoordinatorTooltipDelegate?
     var navigationController: UINavigationController
     var posetalkViewController: PoseTalkViewController
     var childCoordinators: [Coordinator] = []
@@ -21,13 +22,25 @@ final class DefaultPoseTalkCoordinator: PoseTalkCoordinator {
     
     func start() {
         self.posetalkViewController.viewModel = PoseTalkViewModel(
-            coordinator: nil,
+            coordinator: self,
             posetalkUseCase: DefaultPoseTalkUseCase(
                 posetalkRepository: DefaultPoseTalkRepository(
                     networkService: DefaultNetworkService())
             ))
         
         self.navigationController.pushViewController(self.posetalkViewController, animated: true)
+    }
+    
+    func toggleTooltip() {
+        tooltipDelegate?.coordinatorToggleTooltip(childCoordinator: self)
+    }
+    
+    func addTooltip() {
+        tooltipDelegate?.coordinatorShowTooltip(childCoordinator: self)
+    }
+    
+    func removeTooltip() {
+        tooltipDelegate?.coordinatorHideTooltip(childCoordinator: self)
     }
 }
 
