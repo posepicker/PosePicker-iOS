@@ -8,5 +8,8 @@
 import Foundation
 
 protocol PoseTalkCoordinator: Coordinator {
-    
+    var tooltipDelegate: CoordinatorTooltipDelegate? { get set }
+    func toggleTooltip()
+    func addTooltip()
+    func removeTooltip()
 }
