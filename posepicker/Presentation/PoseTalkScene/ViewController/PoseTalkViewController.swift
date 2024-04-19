@@ -64,12 +64,18 @@ class PoseTalkViewController: BaseViewController {
     
     var viewModel: PoseTalkViewModel?
     private var isAnimating = BehaviorRelay<Bool>(value: false) // 초기 화면 접속시에 애니메이션 처리 해야됨
+    private let viewDidLoadEvent = PublishSubject<Void>()
+    private let viewDidDisappearEvent = PublishSubject<Void>()
     
     // MARK: - Life Cycles
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        viewDidLoadEvent.onNext(())
+    }
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        toolTip.isHidden = true
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        viewDidDisappearEvent.onNext(())
     }
     
     // MARK: - Functions
@@ -101,18 +107,6 @@ class PoseTalkViewController: BaseViewController {
             make.height.equalTo(60)
             make.bottom.equalTo(view.safeAreaLayoutGuide.snp.bottom).offset(-16)
         }
-        
-//        viewModel?.coordinator?.rootViewController.view.addSubViews([toolTip])
-//    
-//        let segmentHeight = viewModel?.coordinator?.rootViewController.segmentControl.frame.height ?? 100
-//        let headerHeight = UIScreen.main.isWiderThan375pt ? viewModel?.coordinator?.rootViewController.header.frame.height ?? 20 - 10 : viewModel?.coordinator?.rootViewController.header.frame.height ?? 20 - 20
-//        
-//        toolTip.snp.makeConstraints { make in
-//            make.leading.equalTo(UIScreen.main.isWiderThan375pt ? 76 : 66)
-//            make.width.equalTo(UIScreen.main.isWiderThan375pt ? 230 : 210)
-//            make.height.equalTo(UIScreen.main.isWiderThan375pt ? 80 : 68)
-//            make.top.equalTo(viewModel?.coordinator?.rootViewController.view.safeAreaLayoutGuide.snp.top ?? self.view.snp.top).offset(segmentHeight + headerHeight)
-//        }
     }
     
     override func configUI() {
@@ -143,7 +137,10 @@ class PoseTalkViewController: BaseViewController {
     override func bindViewModel() {
         let input = PoseTalkViewModel.Input(
             poseTalkButtonTapped: selectButton.rx.controlEvent(.touchUpInside),
-            isAnimating: isAnimating
+            isAnimating: isAnimating,
+            tooltipButtonTapEvent: informationTooltipButton.rx.tap.asObservable(),
+            viewDidLoadEvent: viewDidLoadEvent,
+            viewDidDisappearEvent: viewDidDisappearEvent
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
