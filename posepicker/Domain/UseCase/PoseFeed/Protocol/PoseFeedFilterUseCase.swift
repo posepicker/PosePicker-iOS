@@ -17,5 +17,4 @@ protocol PoseFeedFilterUseCase {
     func selectPeopleCount(value: Int)
     func selectFrameCount(value: Int)
     func resetAllTags()
-    func cancelTagSetting()
 }
