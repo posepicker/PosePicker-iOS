@@ -18,6 +18,12 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
     
     var controllers: [UINavigationController] = []
     
+    private let tooltip = ToolTip()
+        .then {
+            $0.layer.zPosition = 1000
+            $0.isHidden = true
+        }
+    
     required init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
         self.pageViewController = UIPageViewController(transitionStyle: .scroll, navigationOrientation: .horizontal)
@@ -43,6 +49,7 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
             self.createPageViewNavigationController(of: $0)
         })
         self.configurePageViewController(with: controllers)
+        self.setToolTipUI()
     }
     
     func setSelectedIndex(_ index: Int) {
@@ -140,6 +147,7 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
         case .posetalk:
             let posetalkCoordinator = DefaultPoseTalkCoordinator(pageviewNavigationController)
             posetalkCoordinator.finishDelegate = self
+            posetalkCoordinator.tooltipDelegate = self
             self.childCoordinators.append(posetalkCoordinator)
             posetalkCoordinator.start()
         case .posefeed:
@@ -149,6 +157,19 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
             posefeedCoordinator.start()
         default:
             break
+        }
+    }
+    
+    private func setToolTipUI() {
+        self.commonViewController.view.addSubview(self.tooltip)
+        
+        let segmentHeight = self.commonViewController.segmentControl.frame.height
+        let headerHeight: CGFloat = UIScreen.main.isWiderThan375pt ? 38 : 28
+        self.tooltip.snp.makeConstraints { make in
+            make.leading.equalTo(UIScreen.main.isWiderThan375pt ? 76 : 66)
+            make.width.equalTo(UIScreen.main.isWiderThan375pt ? 230 : 210)
+            make.height.equalTo(UIScreen.main.isWiderThan375pt ? 80 : 68)
+            make.top.equalTo(self.commonViewController.view.safeAreaLayoutGuide.snp.top).offset(segmentHeight + headerHeight)
         }
     }
 }
@@ -190,5 +211,19 @@ extension DefaultPageViewCoordinator: CoordinatorLoginDelegate {
                 posefeedCoordinator.posefeedViewController.viewDidLoadEvent.onNext(())
             }
         }
+    }
+}
+
+extension DefaultPageViewCoordinator: CoordinatorTooltipDelegate {
+    func coordinatorToggleTooltip(childCoordinator: any Coordinator) {
+        tooltip.isHidden.toggle()
+    }
+    
+    func coordinatorShowTooltip(childCoordinator: any Coordinator) {
+        tooltip.isHidden = false
+    }
+    
+    func coordinatorHideTooltip(childCoordinator: any Coordinator) {
+        tooltip.isHidden = true
     }
 }
