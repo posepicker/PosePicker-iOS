@@ -54,8 +54,4 @@ final class DefaultPoseFeedFilterUseCase: PoseFeedFilterUseCase {
         }
         tagItems.accept(tagItemsValue)
     }
-    
-    func cancelTagSetting() {
-        
-    }
 }
