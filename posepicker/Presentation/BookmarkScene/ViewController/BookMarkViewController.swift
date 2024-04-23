@@ -31,6 +31,7 @@ class BookMarkViewController: BaseViewController, UIGestureRecognizerDelegate {
     
     let loadingIndicator = UIActivityIndicatorView(style: .large)
         .then {
+            $0.layer.zPosition = 999
             $0.startAnimating()
             $0.color = .mainViolet
         }
@@ -203,6 +204,11 @@ private extension BookMarkViewController {
             .subscribe(onNext: { [weak self] in
                 self?.bookmarkContentSizes.accept($0)
             })
+            .disposed(by: disposeBag)
+        
+        output?.isLoading
+            .map { !$0 }
+            .bind(to: loadingIndicator.rx.isHidden)
             .disposed(by: disposeBag)
     }
 }
