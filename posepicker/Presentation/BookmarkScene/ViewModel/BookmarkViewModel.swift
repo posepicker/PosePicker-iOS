@@ -22,16 +22,20 @@ final class BookmarkViewModel {
         let viewDidLoadEvent: Observable<Void>
         let bookmarkCellTapEvent: Observable<BookmarkFeedCellViewModel>
         let bookmarkButtonTapEvent: Observable<(Int, Bool)>
+        let infiniteScrollEvent: Observable<Void>
     }
     
     struct Output {
         let bookmarkContents = BehaviorRelay<[BookmarkFeedCellViewModel]>(value: [])
         let bookmarkContentSizes = BehaviorRelay<[CGSize]>(value: [])
         let isLoading = BehaviorRelay<Bool>(value: false)
+        let isLastPage = BehaviorRelay<Bool>(value: true)
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output{
         let output = Output()
+        
+        let currentPage = BehaviorRelay<Int>(value: 0)
         
         input.viewDidLoadEvent
             .subscribe(onNext: { [weak self] in
@@ -69,6 +73,20 @@ final class BookmarkViewModel {
             })
             .disposed(by: disposeBag)
         
+        /// 무한스크롤 트리거 로직
+        input.infiniteScrollEvent
+            .subscribe(onNext: { [weak self] in
+                output.isLoading.accept(true)
+                let nextPage = currentPage.value + 1
+                currentPage.accept(nextPage)
+                
+                self?.bookmarkUseCase.fetchFeedContents(
+                    pageNumber: nextPage,
+                    pageSize: 8
+                )
+            })
+            .disposed(by: disposeBag)
+        
         self.bookmarkUseCase
             .contentLoaded
             .subscribe(onNext: {
@@ -76,6 +94,13 @@ final class BookmarkViewModel {
             })
             .disposed(by: disposeBag)
         
+        self.bookmarkUseCase
+            .isLastPage
+            .subscribe(onNext: {
+                output.isLastPage.accept($0)
+            })
+            .disposed(by: disposeBag)
+
         return output
     }
 }
