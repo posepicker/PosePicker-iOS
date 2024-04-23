@@ -39,13 +39,13 @@ class BookMarkViewController: BaseViewController, UIGestureRecognizerDelegate {
     // MARK: - Properties
     var viewModel: BookmarkViewModel?
     
-//    let viewDidLoadTrigger = PublishSubject<Void>()
     let nextPageTrigger = PublishSubject<Void>()
     let bookmarkCheckObservable = PublishSubject<(Int, Bool)>()
     
     private let viewDidLoadEvent = PublishSubject<Void>()
     private let bookmarkContentSizes = BehaviorRelay<[CGSize]>(value: [])
     private let bookmarkButtonTapEvent = PublishSubject<(Int, Bool)>()
+    private let infiniteScrollEvent = PublishSubject<Void>()
     
     // MARK: - Life Cycles
     override func viewDidLoad() {
@@ -79,15 +79,6 @@ class BookMarkViewController: BaseViewController, UIGestureRecognizerDelegate {
         self.navigationController?.interactivePopGestureRecognizer?.delegate = self
         view.backgroundColor = .bgWhite
         
-        /// 북마크 무한스크롤
-//        bookmarkCollectionView.rx.contentOffset
-//            .subscribe(onNext: { [unowned self] in
-//                if $0.y > self.bookmarkCollectionView.contentSize.height - self.bookmarkCollectionView.bounds.size.height && !self.viewModel.isLoading && !self.viewModel.isLast {
-//                    self.nextPageTrigger.onNext(())
-//                }
-//            })
-//            .disposed(by: disposeBag)
-        
         // 캡처시 이미지 덮기
         guard let secureView = SecureField().secureContainer else { return }
 
@@ -106,57 +97,13 @@ class BookMarkViewController: BaseViewController, UIGestureRecognizerDelegate {
         let input = BookmarkViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent,
             bookmarkCellTapEvent: bookmarkCollectionView.rx.modelSelected(BookmarkFeedCellViewModel.self).asObservable(),
-            bookmarkButtonTapEvent: bookmarkButtonTapEvent
+            bookmarkButtonTapEvent: bookmarkButtonTapEvent,
+            infiniteScrollEvent: infiniteScrollEvent
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
         configureOutput(output)
-        
-//        let input = BookMarkViewModel.Input(viewDidLoadTrigger: viewDidLoadTrigger, nextPageTrigger: nextPageTrigger, bookmarkSelection: bookmarkCollectionView.rx.modelSelected(BookmarkFeedCellViewModel.self), bookmarkFromPoseId: bookmarkCheckObservable)
-//        let output = viewModel.transform(input: input)
-//        
-//        output.sectionItems
-//            .bind(to: bookmarkCollectionView.rx.items(dataSource: viewModel.dataSource))
-//            .disposed(by: disposeBag)
-//        
-//        output.isLoading.asDriver(onErrorJustReturn: false)
-//            .drive(onNext: { [unowned self] in
-//                guard let flowLayout = self.bookmarkCollectionView.collectionViewLayout as? PinterestLayout else { return }
-//                flowLayout.isLoading.accept($0)
-//                self.loadingIndicator.isHidden = !$0
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.transitionToPoseFeed
-//            .subscribe(onNext: { [weak self] in
-//                self?.coordinator?.moveToPoseFeed()
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.bookmarkDetailViewPush
-//            .drive(onNext: { [unowned self] in
-//                guard let viewModel = $0 else { return }
-//                guard let coordinator = self.coordinator else { return }
-//                coordinator.pushBookmarkDetailView(viewController: BookmarkDetailViewController(viewModel: viewModel, coordinator: coordinator))
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        viewModel.bookmarkButtonTapped
-//            .subscribe(onNext: { [unowned self] in
-//                guard let coordinator = self.coordinator else { return }
-//                coordinator.triggerBookmarkFromPoseId(poseId: $0, bookmarkCheck: true)
-//                self.bookmarkCheckObservable.onNext(($0, false))
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        viewModel.bookmarkRemoveButtonTapped
-//            .subscribe(onNext: { [unowned self] in
-//                guard let coordinator = self.coordinator else { return }
-//                coordinator.triggerBookmarkFromPoseId(poseId: $0, bookmarkCheck: false)
-//                self.bookmarkCheckObservable.onNext(($0, true))
-//            })
-//            .disposed(by: disposeBag)
     }
     
     // MARK: - Objc Functions
@@ -184,6 +131,29 @@ extension BookMarkViewController: PinterestLayoutDelegate {
 
 private extension BookMarkViewController {
     func configureOutput(_ output: BookmarkViewModel.Output?) {
+        /// 무한스크롤 로직
+        /// Reentry anomaly 에러 해결 - 구독중에 복잡한 값 방출
+        bookmarkCollectionView.rx.contentOffset
+            .asDriver()
+            .drive(onNext: { [weak self] contentOffset in
+                guard let self = self else { return }
+                guard let output = output else { return }
+                if contentOffset.y > 300
+                    && contentOffset.y + 300 > self.bookmarkCollectionView.contentSize.height - self.bookmarkCollectionView.bounds.size.height
+                    && !output.isLoading.value
+                    && !output.isLastPage.value {
+                    self.infiniteScrollEvent.onNext(())
+                    return
+                }
+                
+                if contentOffset.y > self.bookmarkCollectionView.contentSize.height - self.bookmarkCollectionView.bounds.size.height
+                    && !output.isLoading.value
+                    && !output.isLastPage.value {
+                    self.infiniteScrollEvent.onNext(())
+                }
+            })
+            .disposed(by: disposeBag)
+        
         output?.bookmarkContents
             .asDriver()
             .drive(bookmarkCollectionView.rx.items(cellIdentifier: BookmarkFeedCell.identifier, cellType: BookmarkFeedCell.self)) { [weak self] _, viewModel, cell in
