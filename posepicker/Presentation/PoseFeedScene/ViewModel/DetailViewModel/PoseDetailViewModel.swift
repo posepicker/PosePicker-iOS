@@ -168,9 +168,12 @@ final class PoseDetailViewModel {
             })
             .disposed(by: disposeBag)
         
-        output.image.accept(
-            bindViewModel.image.value?.resize(newWidth: UIScreen.main.bounds.width)
-        )
+        self.poseDetailUseCase
+            .image
+            .subscribe(onNext: {
+                output.image.accept($0)
+            })
+            .disposed(by: disposeBag)
         
         return output
     }
