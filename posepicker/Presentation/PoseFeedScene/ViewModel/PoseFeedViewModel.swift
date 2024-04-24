@@ -183,16 +183,16 @@ final class PoseFeedViewModel {
                    removeTargetTag != "전체" {
                     
                     // 인원 수 태그 삭제 혹은 프레임 수 태그는 API 파라미터 삭제 말고 교체로 변경
-                    if removeTargetTag.last! == "인" {
+                    if removeTargetTag.last! == "인" || removeTargetTag.suffix(2) == "인+" {
                         apiRequestParams[index] = "전체"
-                    } else if removeTargetTag.last! == "컷" {
+                    } else if removeTargetTag.last! == "컷" || removeTargetTag.suffix(2) == "컷+" {
                         apiRequestParams[index] = "전체"
                     } else {
                         apiRequestParams.remove(at: index)
                     }
                 }
                 apiRequestParameters.accept(apiRequestParams)
-                
+                print("request params: ",apiRequestParams)
                 var registeredTags = output.registeredTagItems.value
                 registeredTags.removeAll(where: {
                     $0.title.value == removeTargetTag
