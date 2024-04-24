@@ -52,7 +52,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 //        }
         
         /// Firebase 셋업
-//        FirebaseApp.configure()
+        FirebaseApp.configure()
 
         
         window = UIWindow(frame: UIScreen.main.bounds)
