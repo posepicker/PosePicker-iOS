@@ -220,7 +220,15 @@ final class PoseFeedViewModel {
                 apiRequestParams[0] = "전체"
                 apiRequestParams[1] = "전체"
                 apiRequestParams.removeSubrange(2...)
-                apiRequestParams.append($0.title.value)
+                
+                if let peopleCountTag = PeopleCountTags.getTagFromTitle(title: $0.title.value) {
+                    apiRequestParams[0] = peopleCountTag.rawValue
+                } else if let frameCountTag = FrameCountTags.getTagFromTitle(title: $0.title.value) {
+                    apiRequestParams[1] = frameCountTag.rawValue
+                } else {
+                    apiRequestParams.append($0.title.value)
+                }
+                
                 apiRequestParameters.accept(apiRequestParams)
                 
                 self?.posefeedUseCase.fetchFeedContents(
