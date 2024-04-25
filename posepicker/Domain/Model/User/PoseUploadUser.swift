@@ -12,5 +12,5 @@ struct PoseUploadUser: Codable {
     let nickname: String
     let email: String
     let loginType: String
-    let iosId: Int?
+    let iosId: String?
 }
