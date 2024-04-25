@@ -122,7 +122,7 @@ final class BookmarkDetailViewModel {
                 return sourceURL
             }
             .map {
-                return URL(string: "https://" + $0)
+                return URL(string: $0)
             }
             .compactMap { $0 }
             .subscribe(onNext: { [weak self] in
