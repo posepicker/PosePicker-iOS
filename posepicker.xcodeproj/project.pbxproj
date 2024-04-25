@@ -57,7 +57,6 @@
 		C91C53322BD0E3DD00C5C28F /* DetailUseCaseTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91C53312BD0E3DD00C5C28F /* DetailUseCaseTests.swift */; };
 		C91C53352BD0E43200C5C28F /* MockPoseDetailRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91C53342BD0E43200C5C28F /* MockPoseDetailRepository.swift */; };
 		C91E18442B99B300009611C3 /* UINavigationController+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91E18432B99B300009611C3 /* UINavigationController+.swift */; };
-		C91E184B2B99C22A009611C3 /* PoseDetailMoreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91E184A2B99C22A009611C3 /* PoseDetailMoreViewController.swift */; };
 		C91E184D2B99E484009611C3 /* ReportViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91E184C2B99E484009611C3 /* ReportViewController.swift */; };
 		C91E18502B99ECC1009611C3 /* RadioButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91E184F2B99ECC1009611C3 /* RadioButton.swift */; };
 		C91FF3432BAAADC500096E25 /* Sort.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3422BAAADC500096E25 /* Sort.swift */; };
@@ -237,7 +236,6 @@
 		C9FD21282BC7C76C00C23E25 /* DefaultPoseUploadRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD21272BC7C76C00C23E25 /* DefaultPoseUploadRepository.swift */; };
 		C9FD212A2BC7C77700C23E25 /* PoseUploadRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD21292BC7C77700C23E25 /* PoseUploadRepository.swift */; };
 		C9FD212F2BC8F6EE00C23E25 /* ReportViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD212E2BC8F6EE00C23E25 /* ReportViewModel.swift */; };
-		C9FD21312BC8F74A00C23E25 /* PoseDetailMoreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FD21302BC8F74A00C23E25 /* PoseDetailMoreViewModel.swift */; };
 		C9FDBDEC2B2835E10045AA54 /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = C9FDBDEB2B2835E10045AA54 /* RxSwift */; };
 		C9FDBDF22B288F580045AA54 /* BookmarkResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */; };
 		C9FDBDF62B28AE140045AA54 /* BookmarkDetailTagCellViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9FDBDF52B28AE140045AA54 /* BookmarkDetailTagCellViewModel.swift */; };
@@ -310,7 +308,6 @@
 		C91C53312BD0E3DD00C5C28F /* DetailUseCaseTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailUseCaseTests.swift; sourceTree = "<group>"; };
 		C91C53342BD0E43200C5C28F /* MockPoseDetailRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPoseDetailRepository.swift; sourceTree = "<group>"; };
 		C91E18432B99B300009611C3 /* UINavigationController+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UINavigationController+.swift"; sourceTree = "<group>"; };
-		C91E184A2B99C22A009611C3 /* PoseDetailMoreViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseDetailMoreViewController.swift; sourceTree = "<group>"; };
 		C91E184C2B99E484009611C3 /* ReportViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewController.swift; sourceTree = "<group>"; };
 		C91E184F2B99ECC1009611C3 /* RadioButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RadioButton.swift; sourceTree = "<group>"; };
 		C91FF3422BAAADC500096E25 /* Sort.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Sort.swift; sourceTree = "<group>"; };
@@ -475,7 +472,6 @@
 		C9FD21272BC7C76C00C23E25 /* DefaultPoseUploadRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseUploadRepository.swift; sourceTree = "<group>"; };
 		C9FD21292BC7C77700C23E25 /* PoseUploadRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadRepository.swift; sourceTree = "<group>"; };
 		C9FD212E2BC8F6EE00C23E25 /* ReportViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReportViewModel.swift; sourceTree = "<group>"; };
-		C9FD21302BC8F74A00C23E25 /* PoseDetailMoreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseDetailMoreViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkResponse.swift; sourceTree = "<group>"; };
 		C9FDBDF52B28AE140045AA54 /* BookmarkDetailTagCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailTagCellViewModel.swift; sourceTree = "<group>"; };
 		C9FDBDF72B28AE240045AA54 /* BookmarkDetailTagCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailTagCell.swift; sourceTree = "<group>"; };
@@ -749,7 +745,6 @@
 		C91E18492B99C216009611C3 /* Modal */ = {
 			isa = PBXGroup;
 			children = (
-				C91E184A2B99C22A009611C3 /* PoseDetailMoreViewController.swift */,
 				C91E184C2B99E484009611C3 /* ReportViewController.swift */,
 			);
 			path = Modal;
@@ -2044,7 +2039,6 @@
 		C9FD212D2BC8F6D600C23E25 /* Modal */ = {
 			isa = PBXGroup;
 			children = (
-				C9FD21302BC8F74A00C23E25 /* PoseDetailMoreViewModel.swift */,
 				C9FD212E2BC8F6EE00C23E25 /* ReportViewModel.swift */,
 			);
 			path = Modal;
@@ -2305,7 +2299,6 @@
 				8851477F2AF9490C00DCDD4E /* PinterestLayout.swift in Sources */,
 				C9C8908E2AE1073F0010240A /* BaseCollectionViewCell.swift in Sources */,
 				C9676BEC2BAAAC68000A4114 /* PoseInfo.swift in Sources */,
-				C91E184B2B99C22A009611C3 /* PoseDetailMoreViewController.swift in Sources */,
 				880E755B2AF296E7007FAD5A /* PoseTalk.swift in Sources */,
 				C9FD211E2BC7923600C23E25 /* PoseUploadImageSourceViewModel.swift in Sources */,
 				C9C890A92AE10A370010240A /* NetworkRouter.swift in Sources */,
@@ -2394,7 +2387,6 @@
 				C91FF3642BAC002700096E25 /* DefaultPoseTalkUseCase.swift in Sources */,
 				C94FD2812AE39603003777EB /* PoseTalkViewController.swift in Sources */,
 				C91FF3502BAAD11C00096E25 /* DefaultUserRepository.swift in Sources */,
-				C9FD21312BC8F74A00C23E25 /* PoseDetailMoreViewModel.swift in Sources */,
 				C96C9A8E2BB5425700AC2921 /* CommonUseCase.swift in Sources */,
 				883132972B08EF9100DAA5A7 /* PoseDetailTagCell.swift in Sources */,
 				C9FDBDFC2B28AE6B0045AA54 /* BookmarkDetailViewController.swift in Sources */,
