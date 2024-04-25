@@ -41,6 +41,9 @@ class BookmarkDetailViewController: BaseViewController {
         }
     
     let bookmarkButton = UIBarButtonItem(image: ImageLiteral.imgBookmarkOff24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault))
+        .then {
+            $0.isHidden = true
+        }
     
     lazy var navigationBar = UINavigationBar()
         .then {
@@ -68,6 +71,7 @@ class BookmarkDetailViewController: BaseViewController {
         layout.estimatedItemSize = UICollectionViewFlowLayout.automaticSize
         
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.backgroundColor = .bgWhite
         cv.register(BookmarkDetailTagCell.self, forCellWithReuseIdentifier: BookmarkDetailTagCell.identifier)
         cv.delegate = self
         return cv
