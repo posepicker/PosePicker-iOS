@@ -93,7 +93,46 @@ class PoseDetailViewController: BaseViewController {
     
     lazy var bookmarkButton = UIBarButtonItem(image: ImageLiteral.imgBookmarkOff24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault), style: .plain, target: self, action: #selector(bookmarkButtonTapped))
     
-    lazy var showMoreButton = UIBarButtonItem(image: ImageLiteral.imgMore.withTintColor(.iconDefault, renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(showMoreButtonTapped))
+    lazy var showMoreButton = UIBarButtonItem(
+        customView: UIButton()
+            .then({
+                $0.setImage(
+                    ImageLiteral.imgMore.withTintColor(.iconDefault).withRenderingMode(.alwaysOriginal),
+                    for: .normal
+                )
+                
+                let report = UIAction(
+                    title: "신고하기",
+                    image: nil,
+                    handler: { [weak self] _ in
+                        self?.reportButtonTapEvent.onNext(())
+                    }
+                )
+                
+                $0.menu = UIMenu(
+                    title: "",
+                    image: nil,
+                    identifier: nil,
+                    options: .displayInline,
+                    children: [report]
+                )
+                
+                $0.showsMenuAsPrimaryAction = true
+            })
+    )
+    
+//    UIBarButtonItem(image: ImageLiteral.imgMore.withTintColor(.iconDefault, renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(showMoreButtonTapped))
+//        .then {
+//            let favorite = UIAction(title: "즐겨찾기", image: UIImage(systemName: "heart"), handler: { _ in print("즐겨찾기") })
+//            
+//            $0.menu = UIMenu(
+//                title: "title입니다",
+//                image: UIImage(systemName: "heart.fill"),
+//                identifier: nil,
+//                options: .displayInline,
+//                children: [favorite]
+//            )
+//        }
     
     // MARK: - Properties
     
@@ -104,6 +143,7 @@ class PoseDetailViewController: BaseViewController {
     let kakaoIdTrigger = PublishSubject<Int64>()
     
     private let viewDidLoadEvent = PublishSubject<Void>()
+    private let reportButtonTapEvent = PublishSubject<Void>()
     
     // MARK: - Life Cycles
     override func viewDidLoad() {
@@ -202,7 +242,7 @@ class PoseDetailViewController: BaseViewController {
             linkShareButtonTapEvent: linkShareButton.rx.tap.asObservable(),
             imageSourceButtonTapEvent: imageSourceButton.rx.tap.asObservable(),
             poseTagTapEvent: tagCollectionView.rx.modelSelected(PoseDetailTagCellViewModel.self).asObservable(),
-            showMoreButtonTapEvent: showMoreButton.rx.tap.asObservable(),
+            showMoreButtonTapEvent: reportButtonTapEvent,
             bookmarkButtonTapEvent: bookmarkButton.rx.tap.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
