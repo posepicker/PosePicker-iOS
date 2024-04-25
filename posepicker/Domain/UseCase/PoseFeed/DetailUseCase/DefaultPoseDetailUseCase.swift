@@ -33,8 +33,22 @@ final class DefaultPoseDetailUseCase: PoseDetailUseCase {
         self.poseDetailRepository
             .fetchPoseInfo(poseId: self.poseId)
             .subscribe(onNext: { [weak self] pose in
+                var tags = self?.tagItems.value ?? []
+                if let peopleCountTag = PeopleCountTags.getTagTitleFromIndex(index: pose.poseInfo.peopleCount ?? 0),
+                   peopleCountTag != "전체" {
+                    tags += [peopleCountTag]
+                }
+                
+                if let frameCountTag = FrameCountTags.getTagTitleFromNumberOfFrameCount(number: pose.poseInfo.frameCount ?? 0),
+                   frameCountTag != "전체" {
+                    tags += [frameCountTag]
+                }
+                
                 let tagAttributes = pose.poseInfo.tagAttributes ?? ""
-                self?.tagItems.accept(tagAttributes.split(separator: ",").map { String($0) })
+                tags += tagAttributes.split(separator: ",").map { String($0) }
+                
+                self?.tagItems.accept(tags)
+                
                 self?.imageURL.accept(pose.poseInfo.imageKey)
                 
                 let sourceURL = pose.poseInfo.sourceUrl ?? ""
@@ -45,7 +59,7 @@ final class DefaultPoseDetailUseCase: PoseDetailUseCase {
                     self?.sourceUrl.accept("https://" + sourceURL)
                 }
                 
-                let source = pose.poseInfo.source ?? ""
+                let source = pose.poseInfo.source ?? "링크바로가기"
                 self?.source.accept(source)
             })
             .disposed(by: self.disposeBag)
