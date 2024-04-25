@@ -166,7 +166,7 @@ private extension BookMarkViewController {
                         self.bookmarkButtonTapEvent.onNext(($0, viewModel.bookmarkCheck.value))
                         viewModel.bookmarkCheck.accept(!viewModel.bookmarkCheck.value)
                     })
-                    .disposed(by: self.disposeBag)
+                    .disposed(by: cell.disposeBag)
             }
             .disposed(by: disposeBag)
         
