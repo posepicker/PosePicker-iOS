@@ -150,7 +150,7 @@ final class PoseDetailViewModel {
         input.showMoreButtonTapEvent
             .subscribe(onNext: { [weak self] in
                 guard let self = self else { return }
-                self.coordinator?.presentShowMoreModal(poseId: self.bindViewModel.poseId.value)
+                self.coordinator?.presentReportView(poseId: self.bindViewModel.poseId.value)
             })
             .disposed(by: disposeBag)
         
