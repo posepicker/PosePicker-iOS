@@ -85,4 +85,16 @@ enum FrameCountTags: String {
         default: return nil
         }
     }
+    
+    static func getTagTitleFromNumberOfFrameCount(number: Int) -> String? {
+        switch number {
+        case 0: return "전체"
+        case 1: return "1컷"
+        case 3: return "3컷"
+        case 4: return "4컷"
+        case 6: return "6컷"
+        case 8: return "8컷+"
+        default: return nil
+        }
+    }
 }
