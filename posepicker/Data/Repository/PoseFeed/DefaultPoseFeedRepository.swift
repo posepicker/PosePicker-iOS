@@ -88,7 +88,6 @@ final class DefaultPoseFeedRepository: PoseFeedRepository {
         let viewModelObservable = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
         
         contents.forEach { pose in
-            if pose.poseInfo.source == "null" { return }
             ImageCache.default.retrieveImageInDiskCache(forKey: pose.poseInfo.imageKey) { result in
                 switch result {
                 case .success(let value):
@@ -135,6 +134,9 @@ final class DefaultPoseFeedRepository: PoseFeedRepository {
 
         newPoseFeed.enumerated().forEach { index, posepick in
             guard let poseId = posepick.poseInfo.poseId else { return }
+            if posepick.poseInfo.source == "null" {
+                posefeedIndicies.append(index)
+            }
             if allReportIds.contains(where: { reportId in
                 return reportId == "\(poseId)"
             }) {
