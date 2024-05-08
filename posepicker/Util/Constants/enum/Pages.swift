@@ -11,6 +11,7 @@ enum PageViewType: String, CaseIterable {
     case posepick
     case posetalk
     case posefeed
+    case mypose
     case bookmark
     case myPage
     
@@ -19,6 +20,7 @@ enum PageViewType: String, CaseIterable {
         case 0: self = .posepick
         case 1: self = .posetalk
         case 2: self = .posefeed
+        case 3: self = .mypose
         default: return nil
         }
     }
@@ -28,6 +30,7 @@ enum PageViewType: String, CaseIterable {
         case viewController as? PosePickViewController: self = .posepick
         case viewController as? PoseTalkViewController: self = .posetalk
         case viewController as? PoseFeedViewController: self = .posefeed
+        case viewController as? MyPoseViewController: self = .mypose
         default: return nil
         }
     }
@@ -40,6 +43,8 @@ enum PageViewType: String, CaseIterable {
             return "포즈톡"
         case .posefeed:
             return "포즈피드"
+        case .mypose:
+            return "마이포즈"
         case .bookmark:
             return "북마크"
         case .myPage:
@@ -55,10 +60,12 @@ enum PageViewType: String, CaseIterable {
             return 1
         case .posefeed:
             return 2
-        case .bookmark:
+        case .mypose:
             return 3
-        case .myPage:
+        case .bookmark:
             return 4
+        case .myPage:
+            return 5
         }
     }
 }
