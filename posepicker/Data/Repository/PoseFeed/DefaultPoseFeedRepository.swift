@@ -107,12 +107,14 @@ final class DefaultPoseFeedRepository: PoseFeedRepository {
                                     poseId: pose.poseInfo.poseId ?? 0,
                                     bookmarkCheck: pose.poseInfo.bookmarkCheck ?? false)
                                 viewModelObservable.accept(viewModelObservable.value + [viewModel])
-                            case .failure:
+                            case .failure(let error):
+                                print("error in first: ", error)
                                 return
                             }
                         }
                     }
                 case .failure:
+                    print("cache failed in second")
                     return
                 }
             }
