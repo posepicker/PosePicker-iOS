@@ -119,6 +119,9 @@
 		C95DD37A2B8711F4005ACE84 /* PoseUploadGuidelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95DD3792B8711F4005ACE84 /* PoseUploadGuidelineViewController.swift */; };
 		C9676BE82BAAAB79000A4114 /* PosePickUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9676BE72BAAAB79000A4114 /* PosePickUseCase.swift */; };
 		C9676BEC2BAAAC68000A4114 /* PoseInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9676BEB2BAAAC68000A4114 /* PoseInfo.swift */; };
+		C96C66C62BE1152600B1F486 /* DefaultMyPoseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66C52BE1152600B1F486 /* DefaultMyPoseCoordinator.swift */; };
+		C96C66C92BE1153600B1F486 /* MyPoseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66C82BE1153600B1F486 /* MyPoseCoordinator.swift */; };
+		C96C66CB2BE12A9500B1F486 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C96C66CA2BE12A9500B1F486 /* GoogleService-Info.plist */; };
 		C96C9A822BB5020400AC2921 /* UIPageViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A812BB5020300AC2921 /* UIPageViewController+Rx.swift */; };
 		C96C9A8C2BB5420800AC2921 /* DefaultCommonUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A8B2BB5420800AC2921 /* DefaultCommonUseCase.swift */; };
 		C96C9A8E2BB5425700AC2921 /* CommonUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A8D2BB5425700AC2921 /* CommonUseCase.swift */; };
@@ -149,7 +152,6 @@
 		C96C9B682BBD2ACB00AC2921 /* PoseFeedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B672BBD2ACB00AC2921 /* PoseFeedUseCase.swift */; };
 		C990AB1E2B5BF52600567AA3 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C990AB1D2B5BF52600567AA3 /* String+.swift */; };
 		C99A8A6E2B109AA60072B361 /* SmartlookAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A6D2B109AA60072B361 /* SmartlookAnalytics */; };
-		C99A8A702B10A4970072B361 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */; };
 		C99A8A732B10A54E0072B361 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A722B10A54E0072B361 /* FirebaseAnalytics */; };
 		C99A8A752B10A54E0072B361 /* FirebaseCrashlytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A742B10A54E0072B361 /* FirebaseCrashlytics */; };
 		C99D53B32B1EDA22007DEE9B /* BookmarkFeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C99D53B22B1EDA22007DEE9B /* BookmarkFeedCell.swift */; };
@@ -353,6 +355,9 @@
 		C95DD3792B8711F4005ACE84 /* PoseUploadGuidelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadGuidelineViewController.swift; sourceTree = "<group>"; };
 		C9676BE72BAAAB79000A4114 /* PosePickUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickUseCase.swift; sourceTree = "<group>"; };
 		C9676BEB2BAAAC68000A4114 /* PoseInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseInfo.swift; sourceTree = "<group>"; };
+		C96C66C52BE1152600B1F486 /* DefaultMyPoseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMyPoseCoordinator.swift; sourceTree = "<group>"; };
+		C96C66C82BE1153600B1F486 /* MyPoseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseCoordinator.swift; sourceTree = "<group>"; };
+		C96C66CA2BE12A9500B1F486 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C96C9A812BB5020300AC2921 /* UIPageViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPageViewController+Rx.swift"; sourceTree = "<group>"; };
 		C96C9A852BB5416400AC2921 /* CommonViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViewModelTest.swift; sourceTree = "<group>"; };
 		C96C9A8B2BB5420800AC2921 /* DefaultCommonUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCommonUseCase.swift; sourceTree = "<group>"; };
@@ -380,7 +385,6 @@
 		C96C9B652BBD2AC400AC2921 /* DefaultPoseFeedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPoseFeedUseCase.swift; sourceTree = "<group>"; };
 		C96C9B672BBD2ACB00AC2921 /* PoseFeedUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedUseCase.swift; sourceTree = "<group>"; };
 		C990AB1D2B5BF52600567AA3 /* String+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "String+.swift"; sourceTree = "<group>"; };
-		C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C99D53B22B1EDA22007DEE9B /* BookmarkFeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFeedCell.swift; sourceTree = "<group>"; };
 		C99D53B42B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkFeedCellViewModel.swift; sourceTree = "<group>"; };
 		C99D53B62B1EDCB8007DEE9B /* BookmarkEmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkEmptyView.swift; sourceTree = "<group>"; };
@@ -1132,6 +1136,55 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
+		C96C66C02BE1140D00B1F486 /* MyPoseScene */ = {
+			isa = PBXGroup;
+			children = (
+				C96C66C12BE1142200B1F486 /* Coordinator */,
+				C96C66C22BE1142600B1F486 /* View */,
+				C96C66C32BE1142A00B1F486 /* ViewController */,
+				C96C66C42BE1142F00B1F486 /* ViewModel */,
+			);
+			path = MyPoseScene;
+			sourceTree = "<group>";
+		};
+		C96C66C12BE1142200B1F486 /* Coordinator */ = {
+			isa = PBXGroup;
+			children = (
+				C96C66C52BE1152600B1F486 /* DefaultMyPoseCoordinator.swift */,
+				C96C66C72BE1152900B1F486 /* Protocol */,
+			);
+			path = Coordinator;
+			sourceTree = "<group>";
+		};
+		C96C66C22BE1142600B1F486 /* View */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		C96C66C32BE1142A00B1F486 /* ViewController */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewController;
+			sourceTree = "<group>";
+		};
+		C96C66C42BE1142F00B1F486 /* ViewModel */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = ViewModel;
+			sourceTree = "<group>";
+		};
+		C96C66C72BE1152900B1F486 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				C96C66C82BE1153600B1F486 /* MyPoseCoordinator.swift */,
+			);
+			path = Protocol;
+			sourceTree = "<group>";
+		};
 		C96C9A802BB501EA00AC2921 /* UIPageViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1673,6 +1726,7 @@
 				C93851132BB3E14F00E597C1 /* PosePickScene */,
 				C94FD27B2AE3950C003777EB /* PoseTalkScene */,
 				C93851142BB3E16500E597C1 /* PoseFeedScene */,
+				C96C66C02BE1140D00B1F486 /* MyPoseScene */,
 				C9AF36A32BC3B9A900629B63 /* MyPageScene */,
 				C9AF36BC2BC3DF5C00629B63 /* BookmarkScene */,
 				C9FD21052BC6C64200C23E25 /* PoseUploadScene */,
@@ -1688,7 +1742,7 @@
 				C9C8905A2AE103A30010240A /* Assets.xcassets */,
 				C9C890BE2AE1107B0010240A /* ImageLiteral.swift */,
 				C9C8905F2AE103A30010240A /* Info.plist */,
-				C99A8A6F2B10A4970072B361 /* GoogleService-Info.plist */,
+				C96C66CA2BE12A9500B1F486 /* GoogleService-Info.plist */,
 				C91C53252BCCFBF300C5C28F /* PrivacyInfo.xcprivacy */,
 			);
 			path = Resources;
@@ -2213,7 +2267,6 @@
 				C94FD2A22AE3B282003777EB /* Pretendard-ExtraBold.otf in Resources */,
 				C94FD2A32AE3B282003777EB /* Pretendard-ExtraLight.otf in Resources */,
 				C94FD2A42AE3B282003777EB /* Pretendard-Light.otf in Resources */,
-				C99A8A702B10A4970072B361 /* GoogleService-Info.plist in Resources */,
 				C94FD2A52AE3B282003777EB /* Pretendard-Medium.otf in Resources */,
 				C94FD2A62AE3B282003777EB /* Pretendard-Regular.otf in Resources */,
 				C91C53262BCCFFE400C5C28F /* PrivacyInfo.xcprivacy in Resources */,
@@ -2222,6 +2275,7 @@
 				C94FD2A82AE3B282003777EB /* Pretendard-Thin.otf in Resources */,
 				C9C8905E2AE103A30010240A /* LaunchScreen.storyboard in Resources */,
 				C9C8905B2AE103A30010240A /* Assets.xcassets in Resources */,
+				C96C66CB2BE12A9500B1F486 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -2320,6 +2374,7 @@
 				C938512C2BB41CE300E597C1 /* DefaultPoseFeedCoordinator.swift in Sources */,
 				C916730E2B5E526D0092661B /* ImagePopUpViewController.swift in Sources */,
 				C94FD2772AE38E82003777EB /* DefaultAppCoordinator.swift in Sources */,
+				C96C66C62BE1152600B1F486 /* DefaultMyPoseCoordinator.swift in Sources */,
 				C9FD21282BC7C76C00C23E25 /* DefaultPoseUploadRepository.swift in Sources */,
 				C9AF36A92BC3BA5100629B63 /* MyPageViewModel.swift in Sources */,
 				C9FD20FD2BC53E0300C23E25 /* CoordinatorBookmarkBindingDelegate.swift in Sources */,
@@ -2398,6 +2453,7 @@
 				C96C9A922BB5727900AC2921 /* KeychainService.swift in Sources */,
 				C9DEE3FB2BBD323200C9C495 /* DefaultPoseFeedRepository.swift in Sources */,
 				C9FD212F2BC8F6EE00C23E25 /* ReportViewModel.swift in Sources */,
+				C96C66C92BE1153600B1F486 /* MyPoseCoordinator.swift in Sources */,
 				880E75562AE6C2F7007FAD5A /* NetworkInterceptor.swift in Sources */,
 				88EA81F12AF69BD700020DEA /* PoseFeed.swift in Sources */,
 				C9C4D2022B8F6A5D00FF9363 /* PoseUploadImageDetailViewController.swift in Sources */,
