@@ -58,7 +58,8 @@ final class PoseFeedViewModelTests: XCTestCase {
             posefeedPhotoCellTapEvent: .empty(),
             dismissPoseDetailEvent: .empty(),
             bookmarkBindingEvent: .empty(),
-            poseUploadButtonTapEvent: .empty()
+            poseUploadButtonTapEvent: .empty(),
+            refreshEvent: .empty()
         )
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
         
@@ -143,7 +144,8 @@ final class PoseFeedViewModelTests: XCTestCase {
             posefeedPhotoCellTapEvent: .empty(),
             dismissPoseDetailEvent: .empty(),
             bookmarkBindingEvent: .empty(),
-            poseUploadButtonTapEvent: .empty()
+            poseUploadButtonTapEvent: .empty(),
+            refreshEvent: .empty()
         )
         
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
@@ -189,7 +191,8 @@ final class PoseFeedViewModelTests: XCTestCase {
             posefeedPhotoCellTapEvent: .empty(),
             dismissPoseDetailEvent: .empty(),
             bookmarkBindingEvent: .empty(),
-            poseUploadButtonTapEvent: .empty()
+            poseUploadButtonTapEvent: .empty(),
+            refreshEvent: .empty()
         )
         
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
