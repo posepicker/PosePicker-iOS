@@ -128,6 +128,9 @@
 		C96C66D82BEB40EA00B1F486 /* DefaultMyPoseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66D72BEB40EA00B1F486 /* DefaultMyPoseUseCase.swift */; };
 		C96C66DB2BEB413F00B1F486 /* MyPoseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66DA2BEB413F00B1F486 /* MyPoseRepository.swift */; };
 		C96C66DD2BEB414C00B1F486 /* DefaultMyPoseRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66DC2BEB414C00B1F486 /* DefaultMyPoseRepository.swift */; };
+		C96C66DF2BEB516600B1F486 /* PoseCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66DE2BEB516600B1F486 /* PoseCount.swift */; };
+		C96C66E32BEB57F400B1F486 /* MockMyPoseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66E22BEB57F400B1F486 /* MockMyPoseUseCase.swift */; };
+		C96C66E52BEB583E00B1F486 /* MyPoseViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66E42BEB583E00B1F486 /* MyPoseViewModelTests.swift */; };
 		C96C9A822BB5020400AC2921 /* UIPageViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A812BB5020300AC2921 /* UIPageViewController+Rx.swift */; };
 		C96C9A8C2BB5420800AC2921 /* DefaultCommonUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A8B2BB5420800AC2921 /* DefaultCommonUseCase.swift */; };
 		C96C9A8E2BB5425700AC2921 /* CommonUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A8D2BB5425700AC2921 /* CommonUseCase.swift */; };
@@ -370,6 +373,9 @@
 		C96C66D72BEB40EA00B1F486 /* DefaultMyPoseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMyPoseUseCase.swift; sourceTree = "<group>"; };
 		C96C66DA2BEB413F00B1F486 /* MyPoseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseRepository.swift; sourceTree = "<group>"; };
 		C96C66DC2BEB414C00B1F486 /* DefaultMyPoseRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMyPoseRepository.swift; sourceTree = "<group>"; };
+		C96C66DE2BEB516600B1F486 /* PoseCount.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseCount.swift; sourceTree = "<group>"; };
+		C96C66E22BEB57F400B1F486 /* MockMyPoseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMyPoseUseCase.swift; sourceTree = "<group>"; };
+		C96C66E42BEB583E00B1F486 /* MyPoseViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseViewModelTests.swift; sourceTree = "<group>"; };
 		C96C9A812BB5020300AC2921 /* UIPageViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPageViewController+Rx.swift"; sourceTree = "<group>"; };
 		C96C9A852BB5416400AC2921 /* CommonViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViewModelTest.swift; sourceTree = "<group>"; };
 		C96C9A8B2BB5420800AC2921 /* DefaultCommonUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCommonUseCase.swift; sourceTree = "<group>"; };
@@ -629,6 +635,7 @@
 				C903E53F2AFCC46E00BD004F /* FilteredPose.swift */,
 				C9FDBDF12B288F580045AA54 /* BookmarkResponse.swift */,
 				C9676BEB2BAAAC68000A4114 /* PoseInfo.swift */,
+				C96C66DE2BEB516600B1F486 /* PoseCount.swift */,
 			);
 			path = Pose;
 			sourceTree = "<group>";
@@ -1235,6 +1242,23 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
+		C96C66E02BEB57D000B1F486 /* MyPoseScene */ = {
+			isa = PBXGroup;
+			children = (
+				C96C66E12BEB57E700B1F486 /* Mock */,
+				C96C66E42BEB583E00B1F486 /* MyPoseViewModelTests.swift */,
+			);
+			path = MyPoseScene;
+			sourceTree = "<group>";
+		};
+		C96C66E12BEB57E700B1F486 /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				C96C66E22BEB57F400B1F486 /* MockMyPoseUseCase.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
 		C96C9A802BB501EA00AC2921 /* UIPageViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1346,6 +1370,7 @@
 				C96C9A842BB5415300AC2921 /* Common */,
 				C96C9AFC2BBA3A2400AC2921 /* PosePickScene */,
 				C9DEE4052BBE94AE00C9C495 /* PoseFeedScene */,
+				C96C66E02BEB57D000B1F486 /* MyPoseScene */,
 			);
 			path = PosePickerViewModelTests;
 			sourceTree = "<group>";
@@ -2364,6 +2389,8 @@
 				C9DEE4192BBFDFB200C9C495 /* PoseFeedFilterViewModelTests.swift in Sources */,
 				C96C9B5C2BBCDE7A00AC2921 /* MockPageViewCoordinator.swift in Sources */,
 				C9DEE4082BBE94C500C9C495 /* MockPoseFeedUseCase.swift in Sources */,
+				C96C66E32BEB57F400B1F486 /* MockMyPoseUseCase.swift in Sources */,
+				C96C66E52BEB583E00B1F486 /* MyPoseViewModelTests.swift in Sources */,
 				C9DEE40A2BBE97DC00C9C495 /* PoseFeedViewModelTests.swift in Sources */,
 				C96C9AFB2BBA3A1800AC2921 /* MockPosePickUseCase.swift in Sources */,
 				C96C9B5A2BBCD87F00AC2921 /* MockCommonUseCase.swift in Sources */,
@@ -2539,6 +2566,7 @@
 				C9D0C4032B9C4BFC004A3940 /* SecureField.swift in Sources */,
 				880E75492AE6BFE3007FAD5A /* NetworkEventLogger.swift in Sources */,
 				880E75522AE6C275007FAD5A /* Data+.swift in Sources */,
+				C96C66DF2BEB516600B1F486 /* PoseCount.swift in Sources */,
 				C96C9A9A2BB5C52500AC2921 /* DefaultPosePickRepository.swift in Sources */,
 				C9D0C4082BA4172C004A3940 /* UserRevokeViewController.swift in Sources */,
 				C91A266B2B88524200F1193E /* PoseUploadTagViewController.swift in Sources */,
