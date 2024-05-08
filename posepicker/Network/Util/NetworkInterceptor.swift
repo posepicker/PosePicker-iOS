@@ -22,6 +22,7 @@ class APIInterceptor: RequestInterceptor {
            let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.refreshToken) {
             
             if url.absoluteString.contains("/api/pose") || url.absoluteString.contains("/api/pose/all") || url.absoluteString.contains("/api/bookmark") ||
+                url.absoluteString.contains("/api/pose/mypose") ||
                 (url.absoluteString.contains("/api/pose/") && urlRequest.method == .post) {
                 var urlRequest = urlRequest
                 urlRequest.headers.add(.authorization(bearerToken: accessToken))
