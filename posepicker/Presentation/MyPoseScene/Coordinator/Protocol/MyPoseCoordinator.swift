@@ -7,6 +7,6 @@
 
 import Foundation
 
-protocol MyPoseCoordinator {
+protocol MyPoseCoordinator: Coordinator {
     
 }
