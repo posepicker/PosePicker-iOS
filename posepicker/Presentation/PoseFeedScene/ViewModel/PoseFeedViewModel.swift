@@ -31,6 +31,7 @@ final class PoseFeedViewModel {
         let dismissPoseDetailEvent: Observable<RegisteredFilterCellViewModel>
         let bookmarkBindingEvent: Observable<Int>
         let poseUploadButtonTapEvent: Observable<Void>
+        let refreshEvent: Observable<Void>
     }
     
     struct Output {
@@ -43,6 +44,7 @@ final class PoseFeedViewModel {
         let registeredTagItems = BehaviorRelay<[RegisteredFilterCellViewModel]>(value: [])
         let refreshEvent = PublishSubject<Void>()
         let loginCompleted = PublishSubject<Void>()
+        let refreshEnded = PublishSubject<Void>()
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -101,6 +103,7 @@ final class PoseFeedViewModel {
             .contentLoaded
             .subscribe(onNext: {
                 output.isLoading.accept(false)
+                output.refreshEnded.onNext(())
             })
             .disposed(by: disposeBag)
         
@@ -191,6 +194,7 @@ final class PoseFeedViewModel {
                         apiRequestParams.remove(at: index)
                     }
                 }
+//                currentPage.accept(0)
                 apiRequestParameters.accept(apiRequestParams)
                 var registeredTags = output.registeredTagItems.value
                 registeredTags.removeAll(where: {
@@ -304,6 +308,17 @@ final class PoseFeedViewModel {
                         })
                         .disposed(by: disposeBag)
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        input.refreshEvent
+            .subscribe(onNext: { [weak self] in
+                self?.posefeedUseCase.fetchFeedContents(
+                    peopleCount: apiRequestParameters.value[0],
+                    frameCount: apiRequestParameters.value[1],
+                    filterTags: apiRequestParameters.value[2...].map { String($0) },
+                    pageNumber: 0
+                )
             })
             .disposed(by: disposeBag)
         
