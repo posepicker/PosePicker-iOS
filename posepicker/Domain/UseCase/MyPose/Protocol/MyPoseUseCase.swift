@@ -6,7 +6,11 @@
 //
 
 import Foundation
+import RxSwift
 
 protocol MyPoseUseCase {
+    var uploadedPoseCount: PublishSubject<String> { get set }
+    var savedPoseCount: PublishSubject<String> { get set }
     
+    func fetchPoseCount()
 }
