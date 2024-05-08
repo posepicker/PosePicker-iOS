@@ -19,7 +19,7 @@ class CommonViewController: BaseViewController {
             $0.backgroundColor = .bgDivider
         }
     
-    lazy var segmentControl = UnderlineSegmentControl(items: ["포즈픽", "포즈톡", "포즈피드"])
+    lazy var segmentControl = UnderlineSegmentControl(items: ["포즈픽", "포즈톡", "포즈피드", "마이포즈"])
         .then {
             $0.apportionsSegmentWidthsByContent = true
             $0.selectedSegmentTintColor = .mainViolet
