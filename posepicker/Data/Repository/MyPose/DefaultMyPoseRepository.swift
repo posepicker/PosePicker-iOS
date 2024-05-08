@@ -6,11 +6,18 @@
 //
 
 import Foundation
+import RxSwift
 
 final class DefaultMyPoseRepository: MyPoseRepository {
     let networkService: NetworkService
     
     init(networkService: NetworkService) {
         self.networkService = networkService
+    }
+    
+    func fetchPoseCount() -> Observable<PoseCount> {
+        networkService
+            .requestSingle(.retrievePoseCount)
+            .asObservable()
     }
 }
