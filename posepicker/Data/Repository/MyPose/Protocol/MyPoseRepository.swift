@@ -6,7 +6,8 @@
 //
 
 import Foundation
+import RxSwift
 
 protocol MyPoseRepository {
-    
+    func fetchPoseCount() -> Observable<PoseCount>
 }
