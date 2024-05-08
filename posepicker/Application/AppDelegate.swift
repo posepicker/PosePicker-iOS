@@ -41,11 +41,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         }
         
         /// SmartLook 셋업
-//        if let smartlookProjectKey = Bundle.main.object(forInfoDictionaryKey: "SMARTLOOK_PROJECT_KEY") as? String {
-//            Smartlook.instance.preferences.projectKey = smartlookProjectKey
-//            Smartlook.instance.start()
-//        }
-        
+        if let smartlookProjectKey = Bundle.main.object(forInfoDictionaryKey: "SMARTLOOK_PROJECT_KEY") as? String {
+            Smartlook.instance.preferences.projectKey = smartlookProjectKey
+            Smartlook.instance.start()
+        }
+//        
 //        if let smartlookProjectKey = ProcessInfo.processInfo.environment["SMARTLOOK_PROJECT_KEY"] {
 //            Smartlook.instance.preferences.projectKey = smartlookProjectKey
 //            Smartlook.instance.start()
@@ -62,7 +62,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navigationController.isNavigationBarHidden = true
         
         window.rootViewController = navigationController
-        window.makeKeyAndVisible()
         
         window.makeKeyAndVisible()
         
