@@ -44,7 +44,7 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
     /// 2. createPageViewNavigationController 메서드 호출 -> pageViewController 서브뷰 배열 리턴
     ///     2-1. PageViewType에 맞게 UINavigationController에 뷰 푸시 & start
     func start() {
-        let pages: [PageViewType] = [.posepick, .posetalk, .posefeed]
+        let pages: [PageViewType] = [.posepick, .posetalk, .posefeed, .mypose]
         controllers = pages.map({
             self.createPageViewNavigationController(of: $0)
         })
@@ -155,6 +155,10 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
             posefeedCoordinator.loginDelegate = self
             self.childCoordinators.append(posefeedCoordinator)
             posefeedCoordinator.start()
+        case .mypose:
+            let myPoseCoordinator = DefaultMyPoseCoordinator(pageviewNavigationController)
+            self.childCoordinators.append(myPoseCoordinator)
+            myPoseCoordinator.start()
         default:
             break
         }
