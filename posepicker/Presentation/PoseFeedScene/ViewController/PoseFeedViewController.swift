@@ -54,8 +54,14 @@ class PoseFeedViewController: BaseViewController {
         cv.register(PoseFeedHeader.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedHeader.identifier)
         cv.register(PoseFeedEmptyView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedEmptyView.identifier)
         cv.rx.setDelegate(self).disposed(by: disposeBag)
+        cv.alwaysBounceVertical = true
         return cv
     }()
+    
+    let refreshControl = UIRefreshControl()
+        .then {
+            $0.tintColor = .mainViolet
+        }
     
     lazy var pinterestLayout = PinterestLayout()
         .then {
@@ -181,10 +187,11 @@ class PoseFeedViewController: BaseViewController {
     }
     
     override func configUI() {
-        // 상단 바에 위치한 북마크에 대한 인증처리
-        
         self.navigationController?.isNavigationBarHidden = true
         view.backgroundColor = .bgWhite
+        
+        // 컬렉션뷰
+        self.poseFeedCollectionView.refreshControl = refreshControl
         
         poseUploadButton.makeShadow(alpha: 0.5, x: -4, y: -4, blur: 6.8, spread: 0)
         
@@ -212,7 +219,8 @@ class PoseFeedViewController: BaseViewController {
             posefeedPhotoCellTapEvent: poseFeedCollectionView.rx.modelSelected(PoseFeedPhotoCellViewModel.self).asObservable(),
             dismissPoseDetailEvent: dismissPoseDetailEvent,
             bookmarkBindingEvent: bookmarkBindingEvent,
-            poseUploadButtonTapEvent: poseUploadButton.rx.tap.asObservable()
+            poseUploadButtonTapEvent: poseUploadButton.rx.tap.asObservable(),
+            refreshEvent: refreshControl.rx.controlEvent(.valueChanged).asObservable()
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
@@ -388,6 +396,13 @@ private extension PoseFeedViewController {
                     }
                 }
                 
+            })
+            .disposed(by: disposeBag)
+        
+        output.refreshEnded
+            .asDriver(onErrorJustReturn: ())
+            .drive(onNext: { [weak self] in
+                self?.refreshControl.endRefreshing()
             })
             .disposed(by: disposeBag)
     }
