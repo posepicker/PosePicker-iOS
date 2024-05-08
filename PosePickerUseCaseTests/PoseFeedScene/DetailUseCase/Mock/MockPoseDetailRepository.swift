@@ -28,7 +28,7 @@ final class MockPoseDetailRepository: PoseDetailRepository {
                 nickname: "gangjuninggg",
                 email: "rudwns3927@gmail.com",
                 loginType: "kakao",
-                iosId: 10
+                iosId: "10"
             )
         )
     )
