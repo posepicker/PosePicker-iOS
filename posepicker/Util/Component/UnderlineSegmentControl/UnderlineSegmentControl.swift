@@ -34,8 +34,13 @@ class UnderlineSegmentControl: UISegmentedControl {
         return thirdSegmentTitle.width(withConstrainedHeight: 24, font: .pretendard(.medium, ofSize: 16))
     }
     
+    private var fourthSegmentWidth: CGFloat {
+        guard let thirdSegmentTitle = titleForSegment(at: 3) else { return 0.0}
+        return thirdSegmentTitle.width(withConstrainedHeight: 24, font: .pretendard(.medium, ofSize: 16))
+    }
+    
     private var perSegmentwidth: CGFloat {
-        return ((self.bounds.width - (self.firstSegmentWidth + self.secondSegmentWidth + self.thirdSegmentWidth)) / 6) // 텍스트가 가운데 정렬 & 세그먼트당 두조각 가짐
+        return ((self.bounds.width - (self.firstSegmentWidth + self.secondSegmentWidth + self.thirdSegmentWidth + self.fourthSegmentWidth)) / 8) // 텍스트가 가운데 정렬 & 세그먼트당 두조각 가짐
     }
     
     // MARK: - Initialization
@@ -101,6 +106,8 @@ class UnderlineSegmentControl: UISegmentedControl {
             underlineFinalXPosition += self.firstSegmentWidth
         case 2:
             underlineFinalXPosition += self.secondSegmentWidth + self.firstSegmentWidth
+        case 3:
+            underlineFinalXPosition += self.firstSegmentWidth + self.secondSegmentWidth + self.thirdSegmentWidth
         default:
             break
         }
@@ -125,6 +132,8 @@ class UnderlineSegmentControl: UISegmentedControl {
             width = self.secondSegmentWidth
         case 2:
             width = self.thirdSegmentWidth
+        case 3:
+            width = self.fourthSegmentWidth
         default:
             break
         }
