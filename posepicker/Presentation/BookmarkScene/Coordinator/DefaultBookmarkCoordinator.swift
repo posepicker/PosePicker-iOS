@@ -37,7 +37,7 @@ final class DefaultBookmarkCoordinator: BookmarkCoordinator {
     func presentBookmarkDetail(viewModel: BookmarkFeedCellViewModel) {
         let bookmarkDetailViewController = BookmarkDetailViewController()
         bookmarkDetailViewController.viewModel = BookmarkDetailViewModel(
-            coordinator: self,
+            coordinator: nil,
             poseDetailUseCase: DefaultPoseDetailUseCase(
                 poseDetailRepository: DefaultPoseDetailRepository(
                     networkService: DefaultNetworkService()
