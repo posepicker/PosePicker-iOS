@@ -5,7 +5,7 @@
 //  Created by 박경준 on 5/8/24.
 //
 
-import Foundation
+import UIKit
 import RxSwift
 import RxRelay
 
@@ -52,5 +52,15 @@ final class MyPoseViewModel {
             .disposed(by: disposeBag)
         
         return output
+    }
+    
+    /// UIPageViewController DataSource - viewControllerBefore
+    func viewControllerBefore() -> UIViewController? {
+        return self.coordinator?.viewControllerBefore()
+    }
+    
+    /// UIPageViewController DataSource -> viewControllerAfter
+    func viewControllerAfter() -> UIViewController? {
+        return self.coordinator?.viewControllerAfter()
     }
 }
