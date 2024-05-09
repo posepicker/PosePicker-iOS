@@ -9,6 +9,7 @@ import UIKit
 
 protocol MyPoseCoordinator: Coordinator {
     var bookmarkBindingDelegate: CoordinatorBookmarkBindingDelegate? { get set }
+    var pageMoveDelegate: CoordinatorPageMoveDelegate? { get set }
     func presentBookmarkDetail(viewModel: BookmarkFeedCellViewModel)
     func presentClipboardCompleted(poseId: Int)
     func moveToExternalApp(url: URL)
