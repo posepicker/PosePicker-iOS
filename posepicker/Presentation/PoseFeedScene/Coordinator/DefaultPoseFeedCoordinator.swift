@@ -194,11 +194,15 @@ extension DefaultPoseFeedCoordinator: CoordinatorBookmarkBindingDelegate {
     func coordinatorBookmarkModified(childCoordinator: any Coordinator, poseId: Int) {
         if childCoordinator.type == .bookmark {
             posefeedViewController.bookmarkBindingEvent.onNext(poseId)
+        } else if childCoordinator.type == .mypose {
+            posefeedViewController.bookmarkBindingEvent.onNext(poseId)
         }
     }
     
     func coordinatorBookmarkSetAndDismissed(childCoordinator: any Coordinator, tag: String) {
         if childCoordinator.type == .bookmark {
+            posefeedViewController.dismissPoseDetailEvent.onNext(RegisteredFilterCellViewModel(title: tag))
+        } else if childCoordinator.type == .mypose {
             posefeedViewController.dismissPoseDetailEvent.onNext(RegisteredFilterCellViewModel(title: tag))
         }
     }
