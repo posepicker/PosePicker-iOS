@@ -50,6 +50,9 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
         })
         self.configurePageViewController(with: controllers)
         self.setToolTipUI()
+        
+        // 뷰 강제 로드시키기
+        self.setSelectedIndex(2)
     }
     
     func setSelectedIndex(_ index: Int) {
@@ -157,6 +160,10 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
             posefeedCoordinator.start()
         case .mypose:
             let myPoseCoordinator = DefaultMyPoseCoordinator(pageviewNavigationController)
+            myPoseCoordinator.pageMoveDelegate = self
+            if let posefeedCoordinator = self.findCoordinator(type: .posefeed) as? DefaultPoseFeedCoordinator {
+                myPoseCoordinator.bookmarkBindingDelegate = posefeedCoordinator
+            }
             self.childCoordinators.append(myPoseCoordinator)
             myPoseCoordinator.start()
             
@@ -233,5 +240,26 @@ extension DefaultPageViewCoordinator: CoordinatorTooltipDelegate {
     
     func coordinatorHideTooltip(childCoordinator: any Coordinator) {
         tooltip.isHidden = true
+    }
+}
+
+extension DefaultPageViewCoordinator: CoordinatorPageMoveDelegate {
+    func coordinatorMoveTo(pageType: PageViewType) {
+        switch pageType {
+        case .posepick:
+            setSelectedIndex(0)
+            self.commonViewController.segmentControl.rx.value.onNext(0)
+        case .posetalk:
+            setSelectedIndex(1)
+            self.commonViewController.segmentControl.rx.value.onNext(1)
+        case .posefeed:
+            setSelectedIndex(2)
+            self.commonViewController.segmentControl.rx.value.onNext(2)
+        case .mypose:
+            setSelectedIndex(3)
+            self.commonViewController.segmentControl.rx.value.onNext(3)
+        default:
+            break
+        }
     }
 }
