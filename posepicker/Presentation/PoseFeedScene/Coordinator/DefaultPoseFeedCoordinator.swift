@@ -12,6 +12,7 @@ import RxRelay
 final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
     weak var finishDelegate: CoordinatorFinishDelegate?
     weak var loginDelegate: CoordinatorLoginDelegate?
+    weak var bookmarkContentsUpdatedDelegate: CoordinatorBookmarkContentsUpdateDelegate?
     
     var navigationController: UINavigationController
     var posefeedViewController: PoseFeedViewController
