@@ -12,12 +12,6 @@ final class MyPoseViewController: BaseViewController {
     
     // MARK: - Subviews
     
-//    lazy var segmentControl = UnderlineSegmentControl(items: ["포즈픽", "포즈톡", "포즈피드", "마이포즈"])
-//        .then {
-//            $0.apportionsSegmentWidthsByContent = true
-//            $0.selectedSegmentTintColor = .mainViolet
-//            $0.selectedSegmentIndex = 0
-//        }
     let segmentControl = UISegmentedControl(items: ["등록 0", "저장 0"])
         .then {
             $0.setTitleTextAttributes([
@@ -33,10 +27,23 @@ final class MyPoseViewController: BaseViewController {
             $0.selectedSegmentIndex = 0
         }
     
+    let pageViewController: UIPageViewController
+    
     // MARK: - Properties
     var viewModel: MyPoseViewModel?
     
     private let viewDidLoadEvent = PublishSubject<Void>()
+    private let pageviewControllerDidFinishEvent = PublishSubject<Void>()
+    
+    // MARK: - Initialization
+    init(pageViewController: UIPageViewController) {
+        self.pageViewController = pageViewController
+        super.init()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     // MARK: - Life Cycles
     override func viewDidLoad() {
@@ -52,12 +59,17 @@ final class MyPoseViewController: BaseViewController {
     }
     
     override func render() {
-        view.addSubViews([segmentControl])
+        view.addSubViews([segmentControl, pageViewController.view])
         
         segmentControl.snp.makeConstraints { make in
             make.height.equalTo(48)
             make.leading.trailing.equalToSuperview().inset(16)
             make.top.equalTo(12)
+        }
+        
+        pageViewController.view.snp.makeConstraints { make in
+            make.leading.trailing.bottom.equalToSuperview()
+            make.top.equalTo(segmentControl.snp.bottom).offset(12)
         }
     }
     
@@ -85,5 +97,21 @@ private extension MyPoseViewController {
                 self?.segmentControl.setTitle($0, forSegmentAt: 1)
             })
             .disposed(by: disposeBag)
+    }
+}
+
+extension MyPoseViewController: UIPageViewControllerDelegate {
+    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
+        self.pageviewControllerDidFinishEvent.onNext(())
+    }
+}
+
+extension MyPoseViewController: UIPageViewControllerDataSource {
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
+        return viewModel?.viewControllerBefore()
+    }
+    
+    func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
+        return viewModel?.viewControllerAfter()
     }
 }
