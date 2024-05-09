@@ -45,11 +45,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             Smartlook.instance.preferences.projectKey = smartlookProjectKey
             Smartlook.instance.start()
         }
-//        
-//        if let smartlookProjectKey = ProcessInfo.processInfo.environment["SMARTLOOK_PROJECT_KEY"] {
-//            Smartlook.instance.preferences.projectKey = smartlookProjectKey
-//            Smartlook.instance.start()
-//        }
         
         /// Firebase 셋업
         FirebaseApp.configure()
