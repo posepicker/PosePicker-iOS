@@ -10,6 +10,7 @@ import UIKit
 final class DefaultMyPoseCoordinator: MyPoseCoordinator {
     var finishDelegate: CoordinatorFinishDelegate?
     var bookmarkBindingDelegate: CoordinatorBookmarkBindingDelegate?
+    var pageMoveDelegate: CoordinatorPageMoveDelegate?
     
     var navigationController: UINavigationController
     var myPoseViewController: MyPoseViewController
@@ -51,7 +52,7 @@ final class DefaultMyPoseCoordinator: MyPoseCoordinator {
     func presentBookmarkDetail(viewModel: BookmarkFeedCellViewModel) {
         let bookmarkDetailViewController = BookmarkDetailViewController()
         bookmarkDetailViewController.viewModel = BookmarkDetailViewModel(
-            coordinator: nil,
+            coordinator: self,
             poseDetailUseCase: DefaultPoseDetailUseCase(
                 poseDetailRepository: DefaultPoseDetailRepository(
                     networkService: DefaultNetworkService()
@@ -64,15 +65,25 @@ final class DefaultMyPoseCoordinator: MyPoseCoordinator {
     }
     
     func presentClipboardCompleted(poseId: Int) {
-        
+        let popupVC = PopUpViewController(isLoginPopUp: false, isChoice: false)
+        popupVC.modalTransitionStyle = .crossDissolve
+        popupVC.modalPresentationStyle = .overFullScreen
+        let popupView = popupVC.popUpView as! PopUpView
+        popupView.alertText.accept("링크가 복사되었습니다.")
+        self.pageViewController.presentedViewController?.present(popupVC, animated: true)
     }
     
     func moveToExternalApp(url: URL) {
-        
+        UIApplication.shared.open(url)
     }
     
     func dismissPoseDetail(tag: String) {
-        
+        self.pageViewController.dismiss(animated: true)
+        bookmarkBindingDelegate?.coordinatorBookmarkSetAndDismissed(
+            childCoordinator: self,
+            tag: tag
+        )
+        pageMoveDelegate?.coordinatorMoveTo(pageType: .posefeed)
     }
     
     func viewControllerBefore() -> UIViewController? {
