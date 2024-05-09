@@ -137,6 +137,7 @@
 		C96C66F12BEB9B7300B1F486 /* MyPoseUploadedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66F02BEB9B7300B1F486 /* MyPoseUploadedViewModel.swift */; };
 		C96C66F32BEB9B7A00B1F486 /* MyPoseSavedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66F22BEB9B7A00B1F486 /* MyPoseSavedViewModel.swift */; };
 		C96C66F62BEC50A000B1F486 /* CoordinatorBookmarkContentsUpdateDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66F52BEC50A000B1F486 /* CoordinatorBookmarkContentsUpdateDelegate.swift */; };
+		C96C66F82BECB04700B1F486 /* CoordinatorPageMoveDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66F72BECB04700B1F486 /* CoordinatorPageMoveDelegate.swift */; };
 		C96C9A822BB5020400AC2921 /* UIPageViewController+Rx.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A812BB5020300AC2921 /* UIPageViewController+Rx.swift */; };
 		C96C9A8C2BB5420800AC2921 /* DefaultCommonUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A8B2BB5420800AC2921 /* DefaultCommonUseCase.swift */; };
 		C96C9A8E2BB5425700AC2921 /* CommonUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9A8D2BB5425700AC2921 /* CommonUseCase.swift */; };
@@ -388,6 +389,7 @@
 		C96C66F02BEB9B7300B1F486 /* MyPoseUploadedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseUploadedViewModel.swift; sourceTree = "<group>"; };
 		C96C66F22BEB9B7A00B1F486 /* MyPoseSavedViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseSavedViewModel.swift; sourceTree = "<group>"; };
 		C96C66F52BEC50A000B1F486 /* CoordinatorBookmarkContentsUpdateDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorBookmarkContentsUpdateDelegate.swift; sourceTree = "<group>"; };
+		C96C66F72BECB04700B1F486 /* CoordinatorPageMoveDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorPageMoveDelegate.swift; sourceTree = "<group>"; };
 		C96C9A812BB5020300AC2921 /* UIPageViewController+Rx.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPageViewController+Rx.swift"; sourceTree = "<group>"; };
 		C96C9A852BB5416400AC2921 /* CommonViewModelTest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CommonViewModelTest.swift; sourceTree = "<group>"; };
 		C96C9A8B2BB5420800AC2921 /* DefaultCommonUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultCommonUseCase.swift; sourceTree = "<group>"; };
@@ -955,6 +957,7 @@
 		C91FF3702BAD890700096E25 /* Delegate */ = {
 			isa = PBXGroup;
 			children = (
+				C96C66F72BECB04700B1F486 /* CoordinatorPageMoveDelegate.swift */,
 				C91FF3712BAD891600096E25 /* CoordinatorFinishDelegate.swift */,
 				C9FD20F92BC51AC200C23E25 /* CoordinatorLoginDelegate.swift */,
 				C956D3272BD2575900CBB451 /* CoordinatorTooltipDelegate.swift */,
@@ -2659,6 +2662,7 @@
 				C9AF36B42BC3BB8700629B63 /* BoomarkUseCase.swift in Sources */,
 				88E1D6BC2B1E234A00DB8BF6 /* KeychainManager.swift in Sources */,
 				880E754D2AE6C06E007FAD5A /* Constants.swift in Sources */,
+				C96C66F82BECB04700B1F486 /* CoordinatorPageMoveDelegate.swift in Sources */,
 				C9FDBDF82B28AE240045AA54 /* BookmarkDetailTagCell.swift in Sources */,
 				C9AF36C52BC3E00B00629B63 /* BookmarkCoordinator.swift in Sources */,
 				C9AF36BA2BC3BBCF00629B63 /* BookmarkRepository.swift in Sources */,
