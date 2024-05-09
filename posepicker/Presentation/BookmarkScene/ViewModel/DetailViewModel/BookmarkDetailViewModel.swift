@@ -19,7 +19,7 @@ final class BookmarkDetailViewModel {
     private let poseDetailUseCase: PoseDetailUseCase
     private let bindViewModel: BookmarkFeedCellViewModel
     
-    init(coordinator: BookmarkCoordinator, poseDetailUseCase: PoseDetailUseCase, bindViewModel: BookmarkFeedCellViewModel) {
+    init(coordinator: BookmarkCoordinator?, poseDetailUseCase: PoseDetailUseCase, bindViewModel: BookmarkFeedCellViewModel) {
         self.coordinator = coordinator
         self.poseDetailUseCase = poseDetailUseCase
         self.bindViewModel = bindViewModel
