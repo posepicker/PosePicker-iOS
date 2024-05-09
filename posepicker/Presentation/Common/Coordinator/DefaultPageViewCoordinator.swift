@@ -159,6 +159,10 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
             let myPoseCoordinator = DefaultMyPoseCoordinator(pageviewNavigationController)
             self.childCoordinators.append(myPoseCoordinator)
             myPoseCoordinator.start()
+            
+            // 포즈피드 코디네이터의 북마크 탭 델리게이트 마이포즈에 연결
+            let posefeedCoordinator = findCoordinator(type: .posefeed) as? PoseFeedCoordinator
+            posefeedCoordinator?.bookmarkContentsUpdatedDelegate = myPoseCoordinator
         default:
             break
         }
