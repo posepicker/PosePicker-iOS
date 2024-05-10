@@ -52,7 +52,7 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
         self.setToolTipUI()
         
         // 뷰 강제 로드시키기
-        self.setSelectedIndex(2)
+//        self.setSelectedIndex(2)
     }
     
     func setSelectedIndex(_ index: Int) {
@@ -115,7 +115,7 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
     }
     
     // 애플 or 카카오 탭 여부 확인
-    private func showLoginFlow() -> Observable<LoginPopUpView.SocialLogin> {
+    func showLoginFlow() -> Observable<LoginPopUpView.SocialLogin> {
         let popupVC = PopUpViewController(isLoginPopUp: true, isChoice: false)
         popupVC.modalTransitionStyle = .crossDissolve
         popupVC.modalPresentationStyle = .overFullScreen
