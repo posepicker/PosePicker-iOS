@@ -1176,7 +1176,7 @@
 			isa = PBXGroup;
 			children = (
 				C96C66C12BE1142200B1F486 /* Coordinator */,
-				C96C66C22BE1142600B1F486 /* View */,
+				C91C531F2BCCF66D00C5C28F /* View */,
 				C96C66C32BE1142A00B1F486 /* ViewController */,
 				C96C66C42BE1142F00B1F486 /* ViewModel */,
 			);
@@ -1191,13 +1191,6 @@
 				C96C66F42BEC508B00B1F486 /* Delegate */,
 			);
 			path = Coordinator;
-			sourceTree = "<group>";
-		};
-		C96C66C22BE1142600B1F486 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		C96C66C32BE1142A00B1F486 /* ViewController */ = {
@@ -1283,6 +1276,7 @@
 			isa = PBXGroup;
 			children = (
 				C96C66EC2BEB684000B1F486 /* MyPoseSavedViewController.swift */,
+				C9FD20F02BC4CC5300C23E25 /* DetailViewController */,
 			);
 			path = MyPoseSavedViewController;
 			sourceTree = "<group>";
@@ -1307,6 +1301,7 @@
 			isa = PBXGroup;
 			children = (
 				C96C66F22BEB9B7A00B1F486 /* MyPoseSavedViewModel.swift */,
+				C9FD20F12BC4CC5C00C23E25 /* DetailViewModel */,
 			);
 			path = MyPoseSavedViewModel;
 			sourceTree = "<group>";
@@ -1692,7 +1687,6 @@
 			isa = PBXGroup;
 			children = (
 				C9AF36BE2BC3DF7900629B63 /* Coordinator */,
-				C91C531F2BCCF66D00C5C28F /* View */,
 				C9AF36C02BC3DF8300629B63 /* ViewController */,
 				C9AF36BF2BC3DF7E00629B63 /* ViewModel */,
 			);
@@ -1711,7 +1705,6 @@
 		C9AF36BF2BC3DF7E00629B63 /* ViewModel */ = {
 			isa = PBXGroup;
 			children = (
-				C9FD20F12BC4CC5C00C23E25 /* DetailViewModel */,
 				C9AF36C62BC3E12800629B63 /* BookmarkViewModel.swift */,
 			);
 			path = ViewModel;
@@ -1720,7 +1713,6 @@
 		C9AF36C02BC3DF8300629B63 /* ViewController */ = {
 			isa = PBXGroup;
 			children = (
-				C9FD20F02BC4CC5300C23E25 /* DetailViewController */,
 				C94FD2842AE39612003777EB /* BookMarkViewController.swift */,
 			);
 			path = ViewController;
