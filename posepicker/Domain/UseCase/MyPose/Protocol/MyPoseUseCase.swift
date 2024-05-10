@@ -7,10 +7,17 @@
 
 import Foundation
 import RxSwift
+import RxRelay
 
 protocol MyPoseUseCase {
     var uploadedPoseCount: PublishSubject<String> { get set }
     var savedPoseCount: PublishSubject<String> { get set }
     
+    var contentSizes: BehaviorRelay<[CGSize]> { get set }
+    var isLastPage: BehaviorRelay<Bool> { get set }
+    var contentLoaded: PublishSubject<Void> { get set }
+    var uploadedContents: BehaviorRelay<[BookmarkFeedCellViewModel]> { get set }
+    
+    func fetchFeedContents(pageNumber: Int, pageSize: Int)
     func fetchPoseCount()
 }
