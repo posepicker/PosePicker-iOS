@@ -20,15 +20,34 @@ final class MyPoseViewModel {
     
     struct Input {
         let viewDidLoadEvent: Observable<Void>
+        let pageviewTransitionDelegateEvent: Observable<Void>
+        let currentPageViewIndex: Observable<Int>
     }
     
     struct Output {
         let uploadedCount = BehaviorRelay<String>(value: "등록 0")
         let savedCount = BehaviorRelay<String>(value: "저장 0")
+        let pageTransitionEvent = PublishRelay<Int>()
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
         let output = Output()
+        
+        input.pageviewTransitionDelegateEvent
+            .subscribe(onNext: { [weak self] in
+                guard let self = self,
+                      let coordinator = self.coordinator else {return}
+                output.pageTransitionEvent.accept(coordinator.currentPage()?.pageOrderNumber() ?? 0)
+            })
+            .disposed(by: disposeBag)
+        
+        input.currentPageViewIndex
+            .subscribe(onNext: { [weak self] in
+                guard let self = self,
+                      let coordinator = self.coordinator else { return }
+                coordinator.setSelectedIndex($0)
+            })
+            .disposed(by: disposeBag)
         
         input
             .viewDidLoadEvent
