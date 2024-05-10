@@ -19,6 +19,7 @@ enum APIRouter: URLRequestConvertible {
     case retrievePoseDetail(poseId: Int)
     case uploadPose(image: UIImage?, frameCount: String, peopleCount: String, source: String, sourceUrl: String, tag: String)
     case retrievePoseCount
+    case retrieveUploadedPose(pageNumber: Int, pageSize: Int)
     
     // 유저 API
     case appleLogin(idToken: String)
@@ -51,6 +52,8 @@ enum APIRouter: URLRequestConvertible {
         case .uploadPose:
             return .post
         case .retrievePoseCount:
+            return .get
+        case .retrieveUploadedPose:
             return .get
         case .appleLogin:
             return .get
@@ -93,6 +96,8 @@ enum APIRouter: URLRequestConvertible {
             return "/api/pose"
         case .retrievePoseCount:
             return "/api/pose/mypose"
+        case .retrieveUploadedPose:
+            return "/api/pose/user"
         case .appleLogin:
             return "/api/users/login/ios/apple"
         case .kakaoLogin:
@@ -149,6 +154,11 @@ enum APIRouter: URLRequestConvertible {
             return nil
         case .retrievePoseCount:
             return nil
+        case .retrieveUploadedPose(let pageNumber, let pageSize):
+            return [
+                K.Parameters.pageNumber: pageNumber,
+                K.Parameters.pageSize: pageSize
+            ]
         case .appleLogin(let idToken):
             return [
                 K.Parameters.idToken: idToken
