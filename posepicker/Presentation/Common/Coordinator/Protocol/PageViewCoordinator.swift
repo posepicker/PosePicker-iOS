@@ -17,4 +17,5 @@ protocol PageViewCoordinator: Coordinator {
     func pushMyPage()
     func pushBookmarkPage() -> Observable<LoginPopUpView.SocialLogin>
     func dismissLoginPopUp()
+    func showLoginFlow() -> Observable<LoginPopUpView.SocialLogin>
 }
