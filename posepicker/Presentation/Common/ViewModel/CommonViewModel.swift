@@ -49,10 +49,28 @@ final class CommonViewModel {
             .disposed(by: disposeBag)
         
         input.currentPage
+            .withUnretained(self)
+            .flatMap { (owner, pageIndex) -> Observable<LoginPopUpView.SocialLogin> in
+                guard let coordinator = owner.coordinator else { return .empty() }
+                if UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn) {
+                    coordinator.setSelectedIndex(pageIndex)
+                    return .empty()
+                } else if pageIndex == 3 {
+                    coordinator.setSelectedIndex(0)
+                    return coordinator.showLoginFlow()
+                } else {
+                    coordinator.setSelectedIndex(pageIndex)
+                    return .empty()
+                }
+            }
             .subscribe(onNext: { [weak self] in
-                guard let self = self,
-                      let coordinator = self.coordinator else { return }
-                coordinator.setSelectedIndex($0)
+                switch $0 {
+                case .apple:
+                    guard let idToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.idToken) else { return }
+                    self?.commonUseCase.loginWithApple(idToken: idToken)
+                case .kakao:
+                    self?.commonUseCase.loginWithKakao()
+                }
             })
             .disposed(by: disposeBag)
         
