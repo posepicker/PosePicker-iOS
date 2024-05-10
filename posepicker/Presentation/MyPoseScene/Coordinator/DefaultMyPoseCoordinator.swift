@@ -95,6 +95,13 @@ final class DefaultMyPoseCoordinator: MyPoseCoordinator {
         return controllers[currentIndex - 1]
     }
     
+    func setSelectedIndex(_ index: Int) {
+        guard let page = PageViewType(index: index),
+              let currentIndex = currentPage()?.pageOrderNumber() else { return }
+        
+        self.pageViewController.setViewControllers([controllers[page.pageOrderNumber()]], direction: currentIndex <= page.pageOrderNumber() ? .forward : .reverse, animated: true)
+    }
+    
     func viewControllerAfter() -> UIViewController? {
         guard let currentIndex = currentPage()?.pageOrderNumber() else { return nil }
         if currentIndex == controllers.count - 1 {
@@ -106,6 +113,15 @@ final class DefaultMyPoseCoordinator: MyPoseCoordinator {
     private func createViewControllers() {
         let uploadedVC = MyPoseUploadedViewController()
         
+        uploadedVC.viewModel = MyPoseUploadedViewModel(
+            coordinator: self,
+            myPoseUseCase: DefaultMyPoseUseCase(
+                myPoseRepository: DefaultMyPoseRepository(
+                    networkService: DefaultNetworkService()
+                )
+            )
+        )
+
         let savedVC = MyPoseSavedViewController()
         
         savedVC.viewModel = MyPoseSavedViewModel(
