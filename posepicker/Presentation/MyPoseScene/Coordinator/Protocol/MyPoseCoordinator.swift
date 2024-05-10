@@ -14,7 +14,8 @@ protocol MyPoseCoordinator: Coordinator {
     func presentClipboardCompleted(poseId: Int)
     func moveToExternalApp(url: URL)
     func dismissPoseDetail(tag: String)
-    
+    func currentPage() -> MyPosePageViewType?
+    func setSelectedIndex(_ index: Int)
     func viewControllerBefore() -> UIViewController?
     func viewControllerAfter() -> UIViewController?
 }
