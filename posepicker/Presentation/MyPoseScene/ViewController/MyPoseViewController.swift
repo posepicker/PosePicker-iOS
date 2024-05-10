@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import RxRelay
 
 final class MyPoseViewController: BaseViewController {
     
@@ -34,6 +35,7 @@ final class MyPoseViewController: BaseViewController {
     
     private let viewDidLoadEvent = PublishSubject<Void>()
     private let pageviewControllerDidFinishEvent = PublishSubject<Void>()
+    private let currentPageViewIndex = BehaviorRelay<Int>(value: 0)
     
     // MARK: - Initialization
     init(pageViewController: UIPageViewController) {
@@ -55,7 +57,18 @@ final class MyPoseViewController: BaseViewController {
     
     
     override func configUI() {
+        segmentControl.rx.selectedSegmentIndex.asDriver()
+            .drive(onNext: { [weak self] in
+                self?.currentPageViewIndex.accept($0)
+            })
+            .disposed(by: disposeBag)
         
+        currentPageViewIndex
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                self?.segmentControl.selectedSegmentIndex = $0
+            })
+            .disposed(by: self.disposeBag)
     }
     
     override func render() {
@@ -75,7 +88,9 @@ final class MyPoseViewController: BaseViewController {
     
     override func bindViewModel() {
         let input = MyPoseViewModel.Input(
-            viewDidLoadEvent: viewDidLoadEvent
+            viewDidLoadEvent: viewDidLoadEvent,
+            pageviewTransitionDelegateEvent: pageviewControllerDidFinishEvent,
+            currentPageViewIndex: currentPageViewIndex.asObservable()
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         configureOutput(output)
@@ -96,6 +111,10 @@ private extension MyPoseViewController {
             .drive(onNext: { [weak self] in
                 self?.segmentControl.setTitle($0, forSegmentAt: 1)
             })
+            .disposed(by: disposeBag)
+        
+        output?.pageTransitionEvent
+            .bind(to: currentPageViewIndex)
             .disposed(by: disposeBag)
     }
 }
