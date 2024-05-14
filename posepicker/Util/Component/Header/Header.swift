@@ -24,6 +24,7 @@ class Header: UIView {
     
     let bookMarkButton = UIButton(type: .system)
         .then {
+            $0.isHidden = true
             $0.setImage(ImageLiteral.imgBookmarkFill24.withTintColor(.iconDefault).withRenderingMode(.alwaysOriginal), for: .normal)
         }
     
