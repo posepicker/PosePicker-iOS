@@ -111,7 +111,9 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
     }
     
     func dismissLoginPopUp() {
-        self.navigationController.dismiss(animated: true)
+        self.navigationController.dismiss(animated: true) { [weak self] in
+            self?.setSelectedIndex(0)
+        }
     }
     
     // 애플 or 카카오 탭 여부 확인
@@ -216,13 +218,17 @@ extension DefaultPageViewCoordinator: CoordinatorLoginDelegate {
         if childCoordinator.type == .posefeed ||
            childCoordinator.type == .mypage {
             self.dismissLoginPopUp()
-            
+            setSelectedIndex(0)
             if let posefeedCoordinator = self.findCoordinator(type: .posefeed) as? DefaultPoseFeedCoordinator {
                 
                 if !UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn) {
                     KeychainManager.shared.removeAll()
+                    
+                    if let myposeCoordinator = self.findCoordinator(type: .mypose) as? DefaultMyPoseCoordinator {
+                        myposeCoordinator.myPoseViewController.disposeBag = DisposeBag()
+                    }
                 }
-                
+                commonViewController.segmentControl.rx.selectedSegmentIndex.onNext(0)
                 posefeedCoordinator.posefeedViewController.viewDidLoadEvent.onNext(())
             }
         }
