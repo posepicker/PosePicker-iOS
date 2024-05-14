@@ -12,4 +12,5 @@ protocol MyPoseRepository {
     func fetchPoseCount() -> Observable<PoseCount>
     func fetchUploadedContents(pageNumber: Int, pageSize: Int) -> Observable<[BookmarkFeedCellViewModel]>
     func isLastContents() -> Observable<Bool>
+    func bookmarkContent(poseId: Int, currentChecked: Bool) -> Observable<Bool>
 }
