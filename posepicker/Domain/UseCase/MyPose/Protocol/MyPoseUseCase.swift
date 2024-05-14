@@ -17,7 +17,9 @@ protocol MyPoseUseCase {
     var isLastPage: BehaviorRelay<Bool> { get set }
     var contentLoaded: PublishSubject<Void> { get set }
     var uploadedContents: BehaviorRelay<[BookmarkFeedCellViewModel]> { get set }
+    var bookmarkTaskCompleted: PublishSubject<Bool> { get set }
     
     func fetchFeedContents(pageNumber: Int, pageSize: Int)
     func fetchPoseCount()
+    func bookmarkContent(poseId: Int, currentChecked: Bool)
 }
