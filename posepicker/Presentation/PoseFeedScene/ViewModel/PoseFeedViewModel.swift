@@ -306,6 +306,8 @@ final class PoseFeedViewModel {
                                 self?.commonUseCase.loginWithApple(idToken: idToken)
                             case .kakao:
                                 self?.commonUseCase.loginWithKakao()
+                            default:
+                                break
                             }
                         })
                         .disposed(by: disposeBag)
@@ -355,6 +357,9 @@ final class PoseFeedViewModel {
                                     owner.commonUseCase.loginWithApple(idToken: idToken)
                                 case .kakao:
                                     owner.commonUseCase.loginWithKakao()
+                                default:
+                                    break
+                                    
                                 }
                             })
                             .disposed(by: disposeBag)
