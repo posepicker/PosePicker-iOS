@@ -175,6 +175,18 @@ final class PoseDetailViewModel {
             })
             .disposed(by: disposeBag)
         
+        poseDetailUseCase.bookmarkTaskCompleted
+            .subscribe(onNext: {
+                if $0 {
+                    print("북마크 등록 완료")
+                    guard let coordinator = self.coordinator else { return }
+                    coordinator.bookmarkContentsUpdatedDelegate?.coordinatorBookmarkContentsUpdated(childCoordinator: coordinator)
+                } else {
+                    print("북마크 체크 아이디값 관련 확인필요")
+                }
+            })
+            .disposed(by: disposeBag)
+        
         return output
     }
     
