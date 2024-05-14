@@ -48,7 +48,11 @@ class PopUpViewController: BaseViewController {
     // MARK: - Functions
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
-        self.dismiss(animated: true)
+        self.dismiss(animated: true) { [weak self] in
+            if let popUpView = self?.popUpView as? LoginPopUpView {
+                popUpView.socialLogin.onNext(LoginPopUpView.SocialLogin.none)
+            }
+        }
     }
     
     override func render() {
