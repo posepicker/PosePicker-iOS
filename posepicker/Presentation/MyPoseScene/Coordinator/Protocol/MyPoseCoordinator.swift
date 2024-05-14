@@ -18,4 +18,5 @@ protocol MyPoseCoordinator: Coordinator {
     func setSelectedIndex(_ index: Int)
     func viewControllerBefore() -> UIViewController?
     func viewControllerAfter() -> UIViewController?
+    func refreshBookmark()
 }
