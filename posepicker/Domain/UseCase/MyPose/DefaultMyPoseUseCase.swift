@@ -24,6 +24,7 @@ final class DefaultMyPoseUseCase: MyPoseUseCase {
     var uploadedContents = BehaviorRelay<[BookmarkFeedCellViewModel]>(value: [])
     var contentLoaded = PublishSubject<Void>()
     var isLastPage = BehaviorRelay<Bool>(value: false)
+    var bookmarkTaskCompleted = PublishSubject<Bool>()
     
     func fetchPoseCount() {
         myPoseRepository
@@ -62,6 +63,15 @@ final class DefaultMyPoseUseCase: MyPoseUseCase {
                     owner.contentSizes.accept(owner.contentSizes.value + [newSizeImage.size])
                 }
         })
+            .disposed(by: disposeBag)
+    }
+    
+    
+    func bookmarkContent(poseId: Int, currentChecked: Bool) {
+        self.myPoseRepository.bookmarkContent(poseId: poseId, currentChecked: currentChecked)
+            .subscribe(onNext: { [weak self] in
+                self?.bookmarkTaskCompleted.onNext($0)
+            })
             .disposed(by: disposeBag)
     }
     
