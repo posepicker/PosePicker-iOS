@@ -56,7 +56,6 @@ final class CommonViewModel {
                     coordinator.setSelectedIndex(pageIndex)
                     return .empty()
                 } else if pageIndex == 3 {
-                    coordinator.setSelectedIndex(0)
                     return coordinator.showLoginFlow()
                 } else {
                     coordinator.setSelectedIndex(pageIndex)
@@ -70,7 +69,11 @@ final class CommonViewModel {
                     self?.commonUseCase.loginWithApple(idToken: idToken)
                 case .kakao:
                     self?.commonUseCase.loginWithKakao()
+                case .none:
+                    self?.coordinator?.setSelectedIndex(0)
                 }
+                output.pageTransitionEvent.accept(0)
+                self?.coordinator?.setSelectedIndex(0)
             })
             .disposed(by: disposeBag)
         
@@ -87,6 +90,8 @@ final class CommonViewModel {
                     self?.commonUseCase.loginWithApple(idToken: idToken)
                 case .kakao:
                     self?.commonUseCase.loginWithKakao()
+                default:
+                    break
                 }
             })
             .disposed(by: disposeBag)
