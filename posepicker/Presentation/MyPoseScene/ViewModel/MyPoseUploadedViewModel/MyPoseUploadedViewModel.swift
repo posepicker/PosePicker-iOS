@@ -24,6 +24,7 @@ final class MyPoseUploadedViewModel {
         let bookmarkButtonTapEvent: Observable<(Int, Bool)>
         let infiniteScrollEvent: Observable<Void>
         let contentsUpdateEvent: Observable<Void> // 외부에서 북마크 탭하여 컨텐츠 업데이트
+        let refreshEvent: Observable<Void>
     }
     
     struct Output {
@@ -31,6 +32,7 @@ final class MyPoseUploadedViewModel {
         let uploadedContentSizes = BehaviorRelay<[CGSize]>(value: [])
         let isLoading = BehaviorRelay<Bool>(value: false)
         let isLastPage = BehaviorRelay<Bool>(value: true)
+        let refreshEnded = PublishSubject<Void>()
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output{
@@ -92,6 +94,7 @@ final class MyPoseUploadedViewModel {
             .contentLoaded
             .subscribe(onNext: {
                 output.isLoading.accept(false)
+                output.refreshEnded.onNext(())
             })
             .disposed(by: disposeBag)
         
@@ -120,6 +123,14 @@ final class MyPoseUploadedViewModel {
                 } else {
                     print("북마크 체크 아이디값 관련 확인필요")
                 }
+            })
+            .disposed(by: disposeBag)
+        
+        input.refreshEvent
+            .subscribe(onNext: { [weak self] in
+                output.isLoading.accept(true)
+                currentPage.accept(0)
+                self?.myPoseUseCase.fetchFeedContents(pageNumber: 0, pageSize: 8)
             })
             .disposed(by: disposeBag)
 
