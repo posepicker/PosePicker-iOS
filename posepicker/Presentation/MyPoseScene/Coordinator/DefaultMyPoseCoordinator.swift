@@ -110,6 +110,10 @@ final class DefaultMyPoseCoordinator: MyPoseCoordinator {
         return controllers[currentIndex + 1]
     }
     
+    func refreshBookmark() {
+        self.coordinatorBookmarkContentsUpdated(childCoordinator: self)
+    }
+    
     private func createViewControllers() {
         let uploadedVC = MyPoseUploadedViewController()
         
