@@ -24,6 +24,7 @@ class APIInterceptor: RequestInterceptor {
             if url.absoluteString.contains("/api/pose") || url.absoluteString.contains("/api/pose/all") || url.absoluteString.contains("/api/bookmark") ||
                 url.absoluteString.contains("/api/pose/mypose") ||
                 url.absoluteString.contains("/api/pose/user") ||
+                url.absoluteString.contains("/api/users/logout") ||
                 (url.absoluteString.contains("/api/pose/") && urlRequest.method == .post) {
                 var urlRequest = urlRequest
                 urlRequest.headers.add(.authorization(bearerToken: accessToken))
@@ -51,9 +52,7 @@ class APIInterceptor: RequestInterceptor {
            url.absoluteString.contains("/api/auth/reissue-token") {
             KeychainManager.shared.removeAll()
             // 세션만료 ALERT
-            DispatchQueue.main.async { [weak self] in
-                guard let self = self else { return }
-                
+            DispatchQueue.main.async {
                 /// 1. 글로벌 객체로 루트 뷰 컨트롤러 불러오기
                 let window = UIApplication.shared.connectedScenes.compactMap { ($0 as? UIWindowScene)?.keyWindow }.last
                 let root = window?.rootViewController
@@ -79,9 +78,13 @@ class APIInterceptor: RequestInterceptor {
                 /// 포즈피드 뷰 새로고침 진행하고 루트뷰 currentPage 세팅
                 
                 navVC?.popToViewController(rootVC, animated: true) {
-                    guard let posefeedNavVC = rootVC.pageViewController.viewControllers?.last as? UINavigationController,
-                          let posefeedVC = posefeedNavVC.viewControllers.first as? PoseFeedViewController else { return }
-                    posefeedVC.viewDidLoadEvent.onNext(())
+                    if let posefeedNavVC = rootVC.pageViewController.viewControllers?.last as? UINavigationController,
+                       let posefeedVC = posefeedNavVC.viewControllers.first as? PoseFeedViewController {
+                        posefeedVC.viewDidLoadEvent.onNext(())
+                    }
+                    
+                    rootVC.segmentControl.rx.selectedSegmentIndex.onNext(0)
+                    rootVC.viewModel?.coordinator?.setSelectedIndex(0)
                 }
             }
             completion(.doNotRetry)
