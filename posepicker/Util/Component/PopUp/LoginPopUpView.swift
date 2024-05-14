@@ -88,6 +88,7 @@ class LoginPopUpView: UIView {
     enum SocialLogin {
         case apple
         case kakao
+        case none
     }
     
     // MARK: - Initialization
@@ -154,6 +155,8 @@ class LoginPopUpView: UIView {
                     self.appleLoginButton.titleLabel?.isHidden = true
                     self.appleLoginButton.configuration?.image = nil
                     self.appleLoginButton.setImage(nil, for: .normal)
+                default:
+                    break
                 }
             })
             .disposed(by: disposeBag)
