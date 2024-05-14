@@ -25,16 +25,16 @@ final class DefaultBookmarkUseCase: BookmarkUseCase {
     }
     
     func fetchFeedContents(pageNumber: Int, pageSize: Int) {
-        if pageNumber == 0 {
-            contentSizes.accept([])
-        }
-        
         self.bookmarkRepository
             .fetchBookmarkContents(pageNumber: pageNumber, pageSize: pageSize)
             .withUnretained(self)
             .subscribe(onNext: {(owner, items) in
-                owner.contentLoaded.onNext(())
                 if pageNumber == 0 {
+                    if pageNumber == 0 {
+                        owner.isLastPage.accept(false)
+                        owner.bookmarkContents.accept([])
+                        owner.contentSizes.accept([])
+                    }
                     owner.bookmarkContents.accept(items)
                 } else {
                     var contents = owner.bookmarkContents.value
@@ -43,13 +43,14 @@ final class DefaultBookmarkUseCase: BookmarkUseCase {
                 }
                 
                 owner.checkIsLastPage()
-                
+
                 items.forEach { viewModel in
                     guard let image = viewModel.image.value else { return }
                     let newSizeImage = owner.newSizeImageWidthDownloadedResource(image: image)
                     viewModel.image.accept(newSizeImage)
                     owner.contentSizes.accept(owner.contentSizes.value + [newSizeImage.size])
                 }
+                owner.contentLoaded.onNext(())
         })
             .disposed(by: disposeBag)
     }
