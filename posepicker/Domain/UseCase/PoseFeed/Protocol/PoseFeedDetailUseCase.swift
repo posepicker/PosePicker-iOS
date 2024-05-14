@@ -15,6 +15,7 @@ protocol PoseDetailUseCase {
     var sourceUrl: BehaviorRelay<String> { get set }   // SNS URL
     var source: BehaviorRelay<String> { get set }      // SNS 아이디
     var bookmarkTaskCompleted: PublishSubject<Bool> { get set }
+    var contentLoaded: PublishSubject<Void> { get set }
     
     func getPoseInfo()
     func bookmarkContent(poseId: Int, currentChecked: Bool)

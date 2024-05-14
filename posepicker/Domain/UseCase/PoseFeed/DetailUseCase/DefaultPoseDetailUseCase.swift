@@ -26,6 +26,7 @@ final class DefaultPoseDetailUseCase: PoseDetailUseCase {
     var sourceUrl = BehaviorRelay<String>(value: "")
     var source = BehaviorRelay<String>(value: "")
     var bookmarkTaskCompleted = PublishSubject<Bool>()
+    var contentLoaded = PublishSubject<Void>()
     
     private let imageURL = BehaviorRelay<String>(value: "")
     
@@ -70,7 +71,10 @@ final class DefaultPoseDetailUseCase: PoseDetailUseCase {
                 owner.cacheItem(for: url)
             }
             .map { $0?.resize(newWidth: UIScreen.main.bounds.width )}
-            .bind(to: image)
+            .subscribe(onNext: { [weak self] in
+                self?.contentLoaded.onNext(())
+                self?.image.accept($0)
+            })
             .disposed(by: disposeBag)
     }
     
