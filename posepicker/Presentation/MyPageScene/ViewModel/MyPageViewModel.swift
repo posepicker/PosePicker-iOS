@@ -89,6 +89,8 @@ final class MyPageViewModel {
                     self?.commonUseCase.loginWithApple(idToken: idToken)
                 case .kakao:
                     self?.commonUseCase.loginWithKakao()
+                default:
+                    break
                 }
             })
             .disposed(by: disposeBag)
