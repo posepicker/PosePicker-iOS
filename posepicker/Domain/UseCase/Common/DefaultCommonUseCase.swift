@@ -45,6 +45,7 @@ final class DefaultCommonUseCase: CommonUseCase {
     }
     
     func logout(with: LoginPopUpView.SocialLogin) {
+        UserDefaults.standard.setValue(false, forKey: K.SocialLogin.isLoggedIn)
         guard let accessToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.accessToken),
               let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.refreshToken) else {
             return
@@ -53,6 +54,15 @@ final class DefaultCommonUseCase: CommonUseCase {
             .subscribe(onNext: { [weak self] in
                 if $0.status >= 200 && $0.status <= 300 {
                     self?.logoutCompleted.onNext(())
+                }
+                
+                if $0.status == 401 {
+                    self?.logoutCompleted.onNext(())
+                }
+            }, onError: { error in
+                if let error = error as? APIError,
+                   error == .http(status: 401) {
+                    self.logoutCompleted.onNext(())
                 }
             })
             .disposed(by: disposeBag)
