@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum APIError: Error {
+enum APIError: Error, Equatable {
     case decode
     case http(status: Int)
     case unknown
