@@ -36,6 +36,11 @@ class MyPoseSavedViewController: BaseViewController {
             $0.color = .mainViolet
         }
     
+    let refreshControl = UIRefreshControl()
+        .then {
+            $0.tintColor = .mainViolet
+        }
+    
     // MARK: - Properties
     var viewModel: MyPoseSavedViewModel?
     
@@ -72,6 +77,7 @@ class MyPoseSavedViewController: BaseViewController {
     
     override func configUI() {
         view.backgroundColor = .bgWhite
+        self.bookmarkCollectionView.refreshControl = refreshControl
         
         // 캡처시 이미지 덮기
         guard let secureView = SecureField().secureContainer else { return }
@@ -93,7 +99,8 @@ class MyPoseSavedViewController: BaseViewController {
             bookmarkCellTapEvent: bookmarkCollectionView.rx.modelSelected(BookmarkFeedCellViewModel.self).asObservable(),
             bookmarkButtonTapEvent: bookmarkButtonTapEvent,
             infiniteScrollEvent: infiniteScrollEvent,
-            contentsUpdateEvent: contentsUpdateEvent
+            contentsUpdateEvent: contentsUpdateEvent,
+            refreshEvent: refreshControl.rx.controlEvent(.valueChanged).asObservable()
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
@@ -174,6 +181,13 @@ private extension MyPoseSavedViewController {
         output?.isLoading
             .map { !$0 }
             .bind(to: loadingIndicator.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        output?.refreshEnded
+            .asDriver(onErrorJustReturn: ())
+            .drive(onNext: { [weak self] in
+                self?.refreshControl.endRefreshing()
+            })
             .disposed(by: disposeBag)
     }
 }
