@@ -66,13 +66,13 @@ final class MyPoseUploadedViewModel {
             .disposed(by: disposeBag)
         
         // 북마크 탭 이후 포즈피드 데이터 바인딩
-//        input.bookmarkButtonTapEvent
-//            .subscribe(onNext: { [weak self] in
-//                self?.myPoseUseCase.bookmarkContent(poseId: $0.0, currentChecked: $0.1)
-//                guard let coordinator = self?.coordinator else { return }
-//                coordinator.bookmarkBindingDelegate?.coordinatorBookmarkModified(childCoordinator: coordinator, poseId: $0.0)
-//            })
-//            .disposed(by: disposeBag)
+        input.bookmarkButtonTapEvent
+            .subscribe(onNext: { [weak self] in
+                self?.myPoseUseCase.bookmarkContent(poseId: $0.0, currentChecked: $0.1)
+                guard let coordinator = self?.coordinator else { return }
+                coordinator.bookmarkBindingDelegate?.coordinatorBookmarkModified(childCoordinator: coordinator, poseId: $0.0)
+            })
+            .disposed(by: disposeBag)
         
         /// 무한스크롤 트리거 로직
         input.infiniteScrollEvent
@@ -107,6 +107,19 @@ final class MyPoseUploadedViewModel {
                 output.isLoading.accept(true)
                 currentPage.accept(0)
                 self?.myPoseUseCase.fetchFeedContents(pageNumber: 0, pageSize: 8)
+            })
+            .disposed(by: disposeBag)
+        
+        self.myPoseUseCase
+            .bookmarkTaskCompleted
+            .subscribe(onNext: {
+                if $0 {
+                    print("북마크 등록 완료")
+                    guard let coordinator = self.coordinator else { return }
+                    coordinator.refreshBookmark()
+                } else {
+                    print("북마크 체크 아이디값 관련 확인필요")
+                }
             })
             .disposed(by: disposeBag)
 
