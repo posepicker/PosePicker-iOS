@@ -121,18 +121,12 @@ class PoseDetailViewController: BaseViewController {
             })
     )
     
-//    UIBarButtonItem(image: ImageLiteral.imgMore.withTintColor(.iconDefault, renderingMode: .alwaysOriginal), style: .plain, target: self, action: #selector(showMoreButtonTapped))
-//        .then {
-//            let favorite = UIAction(title: "즐겨찾기", image: UIImage(systemName: "heart"), handler: { _ in print("즐겨찾기") })
-//            
-//            $0.menu = UIMenu(
-//                title: "title입니다",
-//                image: UIImage(systemName: "heart.fill"),
-//                identifier: nil,
-//                options: .displayInline,
-//                children: [favorite]
-//            )
-//        }
+    let contentLoadingIndicator = UIActivityIndicatorView(style: .large)
+        .then {
+            $0.layer.zPosition = 999
+            $0.startAnimating()
+            $0.color = .mainViolet
+        }
     
     // MARK: - Properties
     
@@ -144,6 +138,7 @@ class PoseDetailViewController: BaseViewController {
     
     private let viewDidLoadEvent = PublishSubject<Void>()
     private let reportButtonTapEvent = PublishSubject<Void>()
+    private let isContentLoading = BehaviorRelay<Bool>(value: false)
     
     // MARK: - Life Cycles
     override func viewDidLoad() {
@@ -153,7 +148,7 @@ class PoseDetailViewController: BaseViewController {
     
     // MARK: - Functions
     override func render() {
-        self.view.addSubViews([navigationBar, scrollView, shareButtonGroup, loadingIndicator])
+        self.view.addSubViews([navigationBar, scrollView, shareButtonGroup, loadingIndicator, contentLoadingIndicator])
         
         scrollView.subviews.first!.addSubViews([imageSourceButton, imageButton, tagCollectionView])
         shareButtonGroup.addSubViews([linkShareButton, kakaoShareButton])
@@ -210,6 +205,10 @@ class PoseDetailViewController: BaseViewController {
         
         loadingIndicator.snp.makeConstraints { make in
             make.center.equalTo(kakaoShareButton)
+        }
+        
+        contentLoadingIndicator.snp.makeConstraints { make in
+            make.center.equalTo(view)
         }
     }
     
@@ -311,6 +310,24 @@ private extension PoseDetailViewController {
                     self?.bookmarkButton.image = ImageLiteral.imgBookmarkFill24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault)
                 } else {
                     self?.bookmarkButton.image = ImageLiteral.imgBookmarkOff24.withRenderingMode(.alwaysOriginal).withTintColor(.iconDefault)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        output?.isContentLoading
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                if $0 {
+                    self?.imageSourceButton.isHidden = true
+                    self?.contentLoadingIndicator.isHidden = false
+                } else {
+                    self?.contentLoadingIndicator.isHidden = true
+                    if let attributedTitle = self?.imageSourceButton.configuration?.attributedTitle,
+                       attributedTitle.characters.count == 0 {
+                        self?.imageSourceButton.isHidden = true
+                    } else {
+                        self?.imageSourceButton.isHidden = false
+                    }
                 }
             })
             .disposed(by: disposeBag)

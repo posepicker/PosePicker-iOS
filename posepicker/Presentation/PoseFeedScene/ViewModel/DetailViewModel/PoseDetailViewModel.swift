@@ -41,6 +41,7 @@ final class PoseDetailViewModel {
         let source = PublishRelay<String>()
         let isLoading = BehaviorRelay<Bool>(value: false)
         let bookmarkChecked = BehaviorRelay<Bool>(value: false)
+        let isContentLoading = BehaviorRelay<Bool>(value: false)
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
@@ -50,6 +51,7 @@ final class PoseDetailViewModel {
         
         input.viewDidLoadEvent
             .subscribe(onNext: { [weak self] in
+                output.isContentLoading.accept(true)
                 self?.poseDetailUseCase.getPoseInfo()
             })
             .disposed(by: disposeBag)
@@ -138,6 +140,13 @@ final class PoseDetailViewModel {
             .sourceUrl
             .subscribe(onNext: {
                 sourceURL.accept($0)
+            })
+            .disposed(by: disposeBag)
+        
+        self.poseDetailUseCase
+            .contentLoaded
+            .subscribe(onNext: {
+                output.isContentLoading.accept(false)
             })
             .disposed(by: disposeBag)
         
