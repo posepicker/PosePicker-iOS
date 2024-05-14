@@ -45,6 +45,8 @@ final class UserRevokeViewModel {
                     self?.commonUseCase.revoke(with: .apple, reason: input.revokeReason.value)
                 case .kakao:
                     self?.commonUseCase.revoke(with: .kakao, reason: input.revokeReason.value)
+                default:
+                    break
                 }
                 self?.coordinator?.popRevokeView()
             })
