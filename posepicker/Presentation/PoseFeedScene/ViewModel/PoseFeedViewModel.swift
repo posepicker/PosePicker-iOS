@@ -256,6 +256,7 @@ final class PoseFeedViewModel {
                     print("북마크 등록 완료")
                     guard let coordinator = self.coordinator else { return }
                     coordinator.bookmarkContentsUpdatedDelegate?.coordinatorBookmarkContentsUpdated(childCoordinator: coordinator)
+                    coordinator.bookmarkContentsUpdatedDelegate?.coordinatorPoseCountsUpdated(childCoordinator: coordinator)
                 } else {
                     print("북마크 체크 아이디값 관련 확인필요")
                 }
