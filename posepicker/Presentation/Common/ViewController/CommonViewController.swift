@@ -31,7 +31,8 @@ class CommonViewController: BaseViewController {
     
     // MARK: - Properties
     var viewModel: CommonViewModel?
-    private let loginCompletedTrigger = PublishSubject<Void>()
+    let removeMyPoseContentsTrigger = PublishSubject<Void>()
+    
     private let currentPage = BehaviorRelay<Int>(value: 0)
     private let pageviewControllerDidFinishEvent = PublishRelay<Void>()
     private let appleIdentityTokenTrigger = PublishSubject<String>()
@@ -121,7 +122,8 @@ class CommonViewController: BaseViewController {
             pageviewTransitionDelegateEvent: pageviewControllerDidFinishEvent.asObservable(),
             myPageButtonTapEvent: header.menuButton.rx.tap.asObservable(),
             currentPage: currentPage.asObservable(),
-            bookmarkButtonTapEvent: header.bookMarkButton.rx.tap.asObservable()
+            bookmarkButtonTapEvent: header.bookMarkButton.rx.tap.asObservable(),
+            removeMyPoseContentsEvent: removeMyPoseContentsTrigger
         )
         let output = self.viewModel?.transform(from: input, disposeBag: disposeBag)
         configureOutput(output)

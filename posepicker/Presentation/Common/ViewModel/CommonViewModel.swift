@@ -19,6 +19,7 @@ final class CommonViewModel {
         let myPageButtonTapEvent: Observable<Void>
         let currentPage: Observable<Int>
         let bookmarkButtonTapEvent: Observable<Void>
+        let removeMyPoseContentsEvent: Observable<Void>
     }
     
     struct Output {
@@ -103,6 +104,11 @@ final class CommonViewModel {
             })
             .disposed(by: disposeBag)
             
+        input.removeMyPoseContentsEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.removeMyPoseContents()
+            })
+            .disposed(by: disposeBag)
         
         return output
     }
