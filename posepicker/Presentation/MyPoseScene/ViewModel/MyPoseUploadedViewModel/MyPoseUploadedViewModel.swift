@@ -25,6 +25,7 @@ final class MyPoseUploadedViewModel {
         let infiniteScrollEvent: Observable<Void>
         let contentsUpdateEvent: Observable<Void> // 외부에서 북마크 탭하여 컨텐츠 업데이트
         let refreshEvent: Observable<Void>
+        let removeAllContentsEvent: Observable<Void>
     }
     
     struct Output {
@@ -133,6 +134,12 @@ final class MyPoseUploadedViewModel {
                 currentPage.accept(0)
                 self?.myPoseUseCase.fetchFeedContents(pageNumber: 0, pageSize: 8)
                 self?.coordinator?.refreshPoseCount()
+            })
+            .disposed(by: disposeBag)
+        
+        input.removeAllContentsEvent
+            .subscribe(onNext: { [weak self] in
+                self?.myPoseUseCase.removeAllContents()
             })
             .disposed(by: disposeBag)
 
