@@ -126,6 +126,16 @@ final class DefaultMyPoseCoordinator: MyPoseCoordinator {
         savedVC?.removeAllContentsTrigger.onNext(())
     }
     
+    func presentPoseUploadGuideline() {
+        let navigationVC = UINavigationController()
+        navigationVC.modalTransitionStyle = .crossDissolve
+        navigationVC.modalPresentationStyle = .overFullScreen
+        
+        let myposeCoordinator = DefaultPoseUploadCoordinator(self.navigationController)
+        self.childCoordinators.append(myposeCoordinator)
+        myposeCoordinator.start()
+    }
+    
     private func createViewControllers() {
         let uploadedVC = MyPoseUploadedViewController()
         

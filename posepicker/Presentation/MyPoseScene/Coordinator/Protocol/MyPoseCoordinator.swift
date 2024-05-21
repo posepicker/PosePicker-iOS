@@ -21,4 +21,5 @@ protocol MyPoseCoordinator: Coordinator {
     func refreshBookmark()
     func refreshPoseCount()
     func removeAllContents()
+    func presentPoseUploadGuideline()
 }
