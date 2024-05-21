@@ -95,7 +95,7 @@ enum APIRouter: URLRequestConvertible {
         case .uploadPose:
             return "/api/pose"
         case .retrievePoseCount:
-            return "/api/pose/mypose"
+            return "/api/pose/user/mypose"
         case .retrieveUploadedPose:
             return "/api/pose/user"
         case .appleLogin:
