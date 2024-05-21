@@ -18,4 +18,5 @@ protocol BookmarkUseCase {
     
     func fetchFeedContents(pageNumber: Int, pageSize: Int)
     func bookmarkContent(poseId: Int, currentChecked: Bool)
+    func removeAllContents()
 }
