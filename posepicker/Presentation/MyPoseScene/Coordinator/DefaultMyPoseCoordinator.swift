@@ -114,6 +114,10 @@ final class DefaultMyPoseCoordinator: MyPoseCoordinator {
         self.coordinatorBookmarkContentsUpdated(childCoordinator: self)
     }
     
+    func refreshPoseCount() {
+        self.coordinatorPoseCountsUpdated(childCoordinator: self)
+    }
+    
     private func createViewControllers() {
         let uploadedVC = MyPoseUploadedViewController()
         
@@ -154,5 +158,9 @@ extension DefaultMyPoseCoordinator: CoordinatorBookmarkContentsUpdateDelegate {
     func coordinatorBookmarkContentsUpdated(childCoordinator: Coordinator) {
         let savedVC = self.controllers[1] as? MyPoseSavedViewController
         savedVC?.contentsUpdateEvent.onNext(())
+    }
+    
+    func coordinatorPoseCountsUpdated(childCoordinator: Coordinator) {
+        myPoseViewController.refreshCountTrigger.onNext(())
     }
 }
