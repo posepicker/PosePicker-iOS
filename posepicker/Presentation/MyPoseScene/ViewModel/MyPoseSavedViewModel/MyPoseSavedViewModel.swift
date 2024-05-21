@@ -25,6 +25,7 @@ final class MyPoseSavedViewModel {
         let infiniteScrollEvent: Observable<Void>
         let contentsUpdateEvent: Observable<Void> // 외부에서 북마크 탭하여 컨텐츠 업데이트
         let refreshEvent: Observable<Void>
+        let moveToPosefeedButtonTapEvent: Observable<Void>
     }
     
     struct Output {
@@ -76,6 +77,15 @@ final class MyPoseSavedViewModel {
             })
             .disposed(by: disposeBag)
         
+        bookmarkUseCase
+            .bookmarkTaskCompleted
+            .subscribe(onNext: {
+                if $0 {
+                    self.coordinator?.refreshPoseCount()
+                }
+            })
+            .disposed(by: disposeBag)
+        
         /// 무한스크롤 트리거 로직
         input.infiniteScrollEvent
             .subscribe(onNext: { [weak self] in
@@ -118,6 +128,13 @@ final class MyPoseSavedViewModel {
                 output.isLoading.accept(true)
                 currentPage.accept(0)
                 self?.bookmarkUseCase.fetchFeedContents(pageNumber: 0, pageSize: 8)
+                self?.coordinator?.refreshPoseCount()
+            })
+            .disposed(by: disposeBag)
+        
+        input.moveToPosefeedButtonTapEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.pageMoveDelegate?.coordinatorMoveTo(pageType: .posefeed)
             })
             .disposed(by: disposeBag)
 
