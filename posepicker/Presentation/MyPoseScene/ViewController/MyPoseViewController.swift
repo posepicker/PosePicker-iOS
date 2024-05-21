@@ -36,6 +36,7 @@ final class MyPoseViewController: BaseViewController {
     private let viewDidLoadEvent = PublishSubject<Void>()
     private let pageviewControllerDidFinishEvent = PublishSubject<Void>()
     private let currentPageViewIndex = BehaviorRelay<Int>(value: 0)
+    let refreshCountTrigger = PublishSubject<Void>()
     
     // MARK: - Initialization
     init(pageViewController: UIPageViewController) {
@@ -90,7 +91,8 @@ final class MyPoseViewController: BaseViewController {
         let input = MyPoseViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent,
             pageviewTransitionDelegateEvent: pageviewControllerDidFinishEvent,
-            currentPageViewIndex: currentPageViewIndex.asObservable()
+            currentPageViewIndex: currentPageViewIndex.asObservable(),
+            refreshCountEvent: refreshCountTrigger
         )
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         configureOutput(output)
