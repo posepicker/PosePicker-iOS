@@ -26,6 +26,7 @@ final class MyPoseUploadedViewModel {
         let contentsUpdateEvent: Observable<Void> // 외부에서 북마크 탭하여 컨텐츠 업데이트
         let refreshEvent: Observable<Void>
         let removeAllContentsEvent: Observable<Void>
+        let poseUploadButtonTapEvent: Observable<Void>
     }
     
     struct Output {
@@ -52,6 +53,7 @@ final class MyPoseUploadedViewModel {
             .uploadedContents
             .subscribe(onNext: {
                 output.uploadedContents.accept($0)
+                output.uploadedContents.accept([])
             })
             .disposed(by: disposeBag)
         
@@ -140,6 +142,12 @@ final class MyPoseUploadedViewModel {
         input.removeAllContentsEvent
             .subscribe(onNext: { [weak self] in
                 self?.myPoseUseCase.removeAllContents()
+            })
+            .disposed(by: disposeBag)
+        
+        input.poseUploadButtonTapEvent
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator?.presentPoseUploadGuideline()
             })
             .disposed(by: disposeBag)
 
