@@ -78,6 +78,8 @@ class APIInterceptor: RequestInterceptor {
                 /// 포즈피드 뷰 새로고침 진행하고 루트뷰 currentPage 세팅
                 
                 navVC?.popToViewController(rootVC, animated: true) {
+                    rootVC.removeMyPoseContentsTrigger.onNext(())
+                    
                     if let posefeedNavVC = rootVC.pageViewController.viewControllers?.last as? UINavigationController,
                        let posefeedVC = posefeedNavVC.viewControllers.first as? PoseFeedViewController {
                         posefeedVC.viewDidLoadEvent.onNext(())
