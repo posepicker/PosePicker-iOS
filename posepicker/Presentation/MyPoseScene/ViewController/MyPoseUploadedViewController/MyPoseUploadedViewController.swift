@@ -41,6 +41,15 @@ class MyPoseUploadedViewController: BaseViewController {
             $0.tintColor = .mainViolet
         }
     
+    let emptyView = EmptyBookmarkView()
+        .then {
+            $0.mainLabel.text = "나만의 포즈를 추가해 보세요!"
+            $0.subLabel.text = "포즈피드에 네컷사진을 업로드할 수 있어요"
+            $0.actionButton.setTitle("포즈 등록하기", for: .normal)
+            $0.backgroundColor = .bgWhite
+            $0.layer.zPosition = 999
+        }
+    
     // MARK: - Properties
     var viewModel: MyPoseUploadedViewModel?
     
@@ -73,7 +82,7 @@ class MyPoseUploadedViewController: BaseViewController {
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([uploadedPoseCollectionView, loadingIndicator])
+        view.addSubViews([uploadedPoseCollectionView, loadingIndicator, emptyView])
         
         uploadedPoseCollectionView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(12)
@@ -84,6 +93,13 @@ class MyPoseUploadedViewController: BaseViewController {
         loadingIndicator.snp.makeConstraints { make in
             make.centerY.equalTo(view).offset(-50)
             make.centerX.equalToSuperview()
+        }
+        
+        emptyView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(80)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(250)
         }
     }
     
@@ -113,7 +129,8 @@ class MyPoseUploadedViewController: BaseViewController {
             infiniteScrollEvent: infiniteScrollEvent,
             contentsUpdateEvent: contentsUpdateEvent,
             refreshEvent: refreshControl.rx.controlEvent(.valueChanged).asObservable(),
-            removeAllContentsEvent: removeAllContentsTrigger
+            removeAllContentsEvent: removeAllContentsTrigger,
+            poseUploadButtonTapEvent: emptyView.actionButton.rx.tap.asObservable()
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
@@ -195,6 +212,16 @@ private extension MyPoseUploadedViewController {
             .drive(onNext: { [weak self] in
                 self?.refreshControl.endRefreshing()
             })
+            .disposed(by: disposeBag)
+        
+        output?.uploadedContents
+            .map { !$0.isEmpty }
+            .bind(to: emptyView.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        output?.uploadedContents
+            .map { $0.isEmpty }
+            .bind(to: uploadedPoseCollectionView.rx.isHidden)
             .disposed(by: disposeBag)
     }
 }
