@@ -52,6 +52,7 @@ class MyPoseSavedViewController: BaseViewController {
     
     let nextPageTrigger = PublishSubject<Void>()
     let contentsUpdateEvent = PublishSubject<Void>()
+    let removeAllContentsTrigger = PublishSubject<Void>()
     
     private let viewDidLoadEvent = PublishSubject<Void>()
     private let bookmarkContentSizes = BehaviorRelay<[CGSize]>(value: [])
@@ -114,7 +115,8 @@ class MyPoseSavedViewController: BaseViewController {
             infiniteScrollEvent: infiniteScrollEvent,
             contentsUpdateEvent: contentsUpdateEvent,
             refreshEvent: refreshControl.rx.controlEvent(.valueChanged).asObservable(),
-            moveToPosefeedButtonTapEvent: emptyView.toPoseFeedButton.rx.tap.asObservable()
+            moveToPosefeedButtonTapEvent: emptyView.toPoseFeedButton.rx.tap.asObservable(),
+            removeAllContentsEvent: removeAllContentsTrigger
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)

@@ -46,6 +46,7 @@ class MyPoseUploadedViewController: BaseViewController {
     
     let nextPageTrigger = PublishSubject<Void>()
     let contentsUpdateEvent = PublishSubject<Void>()
+    let removeAllContentsTrigger = PublishSubject<Void>()
     
     private let viewDidLoadEvent = PublishSubject<Void>()
     private let uploadedContentSizes = BehaviorRelay<[CGSize]>(value: [])
@@ -111,7 +112,8 @@ class MyPoseUploadedViewController: BaseViewController {
             bookmarkButtonTapEvent: bookmarkButtonTapEvent,
             infiniteScrollEvent: infiniteScrollEvent,
             contentsUpdateEvent: contentsUpdateEvent,
-            refreshEvent: refreshControl.rx.controlEvent(.valueChanged).asObservable()
+            refreshEvent: refreshControl.rx.controlEvent(.valueChanged).asObservable(),
+            removeAllContentsEvent: removeAllContentsTrigger
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
