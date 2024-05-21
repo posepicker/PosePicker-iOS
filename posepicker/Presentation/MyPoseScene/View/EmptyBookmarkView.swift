@@ -32,7 +32,7 @@ class EmptyBookmarkView: UIView {
             $0.attributedText = attrString
         }
     
-    let toPoseFeedButton = UIButton(type: .system)
+    let actionButton = UIButton(type: .system)
         .then {
             $0.titleLabel?.font = .pretendard(.medium, ofSize: 16)
             $0.layer.cornerRadius = 8
@@ -59,7 +59,7 @@ class EmptyBookmarkView: UIView {
 
     // MARK: - Functions
     func render() {
-        self.addSubViews([mainLabel, subLabel, toPoseFeedButton])
+        self.addSubViews([mainLabel, subLabel, actionButton])
         
         mainLabel.snp.makeConstraints { make in
             make.top.centerX.equalToSuperview()
@@ -70,7 +70,7 @@ class EmptyBookmarkView: UIView {
             make.centerX.equalToSuperview()
         }
         
-        toPoseFeedButton.snp.makeConstraints { make in
+        actionButton.snp.makeConstraints { make in
             make.top.equalTo(subLabel.snp.bottom).offset(32)
             make.centerX.equalToSuperview()
             make.width.equalTo(160)
