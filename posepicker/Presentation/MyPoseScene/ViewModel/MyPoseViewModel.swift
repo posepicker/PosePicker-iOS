@@ -22,6 +22,7 @@ final class MyPoseViewModel {
         let viewDidLoadEvent: Observable<Void>
         let pageviewTransitionDelegateEvent: Observable<Void>
         let currentPageViewIndex: Observable<Int>
+        let refreshCountEvent: Observable<Void>
     }
     
     struct Output {
@@ -67,6 +68,12 @@ final class MyPoseViewModel {
             .savedPoseCount
             .subscribe(onNext: {
                 output.savedCount.accept($0)
+            })
+            .disposed(by: disposeBag)
+        
+        input.refreshCountEvent
+            .subscribe(onNext: { [weak self] in
+                self?.myPoseUseCase.fetchPoseCount()
             })
             .disposed(by: disposeBag)
         
