@@ -25,7 +25,7 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
             $0.setImage(ImageLiteral.imgBookmarkOff24.withTintColor(.iconWhite, renderingMode: .alwaysTemplate), for: .normal)
             $0.layer.cornerRadius = 18
             $0.clipsToBounds = true
-            $0.backgroundColor = .dimmed70
+            $0.backgroundColor = .dimmed30
         }
     
     // MARK: - Properties
