@@ -9,4 +9,5 @@ import Foundation
 
 protocol CoordinatorBookmarkContentsUpdateDelegate: AnyObject {
     func coordinatorBookmarkContentsUpdated(childCoordinator: Coordinator)
+    func coordinatorPoseCountsUpdated(childCoordinator: Coordinator)
 }
