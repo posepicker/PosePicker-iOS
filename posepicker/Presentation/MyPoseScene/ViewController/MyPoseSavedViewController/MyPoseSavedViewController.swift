@@ -115,7 +115,7 @@ class MyPoseSavedViewController: BaseViewController {
             infiniteScrollEvent: infiniteScrollEvent,
             contentsUpdateEvent: contentsUpdateEvent,
             refreshEvent: refreshControl.rx.controlEvent(.valueChanged).asObservable(),
-            moveToPosefeedButtonTapEvent: emptyView.toPoseFeedButton.rx.tap.asObservable(),
+            moveToPosefeedButtonTapEvent: emptyView.actionButton.rx.tap.asObservable(),
             removeAllContentsEvent: removeAllContentsTrigger
         )
         
