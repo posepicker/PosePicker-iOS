@@ -120,6 +120,7 @@ final class MyPoseUploadedViewModel {
                     print("북마크 등록 완료")
                     guard let coordinator = self.coordinator else { return }
                     coordinator.refreshBookmark()
+                    coordinator.refreshPoseCount()
                 } else {
                     print("북마크 체크 아이디값 관련 확인필요")
                 }
@@ -131,6 +132,7 @@ final class MyPoseUploadedViewModel {
                 output.isLoading.accept(true)
                 currentPage.accept(0)
                 self?.myPoseUseCase.fetchFeedContents(pageNumber: 0, pageSize: 8)
+                self?.coordinator?.refreshPoseCount()
             })
             .disposed(by: disposeBag)
 
