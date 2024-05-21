@@ -118,6 +118,14 @@ final class DefaultMyPoseCoordinator: MyPoseCoordinator {
         self.coordinatorPoseCountsUpdated(childCoordinator: self)
     }
     
+    func removeAllContents() {
+        let uploadedVC = self.controllers[0] as? MyPoseUploadedViewController
+        uploadedVC?.removeAllContentsTrigger.onNext(())
+        
+        let savedVC = self.controllers[1] as? MyPoseSavedViewController
+        savedVC?.removeAllContentsTrigger.onNext(())
+    }
+    
     private func createViewControllers() {
         let uploadedVC = MyPoseUploadedViewController()
         
