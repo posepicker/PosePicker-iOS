@@ -41,6 +41,12 @@ class MyPoseSavedViewController: BaseViewController {
             $0.tintColor = .mainViolet
         }
     
+    let emptyView = EmptyBookmarkView()
+        .then {
+            $0.backgroundColor = .bgWhite
+            $0.layer.zPosition = 999
+        }
+    
     // MARK: - Properties
     var viewModel: MyPoseSavedViewModel?
     
@@ -61,7 +67,7 @@ class MyPoseSavedViewController: BaseViewController {
     // MARK: - Functions
     
     override func render() {
-        view.addSubViews([bookmarkCollectionView, loadingIndicator])
+        view.addSubViews([bookmarkCollectionView, loadingIndicator, emptyView])
         
         bookmarkCollectionView.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(12)
@@ -72,6 +78,13 @@ class MyPoseSavedViewController: BaseViewController {
         loadingIndicator.snp.makeConstraints { make in
             make.centerY.equalTo(view).offset(-50)
             make.centerX.equalToSuperview()
+        }
+        
+        emptyView.snp.makeConstraints { make in
+            make.centerX.equalToSuperview()
+            make.top.equalToSuperview().offset(80)
+            make.leading.trailing.equalToSuperview()
+            make.height.equalTo(250)
         }
     }
     
@@ -100,7 +113,8 @@ class MyPoseSavedViewController: BaseViewController {
             bookmarkButtonTapEvent: bookmarkButtonTapEvent,
             infiniteScrollEvent: infiniteScrollEvent,
             contentsUpdateEvent: contentsUpdateEvent,
-            refreshEvent: refreshControl.rx.controlEvent(.valueChanged).asObservable()
+            refreshEvent: refreshControl.rx.controlEvent(.valueChanged).asObservable(),
+            moveToPosefeedButtonTapEvent: emptyView.toPoseFeedButton.rx.tap.asObservable()
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
@@ -170,6 +184,16 @@ private extension MyPoseSavedViewController {
                     })
                     .disposed(by: cell.disposeBag)
             }
+            .disposed(by: disposeBag)
+        
+        output?.bookmarkContents
+            .map { $0.isEmpty }
+            .bind(to: bookmarkCollectionView.rx.isHidden)
+            .disposed(by: disposeBag)
+        
+        output?.bookmarkContents
+            .map { !$0.isEmpty }
+            .bind(to: emptyView.rx.isHidden)
             .disposed(by: disposeBag)
         
         output?.bookmarkContentSizes
