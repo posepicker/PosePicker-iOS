@@ -127,6 +127,13 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
         
         return popupView.socialLogin
     }
+    
+    func removeMyPoseContents() {
+        if let myposeCoordinator = self.findCoordinator(type: .mypose) as? MyPoseCoordinator {
+            print("REMOVEMYPOSECONTENTS!")
+            myposeCoordinator.removeAllContents()
+        }
+    }
 
     private func createPageViewNavigationController(of page: PageViewType) -> UINavigationController {
         let pageviewNavigationController = UINavigationController()
@@ -221,8 +228,13 @@ extension DefaultPageViewCoordinator: CoordinatorLoginDelegate {
             setSelectedIndex(0)
             if let posefeedCoordinator = self.findCoordinator(type: .posefeed) as? DefaultPoseFeedCoordinator {
                 
+                // 로그아웃 될때 마이포즈 화면 지우기
                 if !UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn) {
                     KeychainManager.shared.removeAll()
+                    
+                    if let myposeCoordinator = self.findCoordinator(type: .mypose) as? DefaultMyPoseCoordinator {
+                        myposeCoordinator.removeAllContents()
+                    }
                 } else {
                     if let myposeCoordinator = self.findCoordinator(type: .mypose) as? DefaultMyPoseCoordinator {
                         myposeCoordinator.refreshBookmark()
