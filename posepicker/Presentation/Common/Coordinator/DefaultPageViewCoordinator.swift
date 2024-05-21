@@ -223,9 +223,10 @@ extension DefaultPageViewCoordinator: CoordinatorLoginDelegate {
                 
                 if !UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn) {
                     KeychainManager.shared.removeAll()
-                    
+                } else {
                     if let myposeCoordinator = self.findCoordinator(type: .mypose) as? DefaultMyPoseCoordinator {
-                        myposeCoordinator.myPoseViewController.disposeBag = DisposeBag()
+                        myposeCoordinator.refreshBookmark()
+                        myposeCoordinator.refreshPoseCount()
                     }
                 }
                 commonViewController.segmentControl.rx.selectedSegmentIndex.onNext(0)
