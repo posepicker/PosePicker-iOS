@@ -21,5 +21,6 @@ protocol MyPoseUseCase {
     
     func fetchFeedContents(pageNumber: Int, pageSize: Int)
     func fetchPoseCount()
+    func removeAllContents()
     func bookmarkContent(poseId: Int, currentChecked: Bool)
 }

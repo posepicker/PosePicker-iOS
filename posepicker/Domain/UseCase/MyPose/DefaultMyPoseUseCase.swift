@@ -75,6 +75,12 @@ final class DefaultMyPoseUseCase: MyPoseUseCase {
             .disposed(by: disposeBag)
     }
     
+    func removeAllContents() {
+        self.uploadedContents.accept([])
+        self.isLastPage.accept(false)
+        self.contentSizes.accept([])
+    }
+    
     /// 필터링 & 추천 둘다 마지막 페이지면 무한스크롤 더 이상 호출할 필요 없음
     private func checkIsLastPage() {
         self.myPoseRepository
