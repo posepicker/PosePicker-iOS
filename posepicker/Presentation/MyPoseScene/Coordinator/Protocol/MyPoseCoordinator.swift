@@ -20,4 +20,5 @@ protocol MyPoseCoordinator: Coordinator {
     func viewControllerAfter() -> UIViewController?
     func refreshBookmark()
     func refreshPoseCount()
+    func removeAllContents()
 }
