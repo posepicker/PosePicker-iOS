@@ -10,6 +10,14 @@ import RxSwift
 @testable import posepicker
 
 final class MockPageViewCoordinator: PageViewCoordinator {
+    func showLoginFlow() -> Observable<posepicker.LoginPopUpView.SocialLogin> {
+        return .empty()
+    }
+    
+    func removeMyPoseContents() {
+        
+    }
+    
     func pushBookmarkPage() -> Observable<posepicker.LoginPopUpView.SocialLogin> {
         return .empty()
     }
