@@ -53,7 +53,6 @@ final class MyPoseUploadedViewModel {
             .uploadedContents
             .subscribe(onNext: {
                 output.uploadedContents.accept($0)
-                output.uploadedContents.accept([])
             })
             .disposed(by: disposeBag)
         
