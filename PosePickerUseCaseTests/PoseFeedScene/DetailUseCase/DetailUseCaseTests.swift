@@ -65,7 +65,7 @@ final class DetailUseCaseTests: XCTestCase {
         // tagAttributes 문자열에서 태그 배열로 파싱 되는지 체크
         XCTAssertEqual(tagsTestObserver.events, [
             .next(0, []),
-            .next(0, ["친구","자연스러움","가족","재미"])
+            .next(0, ["4인","8컷+","친구","자연스러움","가족","재미"])
         ])
         
         XCTAssertEqual(sourceTestObserver.events, [
@@ -76,7 +76,7 @@ final class DetailUseCaseTests: XCTestCase {
         // HTTPS prefix 붙여서 URL 방출
         XCTAssertEqual(sourceURLObserver.events, [
             .next(0, ""),
-            .next(0, "https://www.instagram.URL")
+            .next(0, "https://www.instagram.com")
         ])
     }
     
@@ -187,12 +187,45 @@ final class DetailUseCaseTests: XCTestCase {
         
         XCTAssertEqual(sourceTestObserver.events, [
             .next(0, ""),
-            .next(0, "")
+            .next(0, "링크바로가기")
         ])
         
         XCTAssertEqual(sourceURLObserver.events, [
             .next(0, ""),
-            .next(0, "")
+            .next(0, "https://")
+        ])
+    }
+    
+    func test_포즈객체_https_prefix() {
+        self.poseDetailRespository = MockPoseDetailRepository(
+            isNil: false,
+            hasPrefix: true
+        )
+        self.poseDetailUseCase = DefaultPoseDetailUseCase(
+            poseDetailRepository: self.poseDetailRespository,
+            poseId: 10
+        )
+        
+        let sourceURLObserver = self.scheduler.createObserver(String.self)
+        
+        self.scheduler.createColdObservable([
+            .next(0, ())
+        ])
+        .subscribe(onNext: { [weak self] in
+            self?.poseDetailUseCase.getPoseInfo()
+        })
+        .disposed(by: disposeBag)
+        
+        self.poseDetailUseCase
+            .sourceUrl
+            .subscribe(sourceURLObserver)
+            .disposed(by: disposeBag)
+        
+        self.scheduler.start()
+        
+        XCTAssertEqual(sourceURLObserver.events, [
+            .next(0, ""),
+            .next(0, "https://www.instagram.com")
         ])
     }
     
