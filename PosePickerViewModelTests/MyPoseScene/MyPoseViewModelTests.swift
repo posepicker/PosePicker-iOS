@@ -37,7 +37,10 @@ final class MyPoseViewModelTests: XCTestCase {
         ])
         
         self.input = MyPoseViewModel.Input(
-            viewDidLoadEvent: viewDidLoadObservable.asObservable()
+            viewDidLoadEvent: viewDidLoadObservable.asObservable(),
+            pageviewTransitionDelegateEvent: .empty(),
+            currentPageViewIndex: .empty(),
+            refreshCountEvent: .empty()
         )
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
         
