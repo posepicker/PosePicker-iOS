@@ -33,12 +33,24 @@ final class DefaultPosePickRepository: PosePickRepository {
     }
     
     private func cacheItem(for imageURL: String?) -> Observable<UIImage?> {
+        print("===CACHE TEST===")
+        ImageCache.default.retrieveImage(forKey: imageURL ?? "") { result in
+            switch result {
+            case .success(let value):
+                print("cache hit!: \(value.cacheType)")
+                print("===CACHE TEST ENDED===")
+            case .failure:
+                print("cache miss..")
+                print("===CACHE TEST ENDED===")
+            }
+        }
+        
         return Observable.create { observer in
             if let imageURL = imageURL {
-                ImageCache.default.retrieveImageInDiskCache(forKey: imageURL) { result in
+                ImageCache.default.retrieveImage(forKey: imageURL) { result in
                     switch result {
                     case .success(let value):
-                        if let image = value?.images?.first {
+                        if let image = value.image {
                             observer.onNext(image)
                         } else if let url = URL(string: imageURL) {
                             KingfisherManager.shared.retrieveImage(with: url) { downloadResult in
