@@ -12,6 +12,24 @@ import RxRelay
 @testable import posepicker
 
 final class MockMyPoseUseCase: MyPoseUseCase {
+    var contentSizes = BehaviorRelay<[CGSize]>(value: [])
+    var isLastPage = BehaviorRelay<Bool>(value: false)
+    var contentLoaded = PublishSubject<Void>()
+    var uploadedContents = BehaviorRelay<[BookmarkFeedCellViewModel]>(value: [])
+    var bookmarkTaskCompleted = PublishSubject<Bool>()
+    
+    func fetchFeedContents(pageNumber: Int, pageSize: Int) {
+        
+    }
+    
+    func removeAllContents() {
+        
+    }
+    
+    func bookmarkContent(poseId: Int, currentChecked: Bool) {
+        
+    }
+    
     var uploadedPoseCount = PublishSubject<String>()
     
     var savedPoseCount = PublishSubject<String>()
