@@ -58,7 +58,6 @@ final class MockPosePickRepository: PosePickRepository {
                                 print("=====")
                                 print()
                                 observer.onNext(downloaded.image)
-                                Thread.sleep(forTimeInterval: 1)
                             case .failure(let error):
                                 observer.onError(error)
                             }
