@@ -52,7 +52,8 @@ final class CommonViewTest: XCTestCase {
              pageviewTransitionDelegateEvent: pageviewTransitionDelegateEvent.asObservable(),
              myPageButtonTapEvent: mypageButtonTapped.asObservable(),
              currentPage: currentPage.asObservable(),
-             bookmarkButtonTapEvent: .empty()
+             bookmarkButtonTapEvent: .empty(),
+             removeMyPoseContentsEvent: .empty()
          )
         
          self.output = self.viewModel.transform(
