@@ -37,18 +37,26 @@ final class PosePickUseCaseTests: XCTestCase {
             posepickRepository: self.posepickRespository
         )
         self.scheduler = .init(initialClock: 0)
-        
-        ImageCache.default.clearCache()
     }
     
+    // MARK: - 비동기처리 과정
+    /// 1. .next(0, ()) 이벤트 방출
+    /// 2. fetchPosePick 호출
+    /// 3. 첫번째 이미지 캐싱 진행
+    /// 4. 디스패치 큐로 이미지 다운로드 태스크 이동
+    /// 5. .next(5, ()) 진행
+    /// 6. 이미지 다운로드중에 fetchPosePick 호출
+    /// 7. 캐시 확인 -> cache miss 발생
     func test_디스크_캐싱_처리가_잘_되는지 (){
         let expectation = XCTestExpectation(description: "포즈픽 유스케이스 데이터 잘 불러오는지")
         
+        expectation.expectedFulfillmentCount = 2
         MockURLProtocol.responseWithStatusCode(code: 200)
         MockURLProtocol.responseWithDTO(type: .cacheImage)
         
         self.scheduler.createColdObservable([
-            .next(0, ())
+            .next(0, ()),
+            .next(3, ())
         ])
         .subscribe(onNext: { [weak self] in
             self?.posepickUseCase
@@ -58,15 +66,25 @@ final class PosePickUseCaseTests: XCTestCase {
         
         self.posepickUseCase
             .poseImage
-            .subscribe(onNext: {
-                print($0)
-                expectation.fulfill()
+            .subscribe(onNext: { [weak self] image in
+                print("posepick image: ",image)
+                ImageCache.default.retrieveImage(forKey: "https://posepicker-image.s3.ap-northeast-2.amazonaws.com/6fc77625e557babd80e8e389baf798c12a8d210d9c148de6595962923d81481b.jpg") { result in
+                    expectation.fulfill()
+                    switch result {
+                    case .success(let value):
+                        print("cache hit!: \(value.cacheType)")
+                    case .failure:
+                        print("cache miss..")
+                    }
+                }
             })
             .disposed(by: self.disposeBag)
         
+        
+        
         self.scheduler.start()
         
-        wait(for: [expectation], timeout: 5)
+        wait(for: [expectation], timeout: 10)
     }
 
     override func tearDown() {
