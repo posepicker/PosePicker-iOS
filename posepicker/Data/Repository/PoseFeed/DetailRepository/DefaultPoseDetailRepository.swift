@@ -5,7 +5,8 @@
 //  Created by 박경준 on 4/7/24.
 //
 
-import Foundation
+import UIKit
+import Kingfisher
 import RxSwift
 import RxRelay
 
@@ -21,6 +22,38 @@ final class DefaultPoseDetailRepository: PoseDetailRepository {
         networkService
             .requestSingle(.retrievePoseDetail(poseId: poseId))
             .asObservable()
+    }
+    
+    func cacheItem(for imageURL: String?) -> Observable<UIImage?> {
+        return Observable.create { observer in
+            if let imageURL = imageURL {
+                ImageCache.default.retrieveImageInDiskCache(forKey: imageURL) { result in
+                    switch result {
+                    case .success(let value):
+                        if let image = value?.images?.first {
+                            observer.onNext(image)
+                        } else if let url = URL(string: imageURL) {
+                            KingfisherManager.shared.retrieveImage(with: url) { downloadResult in
+                                switch downloadResult {
+                                case .success(let downloaded):
+                                    observer.onNext(downloaded.image)
+                                case .failure(let error):
+                                    observer.onError(error)
+                                }
+                            }
+                        }
+                    case .failure(let error):
+                        observer.onError(error)
+                    }
+                }
+            } else {
+                observer.onNext(nil)
+            }
+            
+            return Disposables.create {
+                
+            }
+        }
     }
     
     func bookmarkContent(poseId: Int, currentChecked: Bool) -> Observable<Bool> {
