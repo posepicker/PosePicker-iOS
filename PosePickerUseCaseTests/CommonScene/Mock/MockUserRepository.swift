@@ -12,7 +12,36 @@ import RxSwift
 
 final class MockUserRepository: UserRepository {
     
-    func logout() -> Observable<posepicker.LogoutResponse> {
+    let errorWithLogout: Bool
+    let expiredWithLogout: Bool
+    let errorWithDeleteUser: Bool
+    
+    init(errorWithLogout: Bool = false, expiredWithLogout: Bool = false, errorWithDeleteUser: Bool = false) {
+        self.errorWithLogout = errorWithLogout
+        self.expiredWithLogout = expiredWithLogout
+        self.errorWithDeleteUser = errorWithDeleteUser
+    }
+    
+    func logout(with: LoginPopUpView.SocialLogin, disposeBag: DisposeBag) -> Observable<posepicker.LogoutResponse> {
+        
+        if expiredWithLogout {
+            print("EXPIRED WITH ..")
+            return .just(
+                .init(
+                    entity: "error",
+                    message: "error",
+                    status: 401
+                )
+            )
+        }
+        
+        if errorWithLogout {
+            print("ERROR WITH ..")
+            return .error(
+                APIError.http(status: 401)
+            )
+        }
+        
         return .just(
             .init(
                 entity: "entity",
@@ -76,7 +105,19 @@ final class MockUserRepository: UserRepository {
         )
     }
     
-    func deleteUserInfo(withdrawalReason: String) -> Observable<MeaninglessResponse> {
+    func deleteUserInfo(with: LoginPopUpView.SocialLogin, withdrawalReason: String, disposeBag: DisposeBag) -> Observable<MeaninglessResponse> {
+        
+        if errorWithDeleteUser {
+            return .just(
+                .init(
+                    entity: "ERROR",
+                    message: "ERROR",
+                    redirect: "ERROR",
+                    status: 500
+                )
+            )
+        }
+        
         return Observable<MeaninglessResponse>.just(
             .init(
                 entity: "entity",
