@@ -26,9 +26,6 @@ final class CommonSceneUseCaseTests: XCTestCase {
         self.scheduler = TestScheduler(initialClock: 0)
     }
     
-//    func logout(with: LoginPopUpView.SocialLogin)
-//    func revoke(with: LoginPopUpView.SocialLogin, reason: String)
-    
     func test_카카오_로그인_완료_테스트() {
         let expectation = XCTestExpectation(description: "login completed test")
         
@@ -89,6 +86,114 @@ final class CommonSceneUseCaseTests: XCTestCase {
                 expectation.fulfill()
             })
             .disposed(by: self.disposeBag)
+        
+        self.scheduler.start()
+        
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func test_로그아웃_에러테스트() {
+        let expectation = XCTestExpectation(description: "logout error test")
+        
+        self.userRepository = MockUserRepository(errorWithLogout: true)
+        self.commonUseCase = DefaultCommonUseCase(
+            userRepository: self.userRepository
+        )
+        
+        self.scheduler.createHotObservable([
+            .next(0, ())
+        ])
+        .subscribe(onNext: { [weak self] in
+            self?.commonUseCase.logout(with: .kakao)
+        })
+        .disposed(by: self.disposeBag)
+        
+        self.commonUseCase.logoutCompleted
+            .subscribe(onNext: {
+                expectation.fulfill()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.scheduler.start()
+        
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func test_로그아웃_401_테스트() {
+        let expectation = XCTestExpectation(description: "logout error test")
+        
+        self.userRepository = MockUserRepository(errorWithLogout: false, expiredWithLogout: true)
+        self.commonUseCase = DefaultCommonUseCase(
+            userRepository: self.userRepository
+        )
+        
+        self.scheduler.createHotObservable([
+            .next(0, ())
+        ])
+        .subscribe(onNext: { [weak self] in
+            self?.commonUseCase.logout(with: .kakao)
+        })
+        .disposed(by: self.disposeBag)
+        
+        self.commonUseCase.logoutCompleted
+            .subscribe(onNext: {
+                expectation.fulfill()
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.scheduler.start()
+        
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func test_회원탈퇴_테스트() {
+        let expectation = XCTestExpectation(description: "revoke test")
+        
+        self.userRepository = MockUserRepository()
+        self.commonUseCase = DefaultCommonUseCase(
+            userRepository: self.userRepository
+        )
+        
+        self.scheduler.createHotObservable([
+            .next(0, ())
+        ])
+        .subscribe(onNext: { [weak self] in
+            self?.commonUseCase.revoke(with: .kakao, reason: "회원탈퇴")
+        })
+        .disposed(by: self.disposeBag)
+        
+        self.commonUseCase.revokeCompleted
+            .subscribe(onNext: {
+                expectation.fulfill()
+            })
+            .disposed(by: disposeBag)
+        
+        self.scheduler.start()
+        
+        wait(for: [expectation], timeout: 5)
+    }
+    
+    func test_회원탈퇴_에러테스트() {
+        let expectation = XCTestExpectation(description: "revoke 500 error test")
+        
+        self.userRepository = MockUserRepository(errorWithDeleteUser: true)
+        self.commonUseCase = DefaultCommonUseCase(
+            userRepository: self.userRepository
+        )
+        
+        self.scheduler.createHotObservable([
+            .next(0, ())
+        ])
+        .subscribe(onNext: { [weak self] in
+            self?.commonUseCase.revoke(with: .kakao, reason: "회원탈퇴")
+        })
+        .disposed(by: self.disposeBag)
+        
+        self.commonUseCase.revokeCompleted
+            .subscribe(onNext: {
+                expectation.fulfill()
+            })
+            .disposed(by: disposeBag)
         
         self.scheduler.start()
         
