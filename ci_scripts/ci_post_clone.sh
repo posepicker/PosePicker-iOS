@@ -23,4 +23,4 @@ echo "SMARTLOOK_PROJECT_KEY = $SMARTLOOK_PROJECT_KEY" >> "$CONFIG_FILE_PATH"
 # 생성된 *.xconfig 파일 내용 출력
 cat "$CONFIG_FILE_PATH"
 
-echo "posepicker.xcconfig 파일이 성공적으로 생성되었고, 환경변수 값이 확인되었습니다.
+echo "posepicker.xcconfig 파일이 성공적으로 생성되었고, 환경변수 값이 확인되었습니다."
