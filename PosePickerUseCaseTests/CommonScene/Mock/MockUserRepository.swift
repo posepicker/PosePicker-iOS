@@ -11,27 +11,79 @@ import RxSwift
 @testable import posepicker
 
 final class MockUserRepository: UserRepository {
-    func logout(accessToken: String, refreshToken: String) -> RxSwift.Observable<posepicker.LogoutResponse> {
-        return .empty()
+    
+    func logout() -> Observable<posepicker.LogoutResponse> {
+        return .just(
+            .init(
+                entity: "entity",
+                message: "message",
+                status: 200
+            )
+        )
     }
     
     func loginWithKakao() -> Observable<PosePickerUser> {
-        return Observable<PosePickerUser>.empty()
+        return Observable<PosePickerUser>.just(
+            .init(
+                email: "rudwns3927@gmail.com",
+                id: 1,
+                nickname: "parkjju",
+                token: .init(
+                    accessToken: "eyj..",
+                    expiresIn: 1,
+                    grantType: "grant",
+                    refreshToken: "eyj.."
+                )
+            )
+        )
     }
     
     func loginWithApple(idToken: String) -> Observable<PosePickerUser> {
-        return Observable<PosePickerUser>.empty()
+        return Observable<PosePickerUser>.just(
+            .init(
+                email: "rudwns3927@gmail.com",
+                id: 1,
+                nickname: "parkjju",
+                token: .init(
+                    accessToken: "eyj..",
+                    expiresIn: 1,
+                    grantType: "grant",
+                    refreshToken: "eyj.."
+                )
+            )
+        )
     }
     
-    func reissueToken(refreshToken: String) -> Observable<Token> {
-        return Observable<Token>.empty()
+    func reissueToken() -> Observable<Token> {
+        return Observable<Token>.just(
+            .init(
+                accessToken: "eyj..",
+                expiresIn: 1,
+                grantType: "grant",
+                refreshToken: "eyj.."
+            )
+        )
     }
     
-    func logout(accessToken: String, refreshToken: String) -> Observable<MeaninglessResponse> {
-        return Observable<MeaninglessResponse>.empty()
+    func logout() -> Observable<MeaninglessResponse> {
+        return Observable<MeaninglessResponse>.just(
+            .init(
+                entity: "entity",
+                message: "message",
+                redirect: "redirect",
+                status: 200
+            )
+        )
     }
     
-    func deleteUserInfo(accessToken: String, refreshToken: String, withdrawalReason: String) -> Observable<MeaninglessResponse> {
-        return Observable<MeaninglessResponse>.empty()
+    func deleteUserInfo(withdrawalReason: String) -> Observable<MeaninglessResponse> {
+        return Observable<MeaninglessResponse>.just(
+            .init(
+                entity: "entity",
+                message: "message",
+                redirect: "redirect",
+                status: 200
+            )
+        )
     }
 }
