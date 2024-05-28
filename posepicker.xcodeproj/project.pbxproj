@@ -484,6 +484,7 @@
 		C9E6025A2B16DA270098BC96 /* posepicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = posepicker.entitlements; sourceTree = "<group>"; };
 		C9EF8F4C2C05B96C005B78BC /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
 		C9EF8F4D2C05BF58005B78BC /* ci_post_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_xcodebuild.sh; sourceTree = "<group>"; };
+		C9EF8F4E2C05CABD005B78BC /* Debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Debug.xcconfig; sourceTree = "<group>"; };
 		C9FD20F22BC4CC8B00C23E25 /* BookmarkDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailViewModel.swift; sourceTree = "<group>"; };
 		C9FD20F42BC4D0E000C23E25 /* BookmarkDetailUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailUseCase.swift; sourceTree = "<group>"; };
 		C9FD20F92BC51AC200C23E25 /* CoordinatorLoginDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorLoginDelegate.swift; sourceTree = "<group>"; };
@@ -1563,6 +1564,7 @@
 			isa = PBXGroup;
 			children = (
 				C9AF36942BC2E2EF00629B63 /* posepicker.xcconfig */,
+				C9EF8F4E2C05CABD005B78BC /* Debug.xcconfig */,
 			);
 			path = Configs;
 			sourceTree = "<group>";
@@ -2759,7 +2761,7 @@
 		};
 		C9C890762AE103A30010240A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9AF36942BC2E2EF00629B63 /* posepicker.xcconfig */;
+			baseConfigurationReference = C9EF8F4E2C05CABD005B78BC /* Debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ANALYZER_NONNULL = YES;
@@ -2877,7 +2879,7 @@
 		};
 		C9C890792AE103A30010240A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = C9AF36942BC2E2EF00629B63 /* posepicker.xcconfig */;
+			baseConfigurationReference = C9EF8F4E2C05CABD005B78BC /* Debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;

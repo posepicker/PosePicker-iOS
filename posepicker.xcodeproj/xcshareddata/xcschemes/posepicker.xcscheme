@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Scheme
+   LastUpgradeVersion = "1540"
+   version = "1.7">
+   <BuildAction
+      parallelizeBuildables = "YES"
+      buildImplicitDependencies = "YES"
+      buildArchitectures = "Automatic">
+      <PreActions>
+         <ExecutionAction
+            ActionType = "Xcode.IDEStandardExecutionActionsCore.ExecutionActionType.ShellScriptAction">
+            <ActionContent
+               title = "Run Script"
+               scriptText = "# Type a script or drag a script file from your workspace to insert its path.&#10;FOLDER_PATH=&quot;/Volumes/workspace/repository/posepicker/Configs&quot;&#10;&#10;# PARTS &#xbc30;&#xc5f4;&#xc758; &#xb450; &#xbc88;&#xc9f8; &#xc694;&#xc18c;&#xac00; &quot;Scheme Name&quot;&#xc5d0; &#xd574;&#xb2f9;&#10;&#10;# *.xconfig &#xd30c;&#xc77c; &#xc774;&#xb984;&#10;CONFIG_FILENAME=&quot;posepicker.xcconfig&quot;&#10;&#10;# *.xconfig &#xd30c;&#xc77c;&#xc758; &#xc804;&#xccb4; &#xacbd;&#xb85c; &#xacc4;&#xc0b0;&#10;CONFIG_FILE_PATH=&quot;$FOLDER_PATH/$CONFIG_FILENAME&quot;&#10;&#10;# &#xd658;&#xacbd; &#xbcc0;&#xc218;&#xc5d0;&#xc11c; &#xac12;&#xc744; &#xac00;&#xc838;&#xc640;&#xc11c; *.xconfig &#xd30c;&#xc77c;&#xc5d0; &#xcd94;&#xac00;&#xd558;&#xae30;&#10;echo &quot;KAKAO_NATIVE_KEY = $KAKAO_NATIVE_KEY&quot; &gt;&gt; &quot;$CONFIG_FILE_PATH&quot;&#10;echo &quot;SMARTLOOK_PROJECT_KEY = $SMARTLOOK_PROJECT_KEY&quot; &gt;&gt; &quot;$CONFIG_FILE_PATH&quot;&#10;&#10;# &#xc0dd;&#xc131;&#xb41c; *.xconfig &#xd30c;&#xc77c; &#xb0b4;&#xc6a9; &#xcd9c;&#xb825;&#10;cat &quot;$CONFIG_FILE_PATH&quot;&#10;&#10;echo &quot;posepicker.xcconfig &#xd30c;&#xc77c;&#xc774; &#xc131;&#xacf5;&#xc801;&#xc73c;&#xb85c; &#xc0dd;&#xc131;&#xb418;&#xc5c8;&#xace0;, &#xd658;&#xacbd;&#xbcc0;&#xc218; &#xac12;&#xc774; &#xd655;&#xc778;&#xb418;&#xc5c8;&#xc2b5;&#xb2c8;&#xb2e4;.&quot;&#10;">
+            </ActionContent>
+         </ExecutionAction>
+      </PreActions>
+      <BuildActionEntries>
+         <BuildActionEntry
+            buildForTesting = "YES"
+            buildForRunning = "YES"
+            buildForProfiling = "YES"
+            buildForArchiving = "YES"
+            buildForAnalyzing = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C9C8904D2AE103A10010240A"
+               BuildableName = "posepicker.app"
+               BlueprintName = "posepicker"
+               ReferencedContainer = "container:posepicker.xcodeproj">
+            </BuildableReference>
+         </BuildActionEntry>
+      </BuildActionEntries>
+   </BuildAction>
+   <TestAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      shouldAutocreateTestPlan = "YES">
+      <Testables>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C96C9AEB2BBA39EC00AC2921"
+               BuildableName = "PosePickerViewModelTests.xctest"
+               BlueprintName = "PosePickerViewModelTests"
+               ReferencedContainer = "container:posepicker.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO"
+            parallelizable = "YES">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "C96C9B232BBA485300AC2921"
+               BuildableName = "PosePickerUseCaseTests.xctest"
+               BlueprintName = "PosePickerUseCaseTests"
+               ReferencedContainer = "container:posepicker.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+      </Testables>
+   </TestAction>
+   <LaunchAction
+      buildConfiguration = "Debug"
+      selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
+      selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
+      launchStyle = "0"
+      useCustomWorkingDirectory = "NO"
+      ignoresPersistentStateOnLaunch = "NO"
+      debugDocumentVersioning = "YES"
+      debugServiceExtension = "internal"
+      allowLocationSimulation = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "C9C8904D2AE103A10010240A"
+            BuildableName = "posepicker.app"
+            BlueprintName = "posepicker"
+            ReferencedContainer = "container:posepicker.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </LaunchAction>
+   <ProfileAction
+      buildConfiguration = "Release"
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      savedToolIdentifier = ""
+      useCustomWorkingDirectory = "NO"
+      debugDocumentVersioning = "YES">
+      <BuildableProductRunnable
+         runnableDebuggingMode = "0">
+         <BuildableReference
+            BuildableIdentifier = "primary"
+            BlueprintIdentifier = "C9C8904D2AE103A10010240A"
+            BuildableName = "posepicker.app"
+            BlueprintName = "posepicker"
+            ReferencedContainer = "container:posepicker.xcodeproj">
+         </BuildableReference>
+      </BuildableProductRunnable>
+   </ProfileAction>
+   <AnalyzeAction
+      buildConfiguration = "Debug">
+   </AnalyzeAction>
+   <ArchiveAction
+      buildConfiguration = "Release"
+      revealArchiveInOrganizer = "YES">
+   </ArchiveAction>
+</Scheme>
