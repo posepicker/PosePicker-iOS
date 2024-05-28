@@ -80,7 +80,6 @@ final class DefaultUserRepository: UserRepository {
         guard let refreshToken = self.keychainService.retrieve(key: K.Parameters.refreshToken, itemClass: .password) else {
             return .empty()
         }
-        
         return networkService.requestSingle(
             .refreshToken(
                 refreshToken: refreshToken
@@ -91,7 +90,7 @@ final class DefaultUserRepository: UserRepository {
             }
     }
     
-    func logout() -> Observable<LogoutResponse> {
+    func logout(with: LoginPopUpView.SocialLogin, disposeBag: DisposeBag) -> Observable<LogoutResponse> {
         guard let accessToken = self.keychainService.retrieve(key: K.Parameters.accessToken, itemClass: .password),
               let refreshToken = self.keychainService.retrieve(key: K.Parameters.refreshToken, itemClass: .password) else {
             return .just(
@@ -101,6 +100,14 @@ final class DefaultUserRepository: UserRepository {
                     status: 500
                 )
             )
+        }
+        
+        if with == .kakao {
+            UserApi.shared.rx.logout()
+                .subscribe(onCompleted: {
+                    print("kakao logout completed")
+                })
+                .disposed(by: disposeBag)
         }
         
         return networkService.requestSingle(
@@ -115,7 +122,7 @@ final class DefaultUserRepository: UserRepository {
             }
     }
     
-    func deleteUserInfo(withdrawalReason: String) -> Observable<MeaninglessResponse> {
+    func deleteUserInfo(with: LoginPopUpView.SocialLogin, withdrawalReason: String, disposeBag: DisposeBag) -> Observable<MeaninglessResponse> {
         guard let accessToken = self.keychainService.retrieve(key: K.Parameters.accessToken, itemClass: .password),
               let refreshToken = self.keychainService.retrieve(key: K.Parameters.refreshToken, itemClass: .password) else {
             return .just(
@@ -126,6 +133,14 @@ final class DefaultUserRepository: UserRepository {
                     status: 500
                 )
             )
+        }
+        
+        if with == .kakao {
+            UserApi.shared.rx.unlink()
+                .subscribe(onCompleted: {
+                    print("카카오 탈퇴 완료")
+                })
+                .disposed(by: disposeBag)
         }
         
         return networkService.requestSingle(

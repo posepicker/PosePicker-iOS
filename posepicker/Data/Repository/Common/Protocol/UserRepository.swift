@@ -27,10 +27,14 @@ protocol UserRepository {
     func reissueToken(
     ) -> Observable<Token>
     func logout(
+        with: LoginPopUpView.SocialLogin,
+        disposeBag: DisposeBag
     ) -> Observable<LogoutResponse>
     
     // MARK: - 탈퇴
     func deleteUserInfo(
-        withdrawalReason: String    // 탈퇴 사유
+        with: LoginPopUpView.SocialLogin,
+        withdrawalReason: String,    // 탈퇴 사유
+        disposeBag: DisposeBag
     ) -> Observable<MeaninglessResponse>
 }
