@@ -45,7 +45,7 @@ final class DefaultCommonUseCase: CommonUseCase {
     
     func logout(with: LoginPopUpView.SocialLogin) {
         UserDefaults.standard.setValue(false, forKey: K.SocialLogin.isLoggedIn)
-        userRepository.logout()
+        userRepository.logout(with: with, disposeBag: disposeBag)
             .subscribe(onNext: { [weak self] in
                 if $0.status >= 200 && $0.status <= 300 {
                     self?.logoutCompleted.onNext(())
@@ -61,24 +61,19 @@ final class DefaultCommonUseCase: CommonUseCase {
                 }
             })
             .disposed(by: disposeBag)
-        
-        if with == .kakao {
-            UserApi.shared.rx.logout()
-                .subscribe(onCompleted: {
-                    print("kakao logout completed")
-                })
-                .disposed(by: disposeBag)
-        }
     }
     
     
     func revoke(with: LoginPopUpView.SocialLogin, reason: String) {
         userRepository.deleteUserInfo(
-            withdrawalReason: reason
+            with: with,
+            withdrawalReason: reason,
+            disposeBag: disposeBag
         )
         .catchAndReturn(MeaninglessResponse(entity: "", message: "", redirect: "", status: 500))
         .subscribe(onNext: { [weak self] in
             // 500에러 디버깅 필요..
+            UserDefaults.standard.setValue(false, forKey: K.SocialLogin.isLoggedIn)
             if $0.status >= 200 && $0.status <= 300 {
                 self?.revokeCompleted.onNext(())
             }
@@ -88,13 +83,5 @@ final class DefaultCommonUseCase: CommonUseCase {
             }
         })
         .disposed(by: disposeBag)
-        
-        if with == .kakao {
-            UserApi.shared.rx.unlink()
-                .subscribe(onCompleted: {
-                    print("카카오 탈퇴 완료")
-                })
-                .disposed(by: disposeBag)
-        }
     }
 }
