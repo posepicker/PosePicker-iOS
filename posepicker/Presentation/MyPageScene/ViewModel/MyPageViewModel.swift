@@ -115,7 +115,9 @@ final class MyPageViewModel {
         
         self.commonUseCase
             .revokeCompleted
-            .subscribe(onNext: {
+            .subscribe(onNext: { [weak self] in
+                guard let coordinator = self?.coordinator else { return }
+                self?.coordinator?.loginDelegate?.coordinatorLoginCompleted(childCoordinator: coordinator)
                 output.revokeCompleted.onNext(())
             })
             .disposed(by: disposeBag)
