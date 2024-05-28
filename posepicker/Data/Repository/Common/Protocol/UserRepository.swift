@@ -25,17 +25,12 @@ protocol UserRepository {
     
     // MARK: - 토큰 REFRESH/DELETE
     func reissueToken(
-        refreshToken: String        // 리프레시 토큰
     ) -> Observable<Token>
     func logout(
-        accessToken: String,        // 액세스 토큰
-        refreshToken: String        // 리프레시 토큰
     ) -> Observable<LogoutResponse>
     
     // MARK: - 탈퇴
     func deleteUserInfo(
-        accessToken: String,        // 액세스 토큰
-        refreshToken: String,       // 리프레시 토큰
         withdrawalReason: String    // 탈퇴 사유
     ) -> Observable<MeaninglessResponse>
 }

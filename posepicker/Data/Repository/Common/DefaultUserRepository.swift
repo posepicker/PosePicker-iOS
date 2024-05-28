@@ -76,7 +76,11 @@ final class DefaultUserRepository: UserRepository {
         }
     }
     
-    func reissueToken(refreshToken: String) -> Observable<Token> {
+    func reissueToken() -> Observable<Token> {
+        guard let refreshToken = self.keychainService.retrieve(key: K.Parameters.refreshToken, itemClass: .password) else {
+            return .empty()
+        }
+        
         return networkService.requestSingle(
             .refreshToken(
                 refreshToken: refreshToken
@@ -87,8 +91,19 @@ final class DefaultUserRepository: UserRepository {
             }
     }
     
-    func logout(accessToken: String, refreshToken: String) -> Observable<LogoutResponse> {
-        networkService.requestSingle(
+    func logout() -> Observable<LogoutResponse> {
+        guard let accessToken = self.keychainService.retrieve(key: K.Parameters.accessToken, itemClass: .password),
+              let refreshToken = self.keychainService.retrieve(key: K.Parameters.refreshToken, itemClass: .password) else {
+            return .just(
+                .init(
+                    entity: "ERROR",
+                    message: "ERROR",
+                    status: 500
+                )
+            )
+        }
+        
+        return networkService.requestSingle(
             .logout(
                 accessToken: accessToken,
                 refreshToken: refreshToken
@@ -100,7 +115,19 @@ final class DefaultUserRepository: UserRepository {
             }
     }
     
-    func deleteUserInfo(accessToken: String, refreshToken: String, withdrawalReason: String) -> Observable<MeaninglessResponse> {
+    func deleteUserInfo(withdrawalReason: String) -> Observable<MeaninglessResponse> {
+        guard let accessToken = self.keychainService.retrieve(key: K.Parameters.accessToken, itemClass: .password),
+              let refreshToken = self.keychainService.retrieve(key: K.Parameters.refreshToken, itemClass: .password) else {
+            return .just(
+                .init(
+                    entity: "ERROR",
+                    message: "ERROR",
+                    redirect: "ERROR",
+                    status: 500
+                )
+            )
+        }
+        
         return networkService.requestSingle(
             .revoke(
                 accessToken: accessToken,
