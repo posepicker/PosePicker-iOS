@@ -15,7 +15,6 @@ import Alamofire
 
 final class DefaultCommonUseCase: CommonUseCase {
     private let userRepository: UserRepository
-    
     private let disposeBag = DisposeBag()
     
     var loginCompleted = PublishSubject<Void>()
@@ -46,11 +45,7 @@ final class DefaultCommonUseCase: CommonUseCase {
     
     func logout(with: LoginPopUpView.SocialLogin) {
         UserDefaults.standard.setValue(false, forKey: K.SocialLogin.isLoggedIn)
-        guard let accessToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.accessToken),
-              let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.refreshToken) else {
-            return
-        }
-        userRepository.logout(accessToken: accessToken, refreshToken: refreshToken)
+        userRepository.logout()
             .subscribe(onNext: { [weak self] in
                 if $0.status >= 200 && $0.status <= 300 {
                     self?.logoutCompleted.onNext(())
@@ -78,14 +73,7 @@ final class DefaultCommonUseCase: CommonUseCase {
     
     
     func revoke(with: LoginPopUpView.SocialLogin, reason: String) {
-        guard let accessToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.accessToken),
-              let refreshToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.refreshToken) else {
-            return
-        }
-        
         userRepository.deleteUserInfo(
-            accessToken: accessToken,
-            refreshToken: refreshToken,
             withdrawalReason: reason
         )
         .catchAndReturn(MeaninglessResponse(entity: "", message: "", redirect: "", status: 500))
