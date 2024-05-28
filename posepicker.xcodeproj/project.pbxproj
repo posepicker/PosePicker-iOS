@@ -74,6 +74,7 @@
 		C91FF3742BAD894000096E25 /* AppCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3732BAD894000096E25 /* AppCoordinator.swift */; };
 		C91FF3762BAD897900096E25 /* PageViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3752BAD897900096E25 /* PageViewCoordinator.swift */; };
 		C91FF3782BAD8A3100096E25 /* Pages.swift in Sources */ = {isa = PBXBuildFile; fileRef = C91FF3772BAD8A3100096E25 /* Pages.swift */; };
+		C9247C172C05947F00EE3746 /* MockKeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9247C162C05947F00EE3746 /* MockKeychainService.swift */; };
 		C9254CE32B4922B100C4C779 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9254CE22B4922B000C4C779 /* WebKit.framework */; };
 		C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */; };
 		C93625902B907A6F00B90810 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C936258F2B907A6F00B90810 /* UITextField+.swift */; };
@@ -343,6 +344,7 @@
 		C91FF3732BAD894000096E25 /* AppCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppCoordinator.swift; sourceTree = "<group>"; };
 		C91FF3752BAD897900096E25 /* PageViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PageViewCoordinator.swift; sourceTree = "<group>"; };
 		C91FF3772BAD8A3100096E25 /* Pages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Pages.swift; sourceTree = "<group>"; };
+		C9247C162C05947F00EE3746 /* MockKeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockKeychainService.swift; sourceTree = "<group>"; };
 		C9254CE22B4922B000C4C779 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageWebViewController.swift; sourceTree = "<group>"; };
 		C936258F2B907A6F00B90810 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
@@ -732,6 +734,7 @@
 			children = (
 				88E1D6BB2B1E234A00DB8BF6 /* KeychainManager.swift */,
 				C96C9A932BB572D400AC2921 /* DefaultKeychainService.swift */,
+				C9247C162C05947F00EE3746 /* MockKeychainService.swift */,
 				C96C9AA52BB63E5100AC2921 /* Protocol */,
 			);
 			path = Keychain;
@@ -2532,6 +2535,7 @@
 				C96C9A822BB5020400AC2921 /* UIPageViewController+Rx.swift in Sources */,
 				C9AF36C32BC3DFFA00629B63 /* DefaultBookmarkCoordinator.swift in Sources */,
 				C9DC2F992AEA28E300D5170D /* PoseFeedFilterCell.swift in Sources */,
+				C9247C172C05947F00EE3746 /* MockKeychainService.swift in Sources */,
 				C9FD20F32BC4CC8B00C23E25 /* BookmarkDetailViewModel.swift in Sources */,
 				C91E184D2B99E484009611C3 /* ReportViewController.swift in Sources */,
 				C91E18442B99B300009611C3 /* UINavigationController+.swift in Sources */,
