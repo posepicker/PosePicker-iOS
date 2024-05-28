@@ -97,7 +97,6 @@
 		C94FD27F2AE395E3003777EB /* PosePickViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD27E2AE395E3003777EB /* PosePickViewController.swift */; };
 		C94FD2812AE39603003777EB /* PoseTalkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2802AE39603003777EB /* PoseTalkViewController.swift */; };
 		C94FD2832AE3960B003777EB /* PoseFeedViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2822AE3960B003777EB /* PoseFeedViewController.swift */; };
-		C94FD2852AE39612003777EB /* BookMarkViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2842AE39612003777EB /* BookMarkViewController.swift */; };
 		C94FD2872AE3961D003777EB /* PosePickViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2862AE3961D003777EB /* PosePickViewModel.swift */; };
 		C94FD2892AE39635003777EB /* PoseTalkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2882AE39635003777EB /* PoseTalkViewModel.swift */; };
 		C94FD2902AE398CF003777EB /* MyPageViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD28F2AE398CF003777EB /* MyPageViewController.swift */; };
@@ -186,9 +185,6 @@
 		C9AF36B42BC3BB8700629B63 /* BoomarkUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36B32BC3BB8700629B63 /* BoomarkUseCase.swift */; };
 		C9AF36B72BC3BBBD00629B63 /* DefaultBookmarkRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36B62BC3BBBD00629B63 /* DefaultBookmarkRepository.swift */; };
 		C9AF36BA2BC3BBCF00629B63 /* BookmarkRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36B92BC3BBCF00629B63 /* BookmarkRepository.swift */; };
-		C9AF36C32BC3DFFA00629B63 /* DefaultBookmarkCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36C22BC3DFFA00629B63 /* DefaultBookmarkCoordinator.swift */; };
-		C9AF36C52BC3E00B00629B63 /* BookmarkCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36C42BC3E00B00629B63 /* BookmarkCoordinator.swift */; };
-		C9AF36C72BC3E12800629B63 /* BookmarkViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36C62BC3E12800629B63 /* BookmarkViewModel.swift */; };
 		C9AF36CA2BC3E1B000629B63 /* DefaultMyPageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36C92BC3E1B000629B63 /* DefaultMyPageUseCase.swift */; };
 		C9AF36CD2BC3E1C400629B63 /* MyPageUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9AF36CC2BC3E1C400629B63 /* MyPageUseCase.swift */; };
 		C9C0CDC82AF1D9160041E423 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = C9C0CDC72AF1D9160041E423 /* Kingfisher */; };
@@ -361,7 +357,6 @@
 		C94FD27E2AE395E3003777EB /* PosePickViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickViewController.swift; sourceTree = "<group>"; };
 		C94FD2802AE39603003777EB /* PoseTalkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseTalkViewController.swift; sourceTree = "<group>"; };
 		C94FD2822AE3960B003777EB /* PoseFeedViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedViewController.swift; sourceTree = "<group>"; };
-		C94FD2842AE39612003777EB /* BookMarkViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookMarkViewController.swift; sourceTree = "<group>"; };
 		C94FD2862AE3961D003777EB /* PosePickViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickViewModel.swift; sourceTree = "<group>"; };
 		C94FD2882AE39635003777EB /* PoseTalkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseTalkViewModel.swift; sourceTree = "<group>"; };
 		C94FD28F2AE398CF003777EB /* MyPageViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageViewController.swift; sourceTree = "<group>"; };
@@ -435,9 +430,6 @@
 		C9AF36B32BC3BB8700629B63 /* BoomarkUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoomarkUseCase.swift; sourceTree = "<group>"; };
 		C9AF36B62BC3BBBD00629B63 /* DefaultBookmarkRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBookmarkRepository.swift; sourceTree = "<group>"; };
 		C9AF36B92BC3BBCF00629B63 /* BookmarkRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkRepository.swift; sourceTree = "<group>"; };
-		C9AF36C22BC3DFFA00629B63 /* DefaultBookmarkCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultBookmarkCoordinator.swift; sourceTree = "<group>"; };
-		C9AF36C42BC3E00B00629B63 /* BookmarkCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkCoordinator.swift; sourceTree = "<group>"; };
-		C9AF36C62BC3E12800629B63 /* BookmarkViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkViewModel.swift; sourceTree = "<group>"; };
 		C9AF36C92BC3E1B000629B63 /* DefaultMyPageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMyPageUseCase.swift; sourceTree = "<group>"; };
 		C9AF36CC2BC3E1C400629B63 /* MyPageUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPageUseCase.swift; sourceTree = "<group>"; };
 		C9C0CDCD2AF353AB0041E423 /* ToolTip.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolTip.swift; sourceTree = "<group>"; };
@@ -1686,49 +1678,6 @@
 			path = Protocol;
 			sourceTree = "<group>";
 		};
-		C9AF36BC2BC3DF5C00629B63 /* BookmarkScene */ = {
-			isa = PBXGroup;
-			children = (
-				C9AF36BE2BC3DF7900629B63 /* Coordinator */,
-				C9AF36C02BC3DF8300629B63 /* ViewController */,
-				C9AF36BF2BC3DF7E00629B63 /* ViewModel */,
-			);
-			path = BookmarkScene;
-			sourceTree = "<group>";
-		};
-		C9AF36BE2BC3DF7900629B63 /* Coordinator */ = {
-			isa = PBXGroup;
-			children = (
-				C9AF36C12BC3DFED00629B63 /* Protocol */,
-				C9AF36C22BC3DFFA00629B63 /* DefaultBookmarkCoordinator.swift */,
-			);
-			path = Coordinator;
-			sourceTree = "<group>";
-		};
-		C9AF36BF2BC3DF7E00629B63 /* ViewModel */ = {
-			isa = PBXGroup;
-			children = (
-				C9AF36C62BC3E12800629B63 /* BookmarkViewModel.swift */,
-			);
-			path = ViewModel;
-			sourceTree = "<group>";
-		};
-		C9AF36C02BC3DF8300629B63 /* ViewController */ = {
-			isa = PBXGroup;
-			children = (
-				C94FD2842AE39612003777EB /* BookMarkViewController.swift */,
-			);
-			path = ViewController;
-			sourceTree = "<group>";
-		};
-		C9AF36C12BC3DFED00629B63 /* Protocol */ = {
-			isa = PBXGroup;
-			children = (
-				C9AF36C42BC3E00B00629B63 /* BookmarkCoordinator.swift */,
-			);
-			path = Protocol;
-			sourceTree = "<group>";
-		};
 		C9AF36C82BC3E1A400629B63 /* MyPage */ = {
 			isa = PBXGroup;
 			children = (
@@ -1858,7 +1807,6 @@
 				C93851142BB3E16500E597C1 /* PoseFeedScene */,
 				C96C66C02BE1140D00B1F486 /* MyPoseScene */,
 				C9AF36A32BC3B9A900629B63 /* MyPageScene */,
-				C9AF36BC2BC3DF5C00629B63 /* BookmarkScene */,
 				C9FD21052BC6C64200C23E25 /* PoseUploadScene */,
 			);
 			path = Presentation;
@@ -2533,7 +2481,6 @@
 				C99D53B52B1EDA3A007DEE9B /* BookmarkFeedCellViewModel.swift in Sources */,
 				C96C9A9C2BB5C53000AC2921 /* PosePickRepository.swift in Sources */,
 				C96C9A822BB5020400AC2921 /* UIPageViewController+Rx.swift in Sources */,
-				C9AF36C32BC3DFFA00629B63 /* DefaultBookmarkCoordinator.swift in Sources */,
 				C9DC2F992AEA28E300D5170D /* PoseFeedFilterCell.swift in Sources */,
 				C9247C172C05947F00EE3746 /* MockKeychainService.swift in Sources */,
 				C9FD20F32BC4CC8B00C23E25 /* BookmarkDetailViewModel.swift in Sources */,
@@ -2557,7 +2504,6 @@
 				C9C890C52AE11BAB0010240A /* UIFont+.swift in Sources */,
 				C96C9A962BB5C48200AC2921 /* DefaultPosePickUseCase.swift in Sources */,
 				8803ADB92B04FB0D00185933 /* PoseDetailViewController.swift in Sources */,
-				C94FD2852AE39612003777EB /* BookMarkViewController.swift in Sources */,
 				C938512A2BB41CD900E597C1 /* PoseFeedCoordinator.swift in Sources */,
 				C96C66CF2BEB3DA600B1F486 /* MyPoseViewController.swift in Sources */,
 				C9FD21152BC78F8600C23E25 /* PoseUploadPages.swift in Sources */,
@@ -2653,14 +2599,12 @@
 				C91FF3582BAB275A00096E25 /* DefaultNetworkService.swift in Sources */,
 				C91FF35C2BABFB5F00096E25 /* PoseTalkRepository.swift in Sources */,
 				C9C890A22AE1098B0010240A /* Token.swift in Sources */,
-				C9AF36C72BC3E12800629B63 /* BookmarkViewModel.swift in Sources */,
 				C96C66F12BEB9B7300B1F486 /* MyPoseUploadedViewModel.swift in Sources */,
 				C9AF36B42BC3BB8700629B63 /* BoomarkUseCase.swift in Sources */,
 				88E1D6BC2B1E234A00DB8BF6 /* KeychainManager.swift in Sources */,
 				880E754D2AE6C06E007FAD5A /* Constants.swift in Sources */,
 				C96C66F82BECB04700B1F486 /* CoordinatorPageMoveDelegate.swift in Sources */,
 				C9FDBDF82B28AE240045AA54 /* BookmarkDetailTagCell.swift in Sources */,
-				C9AF36C52BC3E00B00629B63 /* BookmarkCoordinator.swift in Sources */,
 				C9AF36BA2BC3BBCF00629B63 /* BookmarkRepository.swift in Sources */,
 				C903E5422AFCC60D00BD004F /* Page.swift in Sources */,
 				880E75542AE6C28D007FAD5A /* NetworkError.swift in Sources */,
