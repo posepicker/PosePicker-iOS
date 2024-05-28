@@ -483,6 +483,7 @@
 		C9DEE41F2BC0481600C9C495 /* PoseDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseDetailViewModel.swift; sourceTree = "<group>"; };
 		C9E6025A2B16DA270098BC96 /* posepicker.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = posepicker.entitlements; sourceTree = "<group>"; };
 		C9EF8F4C2C05B96C005B78BC /* ci_post_clone.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_clone.sh; sourceTree = "<group>"; };
+		C9EF8F4D2C05BF58005B78BC /* ci_post_xcodebuild.sh */ = {isa = PBXFileReference; lastKnownFileType = text.script.sh; path = ci_post_xcodebuild.sh; sourceTree = "<group>"; };
 		C9FD20F22BC4CC8B00C23E25 /* BookmarkDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailViewModel.swift; sourceTree = "<group>"; };
 		C9FD20F42BC4D0E000C23E25 /* BookmarkDetailUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BookmarkDetailUseCase.swift; sourceTree = "<group>"; };
 		C9FD20F92BC51AC200C23E25 /* CoordinatorLoginDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorLoginDelegate.swift; sourceTree = "<group>"; };
@@ -1707,7 +1708,7 @@
 		C9C890452AE103A10010240A = {
 			isa = PBXGroup;
 			children = (
-				C9EF8F4B2C05B951005B78BC /* ci-scripts */,
+				C9EF8F4B2C05B951005B78BC /* ci_scripts */,
 				C9C890502AE103A10010240A /* posepicker */,
 				C96C9AED2BBA39EC00AC2921 /* PosePickerViewModelTests */,
 				C96C9B252BBA485300AC2921 /* PosePickerUseCaseTests */,
@@ -2018,12 +2019,13 @@
 			path = DetailViewModel;
 			sourceTree = "<group>";
 		};
-		C9EF8F4B2C05B951005B78BC /* ci-scripts */ = {
+		C9EF8F4B2C05B951005B78BC /* ci_scripts */ = {
 			isa = PBXGroup;
 			children = (
 				C9EF8F4C2C05B96C005B78BC /* ci_post_clone.sh */,
+				C9EF8F4D2C05BF58005B78BC /* ci_post_xcodebuild.sh */,
 			);
-			path = "ci-scripts";
+			path = ci_scripts;
 			sourceTree = "<group>";
 		};
 		C9FD20F02BC4CC5300C23E25 /* DetailViewController */ = {
