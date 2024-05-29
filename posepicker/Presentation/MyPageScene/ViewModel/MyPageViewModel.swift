@@ -11,12 +11,10 @@ import RxRelay
 
 final class MyPageViewModel {
     weak var coordinator: MyPageCoordinator?
-    private let myPageUseCase: MyPageUseCase
     private let commonUseCase: CommonUseCase
     
-    init(coordinator: MyPageCoordinator?, myPageUseCase: MyPageUseCase, commonUseCase: CommonUseCase) {
+    init(coordinator: MyPageCoordinator?, commonUseCase: CommonUseCase) {
         self.coordinator = coordinator
-        self.myPageUseCase = myPageUseCase
         self.commonUseCase = commonUseCase
     }
     

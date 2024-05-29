@@ -26,7 +26,6 @@ final class DefaultMyPageCoordinator: MyPageCoordinator {
     func start() {
         self.myPageViewController.viewModel = MyPageViewModel(
             coordinator: self,
-            myPageUseCase: DefaultMyPageUseCase(),
             commonUseCase: DefaultCommonUseCase(
                 userRepository: DefaultUserRepository(
                     networkService: DefaultNetworkService(),
