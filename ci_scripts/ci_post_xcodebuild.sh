@@ -40,7 +40,7 @@ if [ "$CI_XCODEBUILD_ACTION" = "build" ]; then
 
     # Discord로 메시지 전송
     curl -H "Content-Type: application/json" -X POST -d "{\"content\": \"$MESSAGE\"}" $WEBHOOK_URL
-elif [ "$CI_XCODEBUILD_ACTION" = "test" ]; then
+elif [ "$CI_XCODEBUILD_ACTION" = "test-without-building" ]; then
     # 테스트 상태 확인 및 메시지 설정
     if [ "$EXIT_CODE" -eq 0 ]; then
         MESSAGE="**Tests Passed!** ✅\n\n"
