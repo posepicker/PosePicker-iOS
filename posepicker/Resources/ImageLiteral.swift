@@ -42,4 +42,5 @@ enum ImageLiteral {
     static var imgRadioDefault: UIImage {.load(named: "imgRadioDefault")}
     static var imgRadioSelected: UIImage {.load(named: "imgRadioSelected")}
     static var imgLoginLogoStar: UIImage {.load(named: "imgLoginLogoStar")}
+    static var imgBanner: UIImage {.load(named: "imgBanner")}
 }
