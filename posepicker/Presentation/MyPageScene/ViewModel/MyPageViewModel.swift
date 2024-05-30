@@ -83,8 +83,7 @@ final class MyPageViewModel {
             .subscribe(onNext: { [weak self] in
                 switch $0 {
                 case .apple:
-                    guard let idToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.idToken) else { return }
-                    self?.commonUseCase.loginWithApple(idToken: idToken)
+                    self?.commonUseCase.loginWithApple()
                 case .kakao:
                     self?.commonUseCase.loginWithKakao()
                 default:
