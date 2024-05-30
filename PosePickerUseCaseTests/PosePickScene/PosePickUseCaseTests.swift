@@ -66,21 +66,12 @@ final class PosePickUseCaseTests: XCTestCase {
         
         self.posepickUseCase
             .poseImage
-            .subscribe(onNext: { [weak self] image in
-                print("posepick image: ",image)
+            .subscribe(onNext: { image in
                 ImageCache.default.retrieveImage(forKey: "https://posepicker-image.s3.ap-northeast-2.amazonaws.com/6fc77625e557babd80e8e389baf798c12a8d210d9c148de6595962923d81481b.jpg") { result in
                     expectation.fulfill()
-                    switch result {
-                    case .success(let value):
-                        print("cache hit!: \(value.cacheType)")
-                    case .failure:
-                        print("cache miss..")
-                    }
                 }
             })
             .disposed(by: self.disposeBag)
-        
-        
         
         self.scheduler.start()
         
