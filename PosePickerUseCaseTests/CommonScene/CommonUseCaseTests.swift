@@ -55,7 +55,7 @@ final class CommonSceneUseCaseTests: XCTestCase {
             .next(0, ())
         ])
         .subscribe(onNext: { [weak self] in
-            self?.commonUseCase.loginWithApple(idToken: "apple id token")
+            self?.commonUseCase.loginWithApple()
         })
         .disposed(by: self.disposeBag)
         
