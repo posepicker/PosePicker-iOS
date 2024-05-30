@@ -32,10 +32,10 @@ final class PoseFeedViewModel {
         let bookmarkBindingEvent: Observable<Int>
         let poseUploadButtonTapEvent: Observable<Void>
         let refreshEvent: Observable<Void>
+        let bookmarkButtonTapEvent: Observable<Section<PoseFeedPhotoCellViewModel>.Item>
     }
     
     struct Output {
-        let dataSource: RxCollectionViewSectionedReloadDataSource<Section<PoseFeedPhotoCellViewModel>>
         let contents = PublishRelay<[Section<PoseFeedPhotoCellViewModel>]>()
         let isLoading = BehaviorRelay<Bool>(value: false)
         let isLastPage = BehaviorRelay<Bool>(value: true)
@@ -48,7 +48,7 @@ final class PoseFeedViewModel {
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
-        let output = Output(dataSource: configureDataSource(disposeBag: disposeBag))
+        let output = Output()
         
         let currentPage = BehaviorRelay<Int>(value: 0)
         let apiRequestParameters = BehaviorRelay<[String]>(value: ["전체", "전체"])
@@ -194,7 +194,7 @@ final class PoseFeedViewModel {
                         apiRequestParams.remove(at: index)
                     }
                 }
-//                currentPage.accept(0)
+
                 apiRequestParameters.accept(apiRequestParams)
                 var registeredTags = output.registeredTagItems.value
                 registeredTags.removeAll(where: {
@@ -303,8 +303,7 @@ final class PoseFeedViewModel {
                         .subscribe(onNext: { [weak self] in
                             switch $0 {
                             case .apple:
-                                guard let idToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.idToken) else { return }
-                                self?.commonUseCase.loginWithApple(idToken: idToken)
+                                self?.commonUseCase.loginWithApple()
                             case .kakao:
                                 self?.commonUseCase.loginWithKakao()
                             default:
@@ -327,57 +326,32 @@ final class PoseFeedViewModel {
             })
             .disposed(by: disposeBag)
         
-        return output
-    }
-    
-    private func configureDataSource(disposeBag: DisposeBag) -> RxCollectionViewSectionedReloadDataSource<Section<PoseFeedPhotoCellViewModel>> {
-        return RxCollectionViewSectionedReloadDataSource<Section<PoseFeedPhotoCellViewModel>>(configureCell: { dataSource, collectionView, indexPath, item in
-            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PoseFeedPhotoCell.identifier, for: indexPath) as? PoseFeedPhotoCell else { return UICollectionViewCell() }
-            cell.disposeBag = DisposeBag()
-            cell.viewModel = item
-            cell.bind()
-            
-            /// 북마크 버튼 눌렸을때 로그인 여부 체크 -> 로그인 여부를 뭘로 체크할 것인가?
-            /// 키체인 토큰 조회해서 존재하면 북마크 API 요청
-            cell.bookmarkButton.rx.tap
-                .withUnretained(self)
-                .subscribe { [weak item] (owner, _) in
-                    guard let item = item else { return }
-                    if UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn) {
-                        // API요청 보내기
-                        owner.posefeedUseCase.bookmarkContent(poseId: item.poseId.value, currentChecked: item.bookmarkCheck.value)
-                        item.bookmarkCheck.accept(!item.bookmarkCheck.value)
-                    } else {
-                        // 로그인 화면 present
-                        guard let coordinator = owner.coordinator else { return }
-                        coordinator.loginDelegate?.coordinatorLoginRequested(childCoordinator: coordinator)
-                            .subscribe(onNext: {
-                                switch $0 {
-                                case .apple:
-                                    guard let idToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.idToken) else { return }
-                                    owner.commonUseCase.loginWithApple(idToken: idToken)
-                                case .kakao:
-                                    owner.commonUseCase.loginWithKakao()
-                                default:
-                                    break
-                                    
-                                }
-                            })
-                            .disposed(by: disposeBag)
-                    }
+        input.bookmarkButtonTapEvent
+            .withUnretained(self)
+            .subscribe(onNext: { (owner, item) in
+                if UserDefaults.standard.bool(forKey: K.SocialLogin.isLoggedIn) {
+                    // API요청 보내기
+                    owner.posefeedUseCase.bookmarkContent(poseId: item.poseId.value, currentChecked: item.bookmarkCheck.value)
+                    item.bookmarkCheck.accept(!item.bookmarkCheck.value)
+                } else {
+                    // 로그인 화면 present
+                    guard let coordinator = owner.coordinator else { return }
+                    coordinator.loginDelegate?.coordinatorLoginRequested(childCoordinator: coordinator)
+                        .subscribe(onNext: {
+                            switch $0 {
+                            case .apple:
+                                owner.commonUseCase.loginWithApple()
+                            case .kakao:
+                                owner.commonUseCase.loginWithKakao()
+                            default:
+                                break
+                            }
+                        })
+                        .disposed(by: disposeBag)
                 }
-                .disposed(by: cell.disposeBag)
-            return cell
-        }, configureSupplementaryView: { dataSource, collectionView, kind, indexPath -> UICollectionReusableView in
-            if indexPath.section == 0 {
-                let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedEmptyView.identifier, for: indexPath) as! PoseFeedEmptyView
-                return header
-            } else if indexPath.section == 1 {
-                let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedHeader.identifier, for: indexPath) as! PoseFeedHeader
-                let title = dataSource.sectionModels[indexPath.section].header
-                header.configureHeader(with: title)
-                return header
-            } else { return UICollectionReusableView() }
-        })
+            })
+            .disposed(by: disposeBag)
+        
+        return output
     }
 }
