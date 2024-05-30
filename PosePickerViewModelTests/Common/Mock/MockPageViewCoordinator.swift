@@ -32,6 +32,7 @@ final class MockPageViewCoordinator: PageViewCoordinator {
     var pageViewController: UIPageViewController
     var commonViewController: CommonViewController
     var type: CoordinatorType { .pageview }
+    var socialLogin: LoginPopUpView.SocialLogin = .apple
     
     var controllers: [UINavigationController] = []
     
@@ -136,6 +137,16 @@ final class MockPageViewCoordinator: PageViewCoordinator {
         default:
             break
         }
+    }
+}
+
+extension MockPageViewCoordinator: CoordinatorLoginDelegate {
+    func coordinatorLoginCompleted(childCoordinator: Coordinator) {
+        
+    }
+    
+    func coordinatorLoginRequested(childCoordinator: Coordinator) -> Observable<LoginPopUpView.SocialLogin> {
+        return .just(self.socialLogin)
     }
 }
 
