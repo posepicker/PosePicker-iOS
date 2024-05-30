@@ -16,6 +16,7 @@ final class PoseFeedViewModelTests: XCTestCase {
     private var scheduler: TestScheduler!
     private var input: PoseFeedViewModel.Input!
     private var posefeedUseCase: PoseFeedUseCase!
+    private var commonUseCase: CommonUseCase!
     private var output: PoseFeedViewModel.Output!
     private var coordinator: PoseFeedCoordinator!
     
@@ -23,16 +24,12 @@ final class PoseFeedViewModelTests: XCTestCase {
         super.setUp()
         self.scheduler = TestScheduler(initialClock: 0)
         self.posefeedUseCase = MockPoseFeedUseCase()
+        self.commonUseCase = MockCommonUseCase()
         self.coordinator = MockPoseFeedCoordinator(UINavigationController(rootViewController: PoseFeedViewController()))
         self.viewModel = PoseFeedViewModel(
             coordinator: self.coordinator,
             posefeedUseCase: self.posefeedUseCase, 
-            commonUseCase: DefaultCommonUseCase(
-                userRepository: DefaultUserRepository(
-                    networkService: DefaultNetworkService(),
-                    keychainService: DefaultKeychainService()
-                )
-            )
+            commonUseCase: self.commonUseCase
         )
         self.disposeBag = DisposeBag()
     }
@@ -52,7 +49,8 @@ final class PoseFeedViewModelTests: XCTestCase {
             poseUploadButtonTapEvent: self.scheduler.createColdObservable([
                 .next(0, ())
             ]).asObservable(),
-            refreshEvent: .empty()
+            refreshEvent: .empty(),
+            bookmarkButtonTapEvent: .empty()
         )
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
         
@@ -64,7 +62,7 @@ final class PoseFeedViewModelTests: XCTestCase {
             .next(0, ())
         ])
         let infiniteScrollEvent = self.scheduler.createHotObservable([
-            .next(1, ())
+            .next(2, ())
         ])
         
         let filteredContentsCountObserver = self.scheduler.createObserver(Int.self)
@@ -73,17 +71,26 @@ final class PoseFeedViewModelTests: XCTestCase {
         let filteredContentSizesCountObserver = self.scheduler.createObserver(Int.self)
         let recommendedContentSizesCountObserver = self.scheduler.createObserver(Int.self)
         
+        let dismissModalEventObservable = self.scheduler.createHotObservable([
+            .next(1, [
+                RegisteredFilterCellViewModel(title: "전체"),
+                RegisteredFilterCellViewModel(title: "전체"),
+                RegisteredFilterCellViewModel(title: "친구"),
+            ])
+        ])
+        
         self.input = PoseFeedViewModel.Input(
             viewDidLoadEvent: viewDidLoadEvent.asObservable(),
             infiniteScrollEvent: infiniteScrollEvent.asObservable(),
             filterButtonTapEvent: .empty(),
-            dismissFilterModalEvent: .empty(),
+            dismissFilterModalEvent: dismissModalEventObservable.asObservable(),
             filterTagTapEvent: .empty(),
             posefeedPhotoCellTapEvent: .empty(),
             dismissPoseDetailEvent: .empty(),
             bookmarkBindingEvent: .empty(),
             poseUploadButtonTapEvent: .empty(),
-            refreshEvent: .empty()
+            refreshEvent: .empty(),
+            bookmarkButtonTapEvent: .empty()
         )
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
         
@@ -110,27 +117,31 @@ final class PoseFeedViewModelTests: XCTestCase {
         self.scheduler.start()
         
         XCTAssertEqual(filteredContentsCountObserver.events, [
-            .next(0, 5),
-            .next(1, 10)
+            .next(0, 5),    // 1. viewDidLoad 데이터 초기 세팅
+            .next(1, 5),    // 2. 태그 세팅 이후 데이터
+            .next(2, 10)    // 3. 무한스크롤 데이터 스택
         ])
         
         XCTAssertEqual(recommendedContentsCountObserver.events, [
-            .next(0, 5),
-            .next(1, 10)
+            .next(0, 5),    // 1. viewDidLoad 데이터 초기 세팅
+            .next(1, 5),    // 2. 태그 세팅 이후 데이터
+            .next(2, 10)    // 3. 무한스크롤 데이터 스택
         ])
         
         XCTAssertEqual(filteredContentSizesCountObserver.events, [
             .next(0, 0),    // 1. BehaviorRelay 초기값 방출
             .next(0, 0),    // 2. pageNumber 0번 호출
             .next(0, 5),    // 3. 0번 페이지 포즈 이미지 사이즈 갯수
-            .next(1, 10)    // 4. 1번 페이지까지 쌓인 포즈 이미지 사이즈 갯수
+            .next(1, 5),    // 4. 태그 세팅 이후 데이터
+            .next(2, 10)    // 5. 1번 페이지까지 쌓인 포즈 이미지 사이즈 갯수
         ])
         
         XCTAssertEqual(recommendedContentSizesCountObserver.events, [
             .next(0, 0),    // 1. BehaviorRelay 초기값 방출
             .next(0, 0),    // 2. pageNumber 0번 호출
             .next(0, 5),    // 3. 0번 페이지 포즈 이미지 사이즈 갯수
-            .next(1, 10)    // 4. 1번 페이지까지 쌓인 포즈 이미지 사이즈 갯수
+            .next(1, 5),    // 4. 태그 세팅 이후 데이터
+            .next(2, 10)    // 5. 1번 페이지까지 쌓인 포즈 이미지 사이즈 갯수
         ])
     }
     
@@ -167,7 +178,8 @@ final class PoseFeedViewModelTests: XCTestCase {
             dismissPoseDetailEvent: .empty(),
             bookmarkBindingEvent: .empty(),
             poseUploadButtonTapEvent: .empty(),
-            refreshEvent: .empty()
+            refreshEvent: .empty(),
+            bookmarkButtonTapEvent: .empty()
         )
         
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
@@ -217,7 +229,8 @@ final class PoseFeedViewModelTests: XCTestCase {
             dismissPoseDetailEvent: .empty(),
             bookmarkBindingEvent: .empty(),
             poseUploadButtonTapEvent: .empty(),
-            refreshEvent: .empty()
+            refreshEvent: .empty(),
+            bookmarkButtonTapEvent: .empty()
         )
         
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
@@ -277,7 +290,8 @@ final class PoseFeedViewModelTests: XCTestCase {
             dismissPoseDetailEvent: .empty(),
             bookmarkBindingEvent: .empty(),
             poseUploadButtonTapEvent: .empty(),
-            refreshEvent: .empty()
+            refreshEvent: .empty(),
+            bookmarkButtonTapEvent: .empty()
         )
         
         /// 3. 태그 삭제 여부 검증
@@ -333,7 +347,8 @@ final class PoseFeedViewModelTests: XCTestCase {
             ]).asObservable(),
             bookmarkBindingEvent: .empty(),
             poseUploadButtonTapEvent: .empty(),
-            refreshEvent: .empty()
+            refreshEvent: .empty(),
+            bookmarkButtonTapEvent: .empty()
         )
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
         
@@ -391,7 +406,8 @@ final class PoseFeedViewModelTests: XCTestCase {
                 .next(3, 9)
             ]).asObservable(),
             poseUploadButtonTapEvent: .empty(),
-            refreshEvent: .empty()
+            refreshEvent: .empty(),
+            bookmarkButtonTapEvent: .empty()
         )
         
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
@@ -451,6 +467,9 @@ final class PoseFeedViewModelTests: XCTestCase {
     /// 포즈피드 내부에서 북마크 체크
     /// API 요청 후 마이포즈로 값 바인딩 진행
     func test_북마크_체크() {
+        let expectation = XCTestExpectation(description: "북마크 체크가 정상적으로 이루어졌는지")
+        let bookmarkCheckValueObserver = self.scheduler.createObserver(Bool.self)
+        
         self.input = PoseFeedViewModel.Input(
             viewDidLoadEvent: self.scheduler.createColdObservable([
                 .next(0, ())
@@ -463,10 +482,245 @@ final class PoseFeedViewModelTests: XCTestCase {
             dismissPoseDetailEvent: .empty(),
             bookmarkBindingEvent: .empty(),
             poseUploadButtonTapEvent: .empty(),
-            refreshEvent: .empty()
+            refreshEvent: .empty(),
+            bookmarkButtonTapEvent: self.scheduler.createColdObservable([
+                .next(1, Section<PoseFeedPhotoCellViewModel>.Item(image: nil, poseId: 1, bookmarkCheck: false)),    // poseId 1번 객체 북마크 true로 체크
+                .next(2, Section<PoseFeedPhotoCellViewModel>.Item(image: nil, poseId: -1, bookmarkCheck: false)),    // 잘못된 북마크 체크 case
+                .next(11, Section<PoseFeedPhotoCellViewModel>.Item(image: nil, poseId: 1, bookmarkCheck: true)),      // 로그아웃 이후 북마크 체크 테스트 (애플로그인)
+                .next(14, Section<PoseFeedPhotoCellViewModel>.Item(image: nil, poseId: 1, bookmarkCheck: true)),       // 로그아웃 이후 북마크 체크 테스트 (카카오로그인)
+                .next(16, Section<PoseFeedPhotoCellViewModel>.Item(image: nil, poseId: 1, bookmarkCheck: true))       // 로그아웃 이후 북마크 체크 테스트 (잘못된 로그인 요청 케이스 (.none 케이스)
+            ]).asObservable()
         )
         
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
+        
+        
+        /// 1. 로그인 된 이후 북마크 체크 테스트
+        self.scheduler
+            .createColdObservable([
+                .next(0, ())
+            ])
+            .subscribe(onNext: {
+                UserDefaults.standard.setValue(true, forKey: K.SocialLogin.isLoggedIn)
+            })
+            .disposed(by: disposeBag)
+        
+        self.posefeedUseCase
+            .bookmarkTaskCompleted
+            .subscribe(onNext: {
+                if $0 {
+                    expectation.fulfill()
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        self.posefeedUseCase
+            .feedContents
+            .compactMap { $0.first?.items }
+            .compactMap { $0.first(where: { $0.poseId.value == 1 })}
+            .flatMapLatest { $0.bookmarkCheck }
+            .subscribe(bookmarkCheckValueObserver)
+            .disposed(by: disposeBag)
+        
+        /// 2. 로그아웃 상태의 북마크 체크 테스트
+        /// 애플로그인 먼저 테스트 하고 카카오 로그인 테스트
+        self.scheduler
+            .createColdObservable([
+                .next(10, ())
+            ])
+            .subscribe(onNext: {
+                UserDefaults.standard.setValue(false, forKey: K.SocialLogin.isLoggedIn)
+            })
+            .disposed(by: disposeBag)
+        
+        self.scheduler
+            .createColdObservable([
+                .next(13, ()),
+                .next(15, ())
+            ])
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator.start() // 애플 로그인으로 소셜 로그인 상태 전환
+            })
+            .disposed(by: disposeBag)
+        
+        self.scheduler.start()
+        
+        wait(for: [expectation], timeout: 5)
+        
+        XCTAssertEqual(bookmarkCheckValueObserver.events, [
+            .next(0, false),
+            .next(1, true)
+        ])
+    }
+    
+    func test_리프레시_컨트롤_이벤트() {
+        let infiniteScrollEvent = self.scheduler.createHotObservable([
+            .next(2, ())
+        ])
+        let dismissModalEventObservable = self.scheduler.createHotObservable([
+            .next(1, [
+                RegisteredFilterCellViewModel(title: "전체"),
+                RegisteredFilterCellViewModel(title: "전체"),
+                RegisteredFilterCellViewModel(title: "친구"),
+            ])
+        ])
+        
+        let contentsCountObserver = self.scheduler.createObserver(Int.self)
+        
+        self.input = PoseFeedViewModel.Input(
+            viewDidLoadEvent: self.scheduler.createColdObservable([
+                .next(0, ())
+            ]).asObservable(),
+            infiniteScrollEvent: infiniteScrollEvent.asObservable(),
+            filterButtonTapEvent: .empty(),
+            dismissFilterModalEvent: dismissModalEventObservable.asObservable(),
+            filterTagTapEvent: .empty(),
+            posefeedPhotoCellTapEvent: .empty(),
+            dismissPoseDetailEvent: .empty(),
+            bookmarkBindingEvent: .empty(),
+            poseUploadButtonTapEvent: .empty(),
+            refreshEvent: self.scheduler.createColdObservable([
+                .next(3, ())
+            ]).asObservable(),
+            bookmarkButtonTapEvent: .empty()
+        )
+        
+        self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
+        
+        self.posefeedUseCase
+            .feedContents
+            .compactMap { $0.first }
+            .map { $0.items.count }
+            .subscribe(contentsCountObserver)
+            .disposed(by: self.disposeBag)
+        
+        self.scheduler.start()
+        
+        XCTAssertEqual(contentsCountObserver.events, [
+            .next(0, 5),    // 1. 초기 요청 후 데이터 세팅
+            .next(1, 5),    // 2. 필터 세팅 후 데이터
+            .next(2, 10),   // 3. 무한 스크롤로 다음 페이지 데이터 요청
+            .next(3, 5)     // 4. 새로고침 하면 1페이지 데이터로 갯수 초기화
+        ])
+    }
+    
+    func test_로그인_완료_이후_데이터_새로고침_되는지() {
+        let infiniteScrollEvent = self.scheduler.createHotObservable([
+            .next(1, ())
+        ])
+        
+        let contentsCountObserver = self.scheduler.createObserver(Int.self)
+        let viewDidLoadEvent = PublishSubject<Void>()
+        
+        self.input = PoseFeedViewModel.Input(
+            viewDidLoadEvent: viewDidLoadEvent,
+            infiniteScrollEvent: infiniteScrollEvent.asObservable(),
+            filterButtonTapEvent: .empty(),
+            dismissFilterModalEvent: .empty(),
+            filterTagTapEvent: .empty(),
+            posefeedPhotoCellTapEvent: .empty(),
+            dismissPoseDetailEvent: .empty(),
+            bookmarkBindingEvent: .empty(),
+            poseUploadButtonTapEvent: .empty(),
+            refreshEvent: .empty(),
+            bookmarkButtonTapEvent: .empty()
+        )
+        
+        self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
+        
+        self.posefeedUseCase
+            .feedContents
+            .compactMap { $0.first }
+            .map { $0.items.count }
+            .subscribe(contentsCountObserver)
+            .disposed(by: self.disposeBag)
+        
+        /// 1. 초기 데이터 요청
+        self.scheduler.createColdObservable([
+            .next(0, ())
+        ])
+        .subscribe(onNext: {
+            viewDidLoadEvent.onNext(())
+        })
+        .disposed(by: disposeBag)
+        
+        /// 2. 로그인 완료
+        self.scheduler.createColdObservable([
+            .next(3, ())
+        ])
+        .subscribe(onNext: { [weak self] in
+            self?.commonUseCase.loginWithApple()
+        })
+        .disposed(by: disposeBag)
+        
+        /// 3. 유스케이스에서 로그인 완료 여부 확인 -> viewDidLoad 한번 더 트리거 / 기본 output 로직
+        self.output
+            .refreshEvent
+            .subscribe(onNext: {
+                viewDidLoadEvent.onNext(())
+            })
+            .disposed(by: disposeBag)
+        
+        self.scheduler.start()
+        
+        XCTAssertEqual(contentsCountObserver.events, [
+            .next(0, 5),    // 1. 초기 요청 후 데이터
+            .next(1, 10),   // 2. 무한스크롤 다음 페이지 데이터 요청 후 쌓인 갯수
+            .next(3, 5)     // 3. 로그인 or 로그아웃 후 새로고침 된 이후 데이터 갯수
+        ])
+    }
+    
+    func test_포즈_업로드_버튼_탭() {
+        self.input = PoseFeedViewModel.Input(
+            viewDidLoadEvent: .empty(),
+            infiniteScrollEvent: .empty(),
+            filterButtonTapEvent: .empty(),
+            dismissFilterModalEvent: .empty(),
+            filterTagTapEvent: .empty(),
+            posefeedPhotoCellTapEvent: .empty(),
+            dismissPoseDetailEvent: .empty(),
+            bookmarkBindingEvent: .empty(),
+            poseUploadButtonTapEvent: self.scheduler.createColdObservable([
+                .next(1, ()),
+                .next(5, ()),
+                .next(7, ()),
+                .next(9, ()),
+            ]).asObservable(),
+            refreshEvent: .empty(),
+            bookmarkButtonTapEvent: .empty()
+        )
+        
+        self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
+        
+        /// time 0 : 로그인 상태
+        self.scheduler.createColdObservable([
+            .next(0, ())
+        ])
+        .subscribe(onNext: {
+            UserDefaults.standard.setValue(true, forKey: K.SocialLogin.isLoggedIn)
+        })
+        .disposed(by: disposeBag)
+        
+        /// time 4: 로그아웃 상태
+        self.scheduler.createColdObservable([
+            .next(4, ())
+        ])
+        .subscribe(onNext: {
+            UserDefaults.standard.setValue(false, forKey: K.SocialLogin.isLoggedIn)
+        })
+        .disposed(by: disposeBag)
+        
+        self.scheduler
+            .createColdObservable([
+                .next(6, ()),
+                .next(8, ())
+            ])
+            .subscribe(onNext: { [weak self] in
+                self?.coordinator.start() // 애플 로그인으로 소셜 로그인 상태 전환
+            })
+            .disposed(by: disposeBag)
+        
+        self.scheduler.start()
     }
     
     override func tearDown() {
@@ -477,5 +731,6 @@ final class PoseFeedViewModelTests: XCTestCase {
         self.input = nil
         self.posefeedUseCase = nil
         self.output = nil
+        UserDefaults.standard.setValue(false, forKey: K.SocialLogin.isLoggedIn)
     }
 }
