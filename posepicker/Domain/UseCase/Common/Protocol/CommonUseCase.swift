@@ -14,7 +14,7 @@ protocol CommonUseCase {
     var revokeCompleted: PublishSubject<Void> { get set }
     
     func loginWithKakao()
-    func loginWithApple(idToken: String)
+    func loginWithApple()
     func logout(with: LoginPopUpView.SocialLogin)
     func revoke(with: LoginPopUpView.SocialLogin, reason: String)
 }
