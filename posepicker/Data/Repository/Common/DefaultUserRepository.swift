@@ -59,7 +59,8 @@ final class DefaultUserRepository: UserRepository {
         }
     }
     
-    func loginWithApple(idToken: String) -> Observable<PosePickerUser> {
+    func loginWithApple() -> Observable<PosePickerUser> {
+        guard let idToken = keychainService.retrieve(key: K.Parameters.idToken, itemClass: .password) else { return .empty()}
         return networkService.requestSingle(
             .appleLogin(
                 idToken: idToken

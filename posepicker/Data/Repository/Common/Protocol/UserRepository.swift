@@ -20,7 +20,6 @@ protocol UserRepository {
     
     // MARK: - 애플 로그인 to 포즈피커
     func loginWithApple(
-        idToken: String             // 애플 아이덴티티 토큰
     ) -> Observable<PosePickerUser>
     
     // MARK: - 토큰 REFRESH/DELETE
