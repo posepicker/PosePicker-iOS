@@ -67,7 +67,7 @@ final class MockUserRepository: UserRepository {
         )
     }
     
-    func loginWithApple(idToken: String) -> Observable<PosePickerUser> {
+    func loginWithApple() -> Observable<PosePickerUser> {
         return Observable<PosePickerUser>.just(
             .init(
                 email: "rudwns3927@gmail.com",

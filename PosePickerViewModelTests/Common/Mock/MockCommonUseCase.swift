@@ -26,9 +26,11 @@ final class MockCommonUseCase: CommonUseCase {
     
     func loginWithKakao() {
         print("카카오 로그인 완료")
+        loginCompleted.onNext(())
     }
     
-    func loginWithApple(idToken: String) {
+    func loginWithApple() {
         print("애플 로그인 완료")
+        loginCompleted.onNext(())
     }
 }
