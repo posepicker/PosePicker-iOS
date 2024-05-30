@@ -61,7 +61,7 @@ final class MockPoseFeedUseCase: PoseFeedUseCase {
             .init(image: ImageLiteral.imgInfo24, poseId: 1, bookmarkCheck: false),
             .init(image: ImageLiteral.imgInfo24, poseId: 2, bookmarkCheck: false),
             .init(image: ImageLiteral.imgInfo24, poseId: 3, bookmarkCheck: false),
-            .init(image: ImageLiteral.imgInfo24, poseId: 4, bookmarkCheck: false),
+            .init(image: ImageLiteral.imgInfo24, poseId: 4, bookmarkCheck: true),
         ]),
             Section(header: "", items: [
                 .init(image: ImageLiteral.imgInfo24, poseId: 5, bookmarkCheck: false),
