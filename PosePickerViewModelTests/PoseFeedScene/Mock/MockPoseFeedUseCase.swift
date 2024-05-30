@@ -15,7 +15,13 @@ final class MockPoseFeedUseCase: PoseFeedUseCase {
     var bookmarkTaskCompleted = PublishSubject<Bool>()
     
     func bookmarkContent(poseId: Int, currentChecked: Bool) {
-        return
+        if let filteredContents = feedContents.value.first,
+           let item = filteredContents.items.first(where: { $0.poseId.value == poseId }) {
+            item.bookmarkCheck.accept(!currentChecked)
+            bookmarkTaskCompleted.onNext(true)
+        } else {
+            bookmarkTaskCompleted.onNext(false)
+        }
     }
     
     
@@ -35,8 +41,34 @@ final class MockPoseFeedUseCase: PoseFeedUseCase {
         isLastPage.accept(false)
         let value = generateMockupData()
         
-        if pageNumber == 0 { self.feedContents.accept(value) }
+        if pageNumber == 0 { 
+            self.feedContents.accept(value)
+            
+            self.filterSectionContentSizes.accept(
+                .init(
+                    repeating: CGSize(width: 10, height: 10),
+                    count: 5
+                )
+            )
+            self.recommendSectionContentSizes.accept(
+                .init(
+                    repeating: CGSize(width: 10, height: 10),
+                    count: 5
+                )
+            )
+        }
         else {
+            self.filterSectionContentSizes.accept(
+                self.filterSectionContentSizes.value + .init(
+                repeating: CGSize(width: 10, height: 10),
+                count: 5
+            ))
+            self.recommendSectionContentSizes.accept(
+                self.recommendSectionContentSizes.value + .init(
+                    repeating: CGSize(width: 10, height: 10),
+                    count: 5
+                ))
+            
             var contents = self.feedContents.value
             contents[0].items += value[0].items
             contents[1].items += value[1].items
@@ -45,16 +77,6 @@ final class MockPoseFeedUseCase: PoseFeedUseCase {
     }
     
     private func generateMockupData() -> [Section<PoseFeedPhotoCellViewModel>] {
-        self.filterSectionContentSizes.accept(
-            self.filterSectionContentSizes.value + .init(
-            repeating: CGSize(width: 10, height: 10),
-            count: 5
-        ))
-        self.recommendSectionContentSizes.accept(
-            self.recommendSectionContentSizes.value + .init(
-                repeating: CGSize(width: 10, height: 10),
-                count: 5
-            ))
         return [
             Section(header: "", items: [
             .init(image: ImageLiteral.imgInfo24, poseId: 0, bookmarkCheck: false),
