@@ -36,8 +36,7 @@ final class DefaultCommonUseCase: CommonUseCase {
     }
     
     func loginWithApple() {
-        guard let idToken = try? KeychainManager.shared.retrieveItem(ofClass: .password, key: K.Parameters.idToken) else { return }
-        userRepository.loginWithApple(idToken: idToken)
+        userRepository.loginWithApple()
             .subscribe(onNext: { [weak self] _ in
                 self?.loginCompleted.onNext(())
             })
