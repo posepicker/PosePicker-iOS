@@ -12,6 +12,7 @@ import RxSwift
 final class MockPoseFeedCoordinator: PoseFeedCoordinator {
     var loginDelegate: CoordinatorLoginDelegate?
     var bookmarkContentsUpdatedDelegate: CoordinatorBookmarkContentsUpdateDelegate?
+    private let mockPageViewCoordinator = MockPageViewCoordinator(UINavigationController())
     
     func presentFilterModal(currentTags: [String]) {
         
@@ -62,12 +63,22 @@ final class MockPoseFeedCoordinator: PoseFeedCoordinator {
     var type: posepicker.CoordinatorType
     
     func start() {
+        switch mockPageViewCoordinator.socialLogin {
+        case .apple:
+            self.mockPageViewCoordinator.socialLogin = .kakao
+        case .kakao:
+            self.mockPageViewCoordinator.socialLogin = .none
+        case .none:
+            self.mockPageViewCoordinator.socialLogin = .apple
+        }
     }
     
     init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
         self.childCoordinators = []
         self.type = .posefeed
+        
+        self.loginDelegate = self.mockPageViewCoordinator
     }
     
     
