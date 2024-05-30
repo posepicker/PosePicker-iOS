@@ -9,6 +9,7 @@ import UIKit
 import RxCocoa
 import RxSwift
 import Kingfisher
+import RxDataSources
 
 class PoseFeedViewController: BaseViewController {
     
@@ -113,6 +114,7 @@ class PoseFeedViewController: BaseViewController {
     private let filteredContentSizes = BehaviorRelay<[CGSize]>(value: [])
     private let recommendedContentSizes = BehaviorRelay<[CGSize]>(value: [])
     private let infiniteScrollEvent = PublishSubject<Void>()
+    private let bookmarkButtonTapEvent = PublishSubject<Section<PoseFeedPhotoCellViewModel>.Item>()
     let viewDidLoadEvent = PublishSubject<Void>()
     let bookmarkBindingEvent = PublishSubject<Int>()
     let dismissFilterModalEvent = PublishSubject<[RegisteredFilterCellViewModel]>()
@@ -220,7 +222,8 @@ class PoseFeedViewController: BaseViewController {
             dismissPoseDetailEvent: dismissPoseDetailEvent,
             bookmarkBindingEvent: bookmarkBindingEvent,
             poseUploadButtonTapEvent: poseUploadButton.rx.tap.asObservable(),
-            refreshEvent: refreshControl.rx.controlEvent(.valueChanged).asObservable()
+            refreshEvent: refreshControl.rx.controlEvent(.valueChanged).asObservable(),
+            bookmarkButtonTapEvent: bookmarkButtonTapEvent
         )
         
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
@@ -274,7 +277,7 @@ private extension PoseFeedViewController {
             .disposed(by: disposeBag)
         
         output.contents
-            .bind(to: poseFeedCollectionView.rx.items(dataSource: output.dataSource))
+            .bind(to: poseFeedCollectionView.rx.items(dataSource: self.configureDataSource()))
             .disposed(by: disposeBag)
         
         // 컨텐츠 세팅 후 컬렉션뷰 스크롤 초기 위치로 이동
@@ -405,5 +408,35 @@ private extension PoseFeedViewController {
                 self?.refreshControl.endRefreshing()
             })
             .disposed(by: disposeBag)
+    }
+    
+    func configureDataSource() -> RxCollectionViewSectionedReloadDataSource<Section<PoseFeedPhotoCellViewModel>> {
+        return RxCollectionViewSectionedReloadDataSource<Section<PoseFeedPhotoCellViewModel>>(configureCell: { dataSource, collectionView, indexPath, item in
+            guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: PoseFeedPhotoCell.identifier, for: indexPath) as? PoseFeedPhotoCell else { return UICollectionViewCell() }
+            cell.disposeBag = DisposeBag()
+            cell.viewModel = item
+            cell.bind()
+            
+            /// 북마크 버튼 눌렸을때 로그인 여부 체크 -> 로그인 여부를 뭘로 체크할 것인가?
+            /// 키체인 토큰 조회해서 존재하면 북마크 API 요청
+            cell.bookmarkButton.rx.tap
+                .withUnretained(self)
+                .subscribe(onNext: { (owner, _) in
+                    owner.bookmarkButtonTapEvent.onNext(item)
+                })
+                .disposed(by: cell.disposeBag)
+            
+            return cell
+        }, configureSupplementaryView: { dataSource, collectionView, kind, indexPath -> UICollectionReusableView in
+            if indexPath.section == 0 {
+                let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedEmptyView.identifier, for: indexPath) as! PoseFeedEmptyView
+                return header
+            } else if indexPath.section == 1 {
+                let header = collectionView.dequeueReusableSupplementaryView(ofKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: PoseFeedHeader.identifier, for: indexPath) as! PoseFeedHeader
+                let title = dataSource.sectionModels[indexPath.section].header
+                header.configureHeader(with: title)
+                return header
+            } else { return UICollectionReusableView() }
+        })
     }
 }
