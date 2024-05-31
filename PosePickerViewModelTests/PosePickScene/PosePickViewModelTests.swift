@@ -66,7 +66,7 @@ final class PosePickViewModelTests: XCTestCase {
             selectedPeopleCount: peopleCountButtonTestableObservable.asObservable(),
             posepickButtonEvent: posepickButtonTapTestableObservable.asObservable(),
             isAnimating: isAnimatingTestableObservable.asObservable(),
-            imageViewTapEvent: Observable<UIImage?>.empty()
+            imageViewTapEvent: .just(nil)
         )
         
         self.output = self.viewModel.transform(input: input, disposeBag: self.disposeBag)
