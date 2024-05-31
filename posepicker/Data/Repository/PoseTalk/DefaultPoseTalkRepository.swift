@@ -17,10 +17,10 @@ final class DefaultPoseTalkRepository: PoseTalkRepository {
         self.networkService = networkService
     }
     
-    func fetchPoseWord() -> Observable<String> {
+    func fetchPoseWord() -> Observable<String?> {
         return networkService.requestSingle(.retrievePoseTalk)
             .asObservable()
-            .map { (poseTalk: PoseTalk) -> String in
+            .map { (poseTalk: PoseTalk) -> String? in
                 return poseTalk.poseWord.content
             }
     }
