@@ -12,7 +12,7 @@ import XCTest
 @testable import posepicker
 
 final class MockPoseTalkRepository: PoseTalkRepository {
-    func fetchPoseWord() -> Observable<String> {
+    func fetchPoseWord() -> Observable<String?> {
         return Observable.just("포즈톡 예시 키워드")
     }
 }
