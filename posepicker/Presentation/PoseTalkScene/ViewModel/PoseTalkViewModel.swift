@@ -39,6 +39,9 @@ class PoseTalkViewModel {
     }
     
     func transform(input: Input, disposeBag: DisposeBag) -> Output {
+        let output = Output()
+        let maxRetryValue = BehaviorRelay<Int>(value: 0)
+        
         self.configureInput(input, disposeBag: disposeBag)
         
         input.tooltipButtonTapEvent
@@ -59,7 +62,32 @@ class PoseTalkViewModel {
             })
             .disposed(by: disposeBag)
         
-        return createOutput(from: input, disposeBag: disposeBag)
+        input.poseTalkButtonTapped
+            .subscribe(onNext: {
+                maxRetryValue.accept(1)
+                output.animate.onNext(())
+            })
+            .disposed(by: disposeBag)
+
+        Observable.combineLatest(self.posetalkUseCase.poseWord, input.isAnimating, self.posetalkUseCase.isLoading)
+            .subscribe(onNext: { poseWord, animating, isLoading in
+                guard let poseWord = poseWord,
+                      !isLoading else {
+                    if !animating && maxRetryValue.value < 5 {
+                        maxRetryValue.accept(maxRetryValue.value + 1)
+                        output.animate.onNext(())
+                    }
+                    return
+                }
+                
+                if !animating {
+                    maxRetryValue.accept(1)
+                    output.poseWord.accept(poseWord)
+                }
+            })
+            .disposed(by: disposeBag)
+        
+        return output
     }
 
     /// configureInput: 인풋 이벤트를 기반으로 유스케이스 -> 레파지토리를 거쳐 데이터를 저장해둔다.
@@ -71,27 +99,5 @@ class PoseTalkViewModel {
                 self?.posetalkUseCase.fetchPoseTalk()
             })
             .disposed(by: disposeBag)
-    }
-    
-    /// createOutput: configureInput 함수 내에서 유스케이스에 모든 데이터 정제가 끝날 수도 있지만
-    /// cocoa 이벤트를 기반으로 새롭게 아웃풋에 정제가 필요한 경우도 존재함
-    private func createOutput(from input: Input, disposeBag: DisposeBag) -> Output {
-        let output = Output()
-        
-        input.poseTalkButtonTapped
-            .subscribe(onNext: {
-                output.animate.onNext(())
-            })
-            .disposed(by: disposeBag)
-
-        Observable.combineLatest(self.posetalkUseCase.poseWord, input.isAnimating)
-            .subscribe(onNext: { poseWord, animating in
-                if !animating {
-                    output.poseWord.accept(poseWord)
-                }
-            })
-            .disposed(by: disposeBag)
-        
-        return output
     }
 }
