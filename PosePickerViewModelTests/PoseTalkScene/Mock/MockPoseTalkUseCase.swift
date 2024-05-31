@@ -7,13 +7,15 @@
 
 import Foundation
 import RxSwift
+import RxRelay
 
 @testable import posepicker
 
 final class MockPoseTalkUseCase: PoseTalkUseCase {
-    var poseWord = PublishSubject<String?>()
+    var poseWord = BehaviorRelay<String?>(value: nil)
+    var isLoading = BehaviorRelay<Bool>(value: false)
     
     func fetchPoseTalk() {
-        poseWord.onNext("고개들어 하늘 보라")
+        poseWord.accept("고개들어 하늘 보라")
     }
 }
