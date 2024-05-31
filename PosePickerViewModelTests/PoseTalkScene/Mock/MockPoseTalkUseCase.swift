@@ -13,7 +13,7 @@ import RxRelay
 
 final class MockPoseTalkUseCase: PoseTalkUseCase {
     var poseWord = BehaviorRelay<String?>(value: nil)
-    var isLoading = BehaviorRelay<Bool>(value: false)
+    var isLoading = BehaviorRelay<Bool>(value: true)
     
     func fetchPoseTalk() {
         poseWord.accept("고개들어 하늘 보라")
