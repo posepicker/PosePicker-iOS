@@ -7,9 +7,11 @@
 
 import Foundation
 import RxSwift
+import RxRelay
 
 protocol PoseTalkUseCase {
-    var poseWord: PublishSubject<String> { get set }
+    var poseWord: BehaviorRelay<String?> { get set }
+    var isLoading: BehaviorRelay<Bool> { get set }
     
     func fetchPoseTalk()
 }
