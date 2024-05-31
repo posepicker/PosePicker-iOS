@@ -36,22 +36,27 @@ final class PoseTalkViewModelTests: XCTestCase {
     /// 1. 버튼 탭
     /// 2. 
     func test_애니메이션_테스트() {
+        // MARK: - 테스트 옵저버블
         let buttonTapEvent = self.scheduler.createColdObservable([
             .next(0, ())
         ])
+        
+        // MARK: - 인풋 옵저버블
         let isAnimating = BehaviorRelay<Bool>(value: false)
         
-        // 포즈톡 요청 후 로티 애니메이션 트리거 옵저버
-        // 포즈 단어가 비어있는 경우 트리거 옵저버블에서 next 이벤트를 방출
-        let animteTriggerObserver = self.scheduler.createObserver(Bool.self)
+        // MARK: - 옵저버
+        let posewordObserver = self.scheduler.createObserver(String.self)
         
-        // 포즈 단어 옵저버
-        let poseWordObserver = self.scheduler.createObserver(String.self)
+        // MARK: - Expectation
+        let expectation = XCTestExpectation(description: "포즈 단어 로딩중일때 애니메이션 5번 트리거 되는지")
+        expectation.expectedFulfillmentCount = 5
         
         self.input = PoseTalkViewModel.Input(
             poseTalkButtonTapped: .init(events: buttonTapEvent),
             isAnimating: isAnimating,
-            tooltipButtonTapEvent: .empty(),
+            tooltipButtonTapEvent: self.scheduler.createColdObservable([
+                .next(0, ())
+            ]).asObservable(),
             viewDidLoadEvent: self.scheduler.createColdObservable([
                 .next(0, ())
             ]).asObservable(),
@@ -64,17 +69,34 @@ final class PoseTalkViewModelTests: XCTestCase {
         
         self.output
             .animate
-            .map { true }
-            .subscribe(animteTriggerObserver)
+            .subscribe(onNext: {
+                isAnimating.accept(true)
+                expectation.fulfill()
+                isAnimating.accept(false)
+            })
+            .disposed(by: self.disposeBag)
+        
+        self.output
+            .poseWord
+            .subscribe(posewordObserver)
             .disposed(by: self.disposeBag)
         
         self.scheduler.createColdObservable([
-            .next(0, ())
+            .next(2, ())
         ])
         .subscribe(onNext: { [weak self] in
-            self?.posetalkUseCase.poseWord.onNext(nil)
+            self?.posetalkUseCase.fetchPoseTalk()
+            self?.posetalkUseCase.isLoading.accept(false)
         })
-        .disposed(by: self.disposeBag)
+        .disposed(by: disposeBag)
+        
+        self.scheduler.start()
+        
+        wait(for: [expectation], timeout: 5)
+        
+        XCTAssertEqual(posewordObserver.events, [
+            .next(2, "고개들어 하늘 보라")  // 1. 최종 값 방출
+        ])
     }
 
     override func tearDown() {
