@@ -69,6 +69,7 @@ final class MyPoseViewModelTests: XCTestCase {
     }
     
     override func tearDown() {
+        super.tearDown()
         self.viewModel = nil
         self.disposeBag = nil
         self.scheduler = nil
