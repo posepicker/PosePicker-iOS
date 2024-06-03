@@ -80,6 +80,14 @@ final class MockPoseFeedCoordinator: PoseFeedCoordinator {
         
         self.loginDelegate = self.mockPageViewCoordinator
     }
+}
+
+extension MockPoseFeedCoordinator: CoordinatorBookmarkBindingDelegate {
+    func coordinatorBookmarkModified(childCoordinator: Coordinator, poseId: Int) {
+        print("북마크 세팅 완료!")
+    }
     
-    
+    func coordinatorBookmarkSetAndDismissed(childCoordinator: Coordinator, tag: String) {
+        
+    }
 }
