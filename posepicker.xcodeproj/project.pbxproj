@@ -225,6 +225,7 @@
 		C9D4CCD72C16B84C004D6D2D /* PoseUploadTagViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4CCD62C16B84C004D6D2D /* PoseUploadTagViewModelTests.swift */; };
 		C9D4CCD92C16B858004D6D2D /* PoseUploadImageSourceViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4CCD82C16B858004D6D2D /* PoseUploadImageSourceViewModelTests.swift */; };
 		C9D4CCDC2C16BC7C004D6D2D /* MockMyPageCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4CCDB2C16BC7C004D6D2D /* MockMyPageCoordinator.swift */; };
+		C9D4CCDF2C16D7DC004D6D2D /* MockPoseUploadCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9D4CCDE2C16D7DC004D6D2D /* MockPoseUploadCoordinator.swift */; };
 		C9DC2F902AEA1D5F00D5170D /* PoseFeedFilterViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F8F2AEA1D5F00D5170D /* PoseFeedFilterViewController.swift */; };
 		C9DC2F942AEA282700D5170D /* LeftAlignedCollectionViewFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F932AEA282600D5170D /* LeftAlignedCollectionViewFlowLayout.swift */; };
 		C9DC2F962AEA284900D5170D /* UICollectionView+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9DC2F952AEA284900D5170D /* UICollectionView+.swift */; };
@@ -496,6 +497,7 @@
 		C9D4CCD62C16B84C004D6D2D /* PoseUploadTagViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadTagViewModelTests.swift; sourceTree = "<group>"; };
 		C9D4CCD82C16B858004D6D2D /* PoseUploadImageSourceViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadImageSourceViewModelTests.swift; sourceTree = "<group>"; };
 		C9D4CCDB2C16BC7C004D6D2D /* MockMyPageCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockMyPageCoordinator.swift; sourceTree = "<group>"; };
+		C9D4CCDE2C16D7DC004D6D2D /* MockPoseUploadCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockPoseUploadCoordinator.swift; sourceTree = "<group>"; };
 		C9DC2F8F2AEA1D5F00D5170D /* PoseFeedFilterViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseFeedFilterViewController.swift; sourceTree = "<group>"; };
 		C9DC2F932AEA282600D5170D /* LeftAlignedCollectionViewFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LeftAlignedCollectionViewFlowLayout.swift; sourceTree = "<group>"; };
 		C9DC2F952AEA284900D5170D /* UICollectionView+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+.swift"; sourceTree = "<group>"; };
@@ -1949,6 +1951,7 @@
 		C9D4CCC72C16B338004D6D2D /* PoseUploadScene */ = {
 			isa = PBXGroup;
 			children = (
+				C9D4CCDD2C16D7D1004D6D2D /* Mock */,
 				C9D4CCD12C16B823004D6D2D /* PageViews */,
 				C9D4CCCA2C16B362004D6D2D /* PoseUploadViewModelTests.swift */,
 				C9D4CCCF2C16B81D004D6D2D /* PoseUploadGuidelineViewModelTests.swift */,
@@ -1979,6 +1982,14 @@
 			isa = PBXGroup;
 			children = (
 				C9D4CCDB2C16BC7C004D6D2D /* MockMyPageCoordinator.swift */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		C9D4CCDD2C16D7D1004D6D2D /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				C9D4CCDE2C16D7DC004D6D2D /* MockPoseUploadCoordinator.swift */,
 			);
 			path = Mock;
 			sourceTree = "<group>";
@@ -2557,6 +2568,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C9D4CCDF2C16D7DC004D6D2D /* MockPoseUploadCoordinator.swift in Sources */,
 				C9D4CCD32C16B833004D6D2D /* PoseUploadHeadcountViewModelTests.swift in Sources */,
 				C96C9AF52BBA39F800AC2921 /* PosePickViewModelTests.swift in Sources */,
 				C9D4CCC52C0D8A89004D6D2D /* MockMyPoseCoordinator.swift in Sources */,
