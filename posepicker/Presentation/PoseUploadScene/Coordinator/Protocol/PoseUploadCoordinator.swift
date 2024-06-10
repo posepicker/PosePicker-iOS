@@ -26,7 +26,7 @@ protocol PoseUploadCoordinator: Coordinator {
 
     func selectPage(_ page: PoseUploadPages)
     func setSelectedIndex(_ index: Int)
-    func currentPage() -> PoseUploadPages?
+    func currentPage() -> PoseUploadPages
     func viewControllerBefore() -> UIViewController?
     func viewControllerAfter() -> UIViewController?
     func refreshDataSource()
