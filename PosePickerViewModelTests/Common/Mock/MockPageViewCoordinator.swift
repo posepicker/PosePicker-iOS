@@ -10,8 +10,18 @@ import RxSwift
 @testable import posepicker
 
 final class MockPageViewCoordinator: PageViewCoordinator {
-    func showLoginFlow() -> Observable<posepicker.LoginPopUpView.SocialLogin> {
-        return .empty()
+    private var loginValue: LoginPopUpView.SocialLogin = .apple
+    
+    func showLoginFlow() -> Observable<LoginPopUpView.SocialLogin> {
+        switch loginValue {
+        case .apple:
+            self.loginValue = .kakao
+        case .kakao:
+            self.loginValue = .none
+        case .none:
+            self.loginValue = .apple
+        }
+        return .just(self.loginValue)
     }
     
     func removeMyPoseContents() {
@@ -19,7 +29,15 @@ final class MockPageViewCoordinator: PageViewCoordinator {
     }
     
     func pushBookmarkPage() -> Observable<posepicker.LoginPopUpView.SocialLogin> {
-        return .empty()
+        switch loginValue {
+        case .apple:
+            self.loginValue = .kakao
+        case .kakao:
+            self.loginValue = .none
+        case .none:
+            self.loginValue = .apple
+        }
+        return .just(self.loginValue)
     }
     
     func dismissLoginPopUp() {
@@ -34,7 +52,7 @@ final class MockPageViewCoordinator: PageViewCoordinator {
     var type: CoordinatorType { .pageview }
     var socialLogin: LoginPopUpView.SocialLogin = .apple
     
-    var controllers: [UINavigationController] = []
+    lazy var controllers: [UINavigationController] = []
     
     required init(_ navigationController: UINavigationController) {
         self.navigationController = navigationController
@@ -51,7 +69,7 @@ final class MockPageViewCoordinator: PageViewCoordinator {
     /// 2. createPageViewNavigationController 메서드 호출 -> pageViewController 서브뷰 배열 리턴
     ///     2-1. PageViewType에 맞게 UINavigationController에 뷰 푸시 & start
     func start() {
-        let pages: [PageViewType] = [.posepick, .posetalk, .posefeed]
+        let pages: [PageViewType] = [.posepick, .posetalk, .posefeed, .mypose]
         controllers = pages.map({
             self.createPageViewNavigationController(of: $0)
         })
@@ -59,21 +77,19 @@ final class MockPageViewCoordinator: PageViewCoordinator {
     }
     
     func selectPage(_ page: PageViewType) {
-        guard let currentIndex = currentPage()?.pageOrderNumber() else { return }
-        
+        let currentIndex = currentPage().pageOrderNumber()
         self.pageViewController.setViewControllers([controllers[page.pageOrderNumber()]], direction: currentIndex <= page.pageOrderNumber() ? .forward : .reverse, animated: true)
     }
     
     func setSelectedIndex(_ index: Int) {
-        guard let page = PageViewType(index: index),
-              let currentIndex = currentPage()?.pageOrderNumber() else { return }
-        
+        guard let page = PageViewType(index: index)  else { return }
+        let currentIndex = currentPage().pageOrderNumber()
         self.pageViewController.setViewControllers([controllers[page.pageOrderNumber()]], direction: currentIndex <= page.pageOrderNumber() ? .forward : .reverse, animated: true)
     }
     
     /// currentPage 분기처리 -> 현재 뷰 컨트롤러 얻어와서 타입캐스팅
     /// 초기값 포즈톡으로 설정되어 있음
-    func currentPage() -> PageViewType? {
+    func currentPage() -> PageViewType {
         guard let navigationController = pageViewController.viewControllers?.first as? UINavigationController,
               let viewController = navigationController.viewControllers.first,
               let page = PageViewType(viewController) else { return .posepick }
@@ -82,7 +98,7 @@ final class MockPageViewCoordinator: PageViewCoordinator {
     }
     
     func viewControllerBefore() -> UIViewController? {
-        guard let currentIndex = currentPage()?.pageOrderNumber() else { return nil }
+        let currentIndex = currentPage().pageOrderNumber()
         if currentIndex == 0 {
             return nil
         }
@@ -91,7 +107,7 @@ final class MockPageViewCoordinator: PageViewCoordinator {
     }
     
     func viewControllerAfter() -> UIViewController? {
-        guard let currentIndex = currentPage()?.pageOrderNumber() else { return nil }
+        let currentIndex = currentPage().pageOrderNumber()
         if currentIndex == controllers.count - 1 {
             return nil
         }
@@ -134,6 +150,11 @@ final class MockPageViewCoordinator: PageViewCoordinator {
             posefeedCoordinator.finishDelegate = self
             self.childCoordinators.append(posefeedCoordinator)
             posefeedCoordinator.start()
+        case .mypose:
+            let myposeCoordinator = DefaultMyPoseCoordinator(pageviewNavigationController)
+            myposeCoordinator.finishDelegate = self
+            self.childCoordinators.append(myposeCoordinator)
+            myposeCoordinator.start()
         default:
             break
         }
