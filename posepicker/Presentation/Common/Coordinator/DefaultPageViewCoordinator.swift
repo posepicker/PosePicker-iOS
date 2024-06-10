@@ -56,15 +56,15 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
     }
     
     func setSelectedIndex(_ index: Int) {
-        guard let page = PageViewType(index: index),
-              let currentIndex = currentPage()?.pageOrderNumber() else { return }
+        guard let page = PageViewType(index: index) else { return }
+        let currentIndex = currentPage().pageOrderNumber()
         
         self.pageViewController.setViewControllers([controllers[page.pageOrderNumber()]], direction: currentIndex <= page.pageOrderNumber() ? .forward : .reverse, animated: true)
     }
     
     /// currentPage 분기처리 -> 현재 뷰 컨트롤러 얻어와서 타입캐스팅
     /// 초기값 포즈톡으로 설정되어 있음
-    func currentPage() -> PageViewType? {
+    func currentPage() -> PageViewType {
         guard let navigationController = pageViewController.viewControllers?.first as? UINavigationController,
               let viewController = navigationController.viewControllers.first,
               let page = PageViewType(viewController) else { return .posepick }
@@ -73,7 +73,8 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
     }
     
     func viewControllerBefore() -> UIViewController? {
-        guard let currentIndex = currentPage()?.pageOrderNumber() else { return nil }
+        let currentIndex = currentPage().pageOrderNumber()
+        
         if currentIndex == 0 {
             return nil
         }
@@ -82,7 +83,8 @@ class DefaultPageViewCoordinator: PageViewCoordinator {
     }
     
     func viewControllerAfter() -> UIViewController? {
-        guard let currentIndex = currentPage()?.pageOrderNumber() else { return nil }
+        let currentIndex = currentPage().pageOrderNumber()
+        
         if currentIndex == controllers.count - 1 {
             return nil
         }
