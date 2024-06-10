@@ -34,8 +34,8 @@ final class PoseUploadViewModel {
             .subscribe(onNext: { [weak self] in
                 guard let self = self,
                       let coordinator = self.coordinator else {return}
-                coordinator.selectPage(coordinator.currentPage() ?? .headcount)
-                output.pageTransitionEvent.accept(coordinator.currentPage()?.pageOrderNumber() ?? 0)
+                coordinator.selectPage(coordinator.currentPage())
+                output.pageTransitionEvent.accept(coordinator.currentPage().pageOrderNumber())
             })
             .disposed(by: disposeBag)
         
