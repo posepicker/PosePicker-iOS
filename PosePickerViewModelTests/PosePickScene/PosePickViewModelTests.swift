@@ -31,12 +31,6 @@ final class PosePickViewModelTests: XCTestCase {
         self.disposeBag = DisposeBag()
     }
     
-    override func tearDown() {
-        self.viewModel = nil
-        self.disposeBag = nil
-        self.posepickUseCase = nil
-    }
-    
     /// Input
     /// 1. 애니메이션 종료 여부
     /// 2. 포즈 요청 버튼 탭 + 인원 수 셀렉션 버튼 탭
@@ -175,4 +169,13 @@ final class PosePickViewModelTests: XCTestCase {
         ])
     }
 
+    override func tearDown() {
+        super.tearDown()
+        self.viewModel = nil
+        self.disposeBag = nil
+        self.posepickUseCase = nil
+        self.scheduler = nil
+        self.input = nil
+        self.output = nil
+    }
 }
