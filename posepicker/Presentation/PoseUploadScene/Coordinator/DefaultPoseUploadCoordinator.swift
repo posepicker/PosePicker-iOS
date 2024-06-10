@@ -101,20 +101,20 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
     }
     
     func selectPage(_ page: PoseUploadPages) {
-        guard let currentIndex = currentPage()?.pageOrderNumber() else { return }
+        let currentIndex = currentPage().pageOrderNumber()
         self.pageViewController.setViewControllers([controllers[page.pageOrderNumber()]], direction: currentIndex <= page.pageOrderNumber() ? .forward : .reverse, animated: true)
     }
     
     func setSelectedIndex(_ index: Int) {
-        guard let page = PoseUploadPages(index: index),
-              let currentIndex = currentPage()?.pageOrderNumber() else {
+        guard let page = PoseUploadPages(index: index) else {
             return
         }
+        let currentIndex = currentPage().pageOrderNumber()
         self.pageViewController.setViewControllers([controllers[page.pageOrderNumber()]], direction: currentIndex <= page.pageOrderNumber() ? .forward : .reverse, animated: true)
         self.currentIndexFromView.accept(page.pageOrderNumber())
     }
     
-    func currentPage() -> PoseUploadPages? {
+    func currentPage() -> PoseUploadPages {
         guard let viewController = pageViewController.viewControllers?.first as? UIViewController,
               let page = PoseUploadPages(viewController) else { return .headcount }
         
@@ -122,7 +122,7 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
     }
     
     func viewControllerBefore() -> UIViewController? {
-        guard let currentIndex = currentPage()?.pageOrderNumber() else { return nil }
+        let currentIndex = currentPage().pageOrderNumber()
         if currentIndex == 0 {
             return nil
         }
@@ -130,7 +130,7 @@ final class DefaultPoseUploadCoordinator: PoseUploadCoordinator {
     }
     
     func viewControllerAfter() -> UIViewController? {
-        guard let currentIndex = currentPage()?.pageOrderNumber() else { return nil }
+        let currentIndex = currentPage().pageOrderNumber()
         if currentIndex == controllers.count - 1 {
             return nil
         }
