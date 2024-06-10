@@ -63,7 +63,7 @@ final class MockMyPageCoordinator: MyPageCoordinator {
     
     var childCoordinators: [any Coordinator] = []
     
-    var type: CoordinatorType = .mypage
+    var type: CoordinatorType = .mypose
     
     func start() {
         
