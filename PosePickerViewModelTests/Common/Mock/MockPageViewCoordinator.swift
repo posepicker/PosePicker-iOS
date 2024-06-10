@@ -167,7 +167,15 @@ extension MockPageViewCoordinator: CoordinatorLoginDelegate {
     }
     
     func coordinatorLoginRequested(childCoordinator: Coordinator) -> Observable<LoginPopUpView.SocialLogin> {
-        return .just(self.socialLogin)
+        switch loginValue {
+        case .apple:
+            self.loginValue = .kakao
+        case .kakao:
+            self.loginValue = .none
+        case .none:
+            self.loginValue = .apple
+        }
+        return .just(self.loginValue)
     }
 }
 
