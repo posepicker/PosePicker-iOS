@@ -6,30 +6,92 @@
 //
 
 import XCTest
+import RxTest
+import RxSwift
+
+@testable import posepicker
 
 final class PoseUploadViewModelTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    private var viewModel: PoseUploadViewModel!
+    private var disposeBag: DisposeBag!
+    private var scheduler: TestScheduler!
+    private var poseUploadCoordinator: PoseUploadCoordinator!
+    private var input: PoseUploadViewModel.Input!
+    private var output: PoseUploadViewModel.Output!
+    
+    override func setUp() {
+        super.setUp()
+        self.poseUploadCoordinator = MockPoseUploadCoordinator(
+            UINavigationController(
+                rootViewController: UIViewController()
+            )
+        )
+        self.viewModel = PoseUploadViewModel(
+            coordinator: self.poseUploadCoordinator
+        )
+        self.disposeBag = DisposeBag()
+        self.scheduler = .init(initialClock: 0)
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func test_페이지_전환_테스트() {
+        let pageNumberObserver = self.scheduler.createObserver(Int.self)
+        
+        self.input = PoseUploadViewModel.Input(
+            pageviewTransitionDelegateEvent: self.scheduler.createColdObservable([
+                .next(0, ())
+            ]).asObservable(),
+            currentPage: .empty()
+        )
+        
+        self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
+        
+        self.output
+            .pageTransitionEvent
+            .subscribe(pageNumberObserver)
+            .disposed(by: self.disposeBag)
+        
+        _ = viewModel.viewControllerBefore()
+        _ = viewModel.viewControllerAfter()
+        
+        self.scheduler.start()
+        
+        XCTAssertEqual(pageNumberObserver.events, [
+            .next(0, 0)
+        ])
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    
+    func test_currentPage_세팅_테스트() {
+        let segmentIndexObserver = self.scheduler.createObserver(Int.self)
+        
+        self.input = PoseUploadViewModel.Input(
+            pageviewTransitionDelegateEvent: .empty(),
+            currentPage: self.scheduler.createColdObservable([
+                .next(1, 1)
+            ]).asObservable()
+        )
+        
+        self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
+        
+        self.output
+            .selectedSegmentIndex
+            .subscribe(segmentIndexObserver)
+            .disposed(by: self.disposeBag)
+        
+        self.scheduler.start()
+        
+        XCTAssertEqual(segmentIndexObserver.events, [
+            .next(0, 0),
+            .next(1, 1)
+        ])
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    override func tearDown() {
+        super.tearDown()
+        self.viewModel = nil
+        self.disposeBag = nil
+        self.scheduler = nil
+        self.poseUploadCoordinator = nil
+        self.input = nil
+        self.output = nil
     }
-
 }
