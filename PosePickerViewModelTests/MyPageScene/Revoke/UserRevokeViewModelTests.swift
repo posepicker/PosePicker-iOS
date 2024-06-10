@@ -6,30 +6,91 @@
 //
 
 import XCTest
+import RxTest
+import RxSwift
+import RxRelay
+
+@testable import posepicker
 
 final class UserRevokeViewModelTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    private var viewModel: UserRevokeViewModel!
+    private var disposeBag: DisposeBag!
+    private var scheduler: TestScheduler!
+    private var commonUsecase: CommonUseCase!
+    private var mypageCoordinator: MyPageCoordinator!
+    private var input: UserRevokeViewModel.Input!
+    private var output: UserRevokeViewModel.Output!
+    
+    override func setUp() {
+        super.setUp()
+        self.scheduler = TestScheduler(initialClock: 0)
+        self.commonUsecase = MockCommonUseCase()
+        self.mypageCoordinator = MockMyPageCoordinator(
+            UINavigationController(
+                rootViewController: MyPageViewController()
+            )
+        )
+        self.viewModel = UserRevokeViewModel(
+            coordinator: self.mypageCoordinator,
+            commonUseCase: self.commonUsecase
+        )
+        self.disposeBag = DisposeBag()
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func test_버튼_탭_테스트() {
+        self.input = UserRevokeViewModel.Input(
+            revokeButtonTapEvent: self.scheduler.createColdObservable([
+                .next(0, ()),
+                .next(1, ()),
+                .next(2, ())
+            ]).asObservable(),
+            revokeCancelButtonTapEvent: self.scheduler.createColdObservable([
+                .next(0, ())
+            ]).asObservable(),
+            revokeReason: BehaviorRelay(value: "")
+        )
+        
+        self.output = self.viewModel.transform(
+            input: self.input, disposeBag: self.disposeBag
+        )
+        
+        self.scheduler.start()
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    
+    func test_회원탈퇴_완료_테스트() {
+        let loadingObserver = self.scheduler.createObserver(Bool.self)
+        
+        self.input = UserRevokeViewModel.Input(
+            revokeButtonTapEvent: .empty(),
+            revokeCancelButtonTapEvent: .empty(),
+            revokeReason: BehaviorRelay(value: "")
+        )
+        
+        self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
+        
+        self.output
+            .isLoading
+            .subscribe(loadingObserver)
+            .disposed(by: self.disposeBag)
+        
+        self.scheduler.createColdObservable([
+            .next(0, ())
+        ])
+        .subscribe(onNext: { [weak self] in
+            self?.commonUsecase.revokeCompleted.onNext(())
+        })
+        .disposed(by: self.disposeBag)
+        
+        self.scheduler.start()
+        
+        XCTAssertEqual(loadingObserver.events, [
+            .next(0, false),
+            .next(0, false)
+        ])
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    override func tearDown() {
+        super.tearDown()
     }
-
+    
 }
