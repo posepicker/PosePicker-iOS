@@ -9,34 +9,38 @@ import UIKit
 @testable import posepicker
 
 final class MockMyPoseCoordinator: MyPoseCoordinator {
-    private let posefeedCoordinator = MockPoseFeedCoordinator(UINavigationController(rootViewController: UIViewController()))
+    private let posefeedCoordinator = MockPoseFeedCoordinator(
+        UINavigationController(
+            rootViewController: UIViewController()
+        )
+    )
     
     var bookmarkBindingDelegate: CoordinatorBookmarkBindingDelegate?
     
     var pageMoveDelegate: CoordinatorPageMoveDelegate?
     
     func presentBookmarkDetail(viewModel: posepicker.BookmarkFeedCellViewModel) {
-        
+        print(#function)
     }
     
     func presentClipboardCompleted(poseId: Int) {
-        
+        print(#function)
     }
     
     func moveToExternalApp(url: URL) {
-        
+        print(#function)
     }
     
     func dismissPoseDetail(tag: String) {
-        
+        print(#function)
     }
     
     func currentPage() -> MyPosePageViewType? {
-        return .saved
+        return nil
     }
     
     func setSelectedIndex(_ index: Int) {
-        
+        print(#function)
     }
     
     func viewControllerBefore() -> UIViewController? {
@@ -48,19 +52,19 @@ final class MockMyPoseCoordinator: MyPoseCoordinator {
     }
     
     func refreshBookmark() {
-        
+        print(#function)
     }
     
     func refreshPoseCount() {
-        
+        print(#function)
     }
     
     func removeAllContents() {
-        
+        print(#function)
     }
     
     func presentPoseUploadGuideline() {
-        
+        print(#function)
     }
     
     var finishDelegate: CoordinatorFinishDelegate?
