@@ -18,14 +18,20 @@ final class MyPoseViewModelTests: XCTestCase {
     private var input: MyPoseViewModel.Input!
     private var myPoseUsecase: MyPoseUseCase!
     private var output: MyPoseViewModel.Output!
+    private var myposeCoordinator: MyPoseCoordinator!
     
     override func setUp() {
         super.setUp()
         self.scheduler = TestScheduler(initialClock: 0)
         self.myPoseUsecase = MockMyPoseUseCase()
+        self.myposeCoordinator = MockMyPoseCoordinator(
+            UINavigationController(
+                rootViewController: UIViewController()
+            )
+        )
         self.viewModel = MyPoseViewModel(
-            coordinator: nil,
-            myPoseUseCase: MockMyPoseUseCase()
+            coordinator: self.myposeCoordinator,
+            myPoseUseCase: self.myPoseUsecase
         )
         
         self.disposeBag = DisposeBag()
@@ -36,12 +42,21 @@ final class MyPoseViewModelTests: XCTestCase {
             .next(1, ())
         ])
         
+        let transitionObserver = self.scheduler.createObserver(Int.self)
+        
         self.input = MyPoseViewModel.Input(
             viewDidLoadEvent: viewDidLoadObservable.asObservable(),
-            pageviewTransitionDelegateEvent: .empty(),
-            currentPageViewIndex: .empty(),
-            refreshCountEvent: .empty()
+            pageviewTransitionDelegateEvent: self.scheduler.createColdObservable([
+                .next(0, ())
+            ]).asObservable(),
+            currentPageViewIndex: self.scheduler.createColdObservable([
+                .next(0, 0)
+            ]).asObservable(),
+            refreshCountEvent: self.scheduler.createColdObservable([
+                .next(2, ())
+            ]).asObservable()
         )
+        
         self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
         
         let uploadedCountObserver = self.scheduler.createObserver(String.self)
@@ -55,16 +70,30 @@ final class MyPoseViewModelTests: XCTestCase {
             .subscribe(uploadedCountObserver)
             .disposed(by: self.disposeBag)
         
+        output
+            .pageTransitionEvent
+            .subscribe(transitionObserver)
+            .disposed(by: self.disposeBag)
+        
+        _ = self.viewModel.viewControllerAfter()
+        _ = self.viewModel.viewControllerBefore()
+        
         self.scheduler.start()
         
         XCTAssertEqual(uploadedCountObserver.events, [
             .next(0, "등록 0"),
-            .next(1, "등록 10")
+            .next(1, "등록 10"),
+            .next(2, "등록 10")
         ])
         
         XCTAssertEqual(savedCountObserver.events, [
             .next(0, "저장 0"),
-            .next(1, "저장 10")
+            .next(1, "저장 10"),
+            .next(2, "저장 10")
+        ])
+        
+        XCTAssertEqual(transitionObserver.events, [
+            .next(0, 0)
         ])
     }
     
