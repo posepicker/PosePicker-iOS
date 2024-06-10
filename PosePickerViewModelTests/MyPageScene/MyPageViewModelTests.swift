@@ -6,30 +6,140 @@
 //
 
 import XCTest
+import RxTest
+import RxSwift
+
+@testable import posepicker
 
 final class MyPageViewModelTests: XCTestCase {
-
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    private var viewModel: MyPageViewModel!
+    private var disposeBag: DisposeBag!
+    private var scheduler: TestScheduler!
+    private var commonUsecase: CommonUseCase!
+    private var mypageCoordinator: MyPageCoordinator!
+    private var input: MyPageViewModel.Input!
+    private var output: MyPageViewModel.Output!
+    
+    override func setUp() {
+        super.setUp()
+        self.scheduler = TestScheduler(initialClock: 0)
+        self.commonUsecase = MockCommonUseCase()
+        self.mypageCoordinator = MockMyPageCoordinator(
+            UINavigationController(
+                rootViewController: MyPageViewController()
+            )
+        )
+        self.viewModel = MyPageViewModel(
+            coordinator: self.mypageCoordinator,
+            commonUseCase: self.commonUsecase
+        )
+        self.disposeBag = DisposeBag()
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func test_화면_push_함수_호출_테스트() {
+        // MARK: - Expectations
+        let expectation = XCTestExpectation(description: "회원탈퇴 완료 테스트")
+        
+        // MARK: - Test Observers
+        let loginStateObserver = self.scheduler.createObserver(Bool.self)
+        
+        // MARK: - Test Observables
+        let coordinatorTriggerObservable = self.scheduler.createColdObservable([
+            .next(0, ())
+        ]).asObservable()
+        
+        self.scheduler.createColdObservable([
+            .next(0, ())
+        ])
+        .subscribe(onNext: { [weak self] in
+            self?.commonUsecase.logoutCompleted.onNext(())
+            self?.commonUsecase.revokeCompleted.onNext(())
+        })
+        .disposed(by: self.disposeBag)
+        
+        self.input = MyPageViewModel.Input(
+            noticeButtonTapEvent: coordinatorTriggerObservable,
+            faqButtonTapEvent: coordinatorTriggerObservable,
+            snsButtonTapEvent: coordinatorTriggerObservable,
+            serviceInquiryButtonTapEvent: coordinatorTriggerObservable,
+            serviceInformationButtonTapEvent: coordinatorTriggerObservable,
+            privacyInformationButtonTapEvent: coordinatorTriggerObservable,
+            logoutButtonTapEvent: .empty(),
+            signoutButtonTapEvent: .empty(),
+            loginButtonTapEvent: .empty()
+        )
+        
+        self.output = self.viewModel.transform(
+            input: self.input, disposeBag: self.disposeBag
+        )
+        
+        self.output
+            .refreshLoginState
+            .subscribe(loginStateObserver)
+            .disposed(by: self.disposeBag)
+        
+        self.commonUsecase
+            .revokeCompleted
+            .subscribe(onNext: {
+                expectation.fulfill()
+            })
+            .disposed(by: self.disposeBag)
+            
+        self.scheduler.start()
+        
+        XCTAssertEqual(loginStateObserver.events, [
+            .next(0, false)
+        ])
+        
+        wait(for: [expectation])
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    
+    func test_버튼_탭_테스트() {
+        self.input = MyPageViewModel.Input(
+            noticeButtonTapEvent: .empty(),
+            faqButtonTapEvent: .empty(),
+            snsButtonTapEvent: .empty(),
+            serviceInquiryButtonTapEvent: .empty(),
+            serviceInformationButtonTapEvent: .empty(),
+            privacyInformationButtonTapEvent: .empty(),
+            logoutButtonTapEvent: self.scheduler.createColdObservable([
+                .next(3, ())
+            ]).asObservable(),
+            signoutButtonTapEvent: self.scheduler.createColdObservable([
+                .next(0, ())
+            ]).asObservable(),
+            loginButtonTapEvent: self.scheduler.createColdObservable([
+                .next(0, ()),
+                .next(1, ()),
+                .next(2, ()),
+                .next(5, ())
+            ]).asObservable()
+        )
+            
+        // MARK: - 마이페이지 코디네이터 로그인 델리게이트 초기화
+        self.scheduler.createColdObservable([
+            .next(4, ())
+        ])
+        .subscribe(onNext: { [weak self] in
+            self?.mypageCoordinator.loginDelegate = nil
+        })
+        .disposed(by: self.disposeBag)
+        
+        self.output = self.viewModel.transform(
+            input: self.input, disposeBag: self.disposeBag
+        )
+        
+        self.scheduler.start()
     }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    override func tearDown() {
+        super.tearDown()
+        self.viewModel = nil
+        self.disposeBag = nil
+        self.commonUsecase = nil
+        self.mypageCoordinator = nil
+        self.scheduler = nil
+        self.input = nil
+        self.output = nil
     }
-
 }
