@@ -54,5 +54,11 @@ final class PoseUploadGuidelineViewModelTests: XCTestCase {
     
     override func tearDown() {
         super.tearDown()
+        self.viewModel = nil
+        self.disposeBag = nil
+        self.scheduler = nil
+        self.poseUploadCoordinator = nil
+        self.input = nil
+        self.output = nil
     }
 }
