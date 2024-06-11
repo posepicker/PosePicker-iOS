@@ -6,30 +6,60 @@
 //
 
 import XCTest
+import RxTest
+import RxSwift
+
+@testable import posepicker
 
 final class PoseUploadFramecountViewModelTests: XCTestCase {
 
-    override func setUpWithError() throws {
-        // Put setup code here. This method is called before the invocation of each test method in the class.
+    private var viewModel: PoseUploadFramecountViewModel!
+    private var disposeBag: DisposeBag!
+    private var scheduler: TestScheduler!
+    private var poseUploadCoordinator: PoseUploadCoordinator!
+    private var input: PoseUploadFramecountViewModel.Input!
+    private var output: PoseUploadFramecountViewModel.Output!
+    
+    override func setUp() {
+        super.setUp()
+        self.disposeBag = DisposeBag()
+        self.scheduler = .init(initialClock: 0)
+        self.poseUploadCoordinator = MockPoseUploadCoordinator(
+            UINavigationController(
+                rootViewController: UIViewController()
+            )
+        )
+        self.viewModel = PoseUploadFramecountViewModel(
+            coordinator: self.poseUploadCoordinator
+        )
     }
-
-    override func tearDownWithError() throws {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
+    
+    func test_화면전환_테스트() {
+        self.input = PoseUploadFramecountViewModel.Input(
+            nextButtonTapEvent: self.scheduler.createColdObservable([
+                .next(0, ())
+            ]).asObservable(),
+            expandButtonTapEvent: self.scheduler.createColdObservable([
+                .next(0, (CGPoint(x: 0, y: 0), nil))
+            ]).asObservable(),
+            selectedFrameCount: scheduler.createColdObservable([
+                .next(0, "")
+            ]).asObservable()
+        )
+        
+        self.output = self.viewModel.transform(input: self.input, disposeBag: self.disposeBag)
+        
+        self.scheduler.start()
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
-    }
-
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
-        }
+    
+    override func tearDown() {
+        super.tearDown()
+        self.disposeBag = nil
+        self.scheduler = nil
+        self.input = nil
+        self.output = nil
+        self.poseUploadCoordinator = nil
+        self.viewModel = nil
     }
 
 }
