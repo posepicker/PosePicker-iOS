@@ -187,7 +187,6 @@ final class PoseDetailViewModel {
         poseDetailUseCase.bookmarkTaskCompleted
             .subscribe(onNext: {
                 if $0 {
-                    print("북마크 등록 완료")
                     guard let coordinator = self.coordinator else { return }
                     coordinator.bookmarkContentsUpdatedDelegate?.coordinatorBookmarkContentsUpdated(childCoordinator: coordinator)
                     coordinator.bookmarkContentsUpdatedDelegate?.coordinatorPoseCountsUpdated(childCoordinator: coordinator)

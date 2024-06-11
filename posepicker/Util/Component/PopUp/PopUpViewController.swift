@@ -140,8 +140,6 @@ extension PopUpViewController: ASAuthorizationControllerDelegate {
             popUpView.socialLogin.onNext(.apple)
         case let passwordCredential as ASPasswordCredential:
             print(passwordCredential)
-            // Sign in using an existing iCloud Keychain credential.
-            print("password credential .. ")
         default:
             break
         }
