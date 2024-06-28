@@ -11,13 +11,15 @@ import RxCocoa
 import RxSwift
 
 class PoseFeedPhotoCellViewModel {
-    let image = BehaviorRelay<UIImage?>(value: nil)
     let poseId = BehaviorRelay<Int>(value: -1)
     let bookmarkCheck = BehaviorRelay<Bool>(value: false)
+    let size = BehaviorRelay<CGSize>(value: .init(width: 0, height: 0))
+    let imageURL = BehaviorRelay<String>(value: "")
     
-    init(image: UIImage?, poseId: Int, bookmarkCheck: Bool) {
-        self.image.accept(image)
+    init(poseId: Int, bookmarkCheck: Bool, size: CGSize, imageURL: String) {
         self.poseId.accept(poseId)
         self.bookmarkCheck.accept(bookmarkCheck)
+        self.size.accept(size)
+        self.imageURL.accept(imageURL)
     }
 }
