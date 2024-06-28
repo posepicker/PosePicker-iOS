@@ -10,13 +10,13 @@ import Kingfisher
 
 import RxCocoa
 import RxSwift
-import SkeletonView
 
 class PoseFeedPhotoCell: BaseCollectionViewCell {
     
     // MARK: - Subviews
     let imageView = UIImageView()
         .then {
+            $0.backgroundColor = .init(hex: "#F9F9FB")
             $0.contentMode = .scaleAspectFill
         }
     
@@ -31,16 +31,24 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
     // MARK: - Properties
     static let identifier = "PoseFeedPhotoCell"
     var viewModel: PoseFeedPhotoCellViewModel!
+    let dataRequestCancelTrigger = PublishSubject<Void>()
+    private var downloadTask: DownloadTask?
     
     // MARK: - Life Cycles
     
     override func prepareForReuse() {
         super.prepareForReuse()
+        if imageView.image == nil {
+            downloadTask?.cancel()
+            print("imageURL: \(viewModel.imageURL.value)")
+        }
         imageView.image = nil
         bookmarkButton.setImage(nil, for: .normal)
         viewModel = nil
         disposeBag = DisposeBag()
     }
+    
+    
     
     // MARK: - Functions
     
@@ -63,17 +71,30 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
     }
     
     func bind() {
-        weak var viewModel: PoseFeedPhotoCellViewModel! = viewModel
-        viewModel.image.asDriver()
-            .drive(onNext: { [weak self] in
-                if let image = $0 {
-                    self?.imageView.image = image
-                } else {
-                    self?.imageView.backgroundColor = .gray100
+        viewModel.imageURL.asDriver()
+            .drive(onNext: { imageURL in
+                print("imageURL: \(imageURL)")
+                ImageCache.default.retrieveImage(forKey: imageURL) { [weak self] cacheResult in
+                    switch cacheResult {
+                    case .success(let value):
+                        if let image = value.image {
+                            self?.imageView.image = image
+                        } else if let url = URL(string: imageURL) {
+                            self?.downloadTask = KingfisherManager.shared.retrieveImage(with: url) { [weak self] downloadResult in
+                                switch downloadResult {
+                                case .success(let downloadedImage):
+                                    self?.imageView.image = downloadedImage.image
+                                case .failure(let error):
+                                    print(error)
+                                }
+                            }
+                        }
+                    case .failure(let error):
+                        print(error)
+                    }
                 }
-//                self?.imageView.image = $0
             })
-            .disposed(by: disposeBag)
+            .disposed(by: self.disposeBag)
         
         viewModel.bookmarkCheck.asDriver()
             .drive(onNext: { [weak self] bookmarkCheck in
