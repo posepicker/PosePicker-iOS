@@ -151,7 +151,6 @@ class PoseFeedFilterViewController: BaseViewController {
         
         closeButton.rx.tap.asDriver()
             .drive(onNext: { [unowned self] in
-//                self.dismissState.accept(.normal)
                 self.cancelTrigger.onNext(())
                 self.dismiss(animated: true)
             })
@@ -178,73 +177,6 @@ class PoseFeedFilterViewController: BaseViewController {
         let output = viewModel?.transform(input: input, disposeBag: disposeBag)
         
         configureOutput(output)
-//        let input = PoseFeedFilterViewModel.Input(headCountSelection: headCountSelection.buttonTapTrigger.asObservable(), frameCountSelection: frameCountSelection.buttonTapTrigger.asObservable(), tagSelection: tagCollectionView.rx.modelSelected(PoseFeedFilterCellViewModel.self).asObservable(), registeredSubTag: registeredSubTag, tagSelectCanceled: cancelTrigger.asObservable(), isPresenting: isPresenting, resetButtonTapped: resetConfirmed, dismissState: dismissState.asObservable(), viewWillDisappearTrigger: viewWillDisappearTrigger.asObservable(), countTagRemoveTrigger: countTagRemoveTrigger.asObservable(), filterTagRemoveTrigger: filterTagRemoveTrigger.asObservable(), subTagRemoveTrigger: subTagRemoveTrigger, detailViewDismissTrigger: detailViewDismissTrigger, filteredTagAfterDismiss: filteredTagAfterDismiss.asObservable())
-//        
-//        let output = viewModel.transform(input: input)
-//        
-//        /// 팝업 노출 로직 추가
-//        resetButton.rx.tap.asDriver()
-//            .drive(onNext: { [weak self] in
-//                guard let self = self else { return }
-//                let popupVC = PopUpViewController(isLoginPopUp: false, isChoice: true)
-//                guard let popupView = popupVC.popUpView as? PopUpView else { return }
-//                popupView.alertText.accept("필터를 초기화하시겠습니까?")
-//                popupVC.modalTransitionStyle = .crossDissolve
-//                popupVC.modalPresentationStyle = .overFullScreen
-//                
-//                popupView.cancelButton.rx.tap.asDriver()
-//                    .drive(onNext: { [weak self] in
-//                        self?.dismiss(animated: true)
-//                    })
-//                    .disposed(by: self.disposeBag)
-//                
-//                popupView.confirmButton.rx.tap.asDriver()
-//                    .drive(onNext: { [weak self] in
-//                        self?.resetConfirmed.onNext(())
-//                        self?.dismiss(animated: true)
-//                    })
-//                    .disposed(by: disposeBag)
-//                
-//                self.present(popupVC, animated: true)
-//            })
-//            .disposed(by: disposeBag)
-//
-//        output.tagItems
-//            .drive(tagCollectionView.rx.items(cellIdentifier: PoseFeedFilterCell.identifier, cellType: PoseFeedFilterCell.self)) { _, viewModel, cell in
-//                cell.disposeBag = DisposeBag()
-//                cell.bind(to: viewModel)
-//            }
-//            .disposed(by: disposeBag)
-//        
-//        output.headCountTag
-//            .drive(onNext: { [unowned self] in
-//                self.headCountSelection.pressIndex.accept($0)
-//                guard let headCountTag = PeopleCountTags.getTagFromTitle(title: self.headCountSelection.buttonGroup[$0]) else { return }
-//                self.selectedHeadCount.accept(headCountTag)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.frameCountTag
-//            .drive(onNext: { [unowned self] in
-//                self.frameCountSelection.pressIndex.accept($0)
-//                guard let frameCountTag = FrameCountTags.getTagFromTitle(title: self.frameCountSelection.buttonGroup[$0]) else { return }
-//                self.selectedFrameCount.accept(frameCountTag)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        output.registeredTags
-//            .drive(onNext: { [unowned self] in
-//                self.selectedTags.accept($0)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        subTagRemoveTrigger
-//            .subscribe(onNext: { [unowned self] in
-//                self.registeredSubTag.accept(nil)
-//            })
-//            .disposed(by: disposeBag)
-//        
-//        tagCollectionView.updateCollectionViewHeight()
     }
 }
 
