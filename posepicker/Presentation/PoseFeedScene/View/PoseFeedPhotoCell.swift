@@ -31,7 +31,6 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
     // MARK: - Properties
     static let identifier = "PoseFeedPhotoCell"
     var viewModel: PoseFeedPhotoCellViewModel!
-    let dataRequestCancelTrigger = PublishSubject<Void>()
     private var downloadTask: DownloadTask?
     
     // MARK: - Life Cycles
@@ -40,15 +39,12 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
         super.prepareForReuse()
         if imageView.image == nil {
             downloadTask?.cancel()
-            print("imageURL: \(viewModel.imageURL.value)")
         }
         imageView.image = nil
         bookmarkButton.setImage(nil, for: .normal)
         viewModel = nil
         disposeBag = DisposeBag()
     }
-    
-    
     
     // MARK: - Functions
     
@@ -72,25 +68,28 @@ class PoseFeedPhotoCell: BaseCollectionViewCell {
     
     func bind() {
         viewModel.imageURL.asDriver()
-            .drive(onNext: { imageURL in
-                print("imageURL: \(imageURL)")
-                ImageCache.default.retrieveImage(forKey: imageURL) { [weak self] cacheResult in
-                    switch cacheResult {
-                    case .success(let value):
-                        if let image = value.image {
-                            self?.imageView.image = image
-                        } else if let url = URL(string: imageURL) {
-                            self?.downloadTask = KingfisherManager.shared.retrieveImage(with: url) { [weak self] downloadResult in
-                                switch downloadResult {
-                                case .success(let downloadedImage):
-                                    self?.imageView.image = downloadedImage.image
-                                case .failure(let error):
-                                    print(error)
+            .drive(onNext: { [weak self] imageURL in
+                if let _ = self?.imageView.image {
+                    return
+                } else {
+                    ImageCache.default.retrieveImage(forKey: imageURL) { [weak self] cacheResult in
+                        switch cacheResult {
+                        case .success(let value):
+                            if let image = value.image {
+                                self?.imageView.image = image
+                            } else if let url = URL(string: imageURL) {
+                                self?.downloadTask = KingfisherManager.shared.retrieveImage(with: url) { [weak self] downloadResult in
+                                    switch downloadResult {
+                                    case .success(let downloadedImage):
+                                        self?.imageView.image = downloadedImage.image
+                                    case .failure(let error):
+                                        print(error)
+                                    }
                                 }
                             }
+                        case .failure(let error):
+                            print(error)
                         }
-                    case .failure(let error):
-                        print(error)
                     }
                 }
             })
