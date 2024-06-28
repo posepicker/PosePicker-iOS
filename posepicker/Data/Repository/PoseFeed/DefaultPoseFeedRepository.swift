@@ -88,36 +88,24 @@ final class DefaultPoseFeedRepository: PoseFeedRepository {
         let viewModelObservable = BehaviorRelay<[PoseFeedPhotoCellViewModel]>(value: [])
         
         contents.forEach { pose in
-            ImageCache.default.retrieveImageInDiskCache(forKey: pose.poseInfo.imageKey) { result in
-                switch result {
-                case .success(let value):
-                    if let image = value?.images?.first {
-                        let viewModel = PoseFeedPhotoCellViewModel(
-                            image: image,
-                            poseId: pose.poseInfo.poseId ?? 0,
-                            bookmarkCheck: pose.poseInfo.bookmarkCheck ?? false
-                        )
-                        viewModelObservable.accept(viewModelObservable.value + [viewModel])
-                    } else if let url = URL(string: pose.poseInfo.imageKey) {
-                        KingfisherManager.shared.retrieveImage(with: url) { downloadResult in
-                            switch downloadResult {
-                            case .success(let downloaded):
-                                let viewModel = PoseFeedPhotoCellViewModel(
-                                    image: downloaded.image,
-                                    poseId: pose.poseInfo.poseId ?? 0,
-                                    bookmarkCheck: pose.poseInfo.bookmarkCheck ?? false)
-                                viewModelObservable.accept(viewModelObservable.value + [viewModel])
-                            case .failure(let error):
-                                print("error in first: ", error)
-                                return
-                            }
-                        }
-                    }
-                case .failure:
-                    print("cache failed in second")
-                    return
-                }
+            let fixedWidth = (Int(UIScreen.main.bounds.width) - 56) / 2
+            guard let width = pose.poseInfo.width,
+                  let height = pose.poseInfo.height else {
+                return
             }
+            viewModelObservable.accept(
+                viewModelObservable.value + [
+                    .init(
+                        poseId: pose.poseInfo.poseId ?? 0,
+                        bookmarkCheck: pose.poseInfo.bookmarkCheck ?? false,
+                        size: CGSize(
+                            width: fixedWidth,
+                            height: (height * fixedWidth) / width
+                        ),
+                        imageURL: pose.poseInfo.imageKey
+                    )
+                ]
+            )
         }
         
         return viewModelObservable.skip(while: { $0.count < contents.count }).asObservable()
