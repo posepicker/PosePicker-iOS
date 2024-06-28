@@ -23,7 +23,7 @@ final class DefaultPoseFeedFilterUseCase: PoseFeedFilterUseCase {
         .init(title: "재미"),
         .init(title: "자연스러움"),
         .init(title: "유행"),
-        .init(title: "유명인 프레임"),
+        .init(title: "유명프레임"),
         .init(title: "소품")
     ])
     
