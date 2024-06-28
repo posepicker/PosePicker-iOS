@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import Firebase
 import RxSwift
 import RxRelay
 
@@ -76,6 +77,9 @@ final class PoseFeedFilterViewModel {
         input.filterTagSelectedEvent
             .subscribe(onNext: { [weak self] in
                 self?.posefeedFilterUseCase.selectItem(title: $0.title.value)
+                Analytics.logEvent("SELECTED_FILTER_TAG", parameters: [
+                    "SELECTED_FILTER_TAG": $0.title.value
+                ])
             })
             .disposed(by: disposeBag)
         
