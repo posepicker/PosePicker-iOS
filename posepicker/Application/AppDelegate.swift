@@ -25,8 +25,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
         // 캐시 한계설정
-        ImageCache.default.memoryStorage.config.countLimit = 70
+        ImageCache.default.memoryStorage.config.totalCostLimit = 50 * 1024 * 1024
+        ImageCache.default.memoryStorage.config.countLimit = 10
         ImageCache.default.diskStorage.config.sizeLimit = 1000 * 1024 * 1024
+        ImageCache.default.diskStorage.config.expiration = .days(7)
         
         if !UserDefaults.standard.bool(forKey: "hasRunBefore") {
              // Remove Keychain items here
