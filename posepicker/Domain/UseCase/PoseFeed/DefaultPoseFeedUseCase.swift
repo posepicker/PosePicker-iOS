@@ -55,21 +55,14 @@ final class DefaultPoseFeedUseCase: PoseFeedUseCase {
                 
                 // 필터링 섹션 이미지 사이즈
                 sectionItems[0].items.forEach { viewModel in
-                    guard let image = viewModel.image.value else { return }
-                    let newSizeImage = owner.newSizeImageWidthDownloadedResource(image: image)
-                    viewModel.image.accept(newSizeImage)
                     owner.filterSectionContentSizes.accept(
-                        owner.filterSectionContentSizes.value + [newSizeImage.size]
+                        owner.filterSectionContentSizes.value + [viewModel.size.value]
                     )
                 }
                 
-                // 추천 섹션 이미지 사이즈
                 sectionItems[1].items.forEach { viewModel in
-                    guard let image = viewModel.image.value else { return }
-                    let newSizeImage = owner.newSizeImageWidthDownloadedResource(image: image)
-                    viewModel.image.accept(newSizeImage)
                     owner.recommendSectionContentSizes.accept(
-                        owner.recommendSectionContentSizes.value + [newSizeImage.size]
+                        owner.recommendSectionContentSizes.value + [viewModel.size.value]
                     )
                 }
             })
@@ -84,9 +77,9 @@ final class DefaultPoseFeedUseCase: PoseFeedUseCase {
             .disposed(by: disposeBag)
     }
     
-    private func newSizeImageWidthDownloadedResource(image: UIImage) -> UIImage {
-        let targetWidth = (UIScreen.main.bounds.width - 56) / 2
-        let newSizeImage = image.resize(newWidth: targetWidth)
-        return newSizeImage
-    }
+//    private func newSizeImageWidthDownloadedResource(image: UIImage) -> UIImage {
+//        let targetWidth = (UIScreen.main.bounds.width - 56) / 2
+//        let newSizeImage = image.resize(newWidth: targetWidth)
+//        return newSizeImage
+//    }
 }
