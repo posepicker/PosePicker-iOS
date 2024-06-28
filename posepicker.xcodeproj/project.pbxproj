@@ -114,6 +114,7 @@
 		C94FD2A82AE3B282003777EB /* Pretendard-Thin.otf in Resources */ = {isa = PBXBuildFile; fileRef = C9C890BD2AE110660010240A /* Pretendard-Thin.otf */; };
 		C94FD2AB2AE8CEEB003777EB /* Button.swift in Sources */ = {isa = PBXBuildFile; fileRef = C94FD2AA2AE8CEEB003777EB /* Button.swift */; };
 		C956D3282BD2575900CBB451 /* CoordinatorTooltipDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C956D3272BD2575900CBB451 /* CoordinatorTooltipDelegate.swift */; };
+		C95CC77F2C229E5600250177 /* Network+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95CC77E2C229E5600250177 /* Network+.swift */; };
 		C95DD3782B8710BF005ACE84 /* PoseUploadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95DD3772B8710BF005ACE84 /* PoseUploadViewController.swift */; };
 		C95DD37A2B8711F4005ACE84 /* PoseUploadGuidelineViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C95DD3792B8711F4005ACE84 /* PoseUploadGuidelineViewController.swift */; };
 		C9676BE82BAAAB79000A4114 /* PosePickUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9676BE72BAAAB79000A4114 /* PosePickUseCase.swift */; };
@@ -385,6 +386,7 @@
 		C94FD29E2AE3AF4F003777EB /* UnderlineSegmentControl.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UnderlineSegmentControl.swift; sourceTree = "<group>"; };
 		C94FD2AA2AE8CEEB003777EB /* Button.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Button.swift; sourceTree = "<group>"; };
 		C956D3272BD2575900CBB451 /* CoordinatorTooltipDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoordinatorTooltipDelegate.swift; sourceTree = "<group>"; };
+		C95CC77E2C229E5600250177 /* Network+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Network+.swift"; sourceTree = "<group>"; };
 		C95DD3772B8710BF005ACE84 /* PoseUploadViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadViewController.swift; sourceTree = "<group>"; };
 		C95DD3792B8711F4005ACE84 /* PoseUploadGuidelineViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseUploadGuidelineViewController.swift; sourceTree = "<group>"; };
 		C9676BE72BAAAB79000A4114 /* PosePickUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PosePickUseCase.swift; sourceTree = "<group>"; };
@@ -1171,6 +1173,14 @@
 			path = Button;
 			sourceTree = "<group>";
 		};
+		C95CC77D2C229E4500250177 /* Network */ = {
+			isa = PBXGroup;
+			children = (
+				C95CC77E2C229E5600250177 /* Network+.swift */,
+			);
+			path = Network;
+			sourceTree = "<group>";
+		};
 		C9676BE32BAAAB39000A4114 /* Domain */ = {
 			isa = PBXGroup;
 			children = (
@@ -1799,6 +1809,7 @@
 		C9C8909A2AE107A40010240A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C95CC77D2C229E4500250177 /* Network */,
 				C96C9AA82BB9998600AC2921 /* Result */,
 				C96C9A802BB501EA00AC2921 /* UIPageViewController */,
 				C91E18422B99B2EC009611C3 /* UINavigationController */,
@@ -2699,6 +2710,7 @@
 				C9DC2FA82AECAD1A00D5170D /* RegisteredFilterCell.swift in Sources */,
 				C94FD2AB2AE8CEEB003777EB /* Button.swift in Sources */,
 				C91FF36C2BAD87DB00096E25 /* CoordinatorType.swift in Sources */,
+				C95CC77F2C229E5600250177 /* Network+.swift in Sources */,
 				C9FD21042BC624B700C23E25 /* UserRevokeViewModel.swift in Sources */,
 				C9C0CDCE2AF353AB0041E423 /* ToolTip.swift in Sources */,
 				C938511C2BB3E1D100E597C1 /* DefaultPoseTalkCoordinator.swift in Sources */,
