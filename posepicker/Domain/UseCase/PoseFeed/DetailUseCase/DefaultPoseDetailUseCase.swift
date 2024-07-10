@@ -54,8 +54,6 @@ final class DefaultPoseDetailUseCase: PoseDetailUseCase {
                 self.imageURL.accept(pose.poseInfo.imageKey)
                 
                 if let sourceURL = pose.poseInfo.sourceUrl {
-                    self.sourceUrl.accept(sourceURL)
-                    
                     if String(sourceURL.prefix(5)) == "https" {
                         self.sourceUrl.accept(sourceURL)
                     } else {
