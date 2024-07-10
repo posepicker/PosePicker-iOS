@@ -76,6 +76,7 @@
 		C9247C172C05947F00EE3746 /* MockKeychainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9247C162C05947F00EE3746 /* MockKeychainService.swift */; };
 		C9254CE32B4922B100C4C779 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9254CE22B4922B000C4C779 /* WebKit.framework */; };
 		C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */; };
+		C926A6742C3D193A00C8D1C9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C926A6732C3D193A00C8D1C9 /* GoogleService-Info.plist */; };
 		C93625902B907A6F00B90810 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C936258F2B907A6F00B90810 /* UITextField+.swift */; };
 		C938510E2BB2B18400E597C1 /* DefaultPageViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938510D2BB2B18400E597C1 /* DefaultPageViewCoordinator.swift */; };
 		C938511A2BB3E1B600E597C1 /* PoseTalkCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93851192BB3E1B600E597C1 /* PoseTalkCoordinator.swift */; };
@@ -121,7 +122,6 @@
 		C9676BEC2BAAAC68000A4114 /* PoseInfo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9676BEB2BAAAC68000A4114 /* PoseInfo.swift */; };
 		C96C66C62BE1152600B1F486 /* DefaultMyPoseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66C52BE1152600B1F486 /* DefaultMyPoseCoordinator.swift */; };
 		C96C66C92BE1153600B1F486 /* MyPoseCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66C82BE1153600B1F486 /* MyPoseCoordinator.swift */; };
-		C96C66CB2BE12A9500B1F486 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C96C66CA2BE12A9500B1F486 /* GoogleService-Info.plist */; };
 		C96C66CF2BEB3DA600B1F486 /* MyPoseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66CE2BEB3DA600B1F486 /* MyPoseViewController.swift */; };
 		C96C66D12BEB3DCD00B1F486 /* MyPoseViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66D02BEB3DCD00B1F486 /* MyPoseViewModel.swift */; };
 		C96C66D62BEB40E000B1F486 /* MyPoseUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C66D52BEB40E000B1F486 /* MyPoseUseCase.swift */; };
@@ -365,6 +365,7 @@
 		C9247C162C05947F00EE3746 /* MockKeychainService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockKeychainService.swift; sourceTree = "<group>"; };
 		C9254CE22B4922B000C4C779 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageWebViewController.swift; sourceTree = "<group>"; };
+		C926A6732C3D193A00C8D1C9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C936258F2B907A6F00B90810 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
 		C938510D2BB2B18400E597C1 /* DefaultPageViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPageViewCoordinator.swift; sourceTree = "<group>"; };
 		C93851192BB3E1B600E597C1 /* PoseTalkCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseTalkCoordinator.swift; sourceTree = "<group>"; };
@@ -393,7 +394,6 @@
 		C9676BEB2BAAAC68000A4114 /* PoseInfo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseInfo.swift; sourceTree = "<group>"; };
 		C96C66C52BE1152600B1F486 /* DefaultMyPoseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultMyPoseCoordinator.swift; sourceTree = "<group>"; };
 		C96C66C82BE1153600B1F486 /* MyPoseCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseCoordinator.swift; sourceTree = "<group>"; };
-		C96C66CA2BE12A9500B1F486 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C96C66CE2BEB3DA600B1F486 /* MyPoseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseViewController.swift; sourceTree = "<group>"; };
 		C96C66D02BEB3DCD00B1F486 /* MyPoseViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseViewModel.swift; sourceTree = "<group>"; };
 		C96C66D52BEB40E000B1F486 /* MyPoseUseCase.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MyPoseUseCase.swift; sourceTree = "<group>"; };
@@ -1867,8 +1867,8 @@
 				C9C890AB2AE110320010240A /* Font */,
 				C9C8905A2AE103A30010240A /* Assets.xcassets */,
 				C9C890BE2AE1107B0010240A /* ImageLiteral.swift */,
+				C926A6732C3D193A00C8D1C9 /* GoogleService-Info.plist */,
 				C9C8905F2AE103A30010240A /* Info.plist */,
-				C96C66CA2BE12A9500B1F486 /* GoogleService-Info.plist */,
 				C91C53252BCCFBF300C5C28F /* PrivacyInfo.xcprivacy */,
 			);
 			path = Resources;
@@ -2543,7 +2543,7 @@
 				C94FD2A82AE3B282003777EB /* Pretendard-Thin.otf in Resources */,
 				C9C8905E2AE103A30010240A /* LaunchScreen.storyboard in Resources */,
 				C9C8905B2AE103A30010240A /* Assets.xcassets in Resources */,
-				C96C66CB2BE12A9500B1F486 /* GoogleService-Info.plist in Resources */,
+				C926A6742C3D193A00C8D1C9 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3097,7 +3097,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.0.7;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.parkjju.posepicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -3132,7 +3132,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.0.5;
+				MARKETING_VERSION = 1.0.7;
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.parkjju.posepicker;
 				PRODUCT_NAME = "$(TARGET_NAME)";
