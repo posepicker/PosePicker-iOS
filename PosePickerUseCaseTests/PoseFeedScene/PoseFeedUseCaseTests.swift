@@ -83,7 +83,9 @@ final class PoseFeedUseCaseTests: XCTestCase {
             .next(0, 0),
             .next(0, 0),
             .next(0, 1),
-            .next(1, 2)
+            .next(0, 2),
+            .next(1, 3),
+            .next(1, 4)
         ])
         
         /// 이미지가 nil일때 (다운로드 실패한 경우)
@@ -92,7 +94,9 @@ final class PoseFeedUseCaseTests: XCTestCase {
             .next(0, 0),
             .next(0, 0),
             .next(0, 1),
-            .next(1, 2)
+            .next(0, 2),
+            .next(1, 3),
+            .next(1, 4)
         ])
     }
     
