@@ -24,6 +24,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        var args = ProcessInfo.processInfo.arguments
+        args.append("-FIRDebugEnabled")
+        ProcessInfo.processInfo.setValue(args, forKey: "arguments")
+        
         // 캐시 한계설정
         ImageCache.default.memoryStorage.config.totalCostLimit = 50 * 1024 * 1024
         ImageCache.default.memoryStorage.config.countLimit = 10
