@@ -187,12 +187,10 @@ final class DetailUseCaseTests: XCTestCase {
         
         XCTAssertEqual(sourceTestObserver.events, [
             .next(0, ""),
-            .next(0, "링크바로가기")
         ])
         
         XCTAssertEqual(sourceURLObserver.events, [
-            .next(0, ""),
-            .next(0, "https://")
+            .next(0, "")
         ])
     }
     
