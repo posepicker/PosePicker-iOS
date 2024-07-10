@@ -23,13 +23,9 @@ final class MockPoseDetailRepository: PoseDetailRepository {
             tagAttributes: "친구,자연스러움,가족,재미",
             updatedAt: "2024-04-18T05:37:55.974Z",
             bookmarkCheck: true,
-            poseUploadUser: .init(
-                uid: 0,
-                nickname: "gangjuninggg",
-                email: "rudwns3927@gmail.com",
-                loginType: "kakao",
-                iosId: "10"
-            )
+            poseUploadUser: 0,
+            width: nil,
+            height: nil
         )
     )
     
@@ -45,7 +41,9 @@ final class MockPoseDetailRepository: PoseDetailRepository {
             tagAttributes: nil,
             updatedAt: nil,
             bookmarkCheck: nil,
-            poseUploadUser: nil
+            poseUploadUser: 0,
+            width: nil,
+            height: nil
         )
     )
     
@@ -61,13 +59,9 @@ final class MockPoseDetailRepository: PoseDetailRepository {
             tagAttributes: "친구,자연스러움,가족,재미",
             updatedAt: "2024-04-18T05:37:55.974Z",
             bookmarkCheck: true,
-            poseUploadUser: .init(
-                uid: 0,
-                nickname: "gangjuninggg",
-                email: "rudwns3927@gmail.com",
-                loginType: "kakao",
-                iosId: "10"
-            )
+            poseUploadUser: 0,
+            width: nil,
+            height: nil
         )
     )
     

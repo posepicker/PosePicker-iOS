@@ -79,18 +79,18 @@ final class MockPoseFeedUseCase: PoseFeedUseCase {
     private func generateMockupData() -> [Section<PoseFeedPhotoCellViewModel>] {
         return [
             Section(header: "", items: [
-            .init(image: ImageLiteral.imgInfo24, poseId: 0, bookmarkCheck: false),
-            .init(image: ImageLiteral.imgInfo24, poseId: 1, bookmarkCheck: false),
-            .init(image: ImageLiteral.imgInfo24, poseId: 2, bookmarkCheck: false),
-            .init(image: ImageLiteral.imgInfo24, poseId: 3, bookmarkCheck: false),
-            .init(image: ImageLiteral.imgInfo24, poseId: 4, bookmarkCheck: true),
+                .init(poseId: 0, bookmarkCheck: false, size: CGSize(width: 10, height: 20), imageURL: "https://url.com"),
+                .init(poseId: 1, bookmarkCheck: false, size: CGSize(width: 10, height: 20), imageURL: "https://url.com"),
+                .init(poseId: 2, bookmarkCheck: false, size: CGSize(width: 10, height: 20), imageURL: "https://url.com"),
+                .init(poseId: 3, bookmarkCheck: false, size: CGSize(width: 10, height: 20), imageURL: "https://url.com"),
+                .init(poseId: 4, bookmarkCheck: true, size: CGSize(width: 10, height: 20), imageURL: "https://url.com"),
         ]),
             Section(header: "", items: [
-                .init(image: ImageLiteral.imgInfo24, poseId: 5, bookmarkCheck: false),
-                .init(image: ImageLiteral.imgInfo24, poseId: 6, bookmarkCheck: false),
-                .init(image: ImageLiteral.imgInfo24, poseId: 7, bookmarkCheck: false),
-                .init(image: ImageLiteral.imgInfo24, poseId: 8, bookmarkCheck: false),
-                .init(image: ImageLiteral.imgInfo24, poseId: 9, bookmarkCheck: false),
+                .init(poseId: 5, bookmarkCheck: false, size: CGSize(width: 10, height: 20), imageURL: "https://url.com"),
+                .init(poseId: 6, bookmarkCheck: false, size: CGSize(width: 10, height: 20), imageURL: "https://url.com"),
+                .init(poseId: 7, bookmarkCheck: false, size: CGSize(width: 10, height: 20), imageURL: "https://url.com"),
+                .init(poseId: 8, bookmarkCheck: false, size: CGSize(width: 10, height: 20), imageURL: "https://url.com"),
+                .init(poseId: 9, bookmarkCheck: false, size: CGSize(width: 10, height: 20), imageURL: "https://url.com")
             ])
         ]
     }

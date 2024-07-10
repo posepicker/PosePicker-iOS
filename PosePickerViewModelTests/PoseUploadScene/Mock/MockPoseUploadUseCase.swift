@@ -28,7 +28,9 @@ final class MockPoseUploadUseCase: PoseUploadUseCase {
                         tagAttributes: "친구,재미",
                         updatedAt: Date.now.toString(),
                         bookmarkCheck: true,
-                        poseUploadUser: nil
+                        poseUploadUser: nil,
+                        width: nil,
+                        height: nil
                     )
             )
         )

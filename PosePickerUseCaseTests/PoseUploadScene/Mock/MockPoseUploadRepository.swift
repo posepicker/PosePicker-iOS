@@ -25,7 +25,9 @@ final class MockPoseUploadRepository: PoseUploadRepository {
                     tagAttributes: tag,
                     updatedAt: Date.now.toString(),
                     bookmarkCheck: false,
-                    poseUploadUser: nil
+                    poseUploadUser: nil,
+                    width: nil,
+                    height: nil
                 )
             )
         )

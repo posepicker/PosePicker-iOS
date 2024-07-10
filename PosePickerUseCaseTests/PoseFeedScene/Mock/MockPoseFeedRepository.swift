@@ -14,26 +14,30 @@ final class MockPoseFeedRepository: PoseFeedRepository {
     private var sectionItems = [
         Section(header: "", items: [
             PoseFeedPhotoCellViewModel(
-                image: nil,
-                poseId: 100,
-                bookmarkCheck: true
+                poseId: 4,
+                bookmarkCheck: true,
+                size: CGSize(width: 10, height: 20),
+                imageURL: "https://url.com"
             ),
             PoseFeedPhotoCellViewModel(
-                image: ImageLiteral.imgInfo24,
                 poseId: 1,
-                bookmarkCheck: true
-            )
+                bookmarkCheck: true,
+                size: CGSize(width: 10, height: 20),
+                imageURL: "https://url.com"
+            ),
         ]),
         Section(header: "", items: [
             PoseFeedPhotoCellViewModel(
-                image: ImageLiteral.imgInfo24,
                 poseId: 3,
-                bookmarkCheck: true
+                bookmarkCheck: true,
+                size: CGSize(width: 10, height: 20),
+                imageURL: "https://url.com"
             ),
             PoseFeedPhotoCellViewModel(
-                image: nil,
                 poseId: 2,
-                bookmarkCheck: true
+                bookmarkCheck: true,
+                size: CGSize(width: 10, height: 20),
+                imageURL: "https://url.com"
             )
         ])
     ]

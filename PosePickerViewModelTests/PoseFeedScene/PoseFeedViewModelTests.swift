@@ -224,7 +224,7 @@ final class PoseFeedViewModelTests: XCTestCase {
             dismissFilterModalEvent: dismissModalEventObservable.asObservable(),
             filterTagTapEvent: .empty(),
             posefeedPhotoCellTapEvent: self.scheduler.createColdObservable([
-                .next(0, PoseFeedPhotoCellViewModel(image: nil, poseId: 1, bookmarkCheck: true))
+                .next(0, PoseFeedPhotoCellViewModel(poseId: 1, bookmarkCheck: true, size: CGSize(width: 0, height: 0), imageURL: "")),
             ]).asObservable(),
             dismissPoseDetailEvent: .empty(),
             bookmarkBindingEvent: .empty(),
@@ -484,11 +484,11 @@ final class PoseFeedViewModelTests: XCTestCase {
             poseUploadButtonTapEvent: .empty(),
             refreshEvent: .empty(),
             bookmarkButtonTapEvent: self.scheduler.createColdObservable([
-                .next(1, Section<PoseFeedPhotoCellViewModel>.Item(image: nil, poseId: 1, bookmarkCheck: false)),    // poseId 1번 객체 북마크 true로 체크
-                .next(2, Section<PoseFeedPhotoCellViewModel>.Item(image: nil, poseId: -1, bookmarkCheck: false)),    // 잘못된 북마크 체크 case
-                .next(11, Section<PoseFeedPhotoCellViewModel>.Item(image: nil, poseId: 1, bookmarkCheck: true)),      // 로그아웃 이후 북마크 체크 테스트 (애플로그인)
-                .next(14, Section<PoseFeedPhotoCellViewModel>.Item(image: nil, poseId: 1, bookmarkCheck: true)),       // 로그아웃 이후 북마크 체크 테스트 (카카오로그인)
-                .next(16, Section<PoseFeedPhotoCellViewModel>.Item(image: nil, poseId: 1, bookmarkCheck: true))       // 로그아웃 이후 북마크 체크 테스트 (잘못된 로그인 요청 케이스 (.none 케이스)
+                .next(1, Section<PoseFeedPhotoCellViewModel>.Item(poseId: 1, bookmarkCheck: false, size: CGSize(width: 10, height: 10), imageURL: "")),
+                .next(2, Section<PoseFeedPhotoCellViewModel>.Item(poseId: -1, bookmarkCheck: false, size: CGSize(width: 10, height: 10), imageURL: "")),
+                .next(11, Section<PoseFeedPhotoCellViewModel>.Item(poseId: 1, bookmarkCheck: true, size: CGSize(width: 10, height: 10), imageURL: "")),
+                .next(14, Section<PoseFeedPhotoCellViewModel>.Item(poseId: 1, bookmarkCheck: true, size: CGSize(width: 10, height: 10), imageURL: "")),
+                .next(16, Section<PoseFeedPhotoCellViewModel>.Item(poseId: 1, bookmarkCheck: true, size: CGSize(width: 10, height: 10), imageURL: "")),
             ]).asObservable()
         )
         
