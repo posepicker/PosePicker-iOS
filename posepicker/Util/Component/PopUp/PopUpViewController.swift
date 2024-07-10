@@ -24,6 +24,7 @@ class PopUpViewController: BaseViewController {
     var isChoice: Bool
     var isLabelNeeded: Bool
     var isSignout: Bool
+    var touchesBeganObservable = PublishSubject<Void>()
     /// Optional 타입이 아니면 초기에 next로 값이 방출되어버림
 //    let appleIdentityToken = BehaviorRelay<String?>(value: nil)
 //    let kakaoId = BehaviorRelay<Int64?>(value: nil)
@@ -48,6 +49,7 @@ class PopUpViewController: BaseViewController {
     // MARK: - Functions
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         super.touchesBegan(touches, with: event)
+        touchesBeganObservable.onNext(())
         self.dismiss(animated: true) { [weak self] in
             if let popUpView = self?.popUpView as? LoginPopUpView {
                 popUpView.socialLogin.onNext(LoginPopUpView.SocialLogin.none)
