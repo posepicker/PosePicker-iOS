@@ -77,6 +77,7 @@
 		C9254CE32B4922B100C4C779 /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C9254CE22B4922B000C4C779 /* WebKit.framework */; };
 		C9254CE62B49230B00C4C779 /* MypageWebViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */; };
 		C926A6742C3D193A00C8D1C9 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C926A6732C3D193A00C8D1C9 /* GoogleService-Info.plist */; };
+		C93397582C3E671C00554B62 /* Bundle+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93397572C3E671C00554B62 /* Bundle+.swift */; };
 		C93625902B907A6F00B90810 /* UITextField+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C936258F2B907A6F00B90810 /* UITextField+.swift */; };
 		C938510E2BB2B18400E597C1 /* DefaultPageViewCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C938510D2BB2B18400E597C1 /* DefaultPageViewCoordinator.swift */; };
 		C938511A2BB3E1B600E597C1 /* PoseTalkCoordinator.swift in Sources */ = {isa = PBXBuildFile; fileRef = C93851192BB3E1B600E597C1 /* PoseTalkCoordinator.swift */; };
@@ -366,6 +367,7 @@
 		C9254CE22B4922B000C4C779 /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
 		C9254CE52B49230B00C4C779 /* MypageWebViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MypageWebViewController.swift; sourceTree = "<group>"; };
 		C926A6732C3D193A00C8D1C9 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C93397572C3E671C00554B62 /* Bundle+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Bundle+.swift"; sourceTree = "<group>"; };
 		C936258F2B907A6F00B90810 /* UITextField+.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UITextField+.swift"; sourceTree = "<group>"; };
 		C938510D2BB2B18400E597C1 /* DefaultPageViewCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPageViewCoordinator.swift; sourceTree = "<group>"; };
 		C93851192BB3E1B600E597C1 /* PoseTalkCoordinator.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PoseTalkCoordinator.swift; sourceTree = "<group>"; };
@@ -1004,6 +1006,14 @@
 				C956D3272BD2575900CBB451 /* CoordinatorTooltipDelegate.swift */,
 			);
 			path = Delegate;
+			sourceTree = "<group>";
+		};
+		C93397562C3E671200554B62 /* Bundle */ = {
+			isa = PBXGroup;
+			children = (
+				C93397572C3E671C00554B62 /* Bundle+.swift */,
+			);
+			path = Bundle;
 			sourceTree = "<group>";
 		};
 		C936258E2B907A6500B90810 /* UITextField */ = {
@@ -1809,6 +1819,7 @@
 		C9C8909A2AE107A40010240A /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
+				C93397562C3E671200554B62 /* Bundle */,
 				C95CC77D2C229E4500250177 /* Network */,
 				C96C9AA82BB9998600AC2921 /* Result */,
 				C96C9A802BB501EA00AC2921 /* UIPageViewController */,
@@ -2714,6 +2725,7 @@
 				C9FD21042BC624B700C23E25 /* UserRevokeViewModel.swift in Sources */,
 				C9C0CDCE2AF353AB0041E423 /* ToolTip.swift in Sources */,
 				C938511C2BB3E1D100E597C1 /* DefaultPoseTalkCoordinator.swift in Sources */,
+				C93397582C3E671C00554B62 /* Bundle+.swift in Sources */,
 				C9C890C52AE11BAB0010240A /* UIFont+.swift in Sources */,
 				C96C9A962BB5C48200AC2921 /* DefaultPosePickUseCase.swift in Sources */,
 				8803ADB92B04FB0D00185933 /* PoseDetailViewController.swift in Sources */,
