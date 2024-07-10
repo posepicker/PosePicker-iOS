@@ -24,6 +24,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
         
+        // firebase 디버그 모드 활성화
         var args = ProcessInfo.processInfo.arguments
         args.append("-FIRDebugEnabled")
         ProcessInfo.processInfo.setValue(args, forKey: "arguments")
