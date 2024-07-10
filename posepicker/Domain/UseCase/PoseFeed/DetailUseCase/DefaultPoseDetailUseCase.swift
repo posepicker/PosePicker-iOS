@@ -53,16 +53,19 @@ final class DefaultPoseDetailUseCase: PoseDetailUseCase {
                 
                 self.imageURL.accept(pose.poseInfo.imageKey)
                 
-                let sourceURL = pose.poseInfo.sourceUrl ?? ""
-                
-                if String(sourceURL.prefix(5)) == "https" {
+                if let sourceURL = pose.poseInfo.sourceUrl {
                     self.sourceUrl.accept(sourceURL)
-                } else {
-                    self.sourceUrl.accept("https://" + sourceURL)
+                    
+                    if String(sourceURL.prefix(5)) == "https" {
+                        self.sourceUrl.accept(sourceURL)
+                    } else {
+                        self.sourceUrl.accept("https://" + sourceURL)
+                    }
                 }
                 
-                let source = pose.poseInfo.source ?? "링크바로가기"
-                self.source.accept(source)
+                if let source = pose.poseInfo.source {
+                    self.source.accept(source)
+                }
             })
             .disposed(by: self.disposeBag)
         
