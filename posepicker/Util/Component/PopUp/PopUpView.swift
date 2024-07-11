@@ -26,8 +26,9 @@ class PopUpView: UIView {
             $0.textAlignment = .center
         }
     
-    let alertLabel = UILabel()
+    let alertLabel = UnderlinedLabel()
         .then {
+            $0.lineBreakMode = .byCharWrapping
             $0.textColor = .textPrimary
             $0.numberOfLines = 0
             $0.font = .pretendard(.regular, ofSize: 16)
@@ -95,12 +96,18 @@ class PopUpView: UIView {
             }
             
             alertLabel.snp.makeConstraints { make in
+                make.leading.lessThanOrEqualTo(box).offset(16)
+                make.trailing.lessThanOrEqualTo(box).offset(-16)
                 make.top.equalTo(alertMainLabel.snp.bottom).offset(8)
+                make.bottom.equalTo(completeButton.snp.top).offset(-32)
                 make.centerX.equalToSuperview()
             }
         } else {
             alertLabel.snp.makeConstraints { make in
+                make.leading.lessThanOrEqualTo(box).offset(16)
+                make.trailing.lessThanOrEqualTo(box).offset(-16)
                 make.top.equalTo(box.snp.top).offset(32)
+                make.bottom.equalTo(completeButton.snp.top).offset(-32)
                 make.centerX.equalToSuperview()
             }
         }
@@ -130,6 +137,7 @@ class PopUpView: UIView {
                 let paragraphStyle = NSMutableParagraphStyle()
                 paragraphStyle.minimumLineHeight = 24
                 paragraphStyle.alignment = .center
+                paragraphStyle.lineBreakMode = .byCharWrapping
                 let attrString = NSMutableAttributedString(string: $0)
                 attrString.addAttribute(.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
                 return attrString
