@@ -194,6 +194,8 @@ private extension PoseFeedFilterViewController {
             }
             .disposed(by: disposeBag)
         
+        self.tagCollectionView.updateCollectionViewHeight()
+        
         output?.peopleCountIndex
             .bind(to: headCountSelection.pressIndex)
             .disposed(by: disposeBag)
