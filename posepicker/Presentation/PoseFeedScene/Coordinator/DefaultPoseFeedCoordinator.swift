@@ -152,7 +152,39 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
     }
     
     func moveToExternalApp(url: URL) {
-        UIApplication.shared.open(url)
+        let popupVC = PopUpViewController(isLoginPopUp: false, isChoice: true)
+        popupVC.modalTransitionStyle = .crossDissolve
+        popupVC.modalPresentationStyle = .overFullScreen
+        
+        self.navigationController.presentedViewController?.present(popupVC, animated: true)
+        if let popUpView = popupVC.popUpView as? PopUpView {
+            popUpView.snp.updateConstraints { make in
+                make.height.equalTo(182)
+            }
+            popUpView.alertText.accept("\(url.absoluteString.count > 90 ? String(url.absoluteString[url.absoluteString.startIndex...url.absoluteString.index(url.absoluteString.startIndex, offsetBy: 90)]) + "..." : url.absoluteString)\n해당 링크로 이동하시겠어요?")
+            popUpView.alertLabel.underlinedText = url.absoluteString.count > 90 ? String(url.absoluteString[url.absoluteString.startIndex...url.absoluteString.index(url.absoluteString.startIndex, offsetBy: 90)]) + "..." : url.absoluteString
+            popUpView.snp.updateConstraints { make in
+                make.height.equalTo(158 + "\(url.absoluteString + "\n해당 링크로 이동하시겠어요?")".height(withConstrainedWidth: 268, font: .pretendard(.regular, ofSize: 16)))
+            }
+            
+
+            popUpView.confirmButton.setTitle("이동하기", for: .normal)
+            popUpView.cancelButton.setTitle("닫기", for: .normal)
+            
+            popUpView.confirmButton.rx.tap
+                .asDriver()
+                .drive(onNext: {
+                    UIApplication.shared.open(url)
+                })
+                .disposed(by: popupVC.disposeBag)
+            
+            popUpView.cancelButton.rx.tap
+                .asDriver()
+                .drive(onNext: { [weak self] in
+                    self?.navigationController.presentedViewController?.dismiss(animated: true)
+                })
+                .disposed(by: popupVC.disposeBag)
+        }
     }
 
     func dismissPoseDetail(tag: String) {
