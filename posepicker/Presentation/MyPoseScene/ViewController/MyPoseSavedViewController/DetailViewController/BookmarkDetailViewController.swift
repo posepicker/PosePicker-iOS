@@ -249,6 +249,23 @@ private extension BookmarkDetailViewController {
             }
             .disposed(by: disposeBag)
         
+        output?.tagItems
+            .asDriver()
+            .drive(onNext: { [weak self] in
+                guard let self else { return }
+                if !$0.isEmpty {
+                    let contentRect: CGRect = self.tagCollectionView.subviews.reduce(into: .zero) { rect, view in
+                        rect = rect.union(view.frame)
+                    }
+                    self.tagCollectionView.setNeedsLayout()
+                    self.tagCollectionView.layoutIfNeeded()
+                    self.tagCollectionView.snp.updateConstraints({ make in
+                        make.height.equalTo(contentRect.height + 10)
+                    })
+                }
+            })
+            .disposed(by: disposeBag)
+        
         output?.isLoading
             .asDriver()
             .drive(onNext: { [weak self] in
