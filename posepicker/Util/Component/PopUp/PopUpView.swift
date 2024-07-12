@@ -140,6 +140,7 @@ class PopUpView: UIView {
                 paragraphStyle.lineBreakMode = .byCharWrapping
                 let attrString = NSMutableAttributedString(string: $0)
                 attrString.addAttribute(.paragraphStyle, value:paragraphStyle, range:NSMakeRange(0, attrString.length))
+                attrString.addAttribute(.font, value: UIFont.pretendard(.regular, ofSize: 16), range: NSMakeRange(0, attrString.length))
                 return attrString
             }
             .bind(to: alertLabel.rx.attributedText).disposed(by: disposeBag)
