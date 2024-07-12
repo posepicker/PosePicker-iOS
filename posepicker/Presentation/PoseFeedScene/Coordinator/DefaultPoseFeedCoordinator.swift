@@ -158,9 +158,6 @@ final class DefaultPoseFeedCoordinator: PoseFeedCoordinator {
         
         self.navigationController.presentedViewController?.present(popupVC, animated: true)
         if let popUpView = popupVC.popUpView as? PopUpView {
-            popUpView.snp.updateConstraints { make in
-                make.height.equalTo(182)
-            }
             popUpView.alertText.accept("\(url.absoluteString.count > 90 ? String(url.absoluteString[url.absoluteString.startIndex...url.absoluteString.index(url.absoluteString.startIndex, offsetBy: 90)]) + "..." : url.absoluteString)\n해당 링크로 이동하시겠어요?")
             popUpView.alertLabel.underlinedText = url.absoluteString.count > 90 ? String(url.absoluteString[url.absoluteString.startIndex...url.absoluteString.index(url.absoluteString.startIndex, offsetBy: 90)]) + "..." : url.absoluteString
             popUpView.snp.updateConstraints { make in
