@@ -24,6 +24,7 @@ class UnderlinedLabel: UILabel {
             newAttributedText.addAttribute(.underlineStyle,
                                         value: NSUnderlineStyle.single.rawValue,
                                         range: textRange)
+            newAttributedText.addAttribute(.font, value: UIFont.pretendard(.regular, ofSize: 16), range: textRange)
             self.attributedText = newAttributedText
         }
     }
