@@ -29,43 +29,27 @@ class DefaultAppCoordinator: AppCoordinator {
         childCoordinators.append(pageviewCoordinator)
         
         // 앱 버전 확인
-        if Bundle.main.releaseVersionNumber != "1.0.6" {
+        if Bundle.main.releaseVersionNumber != "1.0.7" && !UserDefaults.standard.bool(forKey: "updateBefore") {
             let popupVC = PopUpViewController(isLoginPopUp: false, isChoice: true)
             popupVC.modalPresentationStyle = .overFullScreen
             popupVC.modalTransitionStyle = .crossDissolve
+            self.navigationController.present(popupVC, animated: true)
             
             if let popupView = popupVC.popUpView as? PopUpView {
                 popupView.alertText.accept("앱의 최신 버전이 필요합니다.\n업데이트 해주세요.")
+                popupView.snp.updateConstraints { make in
+                    make.height.equalTo(158 + "앱의 최신 버전이 필요합니다.\n업데이트 해주세요.".height(withConstrainedWidth: 300, font: .pretendard(.regular, ofSize: 16)))
+                }
+                
                 popupView.cancelButton.setTitle("나중에", for: .normal)
-                popupVC.touchesBeganObservable
-                    .asDriver(onErrorJustReturn: ())
-                    .drive(onNext: { [weak self] in
-                        self?.navigationController.dismiss(animated: true) {
-                            let popupVC = PopUpViewController(isLoginPopUp: false, isChoice: false)
-                            popupVC.modalTransitionStyle = .crossDissolve
-                            popupVC.modalPresentationStyle = .overFullScreen
-                            let popupView = popupVC.popUpView as? PopUpView
-                            popupView?.alertText.accept("업데이트를 하지 않으면\n일부 기능이 동작하지 않을 수 있어요.")
-                            popupView?.completeButton.setTitle("확인", for: .normal)
-                            self?.navigationController.present(popupVC, animated: true)
-                        }
-                    })
-                    .disposed(by: popupVC.disposeBag)
                 
                 popupView.cancelButton.rx.tap
                     .asDriver()
                     .drive(onNext: { [weak self] in
-                        self?.navigationController.dismiss(animated: true) {
-                            let popupVC = PopUpViewController(isLoginPopUp: false, isChoice: false)
-                            popupVC.modalTransitionStyle = .crossDissolve
-                            popupVC.modalPresentationStyle = .overFullScreen
-                            let popupView = popupVC.popUpView as? PopUpView
-                            popupView?.alertText.accept("업데이트를 하지 않으면\n일부 기능이 동작하지 않을 수 있어요.")
-                            popupView?.completeButton.setTitle("확인", for: .normal)
-                            self?.navigationController.present(popupVC, animated: true)
-                        }
+                        self?.navigationController.dismiss(animated: true)
                     })
                     .disposed(by: popupVC.disposeBag)
+                
                 popupView.confirmButton.rx.tap
                     .asDriver()
                     .drive(onNext: { [weak self] in
@@ -77,7 +61,8 @@ class DefaultAppCoordinator: AppCoordinator {
                     })
                     .disposed(by: popupVC.disposeBag)
             }
-            self.navigationController.present(popupVC, animated: true)
+            
+            UserDefaults.standard.set(true, forKey: "updateBefore")
         }
     }
     
