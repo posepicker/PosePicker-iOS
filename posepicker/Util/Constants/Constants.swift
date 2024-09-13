@@ -9,7 +9,7 @@ import Foundation
 
 struct K {
     /// API base URL
-    static let baseUrl = "https://api-posepicker.site"
+    static let baseUrl = "https://api.posepicker.site"
     
     /// 리퀘스트 바디 파라미터의 키값을 문자열로 사용할때 직접 추가
     struct Parameters {
