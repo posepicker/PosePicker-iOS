@@ -168,6 +168,7 @@
 		C96C9B622BBD2A5200AC2921 /* PoseFeedViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B612BBD2A5200AC2921 /* PoseFeedViewModel.swift */; };
 		C96C9B662BBD2AC400AC2921 /* DefaultPoseFeedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B652BBD2AC400AC2921 /* DefaultPoseFeedUseCase.swift */; };
 		C96C9B682BBD2ACB00AC2921 /* PoseFeedUseCase.swift in Sources */ = {isa = PBXBuildFile; fileRef = C96C9B672BBD2ACB00AC2921 /* PoseFeedUseCase.swift */; };
+		C976B9572C732A8B007F029C /* FirebaseMessaging in Frameworks */ = {isa = PBXBuildFile; productRef = C976B9562C732A8B007F029C /* FirebaseMessaging */; };
 		C990AB1E2B5BF52600567AA3 /* String+.swift in Sources */ = {isa = PBXBuildFile; fileRef = C990AB1D2B5BF52600567AA3 /* String+.swift */; };
 		C99A8A6E2B109AA60072B361 /* SmartlookAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A6D2B109AA60072B361 /* SmartlookAnalytics */; };
 		C99A8A732B10A54E0072B361 /* FirebaseAnalytics in Frameworks */ = {isa = PBXBuildFile; productRef = C99A8A722B10A54E0072B361 /* FirebaseAnalytics */; };
@@ -600,6 +601,7 @@
 				C94FD2952AE39E5C003777EB /* SnapKit in Frameworks */,
 				C93EE1B32B583D47007D61EF /* RxKakaoSDK in Frameworks */,
 				C9C890912AE107730010240A /* RxBlocking in Frameworks */,
+				C976B9572C732A8B007F029C /* FirebaseMessaging in Frameworks */,
 				C99A8A732B10A54E0072B361 /* FirebaseAnalytics in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -2470,6 +2472,7 @@
 				C93EE1B82B583D47007D61EF /* RxKakaoSDKShare */,
 				C93EE1BA2B583D47007D61EF /* RxKakaoSDKTalk */,
 				C93EE1BC2B583D47007D61EF /* RxKakaoSDKUser */,
+				C976B9562C732A8B007F029C /* FirebaseMessaging */,
 			);
 			productName = posepicker;
 			productReference = C9C8904E2AE103A10010240A /* posepicker.app */;
@@ -2483,7 +2486,7 @@
 			attributes = {
 				BuildIndependentTargetsInParallel = YES;
 				LastSwiftUpdateCheck = 1530;
-				LastUpgradeCheck = 1520;
+				LastUpgradeCheck = 1540;
 				TargetAttributes = {
 					C96C9AEB2BBA39EC00AC2921 = {
 						CreatedOnToolsVersion = 15.3;
@@ -3359,6 +3362,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = C9C8908F2AE107730010240A /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxTest;
+		};
+		C976B9562C732A8B007F029C /* FirebaseMessaging */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = C99A8A712B10A54E0072B361 /* XCRemoteSwiftPackageReference "firebase-ios-sdk" */;
+			productName = FirebaseMessaging;
 		};
 		C99A8A6D2B109AA60072B361 /* SmartlookAnalytics */ = {
 			isa = XCSwiftPackageProductDependency;
