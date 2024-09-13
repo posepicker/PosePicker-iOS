@@ -10,6 +10,7 @@ import RxCocoa
 import RxSwift
 import Kingfisher
 import RxDataSources
+import Lottie
 
 class PoseFeedViewController: BaseViewController {
     
@@ -122,6 +123,13 @@ class PoseFeedViewController: BaseViewController {
     let poseUploadCompleteEvent = PublishSubject<Void>()
     let reportCompletedTrigger = PublishSubject<Void>()
     
+    private let animationView: LottieAnimationView = .init(name: "pullToRefresh")
+        .then {
+            $0.backgroundColor = .white
+            $0.loopMode = .loop
+            $0.play()
+        }
+    
     // MARK: - Life Cycles
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -194,6 +202,11 @@ class PoseFeedViewController: BaseViewController {
         
         // 컬렉션뷰
         self.poseFeedCollectionView.refreshControl = refreshControl
+        self.poseFeedCollectionView.refreshControl?.addSubView(animationView)
+        
+        animationView.snp.makeConstraints { make in
+            make.top.leading.trailing.bottom.equalToSuperview()
+        }
         
         poseUploadButton.makeShadow(alpha: 0.5, x: -4, y: -4, blur: 6.8, spread: 0)
         
@@ -204,6 +217,8 @@ class PoseFeedViewController: BaseViewController {
         secureView.snp.makeConstraints { make in
             make.top.leading.trailing.bottom.equalToSuperview()
         }
+        
+        self.refreshControl.backgroundColor = .clear
         
         secureView.addSubViews([poseFeedCollectionView, poseUploadButton])
         poseFeedCollectionView.snp.makeConstraints { make in
